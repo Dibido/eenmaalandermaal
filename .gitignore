@@ -1,0 +1,3 @@
+#items in this file wil be ignored:
+
+.*.swp #no vim swap files
