@@ -1,4 +1,5 @@
-.sitelogo{
-    width: 10%;
-    height: auto;
+.sitelogo {
+    position: absolute;
+    height: 100%;
+    width: auto;
 }
