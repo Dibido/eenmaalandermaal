@@ -30,7 +30,7 @@
     <body>
         <div class="container-fluid">
             <header>
-                <img src="">
+                <img src="Images/Site-logo.png" alt="EenmaalAndermaal logo" class="sitelogo">
             </header>
         </div>
     </body>
