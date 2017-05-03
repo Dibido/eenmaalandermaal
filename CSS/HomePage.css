@@ -9,3 +9,9 @@
 .list-group {
     width: 100%;
 }
+.carousel-inner .item>.item-active{
+    height: 37.5vw;
+}
+.carousel-inner .item{
+    height: 37.5vw;
+}

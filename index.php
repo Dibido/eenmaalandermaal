@@ -42,7 +42,7 @@
     </div>
 
     <div class="row well">
-        <div class="container">
+        <div class="container-fluid">
 
             <div class="col-md-2 hvisible-md visible-lg">
                 <div class="list-group">
@@ -68,15 +68,15 @@
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner">
                         <div class="item active">
-                            <img src="Images/ModelS.jpeg" alt="Los Angeles" style="width:100%;">
+                            <img class="img-responsive center-block" src="Images/ModelS.jpeg" alt="Los Angeles">
                         </div>
 
                         <div class="item">
-                            <img src="Images/ModelX.jpeg" alt="Chicago" style="width:100%;">
+                            <img class="img-responsive center-block" src="Images/ModelX.jpeg" alt="Chicago" style="width:100%;">
                         </div>
 
                         <div class="item">
-                            <img src="Images/Model3.jpeg" alt="New york" style="width:100%;">
+                            <img class="img-responsive center-block" src="Images/Model3.jpeg" alt="New york" style="width:100%;">
                         </div>
                     </div>
 
