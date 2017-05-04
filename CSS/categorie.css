@@ -9,3 +9,8 @@
 .list-group {
     width: 100%;
 }
+
+.voorwerp {
+    margin: 10px;
+    background: #E0E0E0;
+}

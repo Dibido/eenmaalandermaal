@@ -36,6 +36,7 @@
     </nav>
 </div>
 
+<!--TODO: Zorgen dat wells van de categorieen naast de linker balk komen te staan.-->
 <div class="row">
     <div class="col-md-2">
         <div class="container-fluid">
@@ -51,34 +52,45 @@
             </div>
         </div>
     </div>
+    <div class="col-md-2">
+        <ol class="breadcrumb">
+            <li><a href="index.php">Home</a></li>
+            <li class="active">Auto onderdelen</li>
+        </ol>
+    </div>
     <div class="container-fluid">
-        <div class="well well-lg col-md-10">
+        <div class="well well-lg col-md-10 col-sm-8">
             <h2>Trending</h2>
-            <div class="well well-sm col-md-2">
+            <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
                 <h5>Tesla X</h5>
                 <img src="Images/ModelX.jpeg" height="100" width="220">
-                <span class="glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+                <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+                <div class="well well-sm">
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                </div>
+                <button class="btn btn-primary">Bied Nu!</button>
             </div>
-            <div class="well well-sm col-md-2 col-md-offset-1">
+            <div class="voorwerp well well-sm col-md-2">
                 <h5>Aanbieding#2</h5>
             </div>
-            <div class="well well-sm col-md-2 col-md-offset-1">
+            <div class="voorwerp well well-sm col-md-2">
                 <h5>Aanbieding#3</h5>
             </div>
-            <div class="well well-sm col-md-2 col-md-offset-1">
+            <div class="voorwerp well well-sm col-md-2">
                 <h5>Aanbieding#4</h5>
             </div>
         </div>
     </div>
+
     <div class="container-fluid">
         <div class="well well-lg col-md-10">
-            <h2>Trending</h2>
-            <div class="well well-sm col-md-2">
+            <h2>Accu's</h2>
+            <div class="voorwerp well well-sm col-md-2">
                 <h5>Tesla X</h5>
                 <img src="Images/ModelS.jpeg" height="100" width="220">
                 <span class="glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
@@ -87,13 +99,13 @@
                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                 <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
             </div>
-            <div class="well well-sm col-md-2 col-md-offset-1">
+            <div class="voorwerp well well-sm col-md-2 col-md-offset-1">
                 <h5>Aanbieding#2</h5>
             </div>
-            <div class="well well-sm col-md-2 col-md-offset-1">
+            <div class="voorwerp well well-sm col-md-2 col-md-offset-1">
                 <h5>Aanbieding#3</h5>
             </div>
-            <div class="well well-sm col-md-2 col-md-offset-1">
+            <div class="voorwerp well well-sm col-md-2 col-md-offset-1">
                 <h5>Aanbieding#4</h5>
             </div>
         </div>
