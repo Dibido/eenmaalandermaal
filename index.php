@@ -23,26 +23,34 @@
 
     <body>
 
-    <div class="row">
-        <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">
-                         <img alt="Brand" src="Images/Site-logo.png" class="">
-                        </a>
-                        <form class="navbar-form col-sm-8 text-center" role="search">
-                          <div class="form-group">
-                              <input type="text" class="form-control" placeholder="Search">
-                          </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                        </form>
-                    </div>
-                </div>
-        </nav>
+    <div class="navbar navbar-default navbar-static-top">
+        <div class="container-fluid">
+            <a href="index.php" class="navbar-brand navbar-left"><img src="Images/Site-logo.png" alt="EenmaalAndermaal logo"></a>
+            <ul class="nav navbar-nav">
+                <li>
+                    <form class="navbar-form navbar-center" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default">zoek</button>
+                    </form>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-default navbar-btn"><i class="glyphicon glyphicon-menu-down"></i></button>
+                </li>
+                <li>
+                    <button type="button" class="btn btn-primary navbar-btn">Plaats veiling</button>
+                </li>
+                <li>
+                    <a><i class="glyphicon glyphicon-user"></i></a>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <div class="row well">
-        <div class="container-fluid">
+
+    <div class="container-fluid">
+        <div class="row well">
 
             <div class="col-md-2 hvisible-md visible-lg">
                 <div class="list-group">
@@ -90,14 +98,12 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
-
-
             </div>
-
 
             <div class="col-md-2">
 
             </div>
+
         </div>
     </div>
 
