@@ -12,6 +12,8 @@
 .idea/**/tasks.xml
 .idea/dictionaries
 .idea/vcs.xml
+.idea/deployment.xml #stores remote deployment settings
+.idea/jsLibraryMappings.xml #stores the mappings for the local js files
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
