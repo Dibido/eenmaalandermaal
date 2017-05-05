@@ -12,7 +12,7 @@ CREATE TABLE Bestand(
   filenaam       VARCHAR(260) NOT NULL,     --Maximum lengte van file path is volgens microsoft 260 tekens.
   voorwerpnummer BIGINT       NOT NULL,
   CONSTRAINT PK_filenaam PRIMARY KEY (filenaam),
-  CONSTRAINT FK_voorweprnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(voorwerpnummer),
+  CONSTRAINT FK_voorwerpnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(voorwerpnummer),
   CONSTRAINT CHK_voorwerpnummer CHECK ([dbo].[aantalBestandenPerVoorwerpnummer](voorwerpnummer) <= 4)
 )
 
