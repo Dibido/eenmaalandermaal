@@ -1,20 +1,14 @@
 use eenmaalandermaal
+IF OBJECT_ID('dbo.Bestand') IS NOT NULL
+  drop table [dbo].[Bestand]
 IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
   drop table [dbo].[Voorwerp]
 IF OBJECT_ID('dbo.Landen') IS NOT NULL
   drop table [dbo].[Landen]
 IF OBJECT_ID('dbo.Betalingswijzen') IS NOT NULL
   drop table [dbo].[Betalingswijzen]
-IF OBJECT_ID('dbo.Bestand') IS NOT NULL
-  drop table [dbo].[Bestand]
 
-CREATE TABLE Bestand(
-  filenaam       VARCHAR(260) NOT NULL,     --Maximum lengte van file path is volgens microsoft 260 tekens.
-  voorwerpnummer BIGINT       NOT NULL,
-  CONSTRAINT PK_filenaam PRIMARY KEY (filenaam),
-  CONSTRAINT FK_voorweprnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(voorwerpnummer),
-  CONSTRAINT CHK_voorwerpnummer CHECK ([dbo].[aantalBestandenPerVoorwerpnummer](voorwerpnummer) <= 4)
-)
+
 
 CREATE TABLE Betalingswijzen (
   betalingswijze VARCHAR(25) NOT NULL, --Keuze betalingswijzen
@@ -74,6 +68,14 @@ CREATE TABLE Voorwerp (
   CONSTRAINT FK_LAND FOREIGN KEY (land) REFERENCES Landen (landcode)
   --todo CONSTRAINT FK_verkoper naar verkopers tabel
   --todo CONSTRAINT FK_koper naar gebruikers tabel
+)
+
+CREATE TABLE Bestand(
+  filenaam       VARCHAR(260) NOT NULL,     --Maximum lengte van file path is volgens microsoft 260 tekens.
+  voorwerpnummer BIGINT       NOT NULL,
+  CONSTRAINT PK_filenaam PRIMARY KEY (filenaam),
+  CONSTRAINT FK_voorwerpnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(voorwerpnummer),
+  CONSTRAINT CHK_voorwerpnummer CHECK ([dbo].[aantalBestandenPerVoorwerpnummer](voorwerpnummer) <= 4)
 )
 
 

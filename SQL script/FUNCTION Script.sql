@@ -1,9 +1,11 @@
 use eenmaalandermaal;
 IF OBJECT_ID('dbo.aantalBestandenPervoorwerpnummer') IS NOT NULL
-  drop function [dbo].[aantalBestandenPerVoorwerpnummer]
+  IF OBJECT_ID('dbo.Bestand') IS NOT NULL
+    drop table [dbo].[Bestand]
+drop function [dbo].[aantalBestandenPerVoorwerpnummer]
 go
 CREATE FUNCTION aantalBestandenPerVoorwerpnummer(
-  field BIGINT
+  @field BIGINT
 )RETURNS int
   BEGIN
     RETURN(
@@ -12,5 +14,3 @@ CREATE FUNCTION aantalBestandenPerVoorwerpnummer(
       WHERE voorwerpnummer = @field
     )
   end
-
-
