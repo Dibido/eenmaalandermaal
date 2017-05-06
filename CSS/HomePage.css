@@ -1,13 +1,16 @@
-
 .navbar-brand {
-    padding: 0px;
+    padding: 0px; /* firefox bug fix */
 }
 .navbar-brand>img {
     height: 100%;
-    padding: 5px;
+    padding: 2px 2px 2px 5px; /* firefox bug fix */
     width: auto;
 }
 
+
+.NavRightButton{
+    margin-left: 15px;
+}
 
 .list-group {
     width: 100%;
