@@ -111,7 +111,7 @@
         <h2>Trending</h2>
         <div class="voorwerp well well-sm col-md-3">
             <h5>Tesla X</h5>
-            <img src="Images/ModelX.jpeg" height="100" width="220">
+            <img src="Images/ModelX.jpeg">
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
             <div class="well well-sm">
@@ -153,7 +153,7 @@
         </div>
         <div class="voorwerp well well-sm col-md-3">
             <h5>Tesla X</h5>
-            <img src="Images/ModelX.jpeg" height="100" width="220">
+            <img src="Images/ModelX.jpeg">
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
             <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
             <div class="well well-sm">
@@ -167,7 +167,7 @@
         </div>
         <div class="voorwerp well well-sm col-md-3">
             <h5>Tesla X</h5>
-            <img src="Images/ModelX.jpeg" height="100" width="220">
+            <img src="Images/ModelX.jpeg">
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
             <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
             <div class="well well-sm">
@@ -181,7 +181,7 @@
         </div>
         <div class="voorwerp well well-sm col-md-3">
             <h5>Tesla X</h5>
-            <img src="Images/ModelX.jpeg" height="100" width="220">
+            <img src="Images/ModelX.jpeg">
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
             <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
             <div class="well well-sm">
