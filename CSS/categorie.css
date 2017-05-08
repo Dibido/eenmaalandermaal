@@ -24,8 +24,9 @@
     height: 100%;
 }
 
-.voorwerp {
+.advert {
     height: 34rem;
+    background-color: #555555;
 }
 
 .voorwerp img {
