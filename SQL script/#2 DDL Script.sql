@@ -4,7 +4,7 @@ IF OBJECT_ID('dbo.Voorwerp_Categorie') IS NOT NULL
   drop table [dbo].Voorwerp_Categorie
 IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
   drop table [dbo].Rubriek
-  IF OBJECT_ID('dbo.Subcategorie') IS NOT NULL
+IF OBJECT_ID('dbo.Subcategorie') IS NOT NULL
   drop table [dbo].Subcategorie
 IF OBJECT_ID('dbo.Categorie') IS NOT NULL
   drop table [dbo].Categorie
@@ -35,66 +35,66 @@ CREATE TABLE Landen (
 );
 
 CREATE TABLE Voorwerp (
-  voorwerpnummer        BIGINT        NOT NULL IDENTITY,             --Genereerd zelf nummer
-  titel                 VARCHAR(60)   NOT NULL,                      --Hetzelfde dan marktplaats
-  beschrijving          VARCHAR(MAX)  NOT NULL,                      --Geen reden tot beperken
-  startprijs            NUMERIC(9, 2) NOT NULL,                      --Bedrag in de miljoenen
-  betalingswijze        VARCHAR(25)   NOT NULL DEFAULT 'Bank / Giro', --Korte keuzes (dropdown)
-  betalingsinstructie   VARCHAR(255)  NULL,                          --todo
-  plaatsnaam            VARCHAR(85)   NOT NULL,                      --Langste plaatsnaam is 85 tekens.
-  land                  CHAR(3)       NOT NULL DEFAULT 'NLD',        --ISO 3166/1
-  looptijd              TINYINT       NOT NULL DEFAULT 7,            --Aantal dagen
-  looptijdBeginDag      DATE          NOT NULL DEFAULT GETDATE(),    --Enkel dag, maand jaar is nodig.
-  looptijdbeginTijdstip TIME          NOT NULL DEFAULT GETDATE(),    --Enkel tijdstip is nodig(Uur-Minuten-Seconden)
-  verzendkosten         NUMERIC(5,2) NULL,                          --Bedrag mag 2 getallen achter de komma hebben en mag er maximaal 3 voor de komma hebben
-  verzendinstructies    VARCHAR(255)  NULL,                          --todo
-  verkoper              VARCHAR(40)   NOT NULL,                      --Marktplaats heeft 36 wij 4 meer dus 40
-  koper                 VARCHAR(40)   NULL,                          --Marktplaats heeft 36 wij 4 meer dus 40
-  looptijdeindeDag      AS DATEADD(DAY, looptijd, looptijdBeginDag), --Bereken de einddatum
-  looptijdeindeTijdstip AS looptijdbeginTijdstip,                    --Eindtijdstip
-  veilinggesloten       BIT           NOT NULL DEFAULT 0,            --Veiling gesloten of open
-  verkoopprijs          NUMERIC(9, 2) NULL,                          --huidige bod todo eventueel vragen of Verkoopprijs niet begint met de startprijs
+  VW_voorwerpnummer        BIGINT        NOT NULL IDENTITY,             --Genereerd zelf nummer
+  VW_titel                 VARCHAR(60)   NOT NULL,                      --Hetzelfde dan marktplaats
+  VW_beschrijving          VARCHAR(MAX)  NOT NULL,                      --Geen reden tot beperken
+  VW_startprijs            NUMERIC(9, 2) NOT NULL,                      --Bedrag in de miljoenen
+  VW_betalingswijze        VARCHAR(25)   NOT NULL DEFAULT 'Bank / Giro', --Korte keuzes (dropdown)
+  VW_betalingsinstructie   VARCHAR(255)  NULL,                          --todo
+  VW_plaatsnaam            VARCHAR(85)   NOT NULL,                      --Langste plaatsnaam is 85 tekens.
+  VW_land                  CHAR(3)       NOT NULL DEFAULT 'NLD',        --ISO 3166/1
+  VW_looptijd              TINYINT       NOT NULL DEFAULT 7,            --Aantal dagen
+  VW_looptijdBeginDag      DATE          NOT NULL DEFAULT GETDATE(),    --Enkel dag, maand jaar is nodig.
+  VW_looptijdbeginTijdstip TIME          NOT NULL DEFAULT GETDATE(),    --Enkel tijdstip is nodig(Uur-Minuten-Seconden)
+  VW_verzendkosten         NUMERIC(5,2) NULL,                          --Bedrag mag 2 getallen achter de komma hebben en mag er maximaal 3 voor de komma hebben
+  VW_verzendinstructies    VARCHAR(255)  NULL,                          --todo
+  VW_verkoper              VARCHAR(40)   NOT NULL,                      --Marktplaats heeft 36 wij 4 meer dus 40
+  VW_koper                 VARCHAR(40)   NULL,                          --Marktplaats heeft 36 wij 4 meer dus 40
+  VW_looptijdeindeDag      AS DATEADD(DAY, VW_looptijd, VW_looptijdBeginDag), --Bereken de einddatum
+  VW_looptijdeindeTijdstip AS VW_looptijdbeginTijdstip,                    --Eindtijdstip
+  VW_veilinggesloten       BIT           NOT NULL DEFAULT 0,            --Veiling gesloten of open
+  VW_verkoopprijs          NUMERIC(9, 2) NULL,                          --huidige bod todo eventueel vragen of Verkoopprijs niet begint met de startprijs
 
-  CONSTRAINT PK_Voorwerp PRIMARY KEY (voorwerpnummer),
-  CONSTRAINT FK_Betaalwijze FOREIGN KEY (betalingsWijze) REFERENCES Betalingswijzen (betalingswijze),
-  CONSTRAINT FK_Land FOREIGN KEY (land) REFERENCES Landen (landcode) ON UPDATE CASCADE ON DELETE NO ACTION,
-  CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(titel))) >= 2),            --Kan niet leeg zijn
-  CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(titel))) >= 2),     --Kan niet leeg zijn
-  CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(plaatsnaam))) >= 2),  --Kan niet leeg zijn
-  CONSTRAINT CHK_LooptijdEenGegevenTijd CHECK (looptijd IN (1,3,5,7,10)),                        --De looptijd mag enkel 1,3,5,7,10 zijn zoals aangegeven in Appendix B
-  CONSTRAINT CHK_LooptijdBegindagNietInHetVerleden CHECK (CONVERT(DATE, looptijdBeginDag) >= CONVERT(DATE,GETDATE())), --De begin datum van een veiling mag niet voor de huidige datum liggen.
-  CONSTRAINT CHK_LooptijdBeginTijdstipNietInHetVerleden CHECK (dbo.tijdstipCheck(looptijdBeginDag,looptijdbeginTijdstip) = 1),
-  CONSTRAINT CHK_StartprijsHogerDan1 CHECK (Startprijs >= 1.00), --Appendix B, Mindstends een euro
-  CONSTRAINT CHK_VerkoopprijsGroterOfGelijk CHECK (verkoopprijs >= startprijs) --Kijkt of de verkoop prijs wel groter is dan de start prijs
+  CONSTRAINT PK_Voorwerp PRIMARY KEY (VW_voorwerpnummer),
+  CONSTRAINT FK_Betaalwijze FOREIGN KEY (VW_betalingsWijze) REFERENCES Betalingswijzen (betalingswijze),
+  CONSTRAINT FK_Land FOREIGN KEY (VW_land) REFERENCES Landen (landcode) ON UPDATE CASCADE ON DELETE NO ACTION,
+  CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2),            --Kan niet leeg zijn
+  CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2),     --Kan niet leeg zijn
+  CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2),  --Kan niet leeg zijn
+  CONSTRAINT CHK_LooptijdEenGegevenTijd CHECK (VW_looptijd IN (1,3,5,7,10)),                        --De looptijd mag enkel 1,3,5,7,10 zijn zoals aangegeven in Appendix B
+  CONSTRAINT CHK_LooptijdBegindagNietInHetVerleden CHECK (CONVERT(DATE, VW_looptijdBeginDag) >= CONVERT(DATE,GETDATE())), --De begin datum van een veiling mag niet voor de huidige datum liggen.
+  CONSTRAINT CHK_LooptijdBeginTijdstipNietInHetVerleden CHECK (dbo.tijdstipCheck(VW_looptijdBeginDag,VW_looptijdbeginTijdstip) = 1),
+  CONSTRAINT CHK_StartprijsHogerDan1 CHECK (VW_startprijs >= 1.00), --Appendix B, Mindstends een euro
+  CONSTRAINT CHK_VerkoopprijsGroterOfGelijk CHECK (VW_verkoopprijs >= VW_startprijs) --Kijkt of de verkoop prijs wel groter is dan de start prijs
   --todo CONSTRAINT FK_verkoper naar verkopers tabel
   --todo CONSTRAINT FK_koper naar gebruikers tabel
 )
 
 
 CREATE TABLE Categorie(
-CAT_ID INT NOT NULL, 
-CAT_Naam VARCHAR(100) NOT NULL,
-CONSTRAINT PK_Categorie_ID PRIMARY KEY (CAT_ID)
+  CAT_ID INT NOT NULL,
+  CAT_Naam VARCHAR(100) NOT NULL,
+  CONSTRAINT PK_Categorie_ID PRIMARY KEY (CAT_ID)
 )
 
 GO
 
 CREATE TABLE Subcategorie(
-SCAT_ID INT NOT NULL,
-SCAT_Naam VARCHAR(100) NOT NULL,
-SCAT_PAR_ID INT NOT NULL,
-CONSTRAINT PK_Subcategorie_ID PRIMARY KEY (SCAT_ID),
-CONSTRAINT FK_Subcategorie_Par_ID FOREIGN KEY (SCAT_PAR_ID) REFERENCES Categorie(CAT_ID)
+  SCAT_ID INT NOT NULL,
+  SCAT_Naam VARCHAR(100) NOT NULL,
+  SCAT_PAR_ID INT NOT NULL,
+  CONSTRAINT PK_Subcategorie_ID PRIMARY KEY (SCAT_ID),
+  CONSTRAINT FK_Subcategorie_Par_ID FOREIGN KEY (SCAT_PAR_ID) REFERENCES Categorie(CAT_ID)
 )
 
 GO
 
 CREATE TABLE Rubriek(
-RUB_ID INT NOT NULL,
-RUB_Naam VARCHAR(100) NOT NULL,
-RUB_PAR_ID INT NOT NULL,
-CONSTRAINT PK_Rubriek_ID PRIMARY KEY (RUB_ID),
-CONSTRAINT FK_Rubriek_Par_ID FOREIGN KEY (RUB_PAR_ID) REFERENCES Subcategorie(SCAT_ID)
+  RUB_ID INT NOT NULL,
+  RUB_Naam VARCHAR(100) NOT NULL,
+  RUB_PAR_ID INT NOT NULL,
+  CONSTRAINT PK_Rubriek_ID PRIMARY KEY (RUB_ID),
+  CONSTRAINT FK_Rubriek_Par_ID FOREIGN KEY (RUB_PAR_ID) REFERENCES Subcategorie(SCAT_ID)
 )
 
 
@@ -102,17 +102,17 @@ GO
 
 
 CREATE TABLE Voorwerp_Categorie(
-VC_ID INT NOT NULL,
-VC_CAT INT NOT NULL,
-VC_SCAT INT,
-VC_RUB INT
+  VC_ID INT NOT NULL,
+  VC_CAT INT NOT NULL,
+  VC_SCAT INT,
+  VC_RUB INT
 )
 
 CREATE TABLE Bestand(
   filenaam       VARCHAR(260) NOT NULL,     --Maximum lengte van file path is volgens microsoft 260 tekens.
   voorwerpnummer BIGINT       NOT NULL,
   CONSTRAINT PK_Filenaam PRIMARY KEY (filenaam),
-  CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE ,
+  CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(VW_voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE ,
   CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(voorwerpnummer) <= 4)
 )
 
@@ -123,7 +123,7 @@ CREATE TABLE Bod (
   bodDag         DATE          NOT NULL DEFAULT GETDATE(),
   bodTijdstip    TIME          NOT NULL DEFAULT GETDATE(),
   CONSTRAINT PK_BodVoorwerpnummer PRIMARY KEY (voorwerpnummer, bodbedrag),
-  CONSTRAINT FK_BodVoorwerpnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE,
+  CONSTRAINT FK_BodVoorwerpnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(VW_voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE,
   --todo foreign key voor gebruiker
   CONSTRAINT CHK_HogerDanStartprijs CHECK(dbo.bodHogerDanStartprijs(voorwerpnummer, bodbedrag) = 1),
   --CONSTRAINT CHK_BodBedrag CHECK (dbo.bodHoogGenoeg(voorwerpnummer, bodbedrag) = 1),

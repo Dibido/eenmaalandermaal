@@ -40,10 +40,10 @@ INSERT INTO Landen(landcode, landnaam) VALUES('VIR', 'Amerikaanse Maagdeneilande
 
 
 --Normaal insert statement zonder aangepaste begin tijd
-INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
-                      land, looptijd,  verzendkosten, verzendinstructies, verkoper, koper)
+INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
+											VW_land, VW_looptijd,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES ('Testproduct1', 'beschrijving1', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-                        'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
+												'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,4.01,'tiasd')
@@ -54,10 +54,10 @@ INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,63.01,'tiasd')
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,156.01,'tiasd')
 
 
-INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
-                      land, looptijd, looptijdBeginDag, looptijdbeginTijdstip,  verzendkosten, verzendinstructies, verkoper, koper)
+INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
+											VW_land, VW_looptijd, VW_looptijdBeginDag, VW_looptijdbeginTijdstip,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES ('Testproduct2', 'beschrijving2', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-                        'Arnhem', 'NLD', 3,'2017-05-12', '06:03:12',  14.20, 'test', 'kees', 'tinus')
+												'Arnhem', 'NLD', 3,'2017-05-12', '06:03:12',  14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,4.01,'tiasd')
@@ -70,10 +70,10 @@ INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,174.01,'tiasd')
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,204.01,'tiasd')
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,431.01,'tiasd')
 
-INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
-                      land, looptijd, looptijdBeginDag, looptijdbeginTijdstip,  verzendkosten, verzendinstructies, verkoper, koper)
+INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
+											VW_land, VW_looptijd, VW_looptijdBeginDag, VW_looptijdbeginTijdstip,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES ('Testproduct3', 'beschrijving3', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-                        'Arnhem', 'NLD', 3, '2017-05-14', '08:03:12', 14.20, 'test', 'kees', 'tinus')
+												'Arnhem', 'NLD', 3, '2017-05-14', '08:03:12', 14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,4.01,'tiasd')
@@ -89,10 +89,10 @@ INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,1174.01,'tiasd')
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,1204.01,'tiasd')
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,1431.01,'tiasd')
 
-INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
-                      land, looptijd,looptijdBeginDag, looptijdbeginTijdstip,  verzendkosten, verzendinstructies, verkoper, koper)
+INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
+											VW_land, VW_looptijd, VW_looptijdBeginDag, VW_looptijdbeginTijdstip,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES ('Testproduct4', 'beschrijving4', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-                        'Arnhem', 'NLD', 3,'2017-05-16', '04:03:12', 14.20, 'test', 'kees', 'tinus')
+												'Arnhem', 'NLD', 3,'2017-05-16', '04:03:12', 14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,4.01,'tiasd')
@@ -114,8 +114,8 @@ INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,2431.01,'tiasd')
 
 
 
-INSERT INTO Categorie(CAT_ID, CAT_Naam) 
-VALUES 
+INSERT INTO Categorie(CAT_ID, CAT_Naam)
+VALUES
 	(1,		'Antiek en Kunst'),
 	(2,		'Audio, Tv en Foto'),
 	(3,		'Auto''s'),
@@ -155,7 +155,7 @@ VALUES
 
 
 INSERT INTO Subcategorie(SCAT_ID, SCAT_Naam, SCAT_PAR_ID)
-VALUES 
+VALUES
 	(1,		'Antiek | Eetgerei',				1),
 	(2,		'Antiek | Gebruiksvoorwerpen',		1),
 	(3,		'Antiek | Meubels',					1),

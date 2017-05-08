@@ -1,5 +1,3 @@
-
-
 USE eenmaalandermaal
 --Functie om te het aantal bestanden te returnen
 GO
@@ -9,14 +7,14 @@ IF OBJECT_ID('dbo.aantalBestandenPervoorwerpnummer') IS NOT NULL
 DROP FUNCTION [dbo].[aantalBestandenPerVoorwerpnummer]
 GO
 CREATE FUNCTION aantalBestandenPerVoorwerpnummer(
-  @field BIGINT
+  @voorwerpnummer BIGINT
 )
   RETURNS INT
   BEGIN
     RETURN (
-      SELECT COUNT(voorwerpnummer)
+      SELECT COUNT(VW_voorwerpnummer)
       FROM Bestand
-      WHERE voorwerpnummer = @field
+      WHERE VW_voorwerpnummer = @voorwerpnummer
     )
   END
 GO
@@ -68,9 +66,9 @@ CREATE FUNCTION bodHogerDanStartprijs(
   RETURNS BIT
   BEGIN
     RETURN (
-      CASE WHEN @Bodbedrag >= (SELECT startprijs
+      CASE WHEN @Bodbedrag >= (SELECT VW_startprijs
                                FROM Voorwerp
-                               WHERE voorwerpnummer = @voorwerpnummer)
+                               WHERE VW_voorwerpnummer = @voorwerpnummer)
         THEN 1
       ELSE 0
       END
@@ -94,9 +92,9 @@ CREATE FUNCTION nietEigenVoorwerp(
   RETURNS BIT
   BEGIN
     RETURN (
-      CASE WHEN @gebruiker IN (SELECT verkoper
+      CASE WHEN @gebruiker IN (SELECT VW_verkoper
                                FROM Voorwerp
-                               WHERE voorwerpnummer = @voorwerpnummer)
+                               WHERE VW_voorwerpnummer = @voorwerpnummer)
         THEN 0
       ELSE 1
       END
