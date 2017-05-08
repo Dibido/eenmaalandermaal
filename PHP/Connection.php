@@ -21,4 +21,7 @@ try {
     echo "<h1>Please contact your system administrator for further assistance</h1>";
     exit();
 }
+//test luck
 ?>
+
+
