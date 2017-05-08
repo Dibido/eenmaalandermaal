@@ -14,3 +14,25 @@
     margin: 10px;
     background: #E0E0E0;
 }
+
+.fill {
+    height: 100%;
+    min-height: 100%;
+}
+
+.body {
+    height: 100%;
+}
+
+.voorwerp {
+    height: 34rem;
+}
+
+.voorwerp img {
+    display:block;
+    margin: auto;
+    max-width:100%;
+    max-height:140px;
+    width: auto !important;
+    height: auto !important;
+}
