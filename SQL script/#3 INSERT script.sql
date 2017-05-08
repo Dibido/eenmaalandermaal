@@ -55,9 +55,9 @@ INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,156.01,'tiasd')
 
 
 INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
-                      land, looptijd,  verzendkosten, verzendinstructies, verkoper, koper)
+                      land, looptijd, looptijdBeginDag, looptijdbeginTijdstip,  verzendkosten, verzendinstructies, verkoper, koper)
 VALUES ('Testproduct2', 'beschrijving2', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-                        'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
+                        'Arnhem', 'NLD', 3,'2017-05-12', '06:03:12',  14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,4.01,'tiasd')
@@ -71,9 +71,9 @@ INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,204.01,'tiasd')
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,431.01,'tiasd')
 
 INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
-                      land, looptijd,  verzendkosten, verzendinstructies, verkoper, koper)
+                      land, looptijd, looptijdBeginDag, looptijdbeginTijdstip,  verzendkosten, verzendinstructies, verkoper, koper)
 VALUES ('Testproduct3', 'beschrijving3', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-                        'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
+                        'Arnhem', 'NLD', 3, '2017-05-14', '08:03:12', 14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,4.01,'tiasd')
@@ -90,9 +90,9 @@ INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,1204.01,'tiasd')
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,1431.01,'tiasd')
 
 INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
-                      land, looptijd,  verzendkosten, verzendinstructies, verkoper, koper)
+                      land, looptijd,looptijdBeginDag, looptijdbeginTijdstip,  verzendkosten, verzendinstructies, verkoper, koper)
 VALUES ('Testproduct4', 'beschrijving4', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-                        'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
+                        'Arnhem', 'NLD', 3,'2017-05-16', '04:03:12', 14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,4.01,'tiasd')
