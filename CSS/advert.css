@@ -14,8 +14,14 @@
 
 .thumbnail{
     margin-bottom: 0px;
+    height: 170px !important;
+    margin-bottom: 0px !important;
 }
 
-.div advert-img thumbnail {
-    height: 170px;
+.div.advert-img.thumbnail {
+    height: 170px !important;
+    margin-bottom: 0px !important;
+}
+
+.thumbnail {
 }

@@ -15,7 +15,6 @@
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/categorie.css">
     <link rel="stylesheet" href="CSS/advert.css">
-    <link rel="stylesheet" href="CSS/navbar.css">
 </head>
 
 <body>
