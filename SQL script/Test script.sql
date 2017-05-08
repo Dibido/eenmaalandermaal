@@ -25,3 +25,6 @@ INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalings
                       land, looptijd, looptijdBeginDag, looptijdbeginTijdstip,  verzendkosten, verzendinstructies, verkoper, koper, verkoopprijs)
 VALUES ('Testproduct', 'beschrijving', 6, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
                        'Arnhem', 'NLD', 3, GETDATE(), '00:00:00', 14.20, 'test', 'kees', 'tinus', 65.20)
+
+
+
