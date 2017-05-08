@@ -189,6 +189,38 @@
             </div>
             <button class="btn btn-primary">Bied Nu!</button>
         </div>
+        <div class="advert col-md-3 col-xs-6 text-center">
+            <h5>Tesla X</h5>
+            <div class="advert-img thumbnail">
+                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
+            </div>
+            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
+            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
+            <div class="well well-sm">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+            </div>
+            <button class="btn btn-primary">Bied Nu!</button>
+        </div>
+        <div class="advert col-md-3 col-xs-6 text-center">
+            <h5>Tesla X</h5>
+            <div class="advert-img thumbnail">
+                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
+            </div>
+            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
+            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
+            <div class="well well-sm">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+            </div>
+            <button class="btn btn-primary">Bied Nu!</button>
+        </div>
     </div>
 
     <!-- Subcategories -->
