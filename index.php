@@ -12,10 +12,14 @@
         <meta name="author" content="Iproject - Groep 3">
 
 
+
+
+
         <!-- bootstrap !-->
 
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="CSS/categorie.css">
         <!-- link rel="stylesheet" href="CSS/theme.css" -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -63,9 +67,6 @@
 
         </div>
     </div>
-
-
-
 
 
 
@@ -147,52 +148,12 @@
         </div>
 
         <div class="row well">
-           <div class="col-md-3 col-sm-4 col-xs-6 text-center advert">
-               <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
+                <div class="well well-sm-4 col-md-3 col-xs-6 text-center advert">
+                    <h5>Tesla X</h5>
+                    <img class="img-responsive" src="Images/ModelX.jpeg">
+                    <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
+                    <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
+                </div>
         </div>
-
-        <div class="row well">
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-        </div>
-
-        <div class="row well">
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
-                <img class="img-responsive" src="Images/ModelS.jpeg">
-            </div>
-        </div>
-    </div>
-
-
-
     </body>
 </html>
