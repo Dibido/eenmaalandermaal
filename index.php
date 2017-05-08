@@ -13,7 +13,7 @@
 
         <!-- bootstrap !-->
 
-        <!--link rel="stylesheet" href="CSS/theme.min.css"-->
+        <!-- link rel="stylesheet" href="CSS/theme.min.css" -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -32,7 +32,7 @@
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container-fluid">
             <a href="index.php" class="navbar-brand">
-                <img src="Images/Site-logo.png" alt="EenmaalAndermaal Logo">
+                <img src="Images/testlogo.png" alt="EenmaalAndermaal Logo">
             </a>
 
             <form class="navbar-form navbar-left">
@@ -40,7 +40,7 @@
                     <input type="text" class="form-control" placeholder="zoeken">
                 </div>
                 <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i></button>
-                <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-menu-down"></i></button>
+                <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch"><i class="glyphicon glyphicon-menu-down"></i></button>
             </form>
 
                 <div class="pull-right">
@@ -53,11 +53,25 @@
         </div>
     </nav>
 
+    <!-- Advanced Search -->
+
+    <div class="container-fluid collapse" id="AdvancedSearch">
+        <div class="col-xs-12">
+            <h1>Zoek hier!</h1>
+
+        </div>
+    </div>
+
+
+
+
+
+
     <!-- Mobile Buttons -->
 
     <div class="container-fluid collapse text-center" id="MobileButtons" style="font-size: 24px;">
         <div class="row">
-            <ul class="nav nav-pills nav-stacked">
+            <ul class="nav nav-pills nav-stacked bg-info lead">
                 <li><a class="row-md-12" href="#">Plaats veiling</a></li>
                 <li><a class="row-md-12" href="#">Login</a></li>
             </ul>
@@ -117,7 +131,11 @@
                 </div>
             </div>
 
-            <div class="col-md-2">
+
+
+            <!-- Bijna gesloten veilingen -->
+
+            <div class="col-md-2 well">
 
             </div>
 
