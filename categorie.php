@@ -23,7 +23,7 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <a href="index.php" class="navbar-brand">
-            <!--<img src="Images/Site-logo.png" alt="EenmaalAndermaal Logo">-->
+            <img src="Images/Site-logo.png" alt="EenmaalAndermaal Logo">
         </a>
 
         <form class="navbar-form navbar-left">
@@ -64,18 +64,18 @@
     </div>
 </div>
 
+<!-- Category bar -->
+
 <div class="container-fluid">
     <div class="col-md-2">
-        <div class="container-fluid">
-            <div class="visible-lg visible-md visible-sm visible-xs">
-                <div class="list-group">
-                    <a href="#" class="list-group-item active">
-                        Auto onderdelen
-                    </a>
-                    <a href="#" class="list-group-item">Accu's</a>
-                    <a href="#" class="list-group-item">Uitlaatpijpen</a>
-                    <a href="#" class="list-group-item">Remblokken</a>
-                </div>
+        <div class="visible-lg visible-md visible-sm visible-xs">
+            <div class="list-group">
+                <a href="#" class="list-group-item active">
+                    Auto onderdelen
+                </a>
+                <a href="#" class="list-group-item">Accu's</a>
+                <a href="#" class="list-group-item">Uitlaatpijpen</a>
+                <a href="#" class="list-group-item">Remblokken</a>
             </div>
         </div>
     </div>
@@ -85,6 +85,9 @@
             <li class="active">Auto onderdelen</li>
         </ol>
     </div>
+
+    <!-- Trending items -->
+
     <div class="well well-lg col-md-10 col-sm-8 pull-right">
         <h2>Trending</h2>
         <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
@@ -111,65 +114,66 @@
             <h5>Aanbieding#4</h5>
         </div>
     </div>
-</div>
 
-<div class="well well-lg col-md-10 pull-right">
-    <h2>Accu's</h2>
-    <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
-        <h5>Tesla X</h5>
-        <img src="Images/ModelX.jpeg" height="100" width="220">
-        <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
-        <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
-        <div class="well well-sm">
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+    <!-- Subcategories -->
+    <div class="well well-lg col-md-10 pull-right">
+        <h2>Accu's</h2>
+        <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
+            <h5>Tesla X</h5>
+            <img src="Images/ModelX.jpeg" height="100" width="220">
+            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+            <div class="well well-sm">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+            </div>
+            <button class="btn btn-primary">Bied Nu!</button>
         </div>
-        <button class="btn btn-primary">Bied Nu!</button>
-    </div>
-    <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
-        <h5>Tesla X</h5>
-        <img src="Images/ModelX.jpeg" height="100" width="220">
-        <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
-        <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
-        <div class="well well-sm">
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+        <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
+            <h5>Tesla X</h5>
+            <img src="Images/ModelX.jpeg" height="100" width="220">
+            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+            <div class="well well-sm">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+            </div>
+            <button class="btn btn-primary">Bied Nu!</button>
         </div>
-        <button class="btn btn-primary">Bied Nu!</button>
-    </div>
-    <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
-        <h5>Tesla X</h5>
-        <img src="Images/ModelX.jpeg" height="100" width="220">
-        <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
-        <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
-        <div class="well well-sm">
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+        <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
+            <h5>Tesla X</h5>
+            <img src="Images/ModelX.jpeg" height="100" width="220">
+            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+            <div class="well well-sm">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+            </div>
+            <button class="btn btn-primary">Bied Nu!</button>
         </div>
-        <button class="btn btn-primary">Bied Nu!</button>
-    </div>
-    <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
-        <h5>Tesla X</h5>
-        <img src="Images/ModelX.jpeg" height="100" width="220">
-        <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
-        <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
-        <div class="well well-sm">
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+        <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
+            <h5>Tesla X</h5>
+            <img src="Images/ModelX.jpeg" height="100" width="220">
+            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+            <div class="well well-sm">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+            </div>
+            <button class="btn btn-primary">Bied Nu!</button>
         </div>
-        <button class="btn btn-primary">Bied Nu!</button>
     </div>
 </div>
 </body>
