@@ -38,3 +38,78 @@ INSERT INTO Landen(landcode, landnaam) VALUES('TUR', 'Turkije'),('TUV', 'Tuvalu'
 INSERT INTO Landen(landcode, landnaam) VALUES('USA', 'Verenigde Staten'),('UZB', 'Uzbekistan'),('BTW', 'Vaticaanstad'),('VCT', 'Saint Vincent en de Grenadines'),('VEN', 'Venezuela'),('VGB', 'Britse Maagdeneilanden')
 INSERT INTO Landen(landcode, landnaam) VALUES('VIR', 'Amerikaanse Maagdeneilanden'),('VNM', 'Vietnam'),('VUT', 'Vanuatu'),('WLF', 'Wallis en Futuna'),('WSM', 'Samoa'),('YEM', 'Jemen'),('ZAF', 'Zuid-Afrika'),('ZWE', 'Zimbabwe'),('ZMB', 'Zambia')
 
+
+--Normaal insert statement zonder aangepaste begin tijd
+INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
+                      land, looptijd,  verzendkosten, verzendinstructies, verkoper, koper)
+VALUES ('Testproduct1', 'beschrijving1', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
+                        'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
+
+
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,4.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,14.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,40.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,45.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,63.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (1,156.01,'tiasd')
+
+
+INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
+                      land, looptijd,  verzendkosten, verzendinstructies, verkoper, koper)
+VALUES ('Testproduct2', 'beschrijving2', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
+                        'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
+
+
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,4.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,14.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,40.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,45.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,63.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,156.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,174.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,204.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (2,431.01,'tiasd')
+
+INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
+                      land, looptijd,  verzendkosten, verzendinstructies, verkoper, koper)
+VALUES ('Testproduct3', 'beschrijving3', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
+                        'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
+
+
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,4.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,14.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,40.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,45.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,63.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,156.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,174.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,204.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,431.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,1174.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,1204.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (3,1431.01,'tiasd')
+
+INSERT INTO Voorwerp (titel, beschrijving, startprijs, betalingswijze, betalingsinstructie, plaatsnaam,
+                      land, looptijd,  verzendkosten, verzendinstructies, verkoper, koper)
+VALUES ('Testproduct4', 'beschrijving4', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
+                        'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
+
+
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,4.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,14.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,40.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,45.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,63.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,156.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,174.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,204.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,431.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,1174.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,1204.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,1431.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,2174.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,2204.01,'tiasd')
+INSERT INTO Bod(voorwerpnummer, bodbedrag, gebruiker) VALUES (4,2431.01,'tiasd')
+
+
+
