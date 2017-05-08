@@ -3,7 +3,10 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="185ea523-7d6f-4d9b-b96e-d30879f69f07" name="LocalApache" url="http://localhost">
-        <fileTransfer port="0" mountedRoot="/var/www/html/eenmaalandermaal" accessType="MOUNT" />
+        <fileTransfer port="0" mountedRoot="C:\var\www\html\eenmaalandermaal" accessType="MOUNT" />
+      </webServer>
+      <webServer id="b452752c-abd9-464c-8924-591f4e90deff" name="xampp" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="C:\xampp\htdocs" accessType="MOUNT" />
       </webServer>
     </option>
   </component>

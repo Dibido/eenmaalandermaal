@@ -9,6 +9,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="xampp">
+        <serverdata>
+          <mappings>
+            <mapping deploy="eenmaalandermaal" local="$PROJECT_DIR$" web="/eenmaalandermaal" />
+          </mappings>
+        </serverdata>
+      </paths>
     </serverData>
   </component>
 </project>
