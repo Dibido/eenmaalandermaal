@@ -18,26 +18,53 @@
 
 <body>
 
-<div class="row">
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">
-                    <img alt="Brand" src="Images/Site-logo.png" class="">
-                </a>
-                <form class="navbar-form col-sm-8 text-center" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default">Zoek</button>
-                </form>
+<!-- Navigation -->
+
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <a href="index.php" class="navbar-brand">
+            <!--<img src="Images/Site-logo.png" alt="EenmaalAndermaal Logo">-->
+        </a>
+
+        <form class="navbar-form navbar-left">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="zoeken">
             </div>
+            <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
+            </button>
+            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-menu-down"></i></button>
+        </form>
+
+        <div class="pull-right">
+            <ul class="nav navbar-nav collapse navbar-collapse">
+                <li>
+                    <button class="btn btn-default navbar-btn hidden-md hidden-lg" data-toggle="collapse"
+                            data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
+                </li>
+                <li>
+                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xs">Plaats veiling</button>
+                </li>
+                <li>
+                    <button class="btn btn-default navbar-btn hidden-sm hidden-xs NavRightButton"><i
+                                class="glyphicon glyphicon-user"></i></button>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
+
+<!-- Mobile Buttons -->
+
+<div class="container-fluid collapse text-center" id="MobileButtons" style="font-size: 24px;">
+    <div class="row">
+        <ul class="nav nav-pills nav-stacked">
+            <li><a class="row-md-12" href="#">Plaats veiling</a></li>
+            <li><a class="row-md-12" href="#">Login</a></li>
+        </ul>
+    </div>
 </div>
 
-<!--TODO: Zorgen dat wells van de categorieen naast de linker balk komen te staan.-->
-<div class="row">
+<div class="container-fluid">
     <div class="col-md-2">
         <div class="container-fluid">
             <div class="visible-lg visible-md visible-sm visible-xs">
@@ -52,73 +79,108 @@
             </div>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-9">
         <ol class="breadcrumb">
             <li><a href="index.php">Home</a></li>
             <li class="active">Auto onderdelen</li>
         </ol>
     </div>
-    <div class="container-fluid">
-        <div class="well well-lg col-md-10 col-sm-8">
-            <h2>Trending</h2>
-            <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
-                <h5>Tesla X</h5>
-                <img src="Images/ModelX.jpeg" height="100" width="220">
-                <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
-                <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
-                <div class="well well-sm">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                </div>
-                <button class="btn btn-primary">Bied Nu!</button>
-            </div>
-            <div class="voorwerp well well-sm col-md-2">
-                <h5>Aanbieding#2</h5>
-            </div>
-            <div class="voorwerp well well-sm col-md-2">
-                <h5>Aanbieding#3</h5>
-            </div>
-            <div class="voorwerp well well-sm col-md-2">
-                <h5>Aanbieding#4</h5>
-            </div>
-        </div>
-    </div>
-
-    <div class="container-fluid">
-        <div class="well well-lg col-md-10">
-            <h2>Accu's</h2>
-            <div class="voorwerp well well-sm col-md-2">
-                <h5>Tesla X</h5>
-                <img src="Images/ModelS.jpeg" height="100" width="220">
-                <span class="glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+    <div class="well well-lg col-md-10 col-sm-8 pull-right">
+        <h2>Trending</h2>
+        <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
+            <h5>Tesla X</h5>
+            <img src="Images/ModelX.jpeg" height="100" width="220">
+            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+            <div class="well well-sm">
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
                 <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
             </div>
-            <div class="voorwerp well well-sm col-md-2 col-md-offset-1">
-                <h5>Aanbieding#2</h5>
-            </div>
-            <div class="voorwerp well well-sm col-md-2 col-md-offset-1">
-                <h5>Aanbieding#3</h5>
-            </div>
-            <div class="voorwerp well well-sm col-md-2 col-md-offset-1">
-                <h5>Aanbieding#4</h5>
-            </div>
+            <button class="btn btn-primary">Bied Nu!</button>
+        </div>
+        <div class="voorwerp well well-sm col-md-2">
+            <h5>Aanbieding#2</h5>
+        </div>
+        <div class="voorwerp well well-sm col-md-2">
+            <h5>Aanbieding#3</h5>
+        </div>
+        <div class="voorwerp well well-sm col-md-2">
+            <h5>Aanbieding#4</h5>
         </div>
     </div>
 </div>
 
-
+<div class="well well-lg col-md-10 pull-right">
+    <h2>Accu's</h2>
+    <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
+        <h5>Tesla X</h5>
+        <img src="Images/ModelX.jpeg" height="100" width="220">
+        <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+        <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+        <div class="well well-sm">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+        </div>
+        <button class="btn btn-primary">Bied Nu!</button>
+    </div>
+    <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
+        <h5>Tesla X</h5>
+        <img src="Images/ModelX.jpeg" height="100" width="220">
+        <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+        <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+        <div class="well well-sm">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+        </div>
+        <button class="btn btn-primary">Bied Nu!</button>
+    </div>
+    <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
+        <h5>Tesla X</h5>
+        <img src="Images/ModelX.jpeg" height="100" width="220">
+        <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+        <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+        <div class="well well-sm">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+        </div>
+        <button class="btn btn-primary">Bied Nu!</button>
+    </div>
+    <div class="voorwerp well well-sm col-md-2 col-sm-2 col-xs-1">
+        <h5>Tesla X</h5>
+        <img src="Images/ModelX.jpeg" height="100" width="220">
+        <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">15.00</span>
+        <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:35</span>
+        <div class="well well-sm">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+        </div>
+        <button class="btn btn-primary">Bied Nu!</button>
+    </div>
+</div>
 </body>
 </html>
 
 <?php
 //TODO: add database queries and formatting.
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    //TODO: get category
+    //TODO: get categorie
+    /*if(exists(_GET[0]){
+    $categorie = _GET[0]
+    }*/
 }
 ?>
