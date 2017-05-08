@@ -14,8 +14,9 @@
 
         <!-- bootstrap !-->
 
-        <!-- link rel="stylesheet" href="CSS/theme.min.css" -->
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="CSS/theme.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -79,7 +80,7 @@
         </div>
     </div>
 
-    <!--Carousel -->
+
 
     <div class="container-fluid">
         <div class="row well">
@@ -96,7 +97,10 @@
                 </div>
             </div>
 
-            <div class="col-md-8">
+
+            <!--Carousel -->
+
+            <div class="col-md-7">
                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">
@@ -136,12 +140,58 @@
 
             <!-- Bijna gesloten veilingen -->
 
-            <div class="col-md-2 well">
+            <div class="col-md-3 well">
 
             </div>
 
         </div>
+
+        <div class="row well">
+           <div class="col-md-3 col-sm-4 col-xs-6 text-center advert">
+               <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+        </div>
+
+        <div class="row well">
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+        </div>
+
+        <div class="row well">
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+            <div class="col-md-3 col-sm-4 col-xs-6 text-center">
+                <img class="img-responsive" src="Images/ModelS.jpeg">
+            </div>
+        </div>
     </div>
+
 
 
     </body>
