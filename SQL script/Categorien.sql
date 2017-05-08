@@ -41,6 +41,15 @@ CONSTRAINT FK_Rubriek_Par_ID FOREIGN KEY (RUB_PAR_ID) REFERENCES Subcategorie(SC
 
 GO
 
+
+CREATE TABLE Voorwerp_Categorie(
+VC_ID INT NOT NULL,
+VC_CAT INT NOT NULL,
+VC_SCAT INT,
+VC_RUB INT
+)
+
+
 INSERT INTO Categorie(CAT_ID, CAT_Naam) 
 VALUES 
 	(1,		'Antiek en Kunst'),
@@ -320,3 +329,7 @@ VALUES
 	SELECT * FROM Categorie
 	SELECT * FROM Subcategorie
 	SELECT * FROM Rubriek
+	SELECT * FROM Voorwerp_Categorie
+
+
+
