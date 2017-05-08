@@ -25,15 +25,14 @@
 }
 
 .advert {
-    height: 34rem;
-    background-color: #555555;
+    height: 35.0rem;
 }
 
-.voorwerp img {
+.advert img {
     display:block;
     margin: auto;
     max-width:100%;
-    max-height:140px;
+    max-height:40%;
     width: auto !important;
     height: auto !important;
 }
