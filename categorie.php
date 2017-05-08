@@ -67,7 +67,7 @@
 <!-- Category bar -->
 
 <div class="container-fluid">
-    <div class="col-md-2 fill">
+    <div class="col-md-2">
         <div class="visible-lg visible-md visible-sm visible-xs">
             <div class="list-group">
                 <a href="#" class="list-group-item active">
@@ -107,7 +107,7 @@
 
     <!-- Trending items -->
 
-    <div class="well well-lg col-md-10 pull-right">
+    <div class="well well-sm col-md-10 pull-right">
         <h2>Trending</h2>
         <div class="well well-sm-4 col-md-3 col-xs-6 text-center advert">
             <h5>Tesla X</h5>
@@ -168,7 +168,7 @@
     </div>
 
     <!-- Subcategories -->
-    <div class="well well-lg col-md-10 pull-right">
+    <div class="well well-sm col-md-10 pull-right">
         <h2>Accu's</h2>
         <div class="well well-sm-4 col-md-3 col-xs-6 text-center advert">
             <h5>Tesla X</h5>
@@ -234,9 +234,9 @@
 <?php
 //TODO: add database queries and formatting.
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    //TODO: get categorie
-    /*if(exists(_GET[0]){
-    $categorie = _GET[0]
-    }*/
+    //TODO: get category
+    /*if(isset(_GET["cat"])){
+    $category = _GET[0];
+    };*/
 }
 ?>
