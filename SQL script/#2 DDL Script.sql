@@ -1,4 +1,15 @@
 use eenmaalandermaal
+
+IF OBJECT_ID('dbo.Voorwerp_Categorie') IS NOT NULL
+  drop table [dbo].Voorwerp_Categorie
+IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
+  drop table [dbo].Rubriek
+  IF OBJECT_ID('dbo.Subcategorie') IS NOT NULL
+  drop table [dbo].Subcategorie
+IF OBJECT_ID('dbo.Categorie') IS NOT NULL
+  drop table [dbo].Categorie
+
+
 IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
   drop table [dbo].[Voorwerp]
 IF OBJECT_ID('dbo.Landen') IS NOT NULL
@@ -9,6 +20,7 @@ IF OBJECT_ID('dbo.Bestand') IS NOT NULL
   drop table [dbo].[Bestand]
 IF OBJECT_ID('dbo.Bod') IS NOT NULL
   drop table [dbo].[Bod]
+
 
 CREATE TABLE Betalingswijzen (
   betalingswijze VARCHAR(25) NOT NULL, --Keuze betalingswijzen
@@ -56,6 +68,44 @@ CREATE TABLE Voorwerp (
   CONSTRAINT CHK_VerkoopprijsGroterOfGelijk CHECK (verkoopprijs >= startprijs) --Kijkt of de verkoop prijs wel groter is dan de start prijs
   --todo CONSTRAINT FK_verkoper naar verkopers tabel
   --todo CONSTRAINT FK_koper naar gebruikers tabel
+)
+
+
+CREATE TABLE Categorie(
+CAT_ID INT NOT NULL, 
+CAT_Naam VARCHAR(100) NOT NULL,
+CONSTRAINT PK_Categorie_ID PRIMARY KEY (CAT_ID)
+)
+
+GO
+
+CREATE TABLE Subcategorie(
+SCAT_ID INT NOT NULL,
+SCAT_Naam VARCHAR(100) NOT NULL,
+SCAT_PAR_ID INT NOT NULL,
+CONSTRAINT PK_Subcategorie_ID PRIMARY KEY (SCAT_ID),
+CONSTRAINT FK_Subcategorie_Par_ID FOREIGN KEY (SCAT_PAR_ID) REFERENCES Categorie(CAT_ID)
+)
+
+GO
+
+CREATE TABLE Rubriek(
+RUB_ID INT NOT NULL,
+RUB_Naam VARCHAR(100) NOT NULL,
+RUB_PAR_ID INT NOT NULL,
+CONSTRAINT PK_Rubriek_ID PRIMARY KEY (RUB_ID),
+CONSTRAINT FK_Rubriek_Par_ID FOREIGN KEY (RUB_PAR_ID) REFERENCES Subcategorie(SCAT_ID)
+)
+
+
+GO
+
+
+CREATE TABLE Voorwerp_Categorie(
+VC_ID INT NOT NULL,
+VC_CAT INT NOT NULL,
+VC_SCAT INT,
+VC_RUB INT
 )
 
 CREATE TABLE Bestand(
