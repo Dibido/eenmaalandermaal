@@ -1,7 +1,7 @@
 <?php
 
 
-$hostname = "192.168.122.222";
+$hostname = "localhost";
 $dbname = "eenmaalandermaal";
 $username = "sa";
 $pw= "1q2w3e4r";

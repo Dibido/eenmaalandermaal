@@ -4,6 +4,9 @@
 *~
 .*.swp
 
+#php connection file
+./PHP/Connection.php
+
 ### PhpStorm ###
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
