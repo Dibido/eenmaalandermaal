@@ -22,7 +22,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/HomePage.css">
-    <link rel="stylesheet" href="CSS/Voorwerp.css">
+    <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
 
 
@@ -91,7 +91,7 @@
 <div class="container-fluid">
     <div class="row well">
 
-        <div class="col-md-3 visible-md visible-lg">
+        <div class="col-md-3 visible-lg">
             <div class="list-group">
                 <a href="#" class="list-group-item active" id="Header-Categories">
                     Categorieën
@@ -108,14 +108,15 @@
                 <a href="#" class="list-group-item">Vestibulum at eros</a>
                 <a href="#" class="list-group-item">Electronica</a>
                 <a href="#" class="list-group-item">Boeken</a>
-                <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i class="text-right glyphicon glyphicon-plus-sign" ></i></a>
+                <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
+                        class="text-right glyphicon glyphicon-plus-sign"></i></a>
             </div>
         </div>
 
 
         <!--Carousel -->
 
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-9 col-xs-9">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
@@ -127,18 +128,24 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
                     <div class="item active">
-                        <p class="Voorwerp-text" style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model S 95D 20.000 </p>
+                        <p class="Voorwerp-text"
+                           style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model
+                            S 95D 20.000 </p>
                         <div><img class="Carousel-image" src="Images/ModelS.jpeg" alt="Model S"></div>
                     </div>
 
                     <div class="item">
-                        <p class="Voorwerp-text" style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model 3 2018 goed als nieuw</p>
+                        <p class="Voorwerp-text"
+                           style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model
+                            3 2018 goed als nieuw</p>
                         <div><img class="Carousel-image" src="Images/ModelX.jpeg" alt="Model X"></div>
                     </div>
 
                     <div class="item">
                         <div>
-                            <p class="Voorwerp-text" style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model X refurbished</p>
+                            <p class="Voorwerp-text"
+                               style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla
+                                Model X refurbished</p>
                             <img class="Carousel-image" src="Images/Model3.jpeg" alt="Model 3">
                         </div>
                     </div>
@@ -166,205 +173,252 @@
                 <a href="#" class="list-group-item active text-center">Veiling gaat sluiten</a>
             </div>
 
+
             <div class="well col-xs-12">
 
-                <div class="Voorwerp col-xs-12 text-center" id="EersteVoorwerp">
-                    <div class="title">
-                        <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
+                <!-- Veiling template -->
+                <div class="veiling-rand col-md-12">
+                    <div class="veiling">
+                        <div class="veiling-titel label label-info">
+                            Gratis Model S
+                        </div>
+                        <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                        <div class="veiling-prijs-tijd">
+                            <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                            <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                        </div>
                     </div>
-                    <div class="Voorwerp-img thumbnail center-block">
-                        <img class="img-responsive" src="Images/Roadster.jpg">
-                    </div>
-                    <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                    <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
                 </div>
-                <div class="Voorwerp col-xs-12 text-center" id="TweedeVoorwerp">
-                    <div class="title">
-                        <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                    </div>
-                    <div class="Voorwerp-img thumbnail center-block" >
-                        <img class="img-responsive" src="Images/Model3.jpeg">
-                    </div>
-                    <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                    <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
+                <!-- End template -->
+
+                <!-- Veiling template -->
+                <div class="veiling-rand col-md-12">
+                    <div class="veiling">
+                        <div class="veiling-titel label label-info">
+                            Gratis Model S
+                        </div>
+                        <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                        <div class="veiling-prijs-tijd">
+                            <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                            <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                        </div>
                 </div>
+                <!-- End template -->
 
             </div>
 
-
         </div>
-
     </div>
+</div>
 
-    <!-- Extra advertenties -->
+        <!-- Extra advertenties -->
 
     <div class="container-fluid">
         <div class="row well">
-            <div class="Voorwerp col-md-3 col-sm-6 col-xs-6 text-center">
-                <div class="title">
-                    <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                </div>
-                <div class="Voorwerp-img thumbnail center-block">
-                    <img class="img-responsive" src="Images/Roadster.jpg">
-                </div>
-                <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-                <div>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary">Bied Nu!</button>
-                </div>
-            </div>
-            <div class="Voorwerp col-md-3 col-sm-6 col-xs-6 text-center">
-                <div class="title">
-                    <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                </div>
-                <div class="Voorwerp-img thumbnail center-block">
-                    <img class="img-responsive" src="Images/21-9.jpg">
-                </div>
-                <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-                <div>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary">Bied Nu!</button>
+            <!-- Veiling template -->
+            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="veiling">
+                    <div class="veiling-titel label label-info">
+                        Gratis Model S
+                    </div>
+                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-prijs-tijd">
+                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                    </div>
+                    <div class="veiling-rating-bied label label-default">
+                        <div class="rating text-center">
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                        </div>
+                        <button class="btn btn-primary bied">Bied Nu!</button>
+                    </div>
                 </div>
             </div>
-            <div class="Voorwerp col-md-3 col-sm-6 col-xs-6 text-center">
-                <div class="title">
-                    <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                </div>
-                <div class="Voorwerp-img thumbnail center-block">
-                    <img class="img-responsive" src="Images/ModelS.jpeg">
-                </div>
-                <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-                <div>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary">Bied Nu!</button>
-                </div>
-            </div>
-            <div class="Voorwerp col-md-3 col-sm-6 col-xs-6 text-center">
-                <div class="title">
-                    <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                </div>
-                <div class="Voorwerp-img thumbnail center-block">
-                    <img class="img-responsive" src="Images/ModelX.jpeg">
-                </div>
-                <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-                <div>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary">Bied Nu!</button>
+            <!-- End template -->
+
+            <!-- Veiling template -->
+            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="veiling">
+                    <div class="veiling-titel label label-info">
+                        Gratis Model S
+                    </div>
+                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-prijs-tijd">
+                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                    </div>
+                    <div class="veiling-rating-bied label label-default">
+                        <div class="rating text-center">
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                        </div>
+                        <button class="btn btn-primary bied">Bied Nu!</button>
+                    </div>
                 </div>
             </div>
-            <div class="Voorwerp col-md-3 col-sm-6 col-xs-6 text-center">
-                <div class="title">
-                    <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                </div>
-                <div class="Voorwerp-img thumbnail center-block">
-                    <img class="img-responsive" src="Images/Model3.jpeg">
-                </div>
-                <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-                <div>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary">Bied Nu!</button>
-                </div>
-            </div>
-            <div class="Voorwerp col-md-3 col-sm-6 col-xs-6 text-center">
-                <div class="title">
-                    <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                </div>
-                <div class="Voorwerp-img thumbnail center-block">
-                    <img class="img-responsive" src="Images/Roadster.jpg">
-                </div>
-                <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-                <div>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary">Bied Nu!</button>
+            <!-- End template -->
+
+            <!-- Veiling template -->
+            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="veiling">
+                    <div class="veiling-titel label label-info">
+                        Gratis Model S
+                    </div>
+                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-prijs-tijd">
+                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                    </div>
+                    <div class="veiling-rating-bied label label-default">
+                        <div class="rating text-center">
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                        </div>
+                        <button class="btn btn-primary bied">Bied Nu!</button>
+                    </div>
                 </div>
             </div>
-            <div class="Voorwerp col-md-3 col-sm-6 col-xs-6 text-center">
-                <div class="title">
-                    <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                </div>
-                <div class="Voorwerp-img thumbnail center-block">
-                    <img class="img-responsive" src="Images/Roadster.jpg">
-                </div>
-                <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-                <div>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary">Bied Nu!</button>
-                </div>
-            </div>
-            <div class="Voorwerp col-md-3 col-sm-6 col-xs-6 text-center">
-                <div class="title">
-                    <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                </div>
-                <div class="Voorwerp-img thumbnail center-block">
-                    <img class="img-responsive" src="Images/Roadster.jpg">
-                </div>
-                <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-                <div>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary">Bied Nu!</button>
+            <!-- End template -->
+
+            <!-- Veiling template -->
+            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="veiling">
+                    <div class="veiling-titel label label-info">
+                        Gratis Model S
+                    </div>
+                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-prijs-tijd">
+                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                    </div>
+                    <div class="veiling-rating-bied label label-default">
+                        <div class="rating text-center">
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                        </div>
+                        <button class="btn btn-primary bied">Bied Nu!</button>
+                    </div>
                 </div>
             </div>
-            <div class="Voorwerp col-md-3 col-sm-6 col-xs-6 text-center">
-                <div class="title">
-                    <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-                </div>
-                <div class="Voorwerp-img thumbnail center-block">
-                    <img class="img-responsive" src="Images/Roadster.jpg">
-                </div>
-                <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-                <div>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary">Bied Nu!</button>
+            <!-- End template -->
+
+            <!-- Veiling template -->
+            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="veiling">
+                    <div class="veiling-titel label label-info">
+                        Gratis Model S
+                    </div>
+                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-prijs-tijd">
+                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                    </div>
+                    <div class="veiling-rating-bied label label-default">
+                        <div class="rating text-center">
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                        </div>
+                        <button class="btn btn-primary bied">Bied Nu!</button>
+                    </div>
                 </div>
             </div>
+            <!-- End template -->
+
+            <!-- Veiling template -->
+            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="veiling">
+                    <div class="veiling-titel label label-info">
+                        Gratis Model S
+                    </div>
+                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-prijs-tijd">
+                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                    </div>
+                    <div class="veiling-rating-bied label label-default">
+                        <div class="rating text-center">
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                        </div>
+                        <button class="btn btn-primary bied">Bied Nu!</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End template -->
+
+            <!-- Veiling template -->
+            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="veiling">
+                    <div class="veiling-titel label label-info">
+                        Gratis Model S
+                    </div>
+                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-prijs-tijd">
+                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                    </div>
+                    <div class="veiling-rating-bied label label-default">
+                        <div class="rating text-center">
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                        </div>
+                        <button class="btn btn-primary bied">Bied Nu!</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End template -->
+
+            <!-- Veiling template -->
+            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+                <div class="veiling">
+                    <div class="veiling-titel label label-info">
+                        Gratis Model S
+                    </div>
+                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-prijs-tijd">
+                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                    </div>
+                    <div class="veiling-rating-bied label label-default">
+                        <div class="rating text-center">
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star"></i>
+                            <i class="glyphicon glyphicon-star-empty"></i>
+                        </div>
+                        <button class="btn btn-primary bied">Bied Nu!</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End template -->
+
+
+
+
         </div>
-
-
     </div>
 
 </body>

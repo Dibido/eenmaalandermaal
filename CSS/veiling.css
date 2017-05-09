@@ -1,8 +1,13 @@
+.veiling-rand{
+    display: block;
+    padding: 8px;
+}
 .veiling{
     display: block;
     font-size: 24px;
-    width: 250px; !important;
-    background-color: blueviolet;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 15px;
 
 }
 .label{
@@ -18,10 +23,11 @@
     position:relative;
     width: 100%;
     height: 0;
-    padding-bottom: 50% ; /* % of width, defines aspect ratio*/
+    padding-bottom: 60% ; /* % of width, defines aspect ratio*/
 
     background-repeat: no-repeat;
     background-position-y: center;
+    background-position-x: center;
     background-size: contain;
 }
 .veiling-prijs-tijd{
@@ -38,7 +44,11 @@
     white-space:nowrap;
     width: 49%;
 }
+.veiling-rating-bied{
+    width: 100%;
+}
 .rating{
+    padding: 6px 2px;
     float: left;
 }
 .bied{

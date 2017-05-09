@@ -26,30 +26,34 @@
 
 <body>
 
-<div class="veiling">
-    <div class="veiling-titel label label-info">
-        Gratis Model S
-    </div>
-    <div class="veiling-image" style="background-image:url(Images/21-9.jpg)"></div>
-    <div class="veiling-prijs-tijd">
-        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-    </div>
 
-    <div class="veiling-rating-bied">
-        <div class="rating label label-default">
-            <i class="glyphicon glyphicon-star"></i>
-            <i class="glyphicon glyphicon-star"></i>
-            <i class="glyphicon glyphicon-star"></i>
-            <i class="glyphicon glyphicon-star"></i>
-            <i class="glyphicon glyphicon-star-empty"></i>
+<!-- Veiling template -->
+<div class="veiling-rand col-md-3">
+    <div class="veiling">
+        <div class="veiling-titel label label-info">
+            Gratis Model S
         </div>
-        <div>
+        <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+        <div class="veiling-prijs-tijd">
+            <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+            <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+        </div>
+        <div class="veiling-rating-bied label label-default">
+            <div class="rating text-center">
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star-empty"></i>
+            </div>
             <button class="btn btn-primary bied">Bied Nu!</button>
         </div>
     </div>
-
 </div>
+<!-- End template -->
+
+
+
 
 
 
