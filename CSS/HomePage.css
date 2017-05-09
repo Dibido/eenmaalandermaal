@@ -1,27 +1,11 @@
-.navbar-brand {
-    padding: 0px; /* firefox bug fix */
-}
-.navbar-brand>img {
-    height: 100%;
-    padding: 2px 2px 2px 5px; /* firefox bug fix */
-    width: auto;
-}
-.NavRightButton{
-    margin-left: 15px;
-}
-
-
-
-
-/*
 
 .list-group {
     width: 100%;
+    margin-bottom: 0;
 }
 .carousel-inner .item>.item-active{
-    height: 37.5vw;
+    height: 60vh;
 }
 .carousel-inner .item{
-    height: 37.5vw;
+    height: 60vh;
 }
-*/

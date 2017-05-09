@@ -14,7 +14,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/categorie.css">
-    <link rel="stylesheet" href="CSS/advert.css">
+    <link rel="stylesheet" href="CSS/Voorwerp.css">
     <link rel="stylesheet" href="CSS/BootstrapXL.css">
     <link rel="stylesheet" href="CSS/theme.css"
 </head>
@@ -122,11 +122,11 @@
 
     <div class="well well-sm col-md-10 pull-right">
         <h2>Trending</h2>
-        <div class="advert col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
+        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
             <div class="title">
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
-            <div class="advert-img thumbnail center-block">
+            <div class="Voorwerp-img thumbnail center-block">
                 <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
@@ -140,11 +140,11 @@
                 <button class="btn btn-primary">Bied Nu!</button>
             </div>
         </div>
-        <div class="advert col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
+        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
         <div class="title">
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
-            <div class="advert-img thumbnail center-block">
+            <div class="Voorwerp-img thumbnail center-block">
                 <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
@@ -158,11 +158,11 @@
                 <button class="btn btn-primary">Bied Nu!</button>
             </div>
         </div>
-        <div class="advert col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
+        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
             <div class="title">
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
-            <div class="advert-img thumbnail center-block">
+            <div class="Voorwerp-img thumbnail center-block">
                 <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
@@ -176,11 +176,11 @@
                 <button class="btn btn-primary">Bied Nu!</button>
             </div>
         </div>
-        <div class="advert col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
+        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
             <div class="title">
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
-            <div class="advert-img thumbnail center-block">
+            <div class="Voorwerp-img thumbnail center-block">
                 <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
@@ -194,11 +194,11 @@
                 <button class="btn btn-primary">Bied Nu!</button>
             </div>
         </div>
-        <div class="advert col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
+        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
         <div class="title">
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
-            <div class="advert-img thumbnail center-block">
+            <div class="Voorwerp-img thumbnail center-block">
                 <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
@@ -212,11 +212,11 @@
                 <button class="btn btn-primary">Bied Nu!</button>
             </div>
         </div>
-        <div class="advert col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
+        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
             <div class="title">
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
-            <div class="advert-img thumbnail center-block">
+            <div class="Voorwerp-img thumbnail center-block">
                 <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
@@ -235,9 +235,9 @@
     <!-- Subcategories -->
     <div class="well well-sm col-md-10 pull-right">
         <h2>Accu's</h2>
-        <div class="advert col-md-3 col-xs-6 text-center">
+        <div class="Voorwerp col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
-            <div class="advert-img thumbnail">
+            <div class="Voorwerp-img thumbnail">
                 <img class="img-responsive center-block" src="Images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
@@ -251,9 +251,9 @@
             </div>
             <button class="btn btn-primary">Bied Nu!</button>
         </div>
-        <div class="advert col-md-3 col-xs-6 text-center">
+        <div class="Voorwerp col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
-            <div class="advert-img thumbnail">
+            <div class="Voorwerp-img thumbnail">
                 <img class="img-responsive center-block" src="Images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
@@ -267,9 +267,9 @@
             </div>
             <button class="btn btn-primary">Bied Nu!</button>
         </div>
-        <div class="advert col-md-3 col-xs-6 text-center">
+        <div class="Voorwerp col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
-            <div class="advert-img thumbnail">
+            <div class="Voorwerp-img thumbnail">
                 <img class="img-responsive center-block" src="Images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
@@ -283,9 +283,9 @@
             </div>
             <button class="btn btn-primary">Bied Nu!</button>
         </div>
-        <div class="advert col-md-3 col-xs-6 text-center">
+        <div class="Voorwerp col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
-            <div class="advert-img thumbnail">
+            <div class="Voorwerp-img thumbnail">
                 <img class="img-responsive center-block" src="Images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
@@ -299,9 +299,9 @@
             </div>
             <button class="btn btn-primary">Bied Nu!</button>
         </div>
-        <div class="advert col-md-3 col-xs-6 text-center">
+        <div class="Voorwerp col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
-            <div class="advert-img thumbnail">
+            <div class="Voorwerp-img thumbnail">
                 <img class="img-responsive center-block" src="Images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
