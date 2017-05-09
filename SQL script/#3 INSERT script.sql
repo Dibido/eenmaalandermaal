@@ -69,7 +69,7 @@ VALUES
 	('Testproduct24', 'beschrijving24', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus')
 
 
-INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(15,1,'Abdul'),(11,11,'Lucius'),(4,21,'Plato'),(6,31,'Wesley'),(12,41,'Basil'),(10,51,'Asher'),(3,61,'Orson'),(6,71,'Vaughan'),(18,81,'Oliver'),(8,91,'Beau');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(15,10,'Abdul'),(11,11,'Lucius'),(4,21,'Plato'),(6,31,'Wesley'),(12,41,'Basil'),(10,51,'Asher'),(3,61,'Orson'),(6,71,'Vaughan'),(18,81,'Oliver'),(8,91,'Beau');
 INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(16,101,'Derek'),(1,111,'Hakeem'),(7,121,'Justin'),(6,131,'Neville'),(5,141,'Gil'),(1,151,'Basil'),(15,161,'Reece'),(18,171,'Abel'),(20,181,'Stewart'),(15,191,'Daniel');
 INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(21,201,'Ezekiel'),(1,211,'John'),(13,221,'Stephen'),(4,231,'Dylan'),(8,241,'Uriel'),(24,251,'Howard'),(2,261,'Chaim'),(17,271,'Honorato'),(8,281,'Chadwick'),(8,291,'Prescott');
 INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(24,301,'Allistair'),(9,311,'Forrest'),(9,321,'Dorian'),(9,331,'Arthur'),(16,341,'Beck'),(9,351,'Alfonso'),(11,361,'Mark'),(16,371,'Kamal'),(10,381,'Linus'),(14,391,'Luke');
