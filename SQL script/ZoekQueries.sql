@@ -15,10 +15,10 @@ SELECT * FROM Rubriek
 SELECT TOP 50 * FROM Voorwerp JOIN Voorwerp_Rubriek ON VW_voorwerpnummer = VR_Voorwerp_Nummer
 /* Zoek in bepaalde Categorie op Titel */
 SELECT TOP 50 * FROM Voorwerp JOIN Voorwerp_Rubriek ON VW_voorwerpnummer = VR_Voorwerp_Nummer
-WHERE VW_titel LIKE '%$keyWords%' AND VR_Rubriek_Nummer LIKE '95' -- Var voor categorie
+WHERE VW_titel LIKE '%$keyWords%' AND VR_Rubriek_Nummer LIKE '$RubriekNummer' -- Var voor categorie
 /* Zoek in bepaalde Categorie op Beschrijving */
 SELECT TOP 50 * FROM Voorwerp JOIN Voorwerp_Rubriek ON VW_voorwerpnummer = VR_Voorwerp_Nummer
-WHERE VW_beschrijving LIKE '%keyWords%' AND VR_Rubriek_Nummer LIKE '95' -- Var voor categorie
+WHERE VW_beschrijving LIKE '%keyWords%' AND VR_Rubriek_Nummer LIKE '$RubriekNummer' -- Var voor categorie
 
 
 /* Zoek product met verzendinstructie "Verzenden" */
