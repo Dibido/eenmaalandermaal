@@ -24,6 +24,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/advert.css">
+    <link rel="stylesheet" href="CSS/navigation.css">
 
 
 </head>
@@ -101,6 +102,17 @@
                 <a href="#" class="list-group-item">Electronica</a>
                 <a href="#" class="list-group-item">Boeken</a>
                 <a href="#" class="list-group-item">Vestibulum at eros</a>
+                <a href="#" class="list-group-item">Electronica</a>
+                <a href="#" class="list-group-item">Boeken</a>
+                <a href="#" class="list-group-item">Vestibulum at eros</a>
+                <a href="#" class="list-group-item">Electronica</a>
+                <a href="#" class="list-group-item">Boeken</a>
+                <a href="#" class="list-group-item">Vestibulum at eros</a>
+                <a href="#" class="list-group-item">Electronica</a>
+                <a href="#" class="list-group-item">Boeken</a>
+                <a href="#" class="list-group-item">Vestibulum at eros</a>
+                <a href="#" class="list-group-item">Electronica</a>
+                <a href="#" class="list-group-item">Boeken</a>
             </div>
         </div>
 
@@ -155,7 +167,7 @@
                 <a href="#" class="list-group-item active">Veiling gaat sluiten</a>
             </div>
 
-            <div class="well">
+            <div class="well col-md-12">
 
                 <div class="advert col-xs-12 text-center">
                     <div class="title">
@@ -172,7 +184,7 @@
                         <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
                     </div>
                     <div class="advert-img thumbnail center-block">
-                        <img class="img-responsive" src="Images/Roadster.jpg">
+                        <img class="img-responsive" src="Images/Model3.jpeg">
                     </div>
                     <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
                     <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
