@@ -113,7 +113,7 @@ INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,2204
 INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,2431.01,'tiasd')
 
 INSERT 	INTO	Rubriek	(RB_Nummer, RB_Naam, 	RB_Volgnummer)				
-VALUES					(0,			'root',	0)
+VALUES					(0,			'root',		0)
 
 INSERT INTO Rubriek	(RB_Nummer, RB_Naam, 								RB_Parent, RB_Volgnummer)				
 VALUES				(1,			'Antiek en Kunst',						0,			1),
