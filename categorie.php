@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Categorie</title>
+    <title>Categorieën</title>
     <meta name="description" content="EenmaalAndermaal">
     <meta name="author" content="Iproject - Groep 3">
 
@@ -13,10 +13,10 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="CSS/categorie.css">
-    <link rel="stylesheet" href="CSS/Voorwerp.css">
-    <link rel="stylesheet" href="CSS/BootstrapXL.css">
-    <link rel="stylesheet" href="CSS/theme.css"
+    <link rel="stylesheet" href="CSS/navigation.css">
+    <link rel="stylesheet" href="CSS/theme.css">
+    <!--<link rel="stylesheet" href="CSS/BootstrapXL.css">-->
+
 </head>
 
 <body>
@@ -36,7 +36,7 @@
             <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
             </button>
             <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch"><i
-                        class="glyphicon glyphicon-menu-down"></i></button>
+                    class="glyphicon glyphicon-menu-down"></i></button>
         </form>
 
         <div class="pull-right">
@@ -50,7 +50,7 @@
                 </li>
                 <li>
                     <button class="btn btn-default navbar-btn hidden-sm hidden-xs NavRightButton"><i
-                                class="glyphicon glyphicon-user"></i></button>
+                            class="glyphicon glyphicon-user"></i></button>
                 </li>
             </ul>
         </div>
@@ -78,245 +78,6 @@
     </div>
 </div>
 
-<!-- Category bar -->
-
-<div class="container-fluid">
-    <div class="col-md-2">
-        <div class="visible-lg visible-md visible-sm visible-xs">
-            <div class="list-group">
-                <a href="#" class="list-group-item active">
-                    Auto onderdelen
-                </a>
-                <a href="#" class="list-group-item">Accu's</a>
-                <a href="#" class="list-group-item">Uitlaatpijpen</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-                <a href="#" class="list-group-item">Remblokken</a>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-10">
-        <ol class="breadcrumb">
-            <li><a href="index.php">Home</a></li>
-            <li class="active">Auto onderdelen</li>
-        </ol>
-    </div>
-
-    <!-- Trending items -->
-
-    <div class="well well-sm col-md-10 pull-right">
-        <h2>Trending</h2>
-        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
-            <div class="title">
-                <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-            </div>
-            <div class="Voorwerp-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-            <div>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                <button class="btn btn-primary">Bied Nu!</button>
-            </div>
-        </div>
-        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
-        <div class="title">
-                <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-            </div>
-            <div class="Voorwerp-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-            <div>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                <button class="btn btn-primary">Bied Nu!</button>
-            </div>
-        </div>
-        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
-            <div class="title">
-                <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-            </div>
-            <div class="Voorwerp-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-            <div>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                <button class="btn btn-primary">Bied Nu!</button>
-            </div>
-        </div>
-        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
-            <div class="title">
-                <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-            </div>
-            <div class="Voorwerp-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-            <div>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                <button class="btn btn-primary">Bied Nu!</button>
-            </div>
-        </div>
-        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
-        <div class="title">
-                <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-            </div>
-            <div class="Voorwerp-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-            <div>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                <button class="btn btn-primary">Bied Nu!</button>
-            </div>
-        </div>
-        <div class="Voorwerp col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
-            <div class="title">
-                <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
-            </div>
-            <div class="Voorwerp-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-            <div>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                <button class="btn btn-primary">Bied Nu!</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Subcategories -->
-    <div class="well well-sm col-md-10 pull-right">
-        <h2>Accu's</h2>
-        <div class="Voorwerp col-md-3 col-xs-6 text-center">
-            <h5>Tesla X</h5>
-            <div class="Voorwerp-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-            <div class="well well-sm">
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-            </div>
-            <button class="btn btn-primary">Bied Nu!</button>
-        </div>
-        <div class="Voorwerp col-md-3 col-xs-6 text-center">
-            <h5>Tesla X</h5>
-            <div class="Voorwerp-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-            <div class="well well-sm">
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-            </div>
-            <button class="btn btn-primary">Bied Nu!</button>
-        </div>
-        <div class="Voorwerp col-md-3 col-xs-6 text-center">
-            <h5>Tesla X</h5>
-            <div class="Voorwerp-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-            <div class="well well-sm">
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-            </div>
-            <button class="btn btn-primary">Bied Nu!</button>
-        </div>
-        <div class="Voorwerp col-md-3 col-xs-6 text-center">
-            <h5>Tesla X</h5>
-            <div class="Voorwerp-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-            <div class="well well-sm">
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-            </div>
-            <button class="btn btn-primary">Bied Nu!</button>
-        </div>
-        <div class="Voorwerp col-md-3 col-xs-6 text-center">
-            <h5>Tesla X</h5>
-            <div class="Voorwerp-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-            <div class="well well-sm">
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-            </div>
-            <button class="btn btn-primary">Bied Nu!</button>
-        </div>
-    </div>
-</div>
 </body>
 </html>
 
