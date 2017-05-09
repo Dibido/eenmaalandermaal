@@ -23,15 +23,15 @@ IF OBJECT_ID('dbo.Bod') IS NOT NULL
 
 
 CREATE TABLE Betalingswijzen (
-  betalingswijze VARCHAR(25) NOT NULL, --Keuze betalingswijzen
-  CONSTRAINT PK_Betalingswijze PRIMARY KEY (betalingswijze),
+  BW_betalingswijze VARCHAR(25) NOT NULL, --Keuze betalingswijzen
+  CONSTRAINT PK_Betalingswijze PRIMARY KEY (BW_betalingswijze),
 );
 
 CREATE TABLE Landen (
-  landcode CHAR(3)     NOT NULL, --ISO 3166/1
-  landnaam VARCHAR(50) NOT NULL, --De langste naam
-  CONSTRAINT PK_landen PRIMARY KEY (landcode),
-  CONSTRAINT UQ_landnaam UNIQUE (landnaam), --In het nederlands
+  LAN_landcode CHAR(3)     NOT NULL, --ISO 3166/1
+  LAN_landnaam VARCHAR(50) NOT NULL, --De langste naam
+  CONSTRAINT PK_landen PRIMARY KEY (LAN_landcode),
+  CONSTRAINT UQ_landnaam UNIQUE (LAN_landnaam), --In het nederlands
 );
 
 CREATE TABLE Voorwerp (
@@ -56,8 +56,8 @@ CREATE TABLE Voorwerp (
   VW_verkoopprijs          NUMERIC(9, 2) NULL,                          --huidige bod todo eventueel vragen of Verkoopprijs niet begint met de startprijs
 
   CONSTRAINT PK_Voorwerp PRIMARY KEY (VW_voorwerpnummer),
-  CONSTRAINT FK_Betaalwijze FOREIGN KEY (VW_betalingsWijze) REFERENCES Betalingswijzen (betalingswijze),
-  CONSTRAINT FK_Land FOREIGN KEY (VW_land) REFERENCES Landen (landcode) ON UPDATE CASCADE ON DELETE NO ACTION,
+  CONSTRAINT FK_Betaalwijze FOREIGN KEY (VW_betalingsWijze) REFERENCES Betalingswijzen (BW_betalingswijze),
+  CONSTRAINT FK_Land FOREIGN KEY (VW_land) REFERENCES Landen (LAN_landcode) ON UPDATE CASCADE ON DELETE NO ACTION,
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2),            --Kan niet leeg zijn
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2),     --Kan niet leeg zijn
   CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2),  --Kan niet leeg zijn
@@ -109,25 +109,25 @@ CREATE TABLE Voorwerp_Categorie(
 )
 
 CREATE TABLE Bestand(
-  filenaam       VARCHAR(260) NOT NULL,     --Maximum lengte van file path is volgens microsoft 260 tekens.
-  voorwerpnummer BIGINT       NOT NULL,
-  CONSTRAINT PK_Filenaam PRIMARY KEY (filenaam),
-  CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(VW_voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE ,
-  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(voorwerpnummer) <= 4)
+  BES_filenaam       VARCHAR(260) NOT NULL,     --Maximum lengte van file path is volgens microsoft 260 tekens.
+  BES_voorwerpnummer BIGINT       NOT NULL,
+  CONSTRAINT PK_Filenaam PRIMARY KEY (BES_filenaam),
+  CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (BES_voorwerpnummer) REFERENCES Voorwerp(VW_voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE ,
+  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
 )
 
 CREATE TABLE Bod (
-  voorwerpnummer BIGINT        NOT NULL,
-  bodbedrag      NUMERIC(9,2) NOT NULL,
-  gebruiker      VARCHAR(40)   NOT NULL,
-  bodDag         DATE          NOT NULL DEFAULT GETDATE(),
-  bodTijdstip    TIME          NOT NULL DEFAULT GETDATE(),
-  CONSTRAINT PK_BodVoorwerpnummer PRIMARY KEY (voorwerpnummer, bodbedrag),
-  CONSTRAINT FK_BodVoorwerpnummer FOREIGN KEY (voorwerpnummer) REFERENCES Voorwerp(VW_voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE,
+  BOD_voorwerpnummer BIGINT        NOT NULL,
+  BOD_bodbedrag      NUMERIC(9,2) NOT NULL,
+  BOD_gebruiker      VARCHAR(40)   NOT NULL,
+  BOD_bodDag         DATE          NOT NULL DEFAULT GETDATE(),
+  BOD_bodTijdstip    TIME          NOT NULL DEFAULT GETDATE(),
+  CONSTRAINT PK_BodVoorwerpnummer PRIMARY KEY (BOD_voorwerpnummer, BOD_bodbedrag),
+  CONSTRAINT FK_BodVoorwerpnummer FOREIGN KEY (BOD_voorwerpnummer) REFERENCES Voorwerp(VW_voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE,
   --todo foreign key voor gebruiker
-  CONSTRAINT CHK_HogerDanStartprijs CHECK(dbo.bodHogerDanStartprijs(voorwerpnummer, bodbedrag) = 1),
+  CONSTRAINT CHK_HogerDanStartprijs CHECK(dbo.bodHogerDanStartprijs(BOD_voorwerpnummer, BOD_bodbedrag) = 1),
   --CONSTRAINT CHK_BodBedrag CHECK (dbo.bodHoogGenoeg(voorwerpnummer, bodbedrag) = 1),
-  CONSTRAINT CHK_NietEigenVoorwerp CHECK(dbo.nietEigenVoorwerp(voorwerpnummer,gebruiker) = 1)
+  CONSTRAINT CHK_NietEigenVoorwerp CHECK(dbo.nietEigenVoorwerp(BOD_voorwerpnummer,BOD_gebruiker) = 1)
 )
 
 GO
@@ -137,13 +137,13 @@ FOR INSERT, UPDATE
 AS
   BEGIN
     DECLARE @Voorwerpnummer BIGINT
-    SET @Voorwerpnummer = (SELECT TOP 1 Voorwerpnummer
+    SET @Voorwerpnummer = (SELECT TOP 1 BOD_Voorwerpnummer
                            FROM inserted)
     DECLARE @Bodbedrag NUMERIC(9, 2)
-    SET @Bodbedrag = (SELECT TOP 1 bodbedrag
+    SET @Bodbedrag = (SELECT TOP 1 BOD_bodbedrag
                       FROM inserted)
     DECLARE @huidigeHoogsteBod NUMERIC(9, 2)
-    SET @huidigeHoogsteBod = (SELECT TOP 1 Bodbedrag FROM Bod WHERE Bodbedrag NOT IN (SELECT TOP 1 Bodbedrag FROM Bod WHERE voorwerpnummer = @Voorwerpnummer ORDER BY Bodbedrag DESC) AND voorwerpnummer = @Voorwerpnummer ORDER BY Bodbedrag DESC)
+    SET @huidigeHoogsteBod = (SELECT TOP 1 BOD_Bodbedrag FROM Bod WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag FROM Bod WHERE BOD_voorwerpnummer = @Voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = @Voorwerpnummer ORDER BY BOD_Bodbedrag DESC)
     IF @huidigeHoogsteBod > 0.0
       BEGIN
         IF @huidigeHoogsteBod BETWEEN 1 AND 49.99
