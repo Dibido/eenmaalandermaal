@@ -1,0 +1,26 @@
+--Laat het aantal biedingen zien per categorie
+
+select RB_Naam, SUM(tweede.aantal)
+FROM Rubriek
+  INNER join
+  (select Rubriek.RB_Parent, aantal
+   FROM Rubriek
+     INNER join (select RB_Parent, COUNT(BOD_voorwerpnummer) as aantal
+                 from Voorwerp_Rubriek
+                   INNER JOIN Rubriek
+                     ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                   INNER JOIN Bod
+                     ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
+                 GROUP BY RB_Parent) eerste on Rubriek.RB_Volgnummer = eerste.RB_Parent
+   GROUP BY Rubriek.RB_Parent, aantal) tweede on Rubriek.RB_Volgnummer = tweede.RB_Parent
+GROUP BY Rubriek.RB_Naam
+OrdER BY MAX(aantal) DESC
+
+
+--Bijna afgelopen veilingen nog niet in combinatie met populairste
+select VW_voorwerpnummer, DATEDIFF(HOUR,GETDATE(),VW_looptijdEinde) as tijd from Voorwerp where DATEDIFF(HOUR,GETDATE(),VW_looptijdEinde) > 5 ORDER BY VW_looptijdEinde
+
+
+--Aantal biedingen per voorwerp
+
+select BOD_voorwerpnummer, COUNT(*) as Biedingen from Bod GROUP BY BOD_voorwerpnummer ORDER BY Biedingen DESC
