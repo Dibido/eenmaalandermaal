@@ -141,7 +141,7 @@
             </div>
         </div>
         <div class="advert col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
-            <div class="title">
+        <div class="title">
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
             <div class="advert-img thumbnail center-block">
@@ -195,7 +195,7 @@
             </div>
         </div>
         <div class="advert col-xl-3 col-md-4 col-sm-6 col-xs-6 text-center">
-            <div class="title">
+        <div class="title">
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
             <div class="advert-img thumbnail center-block">
