@@ -2,7 +2,7 @@ use eenmaalandermaal
 
 
 IF OBJECT_ID('dbo.Voorwerp_Rubriek') IS NOT NULL
-  drop table [dbo].Voorwerp_Categorie
+  drop table [dbo].Voorwerp_Rubriek
 IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
   drop table [dbo].Rubriek
 IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
