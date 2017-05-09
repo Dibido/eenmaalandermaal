@@ -36,3 +36,4 @@ WHERE b.BOD_bodbedrag BETWEEN '$MinPrijs' AND '$MaxPrijs'
 
 
 --(SELECT max(BOD_bodbedrag) AS HuidigBod FROM Bod b)
+--test
