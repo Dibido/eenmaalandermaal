@@ -202,7 +202,7 @@
         <div class="advert col-md-3 col-xs-6">
             <h5>Tesla X</h5>
             <div class="advert-img thumbnail">
-                <img class="img-responsive" src="Images/Roadster.jpeg">
+                <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
             <div class="text-center center-block">
                 <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
