@@ -94,8 +94,8 @@
 
         <div class="col-md-3 visible-md visible-lg">
             <div class="list-group">
-                <a href="#" class="list-group-item active">
-                    Categories
+                <a href="#" class="list-group-item active" id="Header-Categories">
+                    Categorieën
                 </a>
                 <a href="#" class="list-group-item">Auto's</a>
                 <a href="#" class="list-group-item">Electronica</a>
@@ -109,7 +109,7 @@
                 <a href="#" class="list-group-item">Vestibulum at eros</a>
                 <a href="#" class="list-group-item">Electronica</a>
                 <a href="#" class="list-group-item">Boeken</a>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
+                <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i class="text-right glyphicon glyphicon-plus-sign" ></i></a>
             </div>
         </div>
 
@@ -132,13 +132,11 @@
                     </div>
 
                     <div class="item">
-                        <img class="img-responsive center-block" src="Images/ModelX.jpeg" alt="Chicago"
-                             style="width:100%;">
+                        <img class="img-responsive center-block" src="Images/ModelX.jpeg" alt="Chicago">
                     </div>
 
                     <div class="item">
-                        <img class="img-responsive center-block" src="Images/Model3.jpeg" alt="New york"
-                             style="width:100%;">
+                        <img class="img-responsive center-block" src="Images/Model3.jpeg" alt="New york">
                     </div>
                 </div>
 
@@ -161,12 +159,12 @@
         <div class="col-md-3 visible-md visible-lg">
 
             <div class="list-group">
-                <a href="#" class="list-group-item active">Veiling gaat sluiten</a>
+                <a href="#" class="list-group-item active text-center">Veiling gaat sluiten</a>
             </div>
 
             <div class="well col-xs-12">
 
-                <div class="Voorwerp voorwerp-hot col-xs-12 text-center">
+                <div class="Voorwerp col-xs-12 text-center" id="EersteVoorwerp">
                     <div class="title">
                         <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
                     </div>
@@ -176,11 +174,11 @@
                     <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
                     <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
                 </div>
-                <div class="Voorwerp col-xs-12 text-center">
+                <div class="Voorwerp col-xs-12 text-center" id="TweedeVoorwerp">
                     <div class="title">
                         <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
                     </div>
-                    <div class="Voorwerp-img thumbnail center-block">
+                    <div class="Voorwerp-img thumbnail center-block" >
                         <img class="img-responsive" src="Images/Model3.jpeg">
                     </div>
                     <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
