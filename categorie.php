@@ -109,94 +109,36 @@
 
     <div class="well well-sm col-md-10 pull-right">
         <h2>Trending</h2>
-        <div class="advert col-md-3 col-xs-6">
+        <div class="advert col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
             <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Model3.jpeg">
+                <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
-            <div class="text-center center-block">
-                <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-                <div class="well well-sm">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary float-right">Bied Nu!</button>
-                </div>
+            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
+            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
+            <div>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                <button class="btn btn-primary float-right">Bied Nu!</button>
             </div>
         </div>
-        <div class="advert col-md-3 col-xs-6">
+        <div class="advert col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
             <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Model3.jpeg">
+                <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
-            <div class="text-center center-block">
-                <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-                <div class="well well-sm">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary float-right">Bied Nu!</button>
-                </div>
-            </div>
-        </div>
-        <div class="advert col-md-3 col-xs-6">
-            <h5>Tesla X</h5>
-            <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Model3.jpeg">
-            </div>
-            <div class="text-center center-block">
-                <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-                <div class="well well-sm">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary float-right">Bied Nu!</button>
-                </div>
-            </div>
-        </div>
-        <div class="advert col-md-3 col-xs-6">
-            <h5>Tesla X</h5>
-            <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Model3.jpeg">
-            </div>
-            <div class="text-center center-block">
-                <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-                <div class="well well-sm">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary float-right">Bied Nu!</button>
-                </div>
-            </div>
-        </div>
-        <div class="advert col-md-3 col-xs-6">
-            <h5>Tesla X</h5>
-            <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Model3.jpeg">
-            </div>
-            <div class="text-center center-block">
-                <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
-                <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
-                <div class="well well-sm">
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                    <button class="btn btn-primary float-right">Bied Nu!</button>
-                </div>
+            <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
+            <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
+            <div>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
+                <button class="btn btn-primary float-right">Bied Nu!</button>
             </div>
         </div>
     </div>
