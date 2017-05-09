@@ -1,11 +1,15 @@
 
+#Header-Categories{
+    text-align: center;
+}
+
 .list-group {
     width: 100%;
     margin-bottom: 0;
 }
 .carousel-inner .item>.item-active{
-    height: 60vh;
+    height: 575px;
 }
 .carousel-inner .item{
-    height: 60vh;
+    height: 575px;
 }
