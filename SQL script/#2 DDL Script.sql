@@ -1,13 +1,10 @@
 use eenmaalandermaal
 
-IF OBJECT_ID('dbo.Voorwerp_Categorie') IS NOT NULL
-  drop table [dbo].[Voorwerp_Categorie]
+
+IF OBJECT_ID('dbo.Voorwerp_Rubriek') IS NOT NULL
+  drop table [dbo].Voorwerp_Categorie
 IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
-  drop table [dbo].[Rubriek]
-IF OBJECT_ID('dbo.Subcategorie') IS NOT NULL
-  drop table [dbo].[Subcategorie]
-IF OBJECT_ID('dbo.Categorie') IS NOT NULL
-  drop table [dbo].[Categorie]
+  drop table [dbo].Rubriek
 IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
   drop table [dbo].[Voorwerp]
 IF OBJECT_ID('dbo.Landen') IS NOT NULL
@@ -66,40 +63,23 @@ CREATE TABLE Voorwerp (
 )
 
 
-CREATE TABLE Categorie(
-  CAT_ID INT NOT NULL,
-  CAT_Naam VARCHAR(100) NOT NULL,
-  CONSTRAINT PK_Categorie_ID PRIMARY KEY (CAT_ID)
-)
-
-
-CREATE TABLE Subcategorie(
-  SCAT_ID INT NOT NULL,
-  SCAT_Naam VARCHAR(100) NOT NULL,
-  SCAT_PAR_ID INT NOT NULL,
-  CONSTRAINT PK_Subcategorie_ID PRIMARY KEY (SCAT_ID),
-  CONSTRAINT FK_Subcategorie_Par_ID FOREIGN KEY (SCAT_PAR_ID) REFERENCES Categorie(CAT_ID)
-)
-
-
 CREATE TABLE Rubriek(
-  RUB_ID INT NOT NULL,
-  RUB_Naam VARCHAR(100) NOT NULL,
-  RUB_PAR_ID INT NOT NULL,
-  CONSTRAINT PK_Rubriek_ID PRIMARY KEY (RUB_ID),
-  CONSTRAINT FK_Rubriek_Par_ID FOREIGN KEY (RUB_PAR_ID) REFERENCES Subcategorie(SCAT_ID)
-)
+  RB_Nummer INT NOT NULL, -- MOET MAX 3 worden
+  RB_Naam VARCHAR(100) NOT NULL,
+  RB_Parent INT,
+  RB_volgnummer INT NOT NULL, -- MOET MAX 2 worden
+  CONSTRAINT PK_RB_Nummer PRIMARY KEY (RB_Nummer),
+  CONSTRAINT FK_PARENT FOREIGN KEY (RB_Parent) REFERENCES Rubriek (RB_Nummer)
+ )
 
+GO
 
-CREATE TABLE Voorwerp_Categorie(
-  VC_ID BIGINT NOT NULL,
-  VC_CAT INT NOT NULL,
-  VC_SCAT INT NOT NULL,
-  VC_RUB INT,
-  CONSTRAINT FK_VC_ID FOREIGN KEY (VC_ID) REFERENCES Voorwerp (VW_Voorwerpnummer),
-  CONSTRAINT FK_VC_CAT FOREIGN KEY (VC_CAT) REFERENCES Categorie(CAT_ID),
-  CONSTRAINT FK_VC_SCAT FOREIGN KEY (VC_SCAT) REFERENCES Subcategorie(SCAT_ID),
-  CONSTRAINT FK_VC_RUB FOREIGN KEY (VC_RUB) REFERENCES Rubriek(RUB_ID)
+CREATE TABLE Voorwerp_Rubriek(
+	VR_Voorwerp_Nummer BIGINT NOT NULL,
+	VR_Rubriek_Nummer INT NOT NULL,
+	CONSTRAINT  PK_Voorwerp_Rubriek PRIMARY KEY (VR_Voorwerp_Nummer, VR_Rubriek_Nummer),
+	CONSTRAINT FK_VR_ID FOREIGN KEY (VR_Voorwerp_Nummer) REFERENCES Voorwerp (VW_Voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT FK_VR_RUB FOREIGN KEY (VR_Rubriek_Nummer) REFERENCES Rubriek(RB_Nummer) ON UPDATE CASCADE ON DELETE CASCADE
 )
 
 CREATE TABLE Bestand(
