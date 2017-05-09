@@ -1,3 +1,10 @@
+<?php
+include('PHP/connection.php');
+
+$statement = "SELECT * FROM eenmaalandermaal.dbo.Rubriek";
+$results = $connection->query("SELECT RB_Naam FROM eenmaalandermaal.dbo.Rubriek WHERE RB_Parent = 0")->fetchAll(PDO::FETCH_COLUMN[1]);
+?>
+
 <!doctype html>
 
 <html lang="en">
@@ -80,34 +87,99 @@
 
 <!-- Category Navigation -->
 
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+<?php
+echo('<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">');
+foreach ($results as $group) {
+    echo('<div class="panel panel-default">');
+    echo('<div class="panel-heading" role="tab" id="heading' . $group[0] . '">');
+    echo('<h4 class="panel-title">');
+    echo('<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse' . $group[0] .'"
+                   aria-expanded="true" aria-controls="collapse' . $group[0] .'">');
+    echo($group[0]);
+    echo('</a>');
+    echo('</h4>');
+    echo('</div>');
+    echo('</div>');
+}
+
+?>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
     <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="auto's">
+        <div class="panel-heading" role="tab" id="headingAutos">
             <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#BMW"
-                   aria-expanded="false" aria-controls="BMW">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAutos"
+                   aria-expanded="true" aria-controls="collapseAutos">
                     Auto's
                 </a>
             </h4>
         </div>
-        <div id="BMW" class="panel-collapse collapse" role="tabpanel" aria-labelledby="BMW">
-            <div class="panel panel-default">
-                <div class="panel-heading" role="tab" id="BMW">
-                    <h4 class="panel-title">
-                        <a role="button" data-toggle="collapse" data-parent="#auto's" href="#Uitlaten"
-                           aria-expanded="false" aria-controls="Uitlaten">
-                            BMW
-                        </a>
-                    </h4>
+        <div id="collapseAutos" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAutos">
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingUitlaten">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#collapseAutos"
+                               href="#collapseUitlaten"
+                               aria-expanded="true" aria-controls="collapse">
+                                Uitlaten
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseUitlaten" class="panel-collapse collapse" role="tabpanel"
+                         aria-labelledby="headingUitlaten">
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingBMW">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#collapseUitlaten"
+                                           href="#collapse"
+                                           aria-expanded="true" aria-controls="collapse">
+                                            BMW
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div id="Uitlaten" class="panel-collapse collapse" role="tabpanel" aria-labelledby="Uitlaten">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="Uitlaten">
-                            <h4 class="panel-title">
-                                <a role="button" data-toggle="collapse" data-parent="#BMW" href="#" aria-expanded="false" aria-controls="#">
-                                    Uitlaten
-                                </a>
-                            </h4>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingAutos">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAutos"
+                   aria-expanded="true" aria-controls="collapseAutos">
+                    Auto's
+                </a>
+            </h4>
+        </div>
+        <div id="collapseAutos" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAutos">
+            <div class="panel-body">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingUitlaten">
+                        <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#collapseAutos"
+                               href="#collapseUitlaten"
+                               aria-expanded="true" aria-controls="collapse">
+                                Uitlaten
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseUitlaten" class="panel-collapse collapse" role="tabpanel"
+                         aria-labelledby="headingUitlaten">
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" role="tab" id="headingBMW">
+                                    <h4 class="panel-title">
+                                        <a role="button" data-toggle="collapse" data-parent="#collapseUitlaten"
+                                           href="#collapse"
+                                           aria-expanded="true" aria-controls="collapse">
+                                            BMW
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -116,39 +188,5 @@
     </div>
 </div>
 
-
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingOne">
-            <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                   aria-expanded="true" aria-controls="collapseOne">
-                    Collapsible Group Item #1
-                </a>
-            </h4>
-        </div>
-        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-            <div class="panel-body">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
-                moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
-                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
-                proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
-                aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-        </div>
-    </div>
-</div>
-
 </body>
 </html>
-
-<?php
-//TODO: add database queries and formatting.
-if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    //TODO: get category
-    /*if(isset(_GET["cat"])){
-    $category = _GET[0];
-    };*/
-}
-?>
