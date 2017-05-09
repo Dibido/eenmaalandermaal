@@ -1,18 +1,28 @@
-.advert {
-    margin-top : 3px;
+#EersteVoorwerp{
+    margin-top: 0;
+}
+#TweedeVoorwerp{
+    margin-top: 0;
 }
 
-.advert-img {
+.Voorwerp {
+    margin-top : 15px;
+}
+
+.Voorwerp-img {
+    display: flex;
+    justify-content: center;
+
     width: 250px;
     min-height: 170px !important;
 }
 
-.advert-img img {
+.Voorwerp-img img {
     max-width: 100%;
     max-height: 100%;
 }
 
-.advert span {
+.Voorwerp span {
     margin-bottom: 3px;
 }
 
