@@ -36,7 +36,7 @@
             <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
             </button>
             <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch"><i
-                    class="glyphicon glyphicon-menu-down"></i></button>
+                        class="glyphicon glyphicon-menu-down"></i></button>
         </form>
 
         <div class="pull-right">
@@ -50,7 +50,7 @@
                 </li>
                 <li>
                     <button class="btn btn-default navbar-btn hidden-sm hidden-xs NavRightButton"><i
-                            class="glyphicon glyphicon-user"></i></button>
+                                class="glyphicon glyphicon-user"></i></button>
                 </li>
             </ul>
         </div>
@@ -75,6 +75,68 @@
             <li><a class="row-md-12" href="#">Plaats veiling</a></li>
             <li><a class="row-md-12" href="#">Login</a></li>
         </ul>
+    </div>
+</div>
+
+<!-- Category Navigation -->
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="auto's">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#BMW"
+                   aria-expanded="false" aria-controls="BMW">
+                    Auto's
+                </a>
+            </h4>
+        </div>
+        <div id="BMW" class="panel-collapse collapse" role="tabpanel" aria-labelledby="BMW">
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="BMW">
+                    <h4 class="panel-title">
+                        <a role="button" data-toggle="collapse" data-parent="#auto's" href="#Uitlaten"
+                           aria-expanded="false" aria-controls="Uitlaten">
+                            BMW
+                        </a>
+                    </h4>
+                </div>
+                <div id="Uitlaten" class="panel-collapse collapse" role="tabpanel" aria-labelledby="Uitlaten">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="Uitlaten">
+                            <h4 class="panel-title">
+                                <a role="button" data-toggle="collapse" data-parent="#BMW" href="#" aria-expanded="false" aria-controls="#">
+                                    Uitlaten
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+            <h4 class="panel-title">
+                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                   aria-expanded="true" aria-controls="collapseOne">
+                    Collapsible Group Item #1
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf
+                moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda
+                shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea
+                proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim
+                aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
     </div>
 </div>
 
