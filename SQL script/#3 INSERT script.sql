@@ -38,84 +38,72 @@ INSERT INTO Landen(LAN_landcode, LAN_landnaam) VALUES('TUR', 'Turkije'),('TUV', 
 INSERT INTO Landen(LAN_landcode, LAN_landnaam) VALUES('USA', 'Verenigde Staten'),('UZB', 'Uzbekistan'),('BTW', 'Vaticaanstad'),('VCT', 'Saint Vincent en de Grenadines'),('VEN', 'Venezuela'),('VGB', 'Britse Maagdeneilanden')
 INSERT INTO Landen(LAN_landcode, LAN_landnaam) VALUES('VIR', 'Amerikaanse Maagdeneilanden'),('VNM', 'Vietnam'),('VUT', 'Vanuatu'),('WLF', 'Wallis en Futuna'),('WSM', 'Samoa'),('YEM', 'Jemen'),('ZAF', 'Zuid-Afrika'),('ZWE', 'Zimbabwe'),('ZMB', 'Zambia')
 
-
-
-INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
-											VW_land, VW_looptijd,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
-VALUES ('Testproduct1', 'beschrijving1', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-												'Arnhem', 'NLD', 3, 14.20, 'test', 'kees', 'tinus')
-
-
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (1,4.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (1,14.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (1,40.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (1,45.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (1,63.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (1,156.01,'tiasd')
-
-
 INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
 											VW_land, VW_looptijd, VW_looptijdStart,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
-VALUES ('Testproduct2', 'beschrijving2', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-												'Arnhem', 'NLD', 3,'2017-05-19 06:03:12',  14.20, 'test', 'kees', 'tinus')
+VALUES
+	('Testproduct1', 'beschrijving1', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct2', 'beschrijving2', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-19 06:03:12',  14.20, 'test', 'kees', 'tinus'),
+	('Testproduct3', 'beschrijving3', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct4', 'beschrijving4', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct5', 'beschrijving5', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct6', 'beschrijving6', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-19 06:03:12',  14.20, 'test', 'kees', 'tinus'),
+	('Testproduct7', 'beschrijving7', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct8', 'beschrijving8', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct9', 'beschrijving9', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct10', 'beschrijving10', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-19 06:03:12',  14.20, 'test', 'kees', 'tinus'),
+	('Testproduct11', 'beschrijving11', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct12', 'beschrijving12', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct13', 'beschrijving13', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct14', 'beschrijving14', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-19 06:03:12',  14.20, 'test', 'kees', 'tinus'),
+	('Testproduct15', 'beschrijving15', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct16', 'beschrijving16', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct17', 'beschrijving17', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct18', 'beschrijving18', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-19 06:03:12',  14.20, 'test', 'kees', 'tinus'),
+	('Testproduct19', 'beschrijving19', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct20', 'beschrijving20', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct21', 'beschrijving21', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct22', 'beschrijving22', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-19 06:03:12',  14.20, 'test', 'kees', 'tinus'),
+	('Testproduct23', 'beschrijving23', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
+	('Testproduct24', 'beschrijving24', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus')
 
 
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,4.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,14.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,40.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,45.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,63.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,156.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,174.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,204.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,431.01,'tiasd')
-
-INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
-											VW_land, VW_looptijd, VW_looptijdStart,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
-VALUES ('Testproduct3', 'beschrijving3', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-												'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus')
-
-
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,4.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,14.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,40.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,45.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,63.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,156.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,174.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,204.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,431.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,1174.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,1204.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,1431.01,'tiasd')
-
-
-INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
-											VW_land, VW_looptijd, VW_looptijdStart,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
-VALUES ('Testproduct4', 'beschrijving4', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-												'Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus')
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(15,1,'Abdul'),(11,11,'Lucius'),(4,21,'Plato'),(6,31,'Wesley'),(12,41,'Basil'),(10,51,'Asher'),(3,61,'Orson'),(6,71,'Vaughan'),(18,81,'Oliver'),(8,91,'Beau');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(16,101,'Derek'),(1,111,'Hakeem'),(7,121,'Justin'),(6,131,'Neville'),(5,141,'Gil'),(1,151,'Basil'),(15,161,'Reece'),(18,171,'Abel'),(20,181,'Stewart'),(15,191,'Daniel');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(21,201,'Ezekiel'),(1,211,'John'),(13,221,'Stephen'),(4,231,'Dylan'),(8,241,'Uriel'),(24,251,'Howard'),(2,261,'Chaim'),(17,271,'Honorato'),(8,281,'Chadwick'),(8,291,'Prescott');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(24,301,'Allistair'),(9,311,'Forrest'),(9,321,'Dorian'),(9,331,'Arthur'),(16,341,'Beck'),(9,351,'Alfonso'),(11,361,'Mark'),(16,371,'Kamal'),(10,381,'Linus'),(14,391,'Luke');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(18,401,'Harlan'),(11,411,'Xander'),(13,421,'Ignatius'),(9,431,'Raja'),(4,441,'Giacomo'),(17,451,'Kennedy'),(16,461,'Trevor'),(22,471,'Vladimir'),(14,481,'Clarke'),(22,491,'Ethan');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(21,501,'Lyle'),(2,511,'Berk'),(11,521,'Ahmed'),(4,531,'Keegan'),(21,541,'Neville'),(24,551,'Reed'),(10,561,'Fuller'),(3,571,'Chaney'),(21,581,'Blaze'),(7,591,'Kevin');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(19,601,'Bradley'),(6,611,'Jameson'),(1,621,'Yardley'),(24,631,'Prescott'),(10,641,'Yasir'),(20,651,'Jesse'),(7,661,'Nicholas'),(15,671,'Cameron'),(1,681,'Paki'),(1,691,'Brett');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(15,701,'David'),(4,711,'Nasim'),(24,721,'Price'),(20,731,'Reed'),(13,741,'Jack'),(22,751,'Ira'),(21,761,'Carl'),(13,771,'Steel'),(5,781,'Micah'),(21,791,'Hayes');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(17,801,'Hedley'),(11,811,'Griffin'),(11,821,'Xander'),(22,831,'Lester'),(4,841,'Preston'),(6,851,'Davis'),(10,861,'Charles'),(7,871,'Ralph'),(2,881,'Kirk'),(5,891,'Declan');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(10,901,'Hayes'),(18,911,'Dean'),(8,921,'Garth'),(3,931,'Wallace'),(19,941,'Gannon'),(23,951,'Lance'),(5,961,'Donovan'),(3,971,'Silas'),(15,981,'Walter'),(1,991,'Orlando');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(18,991,'Thaddeus'),(3,1001,'Alexander'),(15,1011,'Talon'),(13,1021,'Jackson'),(16,1031,'Bruno'),(9,1041,'Lev'),(5,1051,'Brody'),(7,1061,'Deacon'),(7,1071,'Jesse'),(16,1081,'Demetrius');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(24,1091,'Brent'),(24,1101,'Reed'),(19,1111,'Aidan'),(14,1121,'Neil'),(3,1131,'Beau'),(24,1141,'Quinlan'),(24,1151,'Lewis'),(11,1161,'Hiram'),(16,1171,'Harlan'),(17,1181,'Reuben');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(8,1191,'Brian'),(10,1201,'Anthony'),(6,1211,'Griffith'),(17,1221,'Reece'),(20,1231,'Holmes'),(5,1241,'Zane'),(20,1251,'Harding'),(23,1261,'Daquan'),(8,1271,'Thor'),(23,1281,'Levi');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(14,1291,'Colby'),(22,1301,'Lucius'),(18,1311,'Armand'),(23,1321,'Logan'),(14,1331,'Kermit'),(24,1341,'Merritt'),(15,1351,'Norman'),(20,1361,'Yasir'),(8,1371,'Camden'),(9,1381,'Marshall');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(3,1391,'Quamar'),(18,1401,'Stone'),(1,1411,'Vincent'),(22,1421,'Lance'),(1,1431,'Carson'),(7,1441,'Randall'),(20,1451,'Gabriel'),(2,1461,'Chandler'),(9,1471,'Hunter'),(11,1481,'Fulton');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(2,1491,'Len'),(5,1501,'Elijah'),(7,1511,'Octavius'),(21,1521,'Wesley'),(20,1531,'Joseph'),(20,1541,'Xander'),(3,1551,'Benjamin'),(6,1561,'Wyatt'),(24,1571,'Lucian'),(7,1581,'Nissim');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(10,1591,'Beck'),(22,1601,'Malik'),(17,1611,'Patrick'),(23,1621,'Jonah'),(14,1631,'Orlando'),(10,1641,'Xanthus'),(7,1651,'Ciaran'),(11,1661,'Prescott'),(21,1671,'Matthew'),(7,1681,'Carter');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(20,1691,'Yuli'),(12,1701,'Tanek'),(11,1711,'Francis'),(20,1721,'Chaim'),(9,1731,'Burton'),(6,1741,'Cade'),(1,1751,'Kieran'),(24,1761,'Blaze'),(8,1771,'Philip'),(13,1781,'Hakeem');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(8,1791,'Dale'),(6,1801,'Noah'),(3,1811,'Jared'),(6,1821,'Hilel'),(19,1831,'Ivan'),(20,1841,'Lucius'),(15,1851,'Ali'),(16,1861,'Elliott'),(12,1871,'Yoshio'),(23,1881,'Zachery');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(19,1891,'Asher'),(21,1901,'Chandler'),(14,1911,'Malachi'),(17,1921,'Herman'),(19,1931,'Addison'),(9,1941,'Eaton'),(18,1951,'Kamal'),(13,1961,'Martin'),(11,1971,'Aidan'),(19,1981,'Ivor');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(2,2000,'Macon'),(17,2010,'Erasmus'),(14,2020,'Salvador'),(23,2030,'Buckminster'),(1,2040,'William'),(17,2050,'Hyatt'),(18,2060,'Igor'),(8,2070,'Hayden'),(2,2080,'Howard'),(8,2090,'Carter');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(15,2100,'Lee'),(3,2110,'Vincent'),(4,2120,'Quinlan'),(17,2130,'Hu'),(12,2140,'Vaughan'),(21,2150,'Ferdinand'),(5,2160,'Fuller'),(1,2170,'Mark'),(20,2180,'Jerome'),(10,2190,'Garrison');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(12,2200,'Bevis'),(16,2210,'Griffin'),(7,2220,'Tucker'),(24,2230,'Rudyard'),(12,2240,'Owen'),(21,2250,'Honorato'),(19,2260,'Lars'),(21,2270,'Amos'),(21,2280,'Alfonso'),(4,2290,'Walter');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(8,2300,'Linus'),(7,2310,'Macaulay'),(13,2320,'Felix'),(12,2330,'Drew'),(10,2340,'Lamar'),(14,2350,'Baker'),(16,2360,'Xenos'),(1,2370,'Steel'),(4,2380,'Richard'),(20,2390,'Mannix');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(1,2400,'Stephen'),(15,2410,'Valentine'),(4,2420,'Calvin'),(10,2430,'Hector'),(5,2440,'Paul'),(9,2450,'Yardley'),(18,2460,'Kato'),(8,2470,'Adam'),(23,2480,'Aaron'),(9,2490,'Forrest');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(13,2500,'Norman'),(6,2510,'Stone'),(2,2520,'Jackson'),(24,2530,'Akeem'),(5,2540,'Linus'),(12,2550,'Rajah'),(24,2560,'Colton'),(20,2570,'Elton'),(17,2580,'Amir'),(24,2590,'Kevin');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(13,2600,'Damon'),(18,2610,'Brennan'),(7,2620,'Amery'),(9,2630,'Clark'),(18,2640,'Alvin'),(18,2650,'August'),(5,2660,'Norman'),(8,2670,'Christian'),(23,2680,'Felix'),(3,2690,'Adam');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(19,2700,'Hoyt'),(20,2710,'Oren'),(21,2720,'Neville'),(11,2730,'Guy'),(14,2740,'Avram'),(13,2750,'Cullen'),(3,2760,'Hall'),(13,2770,'Keith'),(17,2780,'Hilel'),(6,2790,'Chancellor');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(23,2800,'Basil'),(6,2810,'Thomas'),(16,2820,'Cadman'),(15,2830,'Callum'),(3,2840,'Brennan'),(2,2850,'Brenden'),(18,2860,'Samson'),(10,2870,'Isaac'),(11,2880,'Odysseus'),(10,2890,'Rigel');
+INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(18,2900,'Vladimir'),(21,2910,'Blake'),(23,2920,'Rafael'),(8,2930,'Linus'),(10,2940,'Byron'),(24,2950,'Zeus'),(18,2960,'Cruz'),(12,2970,'Abraham'),(2,2980,'Christian'),(23,2990,'Chester');
 
 
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,4.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,14.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,40.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,45.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,63.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,156.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,174.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,204.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,431.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,1174.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,1204.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,1431.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,2174.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,2204.01,'tiasd')
-INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,2431.01,'tiasd')
 
-INSERT 	INTO	Rubriek	(RB_Nummer, RB_Naam, 	RB_Volgnummer)				
-VALUES					(0,			'root',		0)
+INSERT 	INTO	Rubriek	(RB_Nummer, RB_Naam, 	RB_Volgnummer)
+VALUES					(0,			'root',	0)
 
-INSERT INTO Rubriek	(RB_Nummer, RB_Naam, 								RB_Parent, RB_Volgnummer)				
+INSERT INTO Rubriek	(RB_Nummer, RB_Naam, 								RB_Parent, RB_Volgnummer)
 VALUES				(1,			'Antiek en Kunst',						0,			1),
 					(2,			'Audio, Tv en Foto',					0,			2),
 					(3,			'Auto''s',								0,			3),
