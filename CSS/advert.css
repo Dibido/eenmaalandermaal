@@ -4,8 +4,7 @@
 
 .advert-img {
     width: 250px;
-    height: 170px;
-    margin-bottom: 0px;
+    min-height: 170px !important;
 }
 
 .advert span {
@@ -13,12 +12,11 @@
 }
 
 .thumbnail{
-    margin-bottom: 0px;
+
     height: 170px !important;
-    margin-bottom: 0px !important;
+    margin-bottom: 0 !important;
 }
 
 .div.advert-img.thumbnail {
     height: 170px !important;
-    margin-bottom: 0px !important;
 }
