@@ -360,3 +360,14 @@ VALUES				(1,			'Antiek en Kunst',						0,			1),
 					(242,		'Uitlaatsystemen',						62,			242),
 					(243,		'Verlichting',							62,			243),
 					(244,		'Overige onderdelen',					62,			244)
+
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(4,163),(15,129),(8,118),(14,151),(14,81),(16,152),(14,236),(6,196),(7,131),(3,70);
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(19,152),(5,120),(19,67),(22,194),(19,111),(23,81),(12,74),(18,170),(13,122),(9,135);
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(5,202),(4,88),(3,133),(10,92),(4,78),(11,109),(12,181),(15,208),(7,110),(11,88);
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(10,194),(4,131),(19,68),(17,102),(14,90),(2,176),(5,82),(9,111),(4,80),(6,202);
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(18,127),(10,117),(13,230),(16,132),(19,108),(9,172),(12,149),(6,107),(4,117),(5,236);
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(1,95),(15,71),(6,205),(7,186),(11,233),(3,187),(7,121),(6,209),(2,210),(12,128);
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(8,190),(12,158),(2,143),(24,102),(11,105),(2,107),(21,166),(11,66),(7,143),(8,166);
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(3,196),(2,65),(23,210),(3,116),(15,113),(16,147),(7,153),(12,132),(8,159),(5,203);
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(19,69),(1,151),(10,239),(6,118),(4,141),(14,87),(8,109),(13,204),(11,140),(21,146);
+INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(12,233),(7,181),(5,91),(24,104),(9,129),(4,94),(3,131),(17,125),(16,207),(6,97);
