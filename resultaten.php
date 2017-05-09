@@ -12,9 +12,16 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!-- price slider --> 
+   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
+    
+
+
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/categorie-old.css">
     <link rel="stylesheet" href="CSS/advert.css">
+
 </head>
 
 <body>
@@ -67,6 +74,8 @@
 
 <!-- Category bar -->
 
+
+
 <div class="container-fluid">
     <div class="col-md-2">
         <div class="visible-lg visible-md visible-sm visible-xs">
@@ -74,7 +83,13 @@
                 <a href="#" class="list-group-item active">
                     Opties
                 </a>
-                <a href="#" class="list-group-item">Opties</a>
+                <a href="#" class="list-group-item">Prijs</a>
+
+                <a href="#" class="list-group-item">Prijs: <b>€ 10 - € 1000</b> <input id="pslider" type="text" class="span2" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[150,450]"/> </a>
+<script>
+var slider = new Slider('#pslider', {});
+</script>
+
             </div>
         </div>
     </div>
@@ -107,6 +122,11 @@
         </div>
     </div>
 </div>
+
+ 
+
+
+
 </body>
 </html>
 
