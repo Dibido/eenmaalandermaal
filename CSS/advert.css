@@ -32,3 +32,8 @@
     white-space:nowrap;
     max-width: 40%;
 }
+
+.title {
+    overflow: hidden;
+    white-space: nowrap;
+}
