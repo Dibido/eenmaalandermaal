@@ -19,38 +19,6 @@ CREATE FUNCTION aantalBestandenPerVoorwerpnummer(
   END
 GO
 
---Functie om te kijken of het tijdstip niet in het verleden ligt wanner de datum wel de huidige dag is
-
-IF OBJECT_ID('dbo.tijdstipCheck') IS NOT NULL
-  IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
-    DROP TABLE [dbo].[Voorwerp]
-DROP FUNCTION [dbo].[tijdstipCheck]
-GO
-
-CREATE FUNCTION tijdstipCheck(
-  @looptijdBeginDag      DATE,
-  @looptijdBeginTijdstip TIME
-)
-  RETURNS BIT
-  BEGIN
-    RETURN (
-      CASE WHEN CONVERT(DATE, @looptijdBeginDag) = CONVERT(DATE, GETDATE()) --Is de ingegeven dag de huidige dag
-        THEN
-          CASE WHEN CONVERT(TIME, @looptijdBeginTijdstip) >=
-                    CONVERT(TIME, GETDATE()) --Wanneer het de huidige dag is, is de ingegeven tijd na of de huidige tijd
-            THEN 1
-          ELSE 0
-          END
-      ELSE
-        CASE WHEN CONVERT(DATE, @looptijdBeginDag) > CONVERT(DATE,
-                                                             GETDATE()) --Is de ingegeven dag niet de huidige dag dan wordt er gekeken of de dag wel na de huidige dag valt.
-          THEN 1
-        END
-      END
-    )
-  END
-GO
-
 
 --Functie om te kijken of het bod hoger is dan de opgegeven startprijs
 IF OBJECT_ID('dbo.bodHogerDanStartprijs') IS NOT NULL

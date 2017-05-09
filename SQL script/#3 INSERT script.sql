@@ -39,7 +39,7 @@ INSERT INTO Landen(LAN_landcode, LAN_landnaam) VALUES('USA', 'Verenigde Staten')
 INSERT INTO Landen(LAN_landcode, LAN_landnaam) VALUES('VIR', 'Amerikaanse Maagdeneilanden'),('VNM', 'Vietnam'),('VUT', 'Vanuatu'),('WLF', 'Wallis en Futuna'),('WSM', 'Samoa'),('YEM', 'Jemen'),('ZAF', 'Zuid-Afrika'),('ZWE', 'Zimbabwe'),('ZMB', 'Zambia')
 
 
---Normaal insert statement zonder aangepaste begin tijd
+
 INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
 											VW_land, VW_looptijd,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES ('Testproduct1', 'beschrijving1', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
@@ -55,9 +55,9 @@ INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (1,156.
 
 
 INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
-											VW_land, VW_looptijd, VW_looptijdBeginDag, VW_looptijdbeginTijdstip,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
+											VW_land, VW_looptijd, VW_looptijdStart,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES ('Testproduct2', 'beschrijving2', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-												'Arnhem', 'NLD', 3,'2017-05-12', '06:03:12',  14.20, 'test', 'kees', 'tinus')
+												'Arnhem', 'NLD', 3,'2017-05-19 06:03:12',  14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,4.01,'tiasd')
@@ -71,9 +71,9 @@ INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,204.
 INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (2,431.01,'tiasd')
 
 INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
-											VW_land, VW_looptijd, VW_looptijdBeginDag, VW_looptijdbeginTijdstip,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
+											VW_land, VW_looptijd, VW_looptijdStart,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES ('Testproduct3', 'beschrijving3', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-												'Arnhem', 'NLD', 3, '2017-05-14', '08:03:12', 14.20, 'test', 'kees', 'tinus')
+												'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,4.01,'tiasd')
@@ -89,10 +89,11 @@ INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,1174
 INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,1204.01,'tiasd')
 INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (3,1431.01,'tiasd')
 
+
 INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
-											VW_land, VW_looptijd, VW_looptijdBeginDag, VW_looptijdbeginTijdstip,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
+											VW_land, VW_looptijd, VW_looptijdStart,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES ('Testproduct4', 'beschrijving4', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384',
-												'Arnhem', 'NLD', 3,'2017-05-16', '04:03:12', 14.20, 'test', 'kees', 'tinus')
+												'Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus')
 
 
 INSERT INTO Bod(BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker) VALUES (4,4.01,'tiasd')
