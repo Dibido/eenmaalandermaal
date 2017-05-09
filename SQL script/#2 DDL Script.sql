@@ -44,7 +44,7 @@ CREATE TABLE Voorwerp (
   VW_verzendinstructies    VARCHAR(255)  NULL,                          --todo
   VW_verkoper              VARCHAR(40)   NOT NULL,                      --Marktplaats heeft 36 wij 4 meer dus 40
   VW_koper                 VARCHAR(40)   NULL,                          --Marktplaats heeft 36 wij 4 meer dus 40
-  VW_looptijdeindeDag      AS DATEADD(DAY, VW_looptijd, VW_looptijdStart), --Bereken de einddatum
+  VW_looptijdEinde      AS DATEADD(DAY, VW_looptijd, VW_looptijdStart), --Bereken de einddatum
   VW_veilinggesloten       BIT           NOT NULL DEFAULT 0,            --Veiling gesloten of open
   VW_verkoopprijs          NUMERIC(9, 2) NULL,                          --huidige bod todo eventueel vragen of Verkoopprijs niet begint met de startprijs
 
@@ -72,7 +72,6 @@ CREATE TABLE Rubriek(
   CONSTRAINT FK_PARENT FOREIGN KEY (RB_Parent) REFERENCES Rubriek (RB_Nummer)
  )
 
-GO
 
 CREATE TABLE Voorwerp_Rubriek(
 	VR_Voorwerp_Nummer BIGINT NOT NULL,
