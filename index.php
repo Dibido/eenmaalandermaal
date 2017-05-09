@@ -45,8 +45,7 @@
             </div>
             <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
             </button>
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch"><i
-                    class="glyphicon glyphicon-menu-down"></i></button>
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch">Advanced Search</button>
         </form>
 
         <div class="pull-right">
@@ -128,15 +127,20 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
                     <div class="item active">
-                        <img class="img-responsive center-block" src="Images/ModelS.jpeg" alt="Los Angeles">
+                        <p class="Voorwerp-text" style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model S 95D 20.000 </p>
+                        <div><img class="Carousel-image" src="Images/ModelS.jpeg" alt="Model S"></div>
                     </div>
 
                     <div class="item">
-                        <img class="img-responsive center-block" src="Images/ModelX.jpeg" alt="Chicago">
+                        <p class="Voorwerp-text" style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model 3 2018 goed als nieuw</p>
+                        <div><img class="Carousel-image" src="Images/ModelX.jpeg" alt="Model X"></div>
                     </div>
 
                     <div class="item">
-                        <img class="img-responsive center-block" src="Images/Model3.jpeg" alt="New york">
+                        <div>
+                            <p class="Voorwerp-text" style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model X refurbished</p>
+                            <img class="Carousel-image" src="Images/Model3.jpeg" alt="Model 3">
+                        </div>
                     </div>
                 </div>
 

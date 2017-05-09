@@ -13,8 +13,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="CSS/categorie.css">
-    <link rel="stylesheet" href="CSS/Voorwerp.css">
+    <link rel="stylesheet" href="CSS/categorie-old.css">
+    <link rel="stylesheet" href="CSS/advert.css">
 </head>
 
 <body>
@@ -89,9 +89,9 @@
 
     <div class="well well-sm col-md-10 pull-right">
         <h2>Resultaten</h2>
-        <div class="Voorwerp col-md-3 col-xs-6 text-center">
+        <div class="advert col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
-            <div class="Voorwerp-img thumbnail center-block">
+            <div class="advert-img thumbnail center-block">
                 <img class="img-responsive" src="Images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
