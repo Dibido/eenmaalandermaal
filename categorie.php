@@ -23,6 +23,7 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/navigation.css">
     <link rel="stylesheet" href="CSS/theme.css">
+    <link rel="stylesheet" href="CSS/BootstrapXL.css">
     <link rel="stylesheet" href="CSS/categorie.css">
 
 </head>
@@ -43,8 +44,6 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
             </button>
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch"><i
-                        class="glyphicon glyphicon-menu-down"></i></button>
         </form>
 
         <div class="pull-right">
@@ -64,16 +63,6 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </div>
 </nav>
-
-<!-- Advanced Search -->
-
-<div class="container-fluid collapse" id="AdvancedSearch">
-    <div class="col-xs-12">
-        <h1>Zoek hier!</h1>
-
-    </div>
-</div>
-
 
 <!-- Mobile Buttons -->
 
@@ -104,7 +93,9 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
         } else {
             //display parent
             $parenturl = urlencode($groups[$i]['RB_Naam']);
+            echo('<div class="page-header">');
             echo('<a href="resultaten.php?categorie=' . $parenturl . '"><h4>' . $groups[$i]['RB_Naam'] . '</h4></a>');
+            echo('</div>');
             $parentwaarde = $groups[$i]['RB_Nummer'];
             echo('<div class="categorie">');
             //loop through groups
