@@ -1,6 +1,14 @@
 .categorie{
     column-count: 4;
+    column-width: 150px;
     column-gap: 20px;
+}
+
+.categorie a::first-line{
+    margin-top: 0px;
+}
+.categorie a:last-of-type{
+    margin-bottom: 0px;
 }
 
 .page-header{

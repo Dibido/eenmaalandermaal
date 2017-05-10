@@ -1,6 +1,8 @@
 --Laat het aantal biedingen zien per categorie
 SELECT
-  TOP 10 RB_Naam,     --Selecteer de top hoeveelheid categoriën die moet worden laten zien
+  TOP 10
+  RB_Naam,
+  --Selecteer de top hoeveelheid categoriën die moet worden laten zien
   SUM(tweede.aantal)
 FROM Rubriek
   INNER JOIN
@@ -33,14 +35,16 @@ ORDER BY Biedingen DESC
 
 
 --Laat de top X producten zien die bijna aflopen. Deze producten zitten ook in de top X van de populaire categoriën en vervolgens in de top van het aantalbiedingen
-SELECT    --Vul hier je TOP X hoeveelheid in
+SELECT
+  --Vul hier je TOP X hoeveelheid in
   VW_voorwerpnummer,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) AS tijd,
-  COUNT(*) as Biedingen
+  COUNT(*)                                    AS Biedingen
 FROM Voorwerp
   INNER JOIN BOD
     ON Voorwerp.VW_voorwerpnummer = BOD_voorwerpnummer
-WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 2 AND    --Vul hier de minimum en maximum tijd over in
+WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 2 AND
+      --Vul hier de minimum en maximum tijd over in
       VW_voorwerpnummer IN (SELECT BOD_voorwerpnummer
                             FROM Bod
                               LEFT JOIN Voorwerp_Rubriek
@@ -51,7 +55,8 @@ WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETD
                                 ON r1.RB_Nummer = Rubriek.RB_Parent
                               LEFT JOIN Rubriek r2
                                 ON r2.RB_Nummer = r1.RB_Parent
-                            WHERE r2.RB_Naam IN (SELECT TOP 3 RB_Naam       --Vul hier de top X categoriën in waarvan producten moeten worden laten zien.
+                            WHERE r2.RB_Naam IN (SELECT TOP 3
+                                                   RB_Naam --Vul hier de top X categoriën in waarvan producten moeten worden laten zien.
                                                  FROM Rubriek
                                                    LEFT JOIN
                                                    (SELECT
@@ -75,5 +80,16 @@ WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETD
                                                  GROUP BY Rubriek.RB_Naam
                                                  ORDER BY MAX(aantal) DESC)
                             GROUP BY BOD_voorwerpnummer, r2.RB_Naam)
-GROUP BY VW_voorwerpnummer,VW_looptijdEinde
+GROUP BY VW_voorwerpnummer, VW_looptijdEinde
 ORDER BY Biedingen DESC
+
+
+
+--Nieuwe advertenties met gebruikers die een goede beoordeling hebben
+
+SELECT
+  VW_voorwerpnummer,
+  VW_looptijdStart
+FROM Voorwerp
+--WHERE VW_voorwerpnummer IN --Lijst met goede beoordeelde gebruikers
+ORDER BY VW_looptijdStart DESC
