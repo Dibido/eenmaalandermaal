@@ -167,7 +167,7 @@
             </div>
         </div>
 <div class="item  col-xs-4 col-lg-4">
-    <div class="veiling">
+    <div class="veiling thumbnail">
         <div class="veiling-titel label label-info">
             Gratis Model S
         </div>
@@ -223,13 +223,7 @@ $(document).ready(function() {
 </script>
 
 
-             <ul class="pagination float-right">
-                <li><a href="#">1</a></li>
-                <li class="active"><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-            </ul>
+
 </div>
 
 
