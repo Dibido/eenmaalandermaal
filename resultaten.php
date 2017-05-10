@@ -20,6 +20,8 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/categorie-old.css">
+    <link rel="stylesheet" href="CSS/veiling.css">
+    <link rel="stylesheet" href="CSS/navigation.css">
 
 </head>
 
@@ -96,13 +98,6 @@
                     <script>
                     var slider = new Slider('#pslider', {});
                     var slider = new Slider('#aslider', {});
-
-                       $(function() {
-                          $('#example').barrating({
-                            theme: 'fontawesome-stars'
-                          });
-                       });
-
                     </script>
             </div>
 
@@ -129,22 +124,38 @@
 
     <div class="well well-sm col-md-9 pull-left">
         <h2>Resultaten</h2>
-        <div class="advert col-md-3 col-xs-6 text-center">
-            <h5>Tesla X</h5>
-            <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
-            </div>
-            <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
-            <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
-            <div>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-                <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                <button class="btn btn-primary float-right">Bied Nu!</button>
-            </div>
+        <!-- Veiling template -->
+<div class="veiling-rand col-xs-12 col-sm-5 col-md-3 col-lg-3 col-xl-2">
+    <div class="veiling">
+        <div class="veiling-titel label label-info">
+            Gratis Model S
         </div>
+        <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+        <div class="veiling-prijs-tijd">
+            <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
+            <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+        </div>
+        <div class="veiling-rating-bied label label-default">
+            <div class="rating text-center">
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star"></i>
+                <i class="glyphicon glyphicon-star-empty"></i>
+            </div>
+            <button class="btn btn-primary bied">Bied Nu!</button>
+        </div>
+    </div>
+</div>
+<!-- End template -->
+
+             <ul class="pagination float-right">
+                <li><a href="#">1</a></li>
+                <li class="active"><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+            </ul>
     </div>
 </div>
 
