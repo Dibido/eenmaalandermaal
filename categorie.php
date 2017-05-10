@@ -99,14 +99,15 @@ $categories = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 <div class="container">
     <?php
     echo('<div class="well well-sm">');
-    for ($i = 0; $i < sizeof($groups); $i++){
-        if($groups[$i]['RB_Parent']!= 0){
-           $i = sizeof($groups);
+    for ($i = 1; $i < sizeof($groups); $i++) {
+        if ($groups[$i]['RB_Parent'] != 0) {
+            $i = sizeof($groups);
+        } else {
+            echo('<h4>' . $groups[$i]['RB_Naam'] . '</h4>');
+            $parentwaarde = $groups[$i]['RB_Nummer'];
         }
-        echo('<h4>' . $groups[$i]['RB_Naam'] . '</h4>');
-        $parentwaarde = $groups[$i]['RB_Nummer'];
-        for($j = 0; $j < sizeof($groups); $j++){
-            if($groups[$j]['RB_Parent'] == $parentwaarde){
+        for ($j = 0; $j < sizeof($groups); $j++) {
+            if ($groups[$j]['RB_Parent'] == $parentwaarde) {
                 echo('<h6>' . $groups[$j]['RB_Naam'] . '</h6>');
             }
         }
