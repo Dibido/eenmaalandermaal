@@ -27,7 +27,6 @@ ORDER BY H.RB_Naam";
 
 $groups = $connection->query($query)->fetchAll(PDO::FETCH_BOTH);
 
-print_r($groups);
 ?>
 
 <!doctype html>
@@ -112,15 +111,20 @@ print_r($groups);
     $eerstekeer = true;
     echo('<div class="row well">');
     foreach ($groups as $group) {
+
         if ($group[0] != $currentgroup) {
+            if(!$eerstekeer){
+                echo('</div>');
+            }
             $currentgroup = $group[0];
-            echo('<div class="row-md-4">');
+            echo('<div class="col-md-3 col-md-push-1">');
             echo('<h4>' . $group[0] . '</h4>');
         }
+        $eerstekeer = false;
         echo('<h6>' . $group[1] . '</h6>');
     }
-    echo('</div>');
-    echo('</div>');
+
+
     /*//loop through the groups
     for ($i = 1; $i < sizeof($groups); $i++) {
         //don't use root (index 0)
