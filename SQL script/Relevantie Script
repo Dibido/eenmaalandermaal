@@ -1,7 +1,6 @@
 --Laat het aantal biedingen zien per categorie
-
 SELECT
-  RB_Naam,
+  TOP 10 RB_Naam,     --Selecteer de top hoeveelheid categoriën die moet worden laten zien
   SUM(tweede.aantal)
 FROM Rubriek
   INNER JOIN
@@ -23,15 +22,6 @@ GROUP BY Rubriek.RB_Naam
 ORDER BY MAX(aantal) DESC
 
 
---Bijna afgelopen veilingen nog niet in combinatie met populairste
-SELECT
-  VW_voorwerpnummer,
-  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) AS tijd
-FROM Voorwerp
-WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 5
-ORDER BY VW_looptijdEinde
-
-
 --Aantal biedingen per voorwerp
 
 SELECT
@@ -42,11 +32,14 @@ GROUP BY BOD_voorwerpnummer
 ORDER BY Biedingen DESC
 
 
---Laat de top X producten zien die bijna aflopen. Deze producten zitten ook in de top X van de populaire categoriën
-SELECT TOP 10   --Vul hier je TOP X hoeveelheid in
+--Laat de top X producten zien die bijna aflopen. Deze producten zitten ook in de top X van de populaire categoriën en vervolgens in de top van het aantalbiedingen
+SELECT    --Vul hier je TOP X hoeveelheid in
   VW_voorwerpnummer,
-  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) AS tijd
+  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) AS tijd,
+  COUNT(*) as Biedingen
 FROM Voorwerp
+  INNER JOIN BOD
+    ON Voorwerp.VW_voorwerpnummer = BOD_voorwerpnummer
 WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 2 AND    --Vul hier de minimum en maximum tijd over in
       VW_voorwerpnummer IN (SELECT BOD_voorwerpnummer
                             FROM Bod
@@ -82,4 +75,5 @@ WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETD
                                                  GROUP BY Rubriek.RB_Naam
                                                  ORDER BY MAX(aantal) DESC)
                             GROUP BY BOD_voorwerpnummer, r2.RB_Naam)
-ORDER BY tijd
+GROUP BY VW_voorwerpnummer,VW_looptijdEinde
+ORDER BY Biedingen DESC
