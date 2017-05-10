@@ -12,9 +12,9 @@ CREATE FUNCTION aantalBestandenPerVoorwerpnummer(
   RETURNS INT
   BEGIN
     RETURN (
-      SELECT COUNT(VW_voorwerpnummer)
+      SELECT COUNT(BES_voorwerpnummer)
       FROM Bestand
-      WHERE VW_voorwerpnummer = @voorwerpnummer
+      WHERE BES_voorwerpnummer = @voorwerpnummer
     )
   END
 GO
