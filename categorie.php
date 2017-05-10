@@ -2,8 +2,32 @@
 require('PHP/connection.php');
 
 //Read all categories from the database
-$query = "SELECT * FROM Rubriek";
-$groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
+//$query = "SELECT * FROM Rubriek";
+/*$query = "SELECT H.RB_Naam, X.RB_Naam
+FROM Rubriek H 
+CROSS APPLY 
+( 
+SELECT * FROM RUBRIEK S WHERE S.RB_Parent = H.RB_Nummer 
+) X
+WHERE H.RB_Parent = 0
+ORDER BY H.RB_volgnummer,H.RB_Naam
+";*/
+
+$query = "SELECT H.RB_Naam, X.RB_Naam 
+FROM Rubriek H
+CROSS APPLY
+(
+  SELECT * FROM Rubriek S
+  WHERE S.RB_Parent = H.RB_Nummer
+) X
+
+WHERE H.RB_Parent = 0
+ORDER BY H.RB_Naam";
+
+
+$groups = $connection->query($query)->fetchAll(PDO::FETCH_BOTH);
+
+print_r($groups);
 ?>
 
 <!doctype html>
@@ -84,8 +108,20 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 <!-- Category Navigation -->
 <div class="container">
     <?php
-    echo('<div class="well well-sm">');
-    //loop through the groups
+    $currentgroup = '';
+    $eerstekeer = true;
+    echo('<div class="row well">');
+    foreach ($groups as $group) {
+        if ($group[0] != $currentgroup) {
+            $currentgroup = $group[0];
+            echo('<div class="row-md-4">');
+            echo('<h4>' . $group[0] . '</h4>');
+        }
+        echo('<h6>' . $group[1] . '</h6>');
+    }
+    echo('</div>');
+    echo('</div>');
+    /*//loop through the groups
     for ($i = 1; $i < sizeof($groups); $i++) {
         //don't use root (index 0)
         if ($groups[$i]['RB_Parent'] != 0) {
@@ -109,7 +145,7 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
             }
             echo('</div>');
         }
-    }
+    }*/
     ?>
 </div>
 </body>

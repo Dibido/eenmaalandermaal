@@ -1,6 +1,11 @@
 .categorie{
     column-count: 4;
+    column-width: 150px;
     column-gap: 20px;
+}
+
+.categorie a {
+    height: 50px;
 }
 
 .page-header{
