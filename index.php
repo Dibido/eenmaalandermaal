@@ -121,7 +121,7 @@
 
         <!-- Carousel -->
 
-        <div class=" col-lg-6 col-md-9 col-sm-12 col-xs-12 VeilingShowcase" id="VeilingShowcase">
+        <div class="well col-lg-6 col-md-9 col-sm-12 col-xs-12 VeilingShowcase" id="VeilingShowcase">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
@@ -133,24 +133,26 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
                     <div class="item active">
-                        <p class="Voorwerp-text"
-                           style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model
-                            S 95D 20.000 </p>
-                        <div><img class="Carousel-image" src="Images/ModelS.jpeg" alt="Model S"></div>
+                        <div class="veiling-header-carousel">
+                            <div class="veiling-titel-carousel label label-info">
+                                Gratis Model S
+                            </div>
+                            <div class="veiling-prijs-tijd">
+                                <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000
+                                </div>
+                                <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="veiling-image-carousel" style="background-image:url(Images/16-9.jpeg)"></div>
                     </div>
 
                     <div class="item">
-                        <p class="Voorwerp-text"
-                           style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla Model
-                            3 2018 goed als nieuw</p>
                         <div><img class="Carousel-image" src="Images/ModelX.jpeg" alt="Model X"></div>
                     </div>
 
                     <div class="item">
                         <div>
-                            <p class="Voorwerp-text"
-                               style="text-align: center; font-size: 24px; background: #524BAB; color: white; ">Tesla
-                                Model X refurbished</p>
                             <img class="Carousel-image" src="Images/Model3.jpeg" alt="Model 3">
                         </div>
                     </div>
@@ -181,6 +183,7 @@
 
             <div class="well col-xs-12">
 
+
                 <!-- Veiling template -->
                 <div class="veiling-rand col-md-8">
                     <div class="veiling">
@@ -196,6 +199,7 @@
                 </div>
                 <!-- End template -->
 
+
                 <!-- Veiling template -->
                 <div class="veiling-rand col-md-8">
                     <div class="veiling">
@@ -207,13 +211,14 @@
                             <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                             <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
                         </div>
+                    </div>
                 </div>
+
                 <!-- End template -->
 
-            </div>
 
+            </div>
         </div>
-    </div>
 </div>
 
         <!-- Extra advertenties -->
@@ -371,11 +376,10 @@
     </div>
 
     <script>
-        /*
+
         $(".Categoriën").css({'height':($(".BijnaGesloten").height()+'px')});
         $(".VeilingShowcase").css({'height':($(".BijnaGesloten").height()+'px')});
 
-        */
     </script>
 
 </body>
