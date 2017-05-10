@@ -23,7 +23,7 @@
     height: 100%;
 }
 .veiling-image-carousel{
-    position:relative;
+    position:absolute;
     width: 100%;
     height: 0;
     padding-bottom: 56.25%  ; /* % of width, defines aspect ratio*/
@@ -33,11 +33,12 @@
     background-position-x: center;
     background-size: contain;
 }
-
-.veiling-header-carousel{
-    height: 33.75%;
-}
 .veiling-titel-carousel{
-    display: inline-block;
-    height: 50%;
+    z-index: 100;
+    position: relative;
+    bottom: 0;
+    width:100%;
+    background-color: #F6D155;
+    color: white;
+    font-size: 28px;
 }

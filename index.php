@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="CSS/navigation.css">
 
 
-
 </head>
 
 <body>
@@ -47,7 +46,9 @@
             </div>
             <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
             </button>
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch">Advanced Search</button>
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch">Advanced
+                Search
+            </button>
         </form>
 
         <div class="pull-right">
@@ -94,7 +95,7 @@
     <div class="row well">
 
 
-     <!-- Categoriën -->
+        <!-- Categoriën -->
 
         <div class="col-md-3 visible-lg Categoriën" id="Categoriën">
             <div class="list-group">
@@ -112,7 +113,6 @@
                 <a href="#" class="list-group-item">Boeken</a>
                 <a href="#" class="list-group-item">Vestibulum at eros</a>
                 <a href="#" class="list-group-item">Electronica</a>
-                <a href="#" class="list-group-item">Boeken</a>
                 <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
                         class="text-right glyphicon glyphicon-plus-sign"></i></a>
             </div>
@@ -121,68 +121,69 @@
 
         <!-- Carousel -->
 
-        <div class="well col-lg-6 col-md-9 col-sm-12 col-xs-12 VeilingShowcase" id="VeilingShowcase">
-            <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                <!-- Indicators -->
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                </ol>
+        <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12">
 
-                <!-- Wrapper for slides -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <div class="veiling-header-carousel">
-                            <div class="veiling-titel-carousel label label-info">
-                                Gratis Model S
-                            </div>
-                            <div class="veiling-prijs-tijd">
-                                <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000
-                                </div>
-                                <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="veiling-image-carousel" style="background-image:url(Images/16-9.jpeg)"></div>
-                    </div>
-
-                    <div class="item">
-                        <div><img class="Carousel-image" src="Images/ModelX.jpeg" alt="Model X"></div>
-                    </div>
-
-                    <div class="item">
-                        <div>
-                            <img class="Carousel-image" src="Images/Model3.jpeg" alt="Model 3">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Left and right controls -->
-                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+            <div class="list-group">
+                <a href="#" class="list-group-item active text-center">Hot deals</a>
             </div>
+
+
+            <div class="well">
+                <div id="myCarousel" class="carousel slide VeilingShowcase" id="VeilingShowcase" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        <li data-target="#myCarousel" data-slide-to="2"></li>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <div class="veiling-image-carousel" style="background-image:url(Images/16-9.jpeg)"></div>
+                            <div class="veiling-titel-carousel text-center"><p>Mooie Tesla Model S</p></div>
+                        </div>
+
+                        <div class="item">
+                            <div class="veiling-image-carousel" style="background-image:url(Images/ModelX.jpeg)"></div>
+                        </div>
+
+                        <div class="item">
+                            <div class="veiling-image-carousel" style="background-image:url(Images/21-9.jpg)"></div>
+                        </div>
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+
+
         </div>
 
 
         <!-- Bijna gesloten veilingen -->
 
 
-        <div class="col-md-3 visible-md visible-lg BijnaGesloten" id="BijnaGesloten">
+        <div class="col-md-3 visible-md visible-lg">
 
             <div class="list-group">
                 <a href="#" class="list-group-item active text-center">Veiling gaat sluiten</a>
             </div>
 
 
-            <div class="well col-xs-12">
+            <div class="well col-xs-12 BijnaGesloten" id="BijnaGesloten">
 
+                <div class="col-md-2">
+
+                </div>
 
                 <!-- Veiling template -->
                 <div class="veiling-rand col-md-8">
@@ -198,6 +199,13 @@
                     </div>
                 </div>
                 <!-- End template -->
+
+                <div class="col-md-2">
+
+                </div>
+                <div class="col-md-2">
+
+                </div>
 
 
                 <!-- Veiling template -->
@@ -219,9 +227,9 @@
 
             </div>
         </div>
-</div>
+    </div>
 
-        <!-- Extra advertenties -->
+    <!-- Extra advertenties -->
 
     <div class="container-fluid">
         <div class="row well">
@@ -377,8 +385,8 @@
 
     <script>
 
-        $(".Categoriën").css({'height':($(".BijnaGesloten").height()+'px')});
-        $(".VeilingShowcase").css({'height':($(".BijnaGesloten").height()+'px')});
+        $(".Categoriën").css({'height': ($(".BijnaGesloten").height() + 'px')});
+        $(".VeilingShowcase").css({'height': ($(".BijnaGesloten").height() + 'px')});
 
     </script>
 
