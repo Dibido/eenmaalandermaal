@@ -131,12 +131,11 @@
 
     <!-- Trending items -->
 
-    <div class="well well-sm col-md-9 pull-left">
+    <d iv class="well well-sm col-md-9 pull-left">
         <h2>Resultaten</h2>
         <!-- test -->
 
 
-        <div class="container">
     <div class="well well-sm">
         <strong>Display</strong>
         <div class="btn-group">
@@ -173,6 +172,9 @@
             Gratis Model S
         </div>
         <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+        <p >
+                        Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
         <div class="veiling-prijs-tijd">
             <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
             <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -228,11 +230,7 @@ $(document).ready(function() {
                 <li><a href="#">4</a></li>
                 <li><a href="#">5</a></li>
             </ul>
-    </div>
 </div>
-
- 
-
 
 
 </body>

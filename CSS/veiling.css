@@ -8,6 +8,11 @@
     background-color: #f0f0f0;
     padding: 10px;
     border-radius: 15px;
+}
+
+.veiling .p{
+font-size: 14px; /* toegevoegd voor resultaten/description */
+}
 
 }
 .label{
