@@ -9,6 +9,7 @@
 
     <!-- bootstrap !-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="CSS/theme.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -17,10 +18,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
     
 
-
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/categorie-old.css">
-    <link rel="stylesheet" href="CSS/advert.css">
 
 </head>
 
@@ -31,7 +30,7 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <a href="index.php" class="navbar-brand">
-            <img src="Images/Site-logo.png" alt="EenmaalAndermaal Logo">
+            <img src="Images/testlogo.png" alt="EenmaalAndermaal Logo">
         </a>
 
         <form class="navbar-form navbar-left">
@@ -40,7 +39,7 @@
             </div>
             <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
             </button>
-            <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-menu-down"></i></button>
+            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch">Advanced Search</button>
         </form>
 
         <div class="pull-right">
@@ -54,13 +53,12 @@
                 </li>
                 <li>
                     <button class="btn btn-default navbar-btn hidden-sm hidden-xs NavRightButton"><i
-                                class="glyphicon glyphicon-user"></i></button>
+                            class="glyphicon glyphicon-user"></i></button>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-
 <!-- Mobile Buttons -->
 
 <div class="container-fluid collapse text-center" id="MobileButtons" style="font-size: 24px;">
@@ -72,28 +70,55 @@
     </div>
 </div>
 
-<!-- Category bar -->
+<!-- Filter bar -->
 
 
 
 <div class="container-fluid">
-    <div class="col-md-2">
+    <div class="col-md-3">
         <div class="visible-lg visible-md visible-sm visible-xs">
             <div class="list-group">
-                <a href="#" class="list-group-item active">
-                    Opties
-                </a>
-                <a href="#" class="list-group-item">Prijs</a>
+                <a href="#" class="list-group-item active">Opties</a>
 
                 <a href="#" class="list-group-item">Prijs: <b>€ 10 - € 1000</b> <input id="pslider" type="text" class="span2" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[150,450]"/> </a>
-<script>
-var slider = new Slider('#pslider', {});
-</script>
 
+                 <a href="#" class="list-group-item">Rating: <b>1</b> 
+                    <select id="example">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+ 
+                <a href="#" class="list-group-item">Afstand: <b>10KM - 100KM</b> <input id="aslider" type="text" class="span2" value="" data-slider-min="10" data-slider-max="500" data-slider-step="5" data-slider-value="[10,100]"/> </a>
+
+                    <script>
+                    var slider = new Slider('#pslider', {});
+                    var slider = new Slider('#aslider', {});
+
+                       $(function() {
+                          $('#example').barrating({
+                            theme: 'fontawesome-stars'
+                          });
+                       });
+
+                    </script>
             </div>
+
+                <a href="#" class="list-group-item active" id="Header-Categories">
+                    Categorieën
+                </a>
+                <a href="#" class="list-group-item">Auto's</a>
+                <a href="#" class="list-group-item">Electronica</a>
+                <a href="#" class="list-group-item">Boeken</a>
+                <a href="#" class="list-group-item">Vestibulum at eros</a>
+                <a href="#" class="list-group-item">Electronica</a>
+                <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
+                        class="text-right glyphicon glyphicon-plus-sign"></i></a>
         </div>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
         <ol class="breadcrumb">
             <li><a href="index.php">Home</a></li>
             <li class="active">Resultaten</li>
@@ -102,7 +127,7 @@ var slider = new Slider('#pslider', {});
 
     <!-- Trending items -->
 
-    <div class="well well-sm col-md-10 pull-right">
+    <div class="well well-sm col-md-9 pull-left">
         <h2>Resultaten</h2>
         <div class="advert col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>

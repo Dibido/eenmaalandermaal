@@ -33,6 +33,10 @@ INNER JOIN Bod b ON b.BOD_voorwerpnummer = v.VW_voorwerpnummer
 WHERE b.BOD_bodbedrag BETWEEN '$MinPrijs' AND '$MaxPrijs'
 
 
+/* Haal bestand op bij voorwerp */
+SELECT BES_voorwerpnummer, BES_filenaam  FROM Bestand b INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BES_voorwerpnummer
+
+
 
 
 --(SELECT max(BOD_bodbedrag) AS HuidigBod FROM Bod b)
