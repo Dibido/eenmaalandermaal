@@ -45,6 +45,8 @@
     width: 49%;
 }
 .veiling-rating-bied{
+    display:flex;
+    justify-content: space-around;
     width: 100%;
 }
 .rating{

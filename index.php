@@ -17,6 +17,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="CSS/theme.css">
+    <link rel="stylesheet" href="CSS/BootstrapXL.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -24,6 +25,7 @@
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
+
 
 
 </head>
@@ -91,7 +93,10 @@
 <div class="container-fluid">
     <div class="row well">
 
-        <div class="col-md-3 visible-lg">
+
+     <!-- Categoriën -->
+
+        <div class="col-md-3 visible-lg Categoriën" id="Categoriën">
             <div class="list-group">
                 <a href="#" class="list-group-item active" id="Header-Categories">
                     Categorieën
@@ -114,9 +119,9 @@
         </div>
 
 
-        <!--Carousel -->
+        <!-- Carousel -->
 
-        <div class="col-md-6 col-sm-9 col-xs-9">
+        <div class=" col-lg-6 col-md-9 col-sm-12 col-xs-12 VeilingShowcase" id="VeilingShowcase">
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
@@ -167,7 +172,7 @@
         <!-- Bijna gesloten veilingen -->
 
 
-        <div class="col-md-3 visible-md visible-lg">
+        <div class="col-md-3 visible-md visible-lg BijnaGesloten" id="BijnaGesloten">
 
             <div class="list-group">
                 <a href="#" class="list-group-item active text-center">Veiling gaat sluiten</a>
@@ -177,7 +182,7 @@
             <div class="well col-xs-12">
 
                 <!-- Veiling template -->
-                <div class="veiling-rand col-md-12">
+                <div class="veiling-rand col-md-8">
                     <div class="veiling">
                         <div class="veiling-titel label label-info">
                             Gratis Model S
@@ -192,7 +197,7 @@
                 <!-- End template -->
 
                 <!-- Veiling template -->
-                <div class="veiling-rand col-md-12">
+                <div class="veiling-rand col-md-8">
                     <div class="veiling">
                         <div class="veiling-titel label label-info">
                             Gratis Model S
@@ -215,13 +220,14 @@
 
     <div class="container-fluid">
         <div class="row well">
+
             <!-- Veiling template -->
-            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
                 <div class="veiling">
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -239,14 +245,13 @@
                 </div>
             </div>
             <!-- End template -->
-
             <!-- Veiling template -->
-            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
                 <div class="veiling">
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -264,14 +269,13 @@
                 </div>
             </div>
             <!-- End template -->
-
             <!-- Veiling template -->
-            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
                 <div class="veiling">
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -289,14 +293,13 @@
                 </div>
             </div>
             <!-- End template -->
-
             <!-- Veiling template -->
-            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
                 <div class="veiling">
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -314,14 +317,13 @@
                 </div>
             </div>
             <!-- End template -->
-
             <!-- Veiling template -->
-            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
                 <div class="veiling">
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -339,14 +341,13 @@
                 </div>
             </div>
             <!-- End template -->
-
             <!-- Veiling template -->
-            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
                 <div class="veiling">
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -364,62 +365,18 @@
                 </div>
             </div>
             <!-- End template -->
-
-            <!-- Veiling template -->
-            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <div class="veiling">
-                    <div class="veiling-titel label label-info">
-                        Gratis Model S
-                    </div>
-                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
-                    <div class="veiling-prijs-tijd">
-                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-                    </div>
-                    <div class="veiling-rating-bied label label-default">
-                        <div class="rating text-center">
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                        </div>
-                        <button class="btn btn-primary bied">Bied Nu!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- End template -->
-
-            <!-- Veiling template -->
-            <div class="veiling-rand col-xs-6 col-sm-4 col-md-3 col-lg-2">
-                <div class="veiling">
-                    <div class="veiling-titel label label-info">
-                        Gratis Model S
-                    </div>
-                    <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
-                    <div class="veiling-prijs-tijd">
-                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-                    </div>
-                    <div class="veiling-rating-bied label label-default">
-                        <div class="rating text-center">
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                        </div>
-                        <button class="btn btn-primary bied">Bied Nu!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- End template -->
-
-
 
 
         </div>
     </div>
+
+    <script>
+        /*
+        $(".Categoriën").css({'height':($(".BijnaGesloten").height()+'px')});
+        $(".VeilingShowcase").css({'height':($(".BijnaGesloten").height()+'px')});
+
+        */
+    </script>
 
 </body>
 </html>

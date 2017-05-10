@@ -13,6 +13,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="CSS/theme.css">
+    <link rel="stylesheet" href="CSS/BootstrapXL.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -28,7 +29,7 @@
 
 
 <!-- Veiling template -->
-<div class="veiling-rand col-md-3">
+<div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
     <div class="veiling">
         <div class="veiling-titel label label-info">
             Gratis Model S
