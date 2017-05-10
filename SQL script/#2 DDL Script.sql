@@ -86,7 +86,7 @@ CREATE TABLE Bestand(
   BES_voorwerpnummer BIGINT       NOT NULL,
   CONSTRAINT PK_Filenaam PRIMARY KEY (BES_filenaam),
   CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (BES_voorwerpnummer) REFERENCES Voorwerp(VW_voorwerpnummer) ON UPDATE CASCADE ON DELETE CASCADE ,
-  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
+--  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
 )
 
 CREATE TABLE Bod (

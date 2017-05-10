@@ -39,7 +39,7 @@ INSERT INTO Landen(LAN_landcode, LAN_landnaam) VALUES('USA', 'Verenigde Staten')
 INSERT INTO Landen(LAN_landcode, LAN_landnaam) VALUES('VIR', 'Amerikaanse Maagdeneilanden'),('VNM', 'Vietnam'),('VUT', 'Vanuatu'),('WLF', 'Wallis en Futuna'),('WSM', 'Samoa'),('YEM', 'Jemen'),('ZAF', 'Zuid-Afrika'),('ZWE', 'Zimbabwe'),('ZMB', 'Zambia')
 
 
-
+/* Toevpegen van test voorwerpen */
 INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
 											VW_land, VW_looptijd, VW_looptijdStart,  VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES
@@ -68,7 +68,7 @@ VALUES
 	('Testproduct23', 'beschrijving23', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
 	('Testproduct24', 'beschrijving24', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384','Arnhem', 'NLD', 3,'2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus')
 
-
+/* Toevoegen van voorbeeld biedingen */
 INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(15,10,'Abdul'),(11,11,'Lucius'),(4,21,'Plato'),(6,31,'Wesley'),(12,41,'Basil'),(10,51,'Asher'),(3,61,'Orson'),(6,71,'Vaughan'),(18,81,'Oliver'),(8,91,'Beau');
 INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(16,101,'Derek'),(1,111,'Hakeem'),(7,121,'Justin'),(6,131,'Neville'),(5,141,'Gil'),(1,151,'Basil'),(15,161,'Reece'),(18,171,'Abel'),(20,181,'Stewart'),(15,191,'Daniel');
 INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(21,201,'Ezekiel'),(1,211,'John'),(13,221,'Stephen'),(4,231,'Dylan'),(8,241,'Uriel'),(24,251,'Howard'),(2,261,'Chaim'),(17,271,'Honorato'),(8,281,'Chadwick'),(8,291,'Prescott');
@@ -100,10 +100,11 @@ INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(19,2700,'
 INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(23,2800,'Basil'),(6,2810,'Thomas'),(16,2820,'Cadman'),(15,2830,'Callum'),(3,2840,'Brennan'),(2,2850,'Brenden'),(18,2860,'Samson'),(10,2870,'Isaac'),(11,2880,'Odysseus'),(10,2890,'Rigel');
 INSERT INTO Bod(BOD_Voorwerpnummer,BOD_bodbedrag,BOD_gebruiker) VALUES(18,2900,'Vladimir'),(21,2910,'Blake'),(23,2920,'Rafael'),(8,2930,'Linus'),(10,2940,'Byron'),(24,2950,'Zeus'),(18,2960,'Cruz'),(12,2970,'Abraham'),(2,2980,'Christian'),(23,2990,'Chester');
 
-
+/* Rubriek root toevoegen */
 INSERT 	INTO	Rubriek	(RB_Nummer, RB_Naam, 	RB_Volgnummer)				
 VALUES					(0,			'root',	0)
 
+/* Rubrieken toevoegen */
 INSERT INTO Rubriek	(RB_Nummer, RB_Naam, 								RB_Parent, RB_Volgnummer)				
 VALUES				(1,			'Antiek en Kunst',						0,			1),
 					(2,			'Audio, Tv en Foto',					0,			2),
@@ -350,6 +351,7 @@ VALUES				(1,			'Antiek en Kunst',						0,			1),
 					(243,		'Verlichting',							62,			243),
 					(244,		'Overige onderdelen',					62,			244)
 
+/* Toevoegen rubrieken aan voorwerpen */
 INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(4,163),(15,129),(8,118),(14,151),(14,81),(16,152),(14,236),(6,196),(7,131),(3,70);
 INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(19,152),(5,120),(19,67),(22,194),(19,111),(23,81),(12,74),(18,170),(13,122),(9,135);
 INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(5,202),(4,88),(3,133),(10,92),(4,78),(11,109),(12,181),(15,208),(7,110),(11,88);
@@ -360,3 +362,19 @@ INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(8,
 INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(3,196),(2,65),(23,210),(3,116),(15,113),(16,147),(7,153),(12,132),(8,159),(5,203);
 INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(19,69),(1,151),(10,239),(6,118),(4,141),(14,87),(8,109),(13,204),(11,140),(21,146);
 INSERT INTO Voorwerp_Rubriek([VR_Voorwerp_Nummer],[VR_Rubriek_Nummer]) VALUES(12,233),(7,181),(5,91),(24,104),(9,129),(4,94),(3,131),(17,125),(16,207),(6,97);
+
+
+/* Toevoegen voorbeeld afbeeldingen aan voorwerpen */
+SELECT * FROM Voorwerp
+SELECT * FROM Bestand
+INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
+VALUES				('Images/testImg1.jpg', 1),
+					('Images/testImg2.jpg', 2),
+					('Images/testImg3.jpg', 3),
+					('Images/testImg4.jpg', 4),
+					('Images/testImg5.jpg', 5),
+					('Images/testImg6.jpg', 6),
+					('Images/testImg7.jpg', 7),
+					('Images/testImg8.jpg', 8),
+					('Images/testImg9.jpg', 9),
+					('Images/testImg10.jpg', 10)
