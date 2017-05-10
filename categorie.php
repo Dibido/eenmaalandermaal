@@ -1,8 +1,12 @@
 <?php
-include('PHP/connection.php');
+require('PHP/connection.php');
 
-$statement = "SELECT * FROM eenmaalandermaal.dbo.Rubriek";
-$results = $connection->query("SELECT RB_Naam FROM eenmaalandermaal.dbo.Rubriek WHERE RB_Parent = 0")->fetchAll(PDO::FETCH_COLUMN[1]);
+//Read all categories from the database
+$query = "SELECT RB_Naam, RB_Nummer FROM Rubriek WHERE RB_Parent = 0";
+$groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
+$query = "SELECT RB_Naam, RB_Nummer FROM Rubriek WHERE RB_Parent IN (SELECT RB_Nummer FROM Rubriek WHERE RB_Parent = 0)";
+$categories = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
+print_r($results);
 ?>
 
 <!doctype html>
@@ -85,107 +89,27 @@ $results = $connection->query("SELECT RB_Naam FROM eenmaalandermaal.dbo.Rubriek 
     </div>
 </div>
 
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+    <li class="breadcrumb-item active">Categorieën</li>
+</ol>
+
 <!-- Category Navigation -->
 
-<?php
-echo('<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">');
-foreach ($results as $group) {
-    echo('<div class="panel panel-default">');
-    echo('<div class="panel-heading" role="tab" id="heading' . $group[0] . '">');
-    echo('<h4 class="panel-title">');
-    echo('<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse' . $group[0] .'"
-                   aria-expanded="true" aria-controls="collapse' . $group[0] .'">');
-    echo($group[0]);
-    echo('</a>');
-    echo('</h4>');
+<div class="container">
+    <?php
+    echo('<div class="well well-sm">');
+    foreach ($groups as $group) {
+        echo('<h4>' . $group['RB_Naam'] . '</h4>');
+    }
+    echo('<div>');
+    foreach ($categories as $category) {
+        echo('<h6>' . $category['RB_Naam'] . '</h6>');
+    }
     echo('</div>');
-    echo('</div>');
-}
+    ?>
 
-?>
-<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingAutos">
-            <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAutos"
-                   aria-expanded="true" aria-controls="collapseAutos">
-                    Auto's
-                </a>
-            </h4>
-        </div>
-        <div id="collapseAutos" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAutos">
-            <div class="panel-body">
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingUitlaten">
-                        <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#collapseAutos"
-                               href="#collapseUitlaten"
-                               aria-expanded="true" aria-controls="collapse">
-                                Uitlaten
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapseUitlaten" class="panel-collapse collapse" role="tabpanel"
-                         aria-labelledby="headingUitlaten">
-                        <div class="panel-body">
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingBMW">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#collapseUitlaten"
-                                           href="#collapse"
-                                           aria-expanded="true" aria-controls="collapse">
-                                            BMW
-                                        </a>
-                                    </h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="headingAutos">
-            <h4 class="panel-title">
-                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseAutos"
-                   aria-expanded="true" aria-controls="collapseAutos">
-                    Auto's
-                </a>
-            </h4>
-        </div>
-        <div id="collapseAutos" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingAutos">
-            <div class="panel-body">
-                <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingUitlaten">
-                        <h4 class="panel-title">
-                            <a role="button" data-toggle="collapse" data-parent="#collapseAutos"
-                               href="#collapseUitlaten"
-                               aria-expanded="true" aria-controls="collapse">
-                                Uitlaten
-                            </a>
-                        </h4>
-                    </div>
-                    <div id="collapseUitlaten" class="panel-collapse collapse" role="tabpanel"
-                         aria-labelledby="headingUitlaten">
-                        <div class="panel-body">
-                            <div class="panel panel-default">
-                                <div class="panel-heading" role="tab" id="headingBMW">
-                                    <h4 class="panel-title">
-                                        <a role="button" data-toggle="collapse" data-parent="#collapseUitlaten"
-                                           href="#collapse"
-                                           aria-expanded="true" aria-controls="collapse">
-                                            BMW
-                                        </a>
-                                    </h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 </body>
