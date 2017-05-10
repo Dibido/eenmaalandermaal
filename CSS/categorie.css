@@ -4,11 +4,8 @@
     column-gap: 20px;
 }
 
-.categorie a::first-line{
-    margin-top: 0px;
-}
-.categorie a:last-of-type{
-    margin-bottom: 0px;
+.categorie a {
+    height: 50px;
 }
 
 .page-header{
