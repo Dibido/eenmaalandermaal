@@ -2,11 +2,10 @@
 require('PHP/connection.php');
 
 //Read all categories from the database
-$query = "SELECT RB_Naam, RB_Nummer FROM Rubriek WHERE RB_Parent = 0";
+$query = "SELECT * FROM Rubriek";
 $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 $query = "SELECT RB_Naam, RB_Nummer FROM Rubriek WHERE RB_Parent IN (SELECT RB_Nummer FROM Rubriek WHERE RB_Parent = 0)";
 $categories = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
-print_r($results);
 ?>
 
 <!doctype html>
@@ -100,17 +99,25 @@ print_r($results);
 <div class="container">
     <?php
     echo('<div class="well well-sm">');
-    foreach ($groups as $group) {
-        echo('<h4>' . $group['RB_Naam'] . '</h4>');
+    for ($i = 0; $i < sizeof($groups); $i++){
+        if($groups[$i]['RB_Parent']!= 0){
+           $i = sizeof($groups);
+        }
+        echo('<h4>' . $groups[$i]['RB_Naam'] . '</h4>');
+        $parentwaarde = $groups[$i]['RB_Nummer'];
+        for($j = 0; $j < sizeof($groups); $j++){
+            if($groups[$j]['RB_Parent'] == $parentwaarde){
+                echo('<h6>' . $groups[$j]['RB_Naam'] . '</h6>');
+            }
+        }
     }
     echo('<div>');
-    foreach ($categories as $category) {
-        echo('<h6>' . $category['RB_Naam'] . '</h6>');
-    }
     echo('</div>');
     ?>
 
+
 </div>
+
 
 </body>
 </html>
