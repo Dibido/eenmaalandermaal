@@ -4,8 +4,6 @@ require('PHP/connection.php');
 //Read all categories from the database
 $query = "SELECT * FROM Rubriek";
 $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
-$query = "SELECT RB_Naam, RB_Nummer FROM Rubriek WHERE RB_Parent IN (SELECT RB_Nummer FROM Rubriek WHERE RB_Parent = 0)";
-$categories = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!doctype html>
@@ -25,7 +23,7 @@ $categories = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/navigation.css">
     <link rel="stylesheet" href="CSS/theme.css">
-    <!--<link rel="stylesheet" href="CSS/BootstrapXL.css">-->
+    <link rel="stylesheet" href="CSS/categorie.css">
 
 </head>
 
@@ -95,31 +93,33 @@ $categories = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 </ol>
 
 <!-- Category Navigation -->
-
 <div class="container">
     <?php
     echo('<div class="well well-sm">');
+    //loop through the groups
     for ($i = 1; $i < sizeof($groups); $i++) {
+        //don't use root (index 0)
         if ($groups[$i]['RB_Parent'] != 0) {
             $i = sizeof($groups);
         } else {
-            echo('<h4>' . $groups[$i]['RB_Naam'] . '</h4>');
+            //display parent
+            $parenturl = urlencode($groups[$i]['RB_Naam']);
+            echo('<a href="resultaten.php?categorie=' . $parenturl . '"><h4>' . $groups[$i]['RB_Naam'] . '</h4></a>');
             $parentwaarde = $groups[$i]['RB_Nummer'];
-
+            echo('<div class="categorie">');
+            //loop through groups
             for ($j = 0; $j < sizeof($groups); $j++) {
+                //find all children of selected parent
                 if ($groups[$j]['RB_Parent'] == $parentwaarde) {
-                    echo('<a href="resultaten.php?categorie=' . $groups[$j]['RB_Naam'] . '"><h6>' . $groups[$j]['RB_Naam'] . '</h6></a>');
+                    //display children
+                    $childurl = urlencode($groups[$j]['RB_Naam']);
+                    echo('<a href="resultaten.php?categorie=' . $childurl . '"><h6>' . $groups[$j]['RB_Naam'] . '</h6></a>');
                 }
             }
+            echo('</div>');
         }
     }
-    echo('<div>');
-    echo('</div>');
     ?>
-
-
 </div>
-
-
 </body>
 </html>
