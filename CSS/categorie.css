@@ -2,3 +2,9 @@
     column-count: 4;
     column-gap: 20px;
 }
+
+.page-header{
+    padding-bottom: 5px;
+    margin: 40px 0 5px;
+    border-bottom: 1px solid #f6d155;
+}
