@@ -22,5 +22,3 @@ GO
 
 GO
 create DATABASE eenmaalandermaal
-
-GO

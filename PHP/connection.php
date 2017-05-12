@@ -1,6 +1,7 @@
 <?php
 
-$dsn = "sqlsrv:Server=mssql3.iproject.icasites.nl,1433;Database=iproject3";
+/*
+$dsn = "sqlsrv:Server=mssql.iproject.icasites.nl,1433;Database=iproject3";
 
 try
 
@@ -10,7 +11,7 @@ try
 
     $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-    $sql = "SELECT * FROM Information_Schema.Tables";
+    $sql = "SELECT * FROM Voorwerp";
 
     foreach ($conn->query($sql) as $row)
 
@@ -35,10 +36,10 @@ catch(PDOException $e)
 ?>
 
 
+*/
 
-/*
-$hostname = "mssql.iproject3.icasites.nl,1433";
-$dbname = "iproject";
+$hostname = "mssql.iproject.icasites.nl,1433";
+$dbname = "iproject3";
 $username = "iproject3";
 $pw= "QNxaK62B";
 $connection=NULL;
@@ -57,8 +58,8 @@ try {
         exit();
 }
 
-*/
-?>
+
+
 
 
 
