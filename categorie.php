@@ -105,6 +105,13 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_BOTH);
 </ol>
 
 <!-- Category Navigation -->
+<a href="#A">a</a>
+<a href="#B">b</a>
+<a href="#C">c</a>
+<a href="#D">d</a>
+<a href="#E">e</a>
+<a href="#F">f</a>
+<a href="#G">g</a>
 <div class="container">
     <?php
     $currentgroup = '';
@@ -117,8 +124,9 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_BOTH);
                 echo('</div>');
             }
             $currentgroup = $group[0];
-            echo('<div class="col-xs-5 col-sm-4 col-md-3 col-xs-push-2 col-sm-push-1 col-md-push-1">');
+            echo('<div class="col-xs-6 col-sm-5 col-md-3 col-xs-push-1 col-sm-push-2 col-md-push-0 col-lg-push-1">');
             echo('<h4>' . $group[0] . '</h4>');
+            echo('<section id="'. $group[0][0] . '"></section>');
         }
         $eerstekeer = false;
         echo('<h6>' . $group[1] . '</h6>');
