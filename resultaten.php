@@ -177,14 +177,6 @@
         <div class="veiling-titel label label-info">
             Gratis Model S
         </div>
-        <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
-            <div  class="resultaten-beschrijving">  
-                <p>
-                    Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                    sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
-                </p>
-             </div>   
-
         <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
         <p >
                         Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
