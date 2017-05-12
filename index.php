@@ -3,6 +3,7 @@
 require('PHP/connection.php');
 require('PHP/Functions.php');
 
+$response = NULL;
 
 $query = "
 SELECT
@@ -25,17 +26,20 @@ FROM Rubriek
                      ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
                  GROUP BY RB_Parent) eerste ON Rubriek.RB_Volgnummer = eerste.RB_Parent
    GROUP BY Rubriek.RB_Parent, aantal) tweede ON Rubriek.RB_Volgnummer = tweede.RB_Parent
+WHERE Rubriek.RB_Parent = 0
 GROUP BY Rubriek.RB_Naam
 ORDER BY MAX(aantal) DESC
+
 ";
 
 try {
+    global $response;
     $response = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
-    print_r($response);
 } catch (Exception $e) {
     echo('<h1>De categorieen konden niet opgehaald worden</h1>');
     echo('<p>Error: '. $e->getMessage() . '</p>');
 }
+    $TopCategories = $response;
 
 
 ?>
@@ -143,17 +147,14 @@ try {
                 <a href="#" class="list-group-item active" id="Header-Categories">
                     Categorieën
                 </a>
-                <a href="#" class="list-group-item">Auto's</a>
-                <a href="#" class="list-group-item">Electronica</a>
-                <a href="#" class="list-group-item">Boeken</a>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
-                <a href="#" class="list-group-item">Electronica</a>
-                <a href="#" class="list-group-item">Boeken</a>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
-                <a href="#" class="list-group-item">Electronica</a>
-                <a href="#" class="list-group-item">Boeken</a>
-                <a href="#" class="list-group-item">Vestibulum at eros</a>
-                <a href="#" class="list-group-item">Electronica</a>
+                <?php
+
+                foreach($TopCategories as $Category){
+
+                    echo"<a href=\"#\" class=\"list-group-item\">" . $Category['RB_Naam'] . "</a>";
+                }
+
+                ?>
                 <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
                         class="text-right glyphicon glyphicon-plus-sign"></i></a>
             </div>
