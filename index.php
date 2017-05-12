@@ -1,3 +1,45 @@
+<?php
+
+require('PHP/connection.php');
+require('PHP/Functions.php');
+
+
+$query = "
+SELECT
+  TOP 10
+  RB_Naam,
+  SUM(tweede.aantal)
+FROM Rubriek
+  INNER JOIN
+  (SELECT
+     Rubriek.RB_Parent,
+     aantal
+   FROM Rubriek
+     INNER JOIN (SELECT
+                   RB_Parent,
+                   COUNT(BOD_voorwerpnummer) AS aantal
+                 FROM Voorwerp_Rubriek
+                   INNER JOIN Rubriek
+                     ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                   INNER JOIN Bod
+                     ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
+                 GROUP BY RB_Parent) eerste ON Rubriek.RB_Volgnummer = eerste.RB_Parent
+   GROUP BY Rubriek.RB_Parent, aantal) tweede ON Rubriek.RB_Volgnummer = tweede.RB_Parent
+GROUP BY Rubriek.RB_Naam
+ORDER BY MAX(aantal) DESC
+";
+
+try {
+    $response = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    print_r($response);
+} catch (Exception $e) {
+    echo('<h1>De categorieen konden niet opgehaald worden</h1>');
+    echo('<p>Error: '. $e->getMessage() . '</p>');
+}
+
+
+?>
+
 <!doctype html>
 
 <!-- onzin comment voor pushes -->
@@ -30,15 +72,6 @@
 </head>
 
 <body>
-
-<?php
-
-
-
-
-
-?>
-
 
 <!-- Navigation -->
 
