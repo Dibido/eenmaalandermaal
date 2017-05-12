@@ -112,6 +112,7 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_BOTH);
 <a href="#E">e</a>
 <a href="#F">f</a>
 <a href="#G">g</a>
+<a href="#H">h</a>
 <div class="container">
     <?php
     $currentgroup = '';
