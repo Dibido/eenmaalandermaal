@@ -84,7 +84,7 @@
                 <a href="#" class="list-group-item">Prijs: <b>€ 10 - € 1000</b> <input id="pslider" type="text" class="span2" value="" data-slider-min="10" data-slider-max="1000" data-slider-step="5" data-slider-value="[150,450]"/> </a>
 
                  <a href="#" class="list-group-item">Rating: <b>1</b> 
-                    <select id="example">
+                    <select>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -92,13 +92,19 @@
                       <option value="5">5</option>
                     </select>
  
-                <a href="#" class="list-group-item">Afstand: <b>10KM - 100KM</b> <input id="aslider" type="text" class="span2" value="" data-slider-min="10" data-slider-max="500" data-slider-step="5" data-slider-value="[10,100]"/> </a>
+                <a href="#" class="list-group-item">Afstand: <b>10KM - 100KM</b> <input id="aslider" type="text" class="span2" value="" data-slider-min="10" data-slider-max="500" data-slider-step="5" data-slider-value="[10,100]"/>
+                 </a>
 
                     <script>
                     var slider = new Slider('#pslider', {});
                     var slider = new Slider('#aslider', {});
                     </script>
+                    <a href="#" class="list-group-item active" style="background-color: #524bab; text-align: center;")>
+                    Aanpassen
+                </a>
+               
             </div>
+            
 
                 <a href="#" class="list-group-item active" id="Header-Categories">
                     Categorieën
@@ -172,9 +178,13 @@
             Gratis Model S
         </div>
         <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
-        <p >
-                        Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
+            <div  class="resultaten-beschrijving">  
+                <p>
+                    Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
+                    sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.
+                </p>
+             </div>   
+
         <div class="veiling-prijs-tijd">
             <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
             <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>

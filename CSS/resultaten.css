@@ -58,11 +58,23 @@
 
 .veiling-image{
     position:relative;
-    width: 100%;
+    float: left;
+    width: 50%;
     height: 0;
-    padding-bottom: 56.25% ; /* % of width, defines aspect ratio*/
+    padding-bottom: 28.125% ; /* % of width, defines aspect ratio*/
 
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: center;
     background-size: contain;
+}
+
+.veiling p{
+    font-size: 14px;
+}
+
+.resultaten-beschrijving{
+float:right;
+width: 50%;
+padding: 15px;
+}
