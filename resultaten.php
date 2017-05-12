@@ -1,15 +1,21 @@
 <?php
-require 'connection.php';
+require 'PHP/connection.php';
 
     if(!empty($_GET['zoekterm'])){
         $zoekterm = $_GET['zoekterm'];
             //bouwen query
         $sql = "SELECT TOP 50 * FROM Voorwerp  WHERE VW_titel LIKE '%$zoekterm%'";
-        echo $sql;
-            //afschieten query
-
-        $result = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        $result = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        print_r($result);
+        //outputRows($results);
     }
+
+function outputRows($results){
+    while ( $row = $results->fetch( PDO::FETCH_ASSOC )){
+            echo "<ul><pre><li>{$row['VW_voorwerpnummer']}'>{$row['VW_titel']} ({$row['VW_startprijs']})</li></pre></ul>";
+        }
+    return;
+}
 
 ?>
 
