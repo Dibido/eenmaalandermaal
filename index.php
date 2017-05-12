@@ -58,8 +58,11 @@ $query = "
 SELECT TOP 2
   --Vul hier je TOP X hoeveelheid in
   VW_voorwerpnummer,
+  VW_titel,
+  (SELECT TOP 1 BOD_Bodbedrag FROM Bod WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) as prijs,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) AS tijd,
-  COUNT(*)                                    AS Biedingen
+  COUNT(*)                                    AS Biedingen,
+  (SELECT TOP 1 BES_filenaam from Bestand WHERE BES_voorwerpnummer = VW_voorwerpnummer) as ImagePath
 FROM Voorwerp
   INNER JOIN BOD
     ON Voorwerp.VW_voorwerpnummer = BOD_voorwerpnummer
@@ -100,8 +103,9 @@ WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETD
                                                  GROUP BY Rubriek.RB_Naam
                                                  ORDER BY MAX(aantal) DESC)
                             GROUP BY BOD_voorwerpnummer, r2.RB_Naam)
-GROUP BY VW_voorwerpnummer, VW_looptijdEinde
+GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel
 ORDER BY Biedingen DESC
+
 ";
 
 try {
@@ -342,22 +346,35 @@ foreach ($TopClosed as $veiling){
 
                 <?php
 
+                /* Printing the top 2 almost closed auctions*/
+
                 foreach($TopClosed as $veiling){
                     echo "<div class=\"veiling-rand col-md-12 col-sm-6 col-xs-6\">
                     <div class=\"veiling\">
-                        <div class=\"veiling-titel label label-info\">
-                            Gratis Model S
-                        </div>
-                        <div class=\"veiling-image\" style=\"background-image:url(images/ModelS.jpeg)\"></div>
-                        <div class=\"veiling-prijs-tijd\">
-                            <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> 150000</div>
-                            <div class=\"tijd label label-default\">1:15:25 <i class=\"glyphicon glyphicon-time\"></i></div>
-                        </div>
-                    </div>
-                </div>";
+                        <div class=\"veiling-titel label label-info\">"
+                        . $veiling["VW_titel"] .
+                        "</div>
+                        <div class=\"veiling-image\"";
 
-                    print_r($veiling);
+                        if (!empty($veiling["ImagePath"])){
 
+                                   echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div>
+                                    <div class=\"veiling-prijs-tijd\">
+                                        <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
+                                        <div class=\"tijd label label-default\">" . $veiling["tijd"] . "<i class=\"glyphicon glyphicon-time\"></i></div>
+                                    </div>
+                                </div>
+                            </div>";
+
+                        } else{
+                            echo "></div>
+                                    <div class=\"veiling-prijs-tijd\">
+                                        <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
+                                        <div class=\"tijd label label-default\">" . $veiling["tijd"] . " <i class=\"glyphicon glyphicon-time\"></i></div>
+                                    </div>
+                                </div>
+                            </div>";
+                        }
                 }
 
 

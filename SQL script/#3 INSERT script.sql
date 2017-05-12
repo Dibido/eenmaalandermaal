@@ -533,13 +533,13 @@ VALUES (4, 163), (15, 129), (8, 118), (14, 151), (14, 81), (16, 152), (14, 236),
 
 /* Toevoegen voorbeeld afbeeldingen aan voorwerpen */
 INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
-VALUES ('Images/testImg1.jpg', 1),
-  ('Images/testImg2.jpg', 2),
-  ('Images/testImg3.jpg', 3),
-  ('Images/testImg4.jpg', 4),
-  ('Images/testImg5.jpg', 5),
-  ('Images/testImg6.jpg', 6),
-  ('Images/testImg7.jpg', 7),
-  ('Images/testImg8.jpg', 8),
-  ('Images/testImg9.jpg', 9),
-  ('Images/testImg10.jpg', 10)
+VALUES ('images/testImg1.jpg', 1),
+  ('images/testImg2.jpg', 2),
+  ('images/testImg3.jpg', 3),
+  ('images/testImg4.jpg', 4),
+  ('images/testImg5.jpg', 5),
+  ('images/testImg6.jpg', 6),
+  ('images/testImg7.jpg', 7),
+  ('images/testImg8.jpg', 8),
+  ('images/testImg9.jpg', 9),
+  ('images/testImg10.jpg', 10)
