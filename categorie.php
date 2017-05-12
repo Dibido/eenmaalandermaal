@@ -1,5 +1,5 @@
 <?php
-require('PHP/connection.php');
+require('PHP/connection-old.php');
 
 //Read all categories from the database
 $query = "SELECT
@@ -17,7 +17,12 @@ FROM Rubriek H
 WHERE H.RB_Parent = 0
 ORDER BY H.RB_volgnummer, H.RB_Naam, H.RB_Nummer";
 
-$groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
+try {
+    $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo('<h1>De categorieen konden niet opgehaald worden</h1>');
+    echo('<p>Error: '. $e->getMessage() . '</p>');
+}
 ?>
 
 <!doctype html>
@@ -109,24 +114,26 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="container">
     <?php
-    $currentgroup = '';
-    $eerstekeer = true;
-    echo('<div class="row well">');
-    foreach ($groups as $group) {
-        if ($group['Hoofd_Naam'] != $currentgroup) {
-            if (!$eerstekeer) {
-                echo('</div>');
+    if(isset($groups)) {
+        $currentgroup = '';
+        $eerstekeer = true;
+        echo('<div class="row well">');
+        foreach ($groups as $group) {
+            if ($group['Hoofd_Naam'] != $currentgroup) {
+                if (!$eerstekeer) {
+                    echo('</div>');
+                }
+                $currentgroup = $group['Hoofd_Naam'];
+                $url = urlencode($group['Hoofd_Nummer']);
+                echo('<div class="col-xs-6 col-sm-5 col-md-4 col-xs-push-1 col-sm-push-2 col-md-push-0 col-lg-push-1">');
+                echo('<section id="' . $group['Hoofd_Naam'][0] . '">');
+                echo('<a href="resultaten.php?category=' . $url . '"><h4>' . $group['Hoofd_Naam'] . '</h4></a>');
+                echo('</section>');
             }
-            $currentgroup = $group['Hoofd_Naam'];
-            $url = urlencode($group['Hoofd_Nummer']);
-            echo('<div class="col-xs-6 col-sm-5 col-md-4 col-xs-push-1 col-sm-push-2 col-md-push-0 col-lg-push-1">');
-            echo('<section id="' . $group['Hoofd_Naam'][0] . '">');
-            echo('<a href="resultaten.php/?category=' . $url . '"><h4>' . $group['Hoofd_Naam'] . '</h4></a>');
-            echo('</section>');
+            $eerstekeer = false;
+            $url = urlencode($group['Sub_Nummer']);
+            echo('<a href="resultaten.php?category=' . $url . '"><h6>' . $group['Sub_Naam'] . '</h6></a>');
         }
-        $eerstekeer = false;
-        $url = urlencode($group['Sub_Nummer']);
-        echo('<a href="resultaten.php/?category=' . $url . '"><h6>' . $group['Sub_Naam'] . '</h6></a>');
     }
     echo('</div>');
     ?>
