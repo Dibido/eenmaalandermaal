@@ -5,6 +5,16 @@ require('PHP/Functions.php');
 
 $response = NULL;
 
+
+/*
+ *
+ *      Getting the information for all the adverts from the database
+ *
+ *
+ */
+
+
+/*Getting the top 10 categories and saving in $TopCategories*/
 $query = "
 SELECT
   TOP 10
@@ -40,6 +50,73 @@ try {
     echo('<p>Error: '. $e->getMessage() . '</p>');
 }
     $TopCategories = $response;
+
+
+
+/* Getting the top 2 products that are almost closed en saving in $TopClosed */
+$query = "
+SELECT TOP 2
+  --Vul hier je TOP X hoeveelheid in
+  VW_voorwerpnummer,
+  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) AS tijd,
+  COUNT(*)                                    AS Biedingen
+FROM Voorwerp
+  INNER JOIN BOD
+    ON Voorwerp.VW_voorwerpnummer = BOD_voorwerpnummer
+WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 2 AND
+      --Vul hier de minimum en maximum tijd over in
+      VW_voorwerpnummer IN (SELECT BOD_voorwerpnummer
+                            FROM Bod
+                              LEFT JOIN Voorwerp_Rubriek
+                                ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
+                              LEFT JOIN Rubriek
+                                ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                              LEFT JOIN Rubriek r1
+                                ON r1.RB_Nummer = Rubriek.RB_Parent
+                              LEFT JOIN Rubriek r2
+                                ON r2.RB_Nummer = r1.RB_Parent
+                            WHERE r2.RB_Naam IN (SELECT TOP 3
+                                                   RB_Naam --Vul hier de top X categoriën in waarvan producten moeten worden laten zien.
+                                                 FROM Rubriek
+                                                   LEFT JOIN
+                                                   (SELECT
+                                                      Rubriek.RB_Parent,
+                                                      aantal
+                                                    FROM Rubriek
+                                                      LEFT JOIN (SELECT
+                                                                   RB_Parent,
+                                                                   COUNT(BOD_voorwerpnummer) AS aantal
+                                                                 FROM Voorwerp_Rubriek
+                                                                   LEFT JOIN Rubriek
+                                                                     ON Rubriek.RB_Nummer =
+                                                                        Voorwerp_Rubriek.VR_Rubriek_Nummer
+                                                                   LEFT JOIN Bod
+                                                                     ON Voorwerp_Rubriek.VR_Voorwerp_Nummer =
+                                                                        Bod.BOD_voorwerpnummer
+                                                                 GROUP BY RB_Parent) eerste
+                                                        ON Rubriek.RB_Volgnummer = eerste.RB_Parent
+                                                    GROUP BY Rubriek.RB_Parent, aantal) tweede
+                                                     ON Rubriek.RB_Volgnummer = tweede.RB_Parent
+                                                 GROUP BY Rubriek.RB_Naam
+                                                 ORDER BY MAX(aantal) DESC)
+                            GROUP BY BOD_voorwerpnummer, r2.RB_Naam)
+GROUP BY VW_voorwerpnummer, VW_looptijdEinde
+ORDER BY Biedingen DESC
+";
+
+try {
+    global $response;
+    $response = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo('<h1>De top 2 producten kunnen niet opgehaald worden</h1>');
+    echo('<p>Error: '. $e->getMessage() . '</p>');
+}
+    $TopClosed = $response;
+
+foreach ($TopClosed as $veiling){
+    print_r($veiling);
+}
+
 
 
 ?>
@@ -263,37 +340,28 @@ try {
             <div class="well col-xs-12 BijnaGesloten" id="BijnaGesloten">
 
 
-                <!-- Veiling template -->
-                <div class="veiling-rand col-md-12 col-sm-6 col-xs-6">
-                    <div class="veiling">
-                        <div class="veiling-titel label label-info">
+                <?php
+
+                foreach($TopClosed as $veiling){
+                    echo "<div class=\"veiling-rand col-md-12 col-sm-6 col-xs-6\">
+                    <div class=\"veiling\">
+                        <div class=\"veiling-titel label label-info\">
                             Gratis Model S
                         </div>
-                        <div class="veiling-image" style="background-image:url(images/ModelS.jpeg)"></div>
-                        <div class="veiling-prijs-tijd">
-                            <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                            <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
+                        <div class=\"veiling-image\" style=\"background-image:url(images/ModelS.jpeg)\"></div>
+                        <div class=\"veiling-prijs-tijd\">
+                            <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> 150000</div>
+                            <div class=\"tijd label label-default\">1:15:25 <i class=\"glyphicon glyphicon-time\"></i></div>
                         </div>
                     </div>
-                </div>
-                <!-- End template -->
+                </div>";
+
+                    print_r($veiling);
+
+                }
 
 
-                <!-- Veiling template -->
-                <div class="veiling-rand col-md-12 col-sm-6 col-xs-6">
-                    <div class="veiling">
-                        <div class="veiling-titel label label-info">
-                            Gratis Model S
-                        </div>
-                        <div class="veiling-image" style="background-image:url(images/ModelS.jpeg)"></div>
-                        <div class="veiling-prijs-tijd">
-                            <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                            <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- End template -->
+                ?>
 
 
             </div>
