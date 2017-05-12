@@ -183,6 +183,12 @@
         function outputRows($result)
         {
             foreach ($result as $row) {
+                $titel=$row['VW_titel'];
+                $beschrijving=$row['VW_beschrijving'];
+                $bodBedrag=$row['BOD_bodbedrag'];
+                $tijd=$row['VW_looptijdEinde']-$row['VW_looptijdStart'];
+
+
                 echo "<div class=\"item  col-xs-4 col-lg-4\">
             <div class=\"veiling thumbnail\">
                 <div class=\"veiling-titel label label-info\">
@@ -192,10 +198,10 @@
                 <p>{$row['VW_beschrijving']}</p>
                 <div class=\"veiling-prijs-tijd\">
                     <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\">
-                    150000000
+                                       {$row['BOD_bodbedrag']}
                     </i>
                     </div>
-                    <div class=\"tijd label label-default\">1:15:25 <i class=\"glyphicon glyphicon-time\"></i></div>
+                    <div class=\"tijd label label-default\"> $tijd <i class=\"glyphicon glyphicon-time\"></i></div>
                 </div>
                 <div class=\"veiling-rating-bied label label-default\">
                     <div class=\"rating text-center\">
