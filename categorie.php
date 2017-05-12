@@ -1,5 +1,6 @@
 <?php
 require('PHP/connection-old.php');
+require('PHP/Functions.php');
 
 //Read all categories from the database
 $query = "SELECT
@@ -21,7 +22,7 @@ try {
     $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
     echo('<h1>De categorieen konden niet opgehaald worden</h1>');
-    echo('<p>Error: '. $e->getMessage() . '</p>');
+    echo('<p>Error: ' . $e->getMessage() . '</p>');
 }
 ?>
 
@@ -101,26 +102,9 @@ try {
 </ol>
 
 <!-- Letter search -->
-<div class="text-center well well-sm">
+<div class="letter-search text-center well well-sm">
     <?php
-    if (isset($groups)) {
-        $letters = range('A', 'Z');
-        $eerstekeer = true;
-        foreach ($letters as $letter) {
-            foreach ($groups as $group) {
-                if($eerstekeer) {
-                    if ($group['Hoofd_Naam'][0] == $letter) {
-                        echo('<a href = "#' . $letter . '">' . strtolower($letter) . " " . '</a>');
-                        $eerstekeer = false;
-                    }
-                }
-            }
-            if($eerstekeer == true){
-                echo(strtolower($letter) . " " );
-            }
-            $eerstekeer = true;
-        }
-    }
+    laadLetters();
     ?>
 </div>
 
@@ -128,7 +112,7 @@ try {
 
 <div class="container">
     <?php
-    if(isset($groups)) {
+    if (isset($groups)) {
         $currentgroup = '';
         $eerstekeer = true;
         echo('<div class="row well">');
@@ -156,24 +140,7 @@ try {
 <!-- Letter search bottom -->
 <div class="text-center well well-sm">
     <?php
-    if (isset($groups)) {
-        $letters = range('A', 'Z');
-        $eerstekeer = true;
-        foreach ($letters as $letter) {
-            foreach ($groups as $group) {
-                if($eerstekeer) {
-                    if ($group['Hoofd_Naam'][0] == $letter) {
-                        echo('<a href = "#' . $letter . '">' . strtolower($letter) . " " . '</a>');
-                        $eerstekeer = false;
-                    }
-                }
-            }
-            if($eerstekeer == true){
-                echo(strtolower($letter) . " " );
-            }
-            $eerstekeer = true;
-        }
-    }
+    laadLetters();
     ?>
 </div>
 </body>

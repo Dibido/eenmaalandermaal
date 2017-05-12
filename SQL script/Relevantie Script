@@ -35,10 +35,12 @@ GROUP BY BOD_voorwerpnummer
 ORDER BY Biedingen DESC
 
 
---Laat de top X producten zien die bijna aflopen. Deze producten zitten ook in de top X van de populaire categoriën en vervolgens in de top van het aantalbiedingen
+
 SELECT
   --Vul hier je TOP X hoeveelheid in
   VW_voorwerpnummer,
+  VW_titel,
+  (SELECT TOP 1 BOD_Bodbedrag FROM Bod WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) as prijs,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) AS tijd,
   COUNT(*)                                    AS Biedingen
 FROM Voorwerp
@@ -81,7 +83,7 @@ WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETD
                                                  GROUP BY Rubriek.RB_Naam
                                                  ORDER BY MAX(aantal) DESC)
                             GROUP BY BOD_voorwerpnummer, r2.RB_Naam)
-GROUP BY VW_voorwerpnummer, VW_looptijdEinde
+GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel
 ORDER BY Biedingen DESC
 
 
