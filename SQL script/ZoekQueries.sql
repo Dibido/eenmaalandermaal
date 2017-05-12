@@ -34,9 +34,13 @@ WHERE b.BOD_bodbedrag BETWEEN '$MinPrijs' AND '$MaxPrijs'
 
 
 /* Haal bestand op bij voorwerp */
-SELECT BES_voorwerpnummer, BES_filenaam  FROM Bestand b INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BES_voorwerpnummer
+SELECT b.BES_voorwerpnummer, b.BES_filenaam  FROM Bestand b INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BES_voorwerpnummer
 
 
+/* Haal het hoogste bod op van het voorwerp of de startprijs als er nog geen bod is */
+SELECT max(BOD_bodbedrag) AS HuidigBod FROM Bod WHERE bod.BOD_voorwerpnummer = '$voorwerpnummer'
 
-
---(SELECT max(BOD_bodbedrag) AS HuidigBod FROM Bod b)
+IF ((SELECT max(BOD_bodbedrag) AS HuidigBod FROM Bod WHERE bod.BOD_voorwerpnummer = '$voorwerpnummer') IS NOT NULL)
+  SELECT max(BOD_bodbedrag) AS HuidigBod FROM Bod WHERE bod.BOD_voorwerpnummer = '$voorwerpnummer'
+ELSE
+  SELECT VW_startprijs FROM Voorwerp WHERE Voorwerp.VW_voorwerpnummer = '$voorwerpnummer'

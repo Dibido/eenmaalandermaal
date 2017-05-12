@@ -3,12 +3,12 @@ SELECT
   TOP 10
   RB_Naam,
   --Selecteer de top hoeveelheid categoriën die moet worden laten zien
-  SUM(tweede.aantal)
+  SUM(tweede.aantal) AS AantalBiedingenPerCategorie
 FROM Rubriek
   INNER JOIN
   (SELECT
      Rubriek.RB_Parent,
-     aantal
+     eerste.aantal
    FROM Rubriek
      INNER JOIN (SELECT
                    RB_Parent,
@@ -24,7 +24,6 @@ WHERE Rubriek.RB_Parent = 0
 GROUP BY Rubriek.RB_Naam
 ORDER BY MAX(aantal) DESC
 
-
 --Aantal biedingen per voorwerp
 
 SELECT
@@ -34,13 +33,19 @@ FROM Bod
 GROUP BY BOD_voorwerpnummer
 ORDER BY Biedingen DESC
 
-
+--
 
 SELECT
   --Vul hier je TOP X hoeveelheid in
   VW_voorwerpnummer,
   VW_titel,
-  (SELECT TOP 1 BOD_Bodbedrag FROM Bod WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) as prijs,
+  (SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC)               AS prijs,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) AS tijd,
   COUNT(*)                                    AS Biedingen
 FROM Voorwerp
@@ -85,8 +90,6 @@ WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETD
                             GROUP BY BOD_voorwerpnummer, r2.RB_Naam)
 GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel
 ORDER BY Biedingen DESC
-
-
 
 --Nieuwe advertenties met gebruikers die een goede beoordeling hebben
 
