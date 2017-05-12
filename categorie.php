@@ -1,5 +1,5 @@
 <?php
-require('PHP/connection.php');
+require('PHP/connection12.php');
 
 //Read all categories from the database
 $query = "SELECT

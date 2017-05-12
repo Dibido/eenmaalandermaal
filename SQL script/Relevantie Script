@@ -94,3 +94,4 @@ SELECT
 FROM Voorwerp
 --WHERE VW_voorwerpnummer IN --Lijst met goede beoordeelde gebruikers
 ORDER BY VW_looptijdStart DESC
+
