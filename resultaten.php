@@ -136,6 +136,7 @@
         <ol class="breadcrumb">
             <li><a href="index.php">Home</a></li>
             <li class="active">Resultaten</li>
+
             <div class="pull-right">
                 <b>Sorteer:</b>
                 <select id="example">
@@ -153,6 +154,7 @@
 
     <div class="well well-sm col-md-9 pull-left">
         <h2>Resultaten</h2>
+
         <!-- test -->
 
         <div class="well well-sm">
@@ -180,8 +182,15 @@
             outputRows($result);
         }
 
+
         function outputRows($result)
         {
+
+
+        if (empty($result)) { 
+            echo 'No results found voor '%zoekterm%''; 
+            }
+
             foreach ($result as $row) {
                 $titel=$row['VW_titel'];
                 $beschrijving=$row['VW_beschrijving'];
