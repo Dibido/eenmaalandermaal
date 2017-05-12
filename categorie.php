@@ -1,5 +1,6 @@
 <?php
 require('PHP/connection-old.php');
+require('PHP/Functions.php');
 
 //Read all categories from the database
 $query = "SELECT
@@ -22,39 +23,6 @@ try {
 } catch (Exception $e) {
     echo('<h1>De categorieen konden niet opgehaald worden</h1>');
     echo('<p>Error: ' . $e->getMessage() . '</p>');
-}
-
-//Function to load the header letters
-function laadLetters(){
-    global $groups;
-    if (isset($groups)) {
-        $letters = range('A', 'Z');
-        $eerstekeer = true;
-        foreach ($letters as $letter) {
-            foreach ($groups as $group) {
-                if ($eerstekeer) {
-                    if ($group['Hoofd_Naam'][0] == $letter) {
-                        if ($letter != 'Z') {
-                            echo('<a href = "#' . $letter . '">' . $letter . " - " . '</a>');
-                            $eerstekeer = false;
-                        } else {
-                            echo('<a href = "#' . $letter . '">' . $letter . " " . '</a>');
-                        }
-                    }
-                }
-            }
-            if ($eerstekeer == true && $letter != 'Z') {
-                echo($letter . " - ");
-            } elseif ($eerstekeer == true) {
-                echo($letter . " ");
-            }
-            $eerstekeer = true;
-        }
-    }
-}
-
-function echonaam(){
-    echo ("dibido");
 }
 ?>
 
@@ -134,7 +102,7 @@ function echonaam(){
 </ol>
 
 <!-- Letter search -->
-<div class="text-center well well-sm">
+<div class="letter-search text-center well well-sm">
     <?php
     laadLetters();
     ?>
