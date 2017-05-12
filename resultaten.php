@@ -33,7 +33,7 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <a href="index.php" class="navbar-brand">
-            <img src="Images/testlogo.png" alt="EenmaalAndermaal Logo">
+            <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
         </a>
 
         <form class="navbar-form navbar-left">
@@ -171,7 +171,7 @@
         <div class="veiling-titel label label-info">
             Gratis Model S
         </div>
-        <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+        <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
         <p >
                         Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
                         sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
@@ -193,7 +193,7 @@
 </div>
         <div class="item  col-xs-4 col-lg-4">
             <div class="thumbnail">
-                <img class="group list-group-image" src="Images/testimg1.jpg" alt="" />
+                <img class="group list-group-image" src="images/testimg1.jpg" alt="" />
                 <div class="caption">
                     <h4 class="group inner list-group-item-heading">
                         Product title</h4>

@@ -26,7 +26,7 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <a href="index.php" class="navbar-brand">
-            <img src="Images/testlogo.png" alt="EenmaalAndermaal Logo">
+            <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
         </a>
 
         <form class="navbar-form navbar-left">
@@ -127,7 +127,7 @@
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
             <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
+                <img class="img-responsive" src="images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
@@ -145,7 +145,7 @@
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
             <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
+                <img class="img-responsive" src="images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
@@ -163,7 +163,7 @@
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
             <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
+                <img class="img-responsive" src="images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
@@ -181,7 +181,7 @@
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
             <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
+                <img class="img-responsive" src="images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
@@ -199,7 +199,7 @@
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
             <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
+                <img class="img-responsive" src="images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
@@ -217,7 +217,7 @@
                 <h5>Tesla X 150000km 2012 als nieuw fkl...</h5>
             </div>
             <div class="advert-img thumbnail center-block">
-                <img class="img-responsive" src="Images/Roadster.jpg">
+                <img class="img-responsive" src="images/Roadster.jpg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro prijs" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time tijd" aria-hidden="true">1:15:25</span>
@@ -238,7 +238,7 @@
         <div class="advert col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
             <div class="advert-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
+                <img class="img-responsive center-block" src="images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
@@ -254,7 +254,7 @@
         <div class="advert col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
             <div class="advert-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
+                <img class="img-responsive center-block" src="images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
@@ -270,7 +270,7 @@
         <div class="advert col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
             <div class="advert-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
+                <img class="img-responsive center-block" src="images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
@@ -286,7 +286,7 @@
         <div class="advert col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
             <div class="advert-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
+                <img class="img-responsive center-block" src="images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>
@@ -302,7 +302,7 @@
         <div class="advert col-md-3 col-xs-6 text-center">
             <h5>Tesla X</h5>
             <div class="advert-img thumbnail">
-                <img class="img-responsive center-block" src="Images/ModelS.jpeg">
+                <img class="img-responsive center-block" src="images/ModelS.jpeg">
             </div>
             <span class="well well-sm glyphicon glyphicon-euro" aria-hidden="true">1500000.00</span>
             <span class="well well-sm glyphicon glyphicon-time" aria-hidden="true">1:15:25</span>

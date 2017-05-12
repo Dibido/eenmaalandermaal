@@ -37,7 +37,7 @@
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <a href="index.php" class="navbar-brand">
-            <img src="Images/testlogo.png" alt="EenmaalAndermaal Logo">
+            <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
         </a>
 
         <form class="navbar-form navbar-left">
@@ -141,7 +141,7 @@
                     <div class="carousel-inner">
                         <div class="item active">
                             <div class="veiling-titel-carousel text-center"><p>Mooie Tesla Model S</p></div>
-                            <div class="veiling-image-carousel" style="background-image:url(Images/16-9.jpeg)"></div>
+                            <div class="veiling-image-carousel" style="background-image:url(images/16-9.jpeg)"></div>
                             <div class="veiling-titel-carousel-bottom text-center">
                                 <div class="veiling-rating-bied label label-default">
                                     <div class="rating text-center">
@@ -158,11 +158,11 @@
                         </div>
 
                         <div class="item">
-                            <div class="veiling-image-carousel" style="background-image:url(Images/ModelX.jpeg)"></div>
+                            <div class="veiling-image-carousel" style="background-image:url(images/ModelX.jpeg)"></div>
                         </div>
 
                         <div class="item">
-                            <div class="veiling-image-carousel" style="background-image:url(Images/21-9.jpg)"></div>
+                            <div class="veiling-image-carousel" style="background-image:url(images/21-9.jpg)"></div>
                         </div>
                     </div>
 
@@ -201,7 +201,7 @@
                         <div class="veiling-titel label label-info">
                             Gratis Model S
                         </div>
-                        <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                        <div class="veiling-image" style="background-image:url(images/ModelS.jpeg)"></div>
                         <div class="veiling-prijs-tijd">
                             <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                             <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -217,7 +217,7 @@
                         <div class="veiling-titel label label-info">
                             Gratis Model S
                         </div>
-                        <div class="veiling-image" style="background-image:url(Images/ModelS.jpeg)"></div>
+                        <div class="veiling-image" style="background-image:url(images/ModelS.jpeg)"></div>
                         <div class="veiling-prijs-tijd">
                             <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                             <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -243,7 +243,7 @@
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -267,7 +267,7 @@
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -291,7 +291,7 @@
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -315,7 +315,7 @@
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -339,7 +339,7 @@
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
@@ -363,7 +363,7 @@
                     <div class="veiling-titel label label-info">
                         Gratis Model S
                     </div>
-                    <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
                     <div class="veiling-prijs-tijd">
                         <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
                         <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>

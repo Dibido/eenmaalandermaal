@@ -58,7 +58,7 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_BOTH);
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <a href="index.php" class="navbar-brand">
-            <img src="Images/testlogo.png" alt="EenmaalAndermaal Logo">
+            <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
         </a>
 
         <form class="navbar-form navbar-left">

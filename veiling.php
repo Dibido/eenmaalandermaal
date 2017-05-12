@@ -34,7 +34,7 @@
         <div class="veiling-titel label label-info">
             Gratis Model S
         </div>
-        <div class="veiling-image" style="background-image:url(Images/16-9.jpeg)"></div>
+        <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
         <div class="veiling-prijs-tijd">
             <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
             <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
