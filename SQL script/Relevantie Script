@@ -35,6 +35,7 @@ GROUP BY BOD_voorwerpnummer
 ORDER BY Biedingen DESC
 
 
+
 SELECT
   --Vul hier je TOP X hoeveelheid in
   VW_voorwerpnummer,
