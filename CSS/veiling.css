@@ -10,11 +10,6 @@
     border-radius: 15px;
 }
 
-.veiling p{
-font-size: 14px; /* toegevoegd voor resultaten/description */
-}
-
-}
 .label{
     display: inline-block;
 }
@@ -34,9 +29,12 @@ font-size: 14px; /* toegevoegd voor resultaten/description */
     background-position-y: center;
     background-position-x: center;
     background-size: contain;
+    background-image: url("");
 }
 .veiling-prijs-tijd{
     margin: 1% 0 1% 0;
+    display: flex;
+    justify-content: space-between;
 }
 .prijs{
     overflow: hidden;

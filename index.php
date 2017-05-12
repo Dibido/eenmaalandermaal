@@ -140,8 +140,21 @@
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner">
                         <div class="item active">
-                            <div class="veiling-image-carousel" style="background-image:url(Images/16-9.jpeg)"></div>
                             <div class="veiling-titel-carousel text-center"><p>Mooie Tesla Model S</p></div>
+                            <div class="veiling-image-carousel" style="background-image:url(Images/16-9.jpeg)"></div>
+                            <div class="veiling-titel-carousel-bottom text-center">
+                                <div class="veiling-rating-bied label label-default">
+                                    <div class="rating text-center">
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    </div class="advert-info">
+                                    <i class="glyphicon glypicon-euro">15000</i>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="item">
@@ -172,7 +185,7 @@
         <!-- Bijna gesloten veilingen -->
 
 
-        <div class="col-md-3 visible-md visible-lg">
+        <div class="col-md-3 col-sm-12 col-xs-12">
 
             <div class="list-group">
                 <a href="#" class="list-group-item active text-center">Veiling gaat sluiten</a>
@@ -181,12 +194,9 @@
 
             <div class="well col-xs-12 BijnaGesloten" id="BijnaGesloten">
 
-                <div class="col-md-2">
-
-                </div>
 
                 <!-- Veiling template -->
-                <div class="veiling-rand col-md-8">
+                <div class="veiling-rand col-md-12 col-sm-6 col-xs-6">
                     <div class="veiling">
                         <div class="veiling-titel label label-info">
                             Gratis Model S
@@ -200,16 +210,9 @@
                 </div>
                 <!-- End template -->
 
-                <div class="col-md-2">
-
-                </div>
-                <div class="col-md-2">
-
-                </div>
-
 
                 <!-- Veiling template -->
-                <div class="veiling-rand col-md-8">
+                <div class="veiling-rand col-md-12 col-sm-6 col-xs-6">
                     <div class="veiling">
                         <div class="veiling-titel label label-info">
                             Gratis Model S
@@ -383,6 +386,7 @@
         </div>
     </div>
 
+    <-- Height corrections for carrousel -->
     <script>
 
         $(".Categoriën").css({'height': ($(".BijnaGesloten").height() + 'px')});
