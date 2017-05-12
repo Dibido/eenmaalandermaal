@@ -158,11 +158,37 @@
                         </div>
 
                         <div class="item">
-                            <div class="veiling-image-carousel" style="background-image:url(images/ModelX.jpeg)"></div>
+                            <div class="veiling-titel-carousel text-center"><p>Mooie Tesla Model S</p></div>
+                            <div class="veiling-image-carousel" style="background-image:url(images/16-9.jpeg)"></div>
+                            <div class="veiling-titel-carousel-bottom text-center">
+                                <div class="veiling-rating-bied label label-default">
+                                    <div class="rating text-center">
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    </div class="advert-info">
+                                    <i class="glyphicon glypicon-euro">15000</i>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="item">
-                            <div class="veiling-image-carousel" style="background-image:url(images/21-9.jpg)"></div>
+                            <div class="veiling-titel-carousel text-center"><p>Mooie Tesla Model S</p></div>
+                            <div class="veiling-image-carousel"></div>
+                            <div class="veiling-titel-carousel-bottom text-center">
+                                <div class="veiling-rating-bied label label-default">
+                                    <div class="rating text-center">
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star"></i>
+                                        <i class="glyphicon glyphicon-star-empty"></i>
+                                    </div class="advert-info">
+                                    <i class="glyphicon glypicon-euro">15000</i>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
