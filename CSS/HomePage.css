@@ -33,6 +33,7 @@
     background-position-y: center;
     background-position-x: center;
     background-size: contain;
+    background-image: url(../images/no-image-available.jpg);
 }
 .veiling-titel-carousel{
     z-index: 100;

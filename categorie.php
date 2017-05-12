@@ -2,31 +2,22 @@
 require('PHP/connection.php');
 
 //Read all categories from the database
-//$query = "SELECT * FROM Rubriek";
-/*$query = "SELECT H.RB_Naam, X.RB_Naam
-FROM Rubriek H 
-CROSS APPLY 
-( 
-SELECT * FROM RUBRIEK S WHERE S.RB_Parent = H.RB_Nummer 
-) X
-WHERE H.RB_Parent = 0
-ORDER BY H.RB_volgnummer,H.RB_Naam
-";*/
-
-$query = "SELECT H.RB_Naam, X.RB_Naam 
+$query = "SELECT
+  H.RB_Naam AS Hoofd_Naam,
+  H.RB_Nummer AS Hoofd_Nummer,
+  S.RB_Naam AS Sub_Naam,
+  S.RB_Nummer AS Sub_Nummer
 FROM Rubriek H
-CROSS APPLY
-(
-  SELECT * FROM Rubriek S
-  WHERE S.RB_Parent = H.RB_Nummer
-) X
-
+  CROSS APPLY
+  (
+    SELECT *
+    FROM Rubriek S
+    WHERE S.RB_Parent = H.RB_Nummer
+  ) S
 WHERE H.RB_Parent = 0
-ORDER BY H.RB_Naam";
+ORDER BY H.RB_volgnummer, H.RB_Naam, H.RB_Nummer";
 
-
-$groups = $connection->query($query)->fetchAll(PDO::FETCH_BOTH);
-
+$groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!doctype html>
@@ -58,7 +49,7 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_BOTH);
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container-fluid">
         <a href="index.php" class="navbar-brand">
-            <img src="Images/testlogo.png" alt="EenmaalAndermaal Logo">
+            <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
         </a>
 
         <form class="navbar-form navbar-left">
@@ -104,61 +95,50 @@ $groups = $connection->query($query)->fetchAll(PDO::FETCH_BOTH);
     <li class="breadcrumb-item active">Categorieën</li>
 </ol>
 
+<!-- Letter search -->
+<div class="text-center well well-sm">
+    <?php
+    $letters = range('A', 'Z');
+    foreach ($letters as $letter) {
+        echo('<a href = "#' . $letter . '">' . strtolower($letter) . " " . '</a>');
+    }
+    ?>
+</div>
+
 <!-- Category Navigation -->
-<a href="#A">a</a>
-<a href="#B">b</a>
-<a href="#C">c</a>
-<a href="#D">d</a>
-<a href="#E">e</a>
-<a href="#F">f</a>
-<a href="#G">g</a>
-<a href="#H">h</a>
+
 <div class="container">
     <?php
     $currentgroup = '';
     $eerstekeer = true;
     echo('<div class="row well">');
     foreach ($groups as $group) {
-
-        if ($group[0] != $currentgroup) {
-            if(!$eerstekeer){
+        if ($group['Hoofd_Naam'] != $currentgroup) {
+            if (!$eerstekeer) {
                 echo('</div>');
             }
-            $currentgroup = $group[0];
-            echo('<div class="col-xs-6 col-sm-5 col-md-3 col-xs-push-1 col-sm-push-2 col-md-push-0 col-lg-push-1">');
-            echo('<h4>' . $group[0] . '</h4>');
-            echo('<section id="'. $group[0][0] . '"></section>');
+            $currentgroup = $group['Hoofd_Naam'];
+            $url = urlencode($group['Hoofd_Nummer']);
+            echo('<div class="col-xs-6 col-sm-5 col-md-4 col-xs-push-1 col-sm-push-2 col-md-push-0 col-lg-push-1">');
+            echo('<section id="' . $group['Hoofd_Naam'][0] . '">');
+            echo('<a href="resultaten.php/?category=' . $url . '"><h4>' . $group['Hoofd_Naam'] . '</h4></a>');
+            echo('</section>');
         }
         $eerstekeer = false;
-        echo('<h6>' . $group[1] . '</h6>');
+        $url = urlencode($group['Sub_Nummer']);
+        echo('<a href="resultaten.php/?category=' . $url . '"><h6>' . $group['Sub_Naam'] . '</h6></a>');
     }
+    echo('</div>');
+    ?>
+</div>
 
-
-    /*//loop through the groups
-    for ($i = 1; $i < sizeof($groups); $i++) {
-        //don't use root (index 0)
-        if ($groups[$i]['RB_Parent'] != 0) {
-            $i = sizeof($groups);
-        } else {
-            //display parent
-            $parenturl = urlencode($groups[$i]['RB_Naam']);
-            echo('<div class="page-header">');
-            echo('<a href="resultaten.php?categorie=' . $parenturl . '"><h4>' . $groups[$i]['RB_Naam'] . '</h4></a>');
-            echo('</div>');
-            $parentwaarde = $groups[$i]['RB_Nummer'];
-            echo('<div class="categorie">');
-            //loop through groups
-            for ($j = 0; $j < sizeof($groups); $j++) {
-                //find all children of selected parent
-                if ($groups[$j]['RB_Parent'] == $parentwaarde) {
-                    //display children
-                    $childurl = urlencode($groups[$j]['RB_Naam']);
-                    echo('<a href="resultaten.php?categorie=' . $childurl . '"><h6>' . $groups[$j]['RB_Naam'] . '</h6></a>');
-                }
-            }
-            echo('</div>');
-        }
-    }*/
+<!-- Letter search bottom -->
+<div class="text-center well well-sm">
+    <?php
+    $letters = range('A', 'Z');
+    foreach ($letters as $letter) {
+        echo('<a href = "#' . $letter . '">' . strtolower($letter) . " " . '</a>');
+    }
     ?>
 </div>
 </body>

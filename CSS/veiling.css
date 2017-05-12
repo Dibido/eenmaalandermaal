@@ -29,7 +29,7 @@
     background-position-y: center;
     background-position-x: center;
     background-size: contain;
-    background-image: url("");
+
 }
 .veiling-prijs-tijd{
     margin: 1% 0 1% 0;
@@ -49,7 +49,7 @@
 }
 .veiling-rating-bied{
     display:flex;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
 }
 .rating{
