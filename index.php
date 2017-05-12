@@ -40,9 +40,9 @@
             <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
         </a>
 
-        <form class="navbar-form navbar-left">
+        <form class="navbar-form navbar-left" action='resultaten.php' method='GET'>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="zoeken">
+                <input type="text" class="form-control" placeholder="zoeken" name="zoekterm">
             </div>
             <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
             </button>

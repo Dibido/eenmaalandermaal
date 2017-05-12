@@ -1,3 +1,20 @@
+<?php
+require 'connection.php';
+
+    if(!empty($_GET['zoekterm'])){
+        $zoekterm = $_GET['zoekterm'];
+            //bouwen query
+        $sql = "SELECT TOP 50 * FROM Voorwerp  WHERE VW_titel LIKE '%$zoekterm%'";
+        echo $sql;
+            //afschieten query
+
+        $result = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+?>
+
+
+
 <!doctype html>
 
 <html lang="en">
