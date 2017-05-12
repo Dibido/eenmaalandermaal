@@ -1,5 +1,5 @@
 <?php
-require('PHP/connection-old.php');
+require('PHP/connection.php');
 
 //Read all categories from the database
 $query = "SELECT
@@ -103,9 +103,23 @@ try {
 <!-- Letter search -->
 <div class="text-center well well-sm">
     <?php
-    $letters = range('A', 'Z');
-    foreach ($letters as $letter) {
-        echo('<a href = "#' . $letter . '">' . strtolower($letter) . " " . '</a>');
+    if (isset($groups)) {
+        $letters = range('A', 'Z');
+        $eerstekeer = true;
+        foreach ($letters as $letter) {
+            foreach ($groups as $group) {
+                if($eerstekeer) {
+                    if ($group['Hoofd_Naam'][0] == $letter) {
+                        echo('<a href = "#' . $letter . '">' . strtolower($letter) . " " . '</a>');
+                        $eerstekeer = false;
+                    }
+                }
+            }
+            if($eerstekeer == true){
+                echo(strtolower($letter) . " " );
+            }
+            $eerstekeer = true;
+        }
     }
     ?>
 </div>

@@ -1,5 +1,5 @@
 <?php
-require 'connection.php';
+require 'connection2.php';
 
     if(!empty($_GET['zoekterm'])){
         $zoekterm = $_GET['zoekterm'];
