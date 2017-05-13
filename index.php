@@ -2,6 +2,7 @@
 
 require('PHP/connection.php');
 require('PHP/Functions.php');
+require('PHP/SQL-Querries.php');
 
 $response = NULL;
 
@@ -12,44 +13,6 @@ $response = NULL;
  *
  *
  */
-
-
-/*Getting the top 10 categories and saving in $TopCategories*/
-$query = "
-SELECT
-  TOP 10
-  RB_Naam,
-  SUM(tweede.aantal)
-FROM Rubriek
-  INNER JOIN
-  (SELECT
-     Rubriek.RB_Parent,
-     aantal
-   FROM Rubriek
-     INNER JOIN (SELECT
-                   RB_Parent,
-                   COUNT(BOD_voorwerpnummer) AS aantal
-                 FROM Voorwerp_Rubriek
-                   INNER JOIN Rubriek
-                     ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                   INNER JOIN Bod
-                     ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
-                 GROUP BY RB_Parent) eerste ON Rubriek.RB_Volgnummer = eerste.RB_Parent
-   GROUP BY Rubriek.RB_Parent, aantal) tweede ON Rubriek.RB_Volgnummer = tweede.RB_Parent
-WHERE Rubriek.RB_Parent = 0
-GROUP BY Rubriek.RB_Naam
-ORDER BY MAX(aantal) DESC
-
-";
-
-try {
-    global $response;
-    $response = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
-} catch (Exception $e) {
-    echo('<h1>De categorieen konden niet opgehaald worden</h1>');
-    echo('<p>Error: '. $e->getMessage() . '</p>');
-}
-    $TopCategories = $response;
 
 
 
@@ -315,10 +278,16 @@ $TopCarousel = $response;
                 </a>
                 <?php
 
-                foreach($TopCategories as $Category){
+                $TopCategories = GetTopCategories();
 
-                    echo"<a href=\"#\" class=\"list-group-item\">" . $Category['RB_Naam'] . "</a>";
+                if($TopCategories[0]){
+                    foreach($TopCategories as $Category){
+                        echo"<a href=\"#\" class=\"list-group-item\">" . $Category['RB_Naam'] . "</a>";
+                    }
+                }else{
+                    echo "<b>Error on loading categories: </b>" . "<br><br>" . $TopCategories[1];
                 }
+
 
                 ?>
                 <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
