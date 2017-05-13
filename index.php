@@ -204,9 +204,23 @@ $TopCarousel = $response;
 <head>
     <meta charset="utf-8">
 
-    <title>Bootstrap test</title>
+    <title>EenmaalAndermaal - Beste veilingssite van Nederland</title>
     <meta name="description" content="EenmaalAndermaal">
     <meta name="author" content="Iproject - Groep 3">
+
+
+
+    <!-- Theme colours for mobile -->
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#F6D155">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#F6D155">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#F6D155">
+
+
+    <!-- setting the browser icon -->
+    <link rel="icon" href="images/Site-logo.png">
 
 
     <!-- bootstrap !-->
@@ -262,26 +276,6 @@ $TopCarousel = $response;
             </div>
         </form>
 
-
-
-
-<!--
-
-        <form class="navbar-form navbar-left" action='resultaten.php' method='GET'>
-            <div class="form-group" style="display:inline">
-                <input type="text" class="form-control" placeholder="zoeken" name="zoekterm" style="display:table">
-            </div>
-            <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
-            </button>
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch">Advanced
-                Search
-            </button>
-        </form>
-
-
-        -->
-
-
     </div>
 </nav>
 
@@ -301,6 +295,7 @@ $TopCarousel = $response;
     <div class="row">
         <ul class="nav nav-pills nav-stacked bg-info lead">
             <li><a class="row-md-12" href="#">Plaats veiling</a></li>
+            <li><a class="row-md-12" href="categorie.php">Alle Categoriën</a></li>
             <li><a class="row-md-12" href="#">Login</a></li>
         </ul>
     </div>
