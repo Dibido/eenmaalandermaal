@@ -278,7 +278,7 @@ $TopCarousel = $response;
                 </a>
                 <?php
 
-                $TopCategories = GetTopCategories();
+                $TopCategories = SendToDatabase($QueryTopCategories);
 
                 if($TopCategories[0]){
                     foreach($TopCategories as $Category){
@@ -315,59 +315,81 @@ $TopCarousel = $response;
                     </ol>
 
                     <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <div class="veiling-titel-carousel text-center"><p>Mooie Tesla Model S</p></div>
-                            <div class="veiling-image-carousel" style="background-image:url(images/16-9.jpeg)"></div>
-                            <div class="veiling-titel-carousel-bottom text-center">
-                                <div class="veiling-rating-bied label label-default">
-                                    <div class="rating text-center">
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star-empty"></i>
-                                    </div class="advert-info">
-                                    <i class="glyphicon glypicon-euro">15000</i>
-                                </div>
-                            </div>
 
-                        </div>
+                    <?php
+                    $BestFromCategories = SendToDatabase($QueryFromBestCategory);
 
-                        <div class="item">
-                            <div class="veiling-titel-carousel text-center"><p>Mooie Tesla Model S</p></div>
-                            <div class="veiling-image-carousel" style="background-image:url(images/16-9.jpeg)"></div>
-                            <div class="veiling-titel-carousel-bottom text-center">
-                                <div class="veiling-rating-bied label label-default">
-                                    <div class="rating text-center">
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star-empty"></i>
-                                    </div class="advert-info">
-                                    <i class="glyphicon glypicon-euro">15000</i>
+                    //testing if the server returned an error
+                    if ($BestFromCategories[0]){
+                        //Searching for missing images and replacing with the backup image
+                        foreach($BestFromCategories as $auction){
+                            if(empty($auction["ImagePath"])){
+                                $auction["ImagePath"] = "images/no-image-available.jpg";
+                            }
+                        }
+
+                        echo "
+                        
+                        <div class=\"carousel-inner\">
+                        <div class=\"item active\">
+                            <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[0]["VW_titel"] . "</p></div>
+                            <div class=\"veiling-image-carousel\"" . "style=\"background-image:url(" . $BestFromCategories[0]["ImagePath"] . ")\"></div>
+                            <div class=\"veiling-titel-carousel-bottom text-center\">
+                                <div class=\"veiling-rating-bied label label-default\">
+                                    <div class=\"rating text-center\">
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star-empty\"></i>
+                                    </div class=\"advert-info\">
+                                    <i class=\"glyphicon glyphicon-euro\">" . $BestFromCategories[0]["prijs"] . "</i>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="item">
-                            <div class="veiling-titel-carousel text-center"><p>Mooie Tesla Model S</p></div>
-                            <div class="veiling-image-carousel"></div>
-                            <div class="veiling-titel-carousel-bottom text-center">
-                                <div class="veiling-rating-bied label label-default">
-                                    <div class="rating text-center">
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star"></i>
-                                        <i class="glyphicon glyphicon-star-empty"></i>
-                                    </div class="advert-info">
-                                    <i class="glyphicon glypicon-euro">15000</i>
+                        <div class=\"item\">
+                            <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[1]["VW_titel"] . "</p></div>
+                            <div class=\"veiling-image-carousel\"" . "style=\"background-image:url(" . $BestFromCategories[1]["ImagePath"] . ")\"></div>
+                            <div class=\"veiling-titel-carousel-bottom text-center\">
+                                <div class=\"veiling-rating-bied label label-default\">
+                                    <div class=\"rating text-center\">
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star-empty\"></i>
+                                    </div class=\"advert-info\">
+                                    <i class=\"glyphicon glyphicon-euro\">" . $BestFromCategories[1]["prijs"] . "</i>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                        <div class=\"item\">
+                            <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[2]["VW_titel"] . "</p></div>
+                            <div class=\"veiling-image-carousel\"" . "style=\"background-image:url(" . $BestFromCategories[2]["ImagePath"] . ")\"></div>
+                            <div class=\"veiling-titel-carousel-bottom text-center\">
+                                <div class=\"veiling-rating-bied label label-default\">
+                                    <div class=\"rating text-center\">
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star\"></i>
+                                        <i class=\"glyphicon glyphicon-star-empty\"></i>
+                                    </div class=\"advert-info\">
+                                    <i class=\"glyphicon glyphicon-euro\">" . $BestFromCategories[2]["prijs"] . "</i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ";
+                    }else{
+                        echo "<b>Error on loading best auctions: </b>" . "<br><br>" . $BestFromCategories[1];
+                    }
+
+                    ?>
+
+                </div>
 
                     <!-- Left and right controls -->
                     <a class="left carousel-control" href="#myCarousel" data-slide="prev">
@@ -380,8 +402,6 @@ $TopCarousel = $response;
                     </a>
                 </div>
             </div>
-
-
         </div>
 
 
@@ -402,17 +422,22 @@ $TopCarousel = $response;
 
                 /* Printing the top 2 almost closed auctions*/
 
-                foreach($TopClosed as $veiling){
-                    echo "<div class=\"veiling-rand col-md-12 col-sm-6 col-xs-6\">
+                $TopClosed = SendToDatabase($QueryTop2);
+
+                //If the query was succesfull, build the adverts
+                if ($TopClosed[0]) {
+
+                    foreach ($TopClosed as $veiling) {
+                        echo "<div class=\"veiling-rand col-md-12 col-sm-6 col-xs-6\">
                     <div class=\"veiling\">
                         <div class=\"veiling-titel label label-info\">"
-                        . $veiling["VW_titel"] .
-                        "</div>
+                            . $veiling["VW_titel"] .
+                            "</div>
                         <div class=\"veiling-image\"";
 
-                        if (!empty($veiling["ImagePath"])){
+                        if (!empty($veiling["ImagePath"])) {
 
-                                   echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div>
+                            echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div>
                                     <div class=\"veiling-prijs-tijd\">
                                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
                                         <div class=\"tijd label label-default\">" . $veiling["tijd"] . "<i class=\"glyphicon glyphicon-time\"></i></div>
@@ -420,7 +445,7 @@ $TopCarousel = $response;
                                 </div>
                             </div>";
 
-                        } else{
+                        } else {
                             echo "></div>
                                     <div class=\"veiling-prijs-tijd\">
                                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
@@ -429,7 +454,13 @@ $TopCarousel = $response;
                                 </div>
                             </div>";
                         }
+                    }
+
+                //if not, return the error
+                }else{
+                    echo "<b>Error on loading almost closed auctions: </b>" . "<br><br>" . $TopClosed[1];
                 }
+
 
 
                 ?>
