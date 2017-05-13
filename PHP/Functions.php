@@ -79,12 +79,17 @@ function SendToDatabase($query) {
 
 
 function DrawAuction($auction){
+
+    //testing for missing images and replacing with backup image
+    if(empty($auction["ImagePath"])){
+        $auction["ImagePath"] = "images/no-image-available.jpg";
+
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2\">
                 <div class=\"veiling\">
-                    <div class=\"veiling-titel label label-info\">
-                        Gratis Model S
+                    <div class=\"veiling-titel label label-info\">" .
+                     $auction["VW_titel"] ."
                     </div>
                     <div class=\"veiling-image\" style=\"background-image:url(images/16-9.jpeg)\"></div>
                     <div class=\"veiling-prijs-tijd\">

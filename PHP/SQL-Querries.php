@@ -193,4 +193,28 @@ ORDER BY Biedingen DESC
 
 EOT;
 
+
+/* Work in progress! */
+
+$QueryAllAuctions = <<<EOT
+
+SELECT
+  VW_voorwerpnummer,
+  VW_titel,
+  (SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+                                                            ORDER BY BOD_Bodbedrag DESC)
+  AS prijs,
+  BES_filenaam
+FROM Voorwerp
+RIGHT OUTER JOIN Bestand ON Voorwerp.VW_voorwerpnummer = Bestand.BES_voorwerpnummer
+
+EOT;
+
+
+
 ?>
