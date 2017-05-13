@@ -117,9 +117,79 @@ try {
 }
     $TopClosed = $response;
 
-foreach ($TopClosed as $veiling){
-    print_r($veiling);
+
+
+/* Getting the top 3 uit belangrijkste categorie, hoogste rating en meeste biedingen en slaat op in $TopCarousel*/
+
+$query = "
+SELECT TOP 3
+  VW_voorwerpnummer,
+  VW_titel,
+  (SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC)                  AS prijs,
+  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
+  COUNT(*)                                       AS Biedingen,
+  (SELECT TOP 1 BES_filenaam
+   FROM Bestand
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
+FROM Voorwerp
+WHERE VW_voorwerpnummer IN (
+  SELECT DISTINCT BOD_voorwerpnummer
+  --Selecteerd de naam van de Hoofdcategorie per voorwerpnummer
+  FROM Bod
+    INNER JOIN Voorwerp_Rubriek
+      ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
+    INNER JOIN Rubriek
+      ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+    INNER JOIN Rubriek r1
+      ON r1.RB_Nummer = Rubriek.RB_Parent
+    INNER JOIN Rubriek r2
+      ON r2.RB_Nummer = r1.RB_Parent
+  WHERE r2.RB_Naam != 'root' AND r2.RB_Naam IN (
+    --Selecteerd de top 1 categoriën door te kijken naar de hoeveelheid biedingen
+    SELECT
+      TOP 1 RB_Naam
+    FROM Rubriek
+      --Lees de de Innerjoins van achter naar voren.
+      INNER JOIN
+      --Selecteerd de tweede laag van de categoriën
+      (SELECT
+         Rubriek.RB_Parent,
+         aantal
+       FROM Rubriek
+         INNER JOIN
+         --Selecteerd de hoeveelheid biedingen per categorie op de onderstelaag
+         (SELECT
+            RB_Parent,
+            COUNT(BOD_voorwerpnummer) AS aantal
+          FROM Voorwerp_Rubriek
+            INNER JOIN Rubriek
+              ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+            INNER JOIN Bod
+              ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
+          GROUP BY RB_Parent)
+         eerste ON Rubriek.RB_Volgnummer = eerste.RB_Parent
+       GROUP BY Rubriek.RB_Parent, aantal) tweede ON Rubriek.RB_Volgnummer = tweede.RB_Parent
+    WHERE Rubriek.RB_Parent = 0
+    GROUP BY Rubriek.RB_Naam
+    ORDER BY MAX(aantal) DESC)
+) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
+GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde
+";
+
+try {
+    global $response;
+    $response = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    echo('<h1>De top 2 producten kunnen niet opgehaald worden</h1>');
+    echo('<p>Error: '. $e->getMessage() . '</p>');
 }
+$TopCarousel = $response;
 
 
 
@@ -166,9 +236,40 @@ foreach ($TopClosed as $veiling){
             <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
         </a>
 
+        <div class="navbar-right">
+            <ul class="nav navbar-nav collapse navbar-collapse">
+                <li>
+                    <button class="btn btn-default navbar-btn hidden-md hidden-lg MobileButtonToggle" data-toggle="collapse"
+                            data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
+                </li>
+                <li>
+                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton">Plaats veiling</button>
+                </li>
+                <li>
+                    <button class="btn btn-default navbar-btn hidden-sm hidden-xs NavRightButton"><i
+                            class="glyphicon glyphicon-user"></i></button>
+                </li>
+            </ul>
+        </div>
+
+
+        <form class="navbar-form" action="resultaten.php" method="GET">
+            <div class="form-group" style="display:inline;">
+                <div class="input-group" style="display:table;">
+                    <input class="form-control" name="search" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
+                    <span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
+                </div>
+            </div>
+        </form>
+
+
+
+
+<!--
+
         <form class="navbar-form navbar-left" action='resultaten.php' method='GET'>
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="zoeken" name="zoekterm">
+            <div class="form-group" style="display:inline">
+                <input type="text" class="form-control" placeholder="zoeken" name="zoekterm" style="display:table">
             </div>
             <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
             </button>
@@ -177,21 +278,10 @@ foreach ($TopClosed as $veiling){
             </button>
         </form>
 
-        <div class="pull-right">
-            <ul class="nav navbar-nav collapse navbar-collapse">
-                <li>
-                    <button class="btn btn-default navbar-btn hidden-md hidden-lg" data-toggle="collapse"
-                            data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
-                </li>
-                <li>
-                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xs">Plaats veiling</button>
-                </li>
-                <li>
-                    <button class="btn btn-default navbar-btn hidden-sm hidden-xs NavRightButton"><i
-                            class="glyphicon glyphicon-user"></i></button>
-                </li>
-            </ul>
-        </div>
+
+        -->
+
+
     </div>
 </nav>
 
@@ -539,7 +629,7 @@ foreach ($TopClosed as $veiling){
         </div>
     </div>
 
-    <-- Height corrections for carrousel -->
+    <!-- Height corrections for carrousel -->
     <script>
 
         $(".Categoriën").css({'height': ($(".BijnaGesloten").height() + 'px')});

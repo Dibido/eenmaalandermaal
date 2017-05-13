@@ -1,5 +1,6 @@
 .navbar-brand {
     padding: 0px; /* firefox bug fix */
+    margin-right: 15px;
 }
 .navbar-brand>img {
     height: 100%;
@@ -8,4 +9,12 @@
 }
 .NavRightButton{
     margin-left: 15px;
+    margin-right: 15px;
+}
+.NavLeftButton{
+    margin-left: 15px;
+}
+.MobileButtonToggle{
+    margin-left: 15px;
+    margin-right: 15px;
 }

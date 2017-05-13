@@ -108,7 +108,7 @@ ORDER BY VW_looptijdStart DESC
 
 --Belangrijkste Categorie met daarbij de gebruikers met de hoogste rating en daarna meeste per voorwerp biedingen
 
-SELECT
+SELECT TOP 3
   VW_voorwerpnummer,
   VW_titel,
   (SELECT TOP 1 BOD_Bodbedrag
