@@ -23,8 +23,6 @@
 
 
 <!-- bootstrap !-->
-
-
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="CSS/theme.css">
 <link rel="stylesheet" href="CSS/BootstrapXL.css">
@@ -35,7 +33,11 @@
 <link rel="stylesheet" href="CSS/HomePage.css">
 <link rel="stylesheet" href="CSS/veiling.css">
 <link rel="stylesheet" href="CSS/navigation.css">
+<link rel="stylesheet" href="CSS/resultaten.css">
 
+ <!-- CSS voor price slider -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
 
 </head>
 <body>
