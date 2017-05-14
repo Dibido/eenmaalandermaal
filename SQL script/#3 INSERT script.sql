@@ -531,6 +531,7 @@ VALUES (4, 163), (15, 129), (8, 118), (14, 151), (14, 81), (16, 152), (14, 236),
   (7, 181), (5, 91), (24, 104), (9, 129), (4, 94), (3, 131), (17, 125), (16, 207), (6, 97)
 
 
+delete from Bestand
 /* Toevoegen voorbeeld afbeeldingen aan voorwerpen */
 INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
 VALUES ('images/testImg1.jpg', 1),
@@ -553,7 +554,7 @@ VALUES ('images/testImg1.jpg', 1),
   ('images/testImg8-kopie.jpg', 18),
   ('images/testImg9-kopie.jpg', 19),
   ('images/testImg10-kopie.jpg',20)
-  --('images/testImg7-kopie.jpg', 21),
-  --('images/testImg8-kopie.jpg', 22),
-  --('images/testImg9-kopie.jpg', 23),
-  --('images/testImg10-kopie.jpg',24)
+  ('images/Model3.jpeg', 21),
+  ('images/ModelS.jpeg', 22),
+  ('images/ModelX.jpeg', 23),
+  ('images/Roadster.jpg',24)

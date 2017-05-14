@@ -234,7 +234,7 @@ $TopCarousel = $response;
             <div class="form-group" style="display:inline;">
                 <div class="input-group" style="display:table;">
                     <input class="form-control" name="search" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
-                    <span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
+                    <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary" type="submit" style="background-color: #ffffff; border-color: #f2f2f2;"><span class="glyphicon glyphicon-search"></span></button></span>
                 </div>
             </div>
         </form>
