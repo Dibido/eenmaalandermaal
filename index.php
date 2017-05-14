@@ -475,150 +475,19 @@ $TopCarousel = $response;
     <div class="container-fluid">
         <div class="row well">
 
-            <!-- Veiling template -->
-            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
-                <div class="veiling">
-                    <div class="veiling-titel label label-info">
-                        Gratis Model S
-                    </div>
-                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
-                    <div class="veiling-prijs-tijd">
-                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-                    </div>
-                    <div class="veiling-rating-bied label label-default">
-                        <div class="rating text-center">
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                        </div>
-                        <button class="btn btn-primary bied">Bied Nu!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- End template -->
-            <!-- Veiling template -->
-            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
-                <div class="veiling">
-                    <div class="veiling-titel label label-info">
-                        Gratis Model S
-                    </div>
-                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
-                    <div class="veiling-prijs-tijd">
-                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-                    </div>
-                    <div class="veiling-rating-bied label label-default">
-                        <div class="rating text-center">
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                        </div>
-                        <button class="btn btn-primary bied">Bied Nu!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- End template -->
-            <!-- Veiling template -->
-            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
-                <div class="veiling">
-                    <div class="veiling-titel label label-info">
-                        Gratis Model S
-                    </div>
-                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
-                    <div class="veiling-prijs-tijd">
-                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-                    </div>
-                    <div class="veiling-rating-bied label label-default">
-                        <div class="rating text-center">
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                        </div>
-                        <button class="btn btn-primary bied">Bied Nu!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- End template -->
-            <!-- Veiling template -->
-            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
-                <div class="veiling">
-                    <div class="veiling-titel label label-info">
-                        Gratis Model S
-                    </div>
-                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
-                    <div class="veiling-prijs-tijd">
-                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-                    </div>
-                    <div class="veiling-rating-bied label label-default">
-                        <div class="rating text-center">
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                        </div>
-                        <button class="btn btn-primary bied">Bied Nu!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- End template -->
-            <!-- Veiling template -->
-            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
-                <div class="veiling">
-                    <div class="veiling-titel label label-info">
-                        Gratis Model S
-                    </div>
-                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
-                    <div class="veiling-prijs-tijd">
-                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-                    </div>
-                    <div class="veiling-rating-bied label label-default">
-                        <div class="rating text-center">
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                        </div>
-                        <button class="btn btn-primary bied">Bied Nu!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- End template -->
-            <!-- Veiling template -->
-            <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
-                <div class="veiling">
-                    <div class="veiling-titel label label-info">
-                        Gratis Model S
-                    </div>
-                    <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
-                    <div class="veiling-prijs-tijd">
-                        <div class="prijs label label-default"><i class="glyphicon glyphicon-euro"></i> 150000</div>
-                        <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
-                    </div>
-                    <div class="veiling-rating-bied label label-default">
-                        <div class="rating text-center">
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star"></i>
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                        </div>
-                        <button class="btn btn-primary bied">Bied Nu!</button>
-                    </div>
-                </div>
-            </div>
-            <!-- End template -->
+            <?php
+
+            $auctions = SendToDatabase($QueryQualityNew);
+            if($auctions[0]){
+                foreach($auctions as $auction){
+                    DrawAuction($auction);
+                }
+            }else{
+                echo "<b>Error on loading auctions: </b>" . "<br><br>" . $auctions[1];
+            }
+
+
+            ?>
 
 
         </div>

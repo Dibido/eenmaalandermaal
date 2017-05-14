@@ -28,8 +28,6 @@ function cleanInput($input)
 }
 
 
-
-
 /* this function sends a prebuild query to the database and returns the result. */
 
 /* intake:
@@ -47,17 +45,17 @@ function cleanInput($input)
  */
 
 
-
-function SendToDatabase($query) {
+function SendToDatabase($query)
+{
     GLOBAL $connection;
 
     //tries to send the query and returns the response
     try {
         return $response = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 
-    //if unsuccessful, returns a False as first item and the error as the second item in a list
+        //if unsuccessful, returns a False as first item and the error as the second item in a list
     } catch (Exception $e) {
-        return [False, 'Error: ' .  $e->getMessage()];
+        return [False, 'Error: ' . $e->getMessage()];
     }
 }
 
@@ -78,23 +76,25 @@ function SendToDatabase($query) {
  */
 
 
-function DrawAuction($auction){
+function DrawAuction($auction)
+{
 
     //testing for missing images and replacing with backup image
-    if(empty($auction["ImagePath"])){
+    if (empty($auction["ImagePath"])) {
         $auction["ImagePath"] = "images/no-image-available.jpg";
+    }
 
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2\">
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-info\">" .
-                     $auction["VW_titel"] ."
+        $auction["VW_titel"] . "
                     </div>
-                    <div class=\"veiling-image\" style=\"background-image:url(images/16-9.jpeg)\"></div>
+                    <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
-                        <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> 150000</div>
-                        <div class=\"tijd label label-default\">1:15:25 <i class=\"glyphicon glyphicon-time\"></i></div>
+                        <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
+                        <div class=\"tijd label label-default\">" . $auction["tijd"] . " <i class=\"glyphicon glyphicon-time\"></i></div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <div class=\"rating text-center\">
@@ -127,9 +127,6 @@ function DrawAuction($auction){
  *
  *
  */
-
-
-
 
 
 /*Function to load the header letters for the categories*/
@@ -166,7 +163,6 @@ function laadLetters()
         }
     }
 }
-
 
 
 ?>
