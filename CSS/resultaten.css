@@ -78,3 +78,8 @@ float:right;
 width: 50%;
 padding: 15px;
 }
+
+/* categorie fix voor zoekresultaten spreek Homepage.css tegen*/
+.list-group{
+margin-bottom: 20px;
+}
