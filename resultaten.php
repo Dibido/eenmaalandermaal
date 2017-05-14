@@ -1,32 +1,43 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Resultaten</title>
-    <meta name="description" content="EenmaalAndermaal">
-    <meta name="author" content="Iproject - Groep 3">
+<meta charset="utf-8">
 
-    <!-- bootstrap !-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="CSS/theme.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <!-- price slider -->
-    <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
+<title>EenmaalAndermaal - Beste veilingssite van Nederland</title>
+<meta name="description" content="EenmaalAndermaal">
+<meta name="author" content="Iproject - Groep 3">
 
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="CSS/categorie-old.css">
-    <link rel="stylesheet" href="CSS/veiling.css">
-    <link rel="stylesheet" href="CSS/navigation.css">
-    <link rel="stylesheet" type="text/css" href="CSS/resultaten.css">
+
+<!-- Theme colours for mobile -->
+<!-- Chrome, Firefox OS and Opera -->
+<meta name="theme-color" content="#F6D155">
+<!-- Windows Phone -->
+<meta name="msapplication-navbutton-color" content="#F6D155">
+<!-- iOS Safari -->
+<meta name="apple-mobile-web-app-status-bar-style" content="#F6D155">
+
+
+<!-- setting the browser icon -->
+<link rel="icon" href="images/Site-logo.png">
+
+
+<!-- bootstrap !-->
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="CSS/theme.css">
+<link rel="stylesheet" href="CSS/BootstrapXL.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="CSS/HomePage.css">
+<link rel="stylesheet" href="CSS/veiling.css">
+<link rel="stylesheet" href="CSS/navigation.css">
+
 
 </head>
-
 <body>
 
 <!-- Navigation -->
@@ -37,25 +48,14 @@
             <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
         </a>
 
-        <form class="navbar-form navbar-left">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="zoeken">
-            </div>
-            <button type="submit" class="btn btn-default hidden-sm hidden-xs"><i class="glyphicon glyphicon-search"></i>
-            </button>
-            <button type="button" class="btn btn-default" data-toggle="collapse" data-target="#AdvancedSearch">Advanced
-                Search
-            </button>
-        </form>
-
-        <div class="pull-right">
+        <div class="navbar-right">
             <ul class="nav navbar-nav collapse navbar-collapse">
                 <li>
-                    <button class="btn btn-default navbar-btn hidden-md hidden-lg" data-toggle="collapse"
+                    <button class="btn btn-default navbar-btn hidden-md hidden-lg MobileButtonToggle" data-toggle="collapse"
                             data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
                 </li>
                 <li>
-                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xs">Plaats veiling</button>
+                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton">Plaats veiling</button>
                 </li>
                 <li>
                     <button class="btn btn-default navbar-btn hidden-sm hidden-xs NavRightButton"><i
@@ -63,6 +63,17 @@
                 </li>
             </ul>
         </div>
+
+
+        <form class="navbar-form" action="resultaten.php" method="GET">
+            <div class="form-group" style="display:inline;">
+                <div class="input-group" style="display:table;">
+                    <input class="form-control" name="search" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
+                    <span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
+                </div>
+            </div>
+        </form>
+
     </div>
 </nav>
 <!-- Mobile Buttons -->
