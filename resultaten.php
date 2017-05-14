@@ -168,9 +168,9 @@
 
         <?php
         require 'PHP/connection.php';
-
-        if (!empty($_GET['zoekterm'])) {
-            $zoekterm = $_GET['zoekterm'];
+       global $zoekterm;
+       $zoekterm = $_GET['zoekterm'];
+        if (!empty($zoekterm)) {
             //bouwen query
             $sql = "SELECT  * FROM Voorwerp v LEFT JOIN Bod b ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer 
                               WHERE (B.BOD_bodbedrag = (SELECT TOP 1 BOD_Bodbedrag 
@@ -186,10 +186,9 @@
         function outputRows($result)
         {
 
-
-        if (empty($result)) { 
-            echo 'No results found voor '%zoekterm%''; 
-            }
+    if (empty($result)) { 
+            echo "Geen resultaten voor: $zoekterm "  ; 
+            } 
 
             foreach ($result as $row) {
                 $titel=$row['VW_titel'];
