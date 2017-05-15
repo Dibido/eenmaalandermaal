@@ -1,5 +1,5 @@
 <?php
-require 'PHP/connection.php';
+require 'PHP/connection-old.php';
 require 'PHP/Functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -17,6 +17,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $prijs = array('min' => $tmp[0], 'max' => $tmp[1]);
         unset($tmp);
     }
+
+    global $prijs;
+    if(!isset($_GET['zoekterm'])){
+        $_GET['zoekterm'] = "test";
+    }
+    if(!isset($_GET['sorteerfilter'])){
+        $_GET['sorteerfilter'] = 'Tijd: nieuw aangeboden';
+    }
+    if(!isset($_GET['betalingsmethode'])){
+        $_GET['betalingsmethode'] = 'Anders';
+    }
+    $_GET['subcategory'] = "Auto's";
+    $_GET['subsubcategory'] = "Koopauto's";
+    $_GET['maxremainingtime'] = 200;
+
+    $Dictionary = array(
+            'SearchKeyword' => $_GET['zoekterm'],
+            'SearchFilter' => $_GET['sorteerfilter'],
+            'SearchPaymentMethod' => $_GET['betalingsmethode'],
+            'SearchSubCategory' => $_GET['subcategory'],
+            'SearchSubSubCategory' => $_GET['subsubcategory'],
+            'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
+            'SearchMinPrice' => $prijs['min'],
+            'SearchMaxPrice' => $prijs['max'],
+    );
+
     if (!empty($zoekterm)) {
         //bouwen query
         $searchsql = "SELECT  *
