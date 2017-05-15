@@ -332,10 +332,23 @@ $response = NULL;
 
         <?php
 
-        $auctions = SendToDatabase($QueryQualityNew);
-        if ($auctions[0]) {
-            foreach ($auctions as $auction) {
-                DrawAuction($auction);
+        print_r(SearchFunction(
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL,
+            NULL
+            ));
+
+        $ExtraAuctions = SendToDatabase(SearchFunction());
+        if ($ExtraAuctions[0]) {
+            foreach ($ExtraAuctions as $advert) {
+                DrawAuction($advert);
             }
         } else {
             echo "<b>Error on loading auctions: </b>" . "<br><br>" . $auctions[1];
