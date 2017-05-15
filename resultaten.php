@@ -2,6 +2,7 @@
 require 'PHP/connection.php';
 require 'PHP/Functions.php';
 
+//testu
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['zoekterm'])) {
