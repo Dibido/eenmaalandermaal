@@ -65,13 +65,13 @@ SELECT
   VW_voorwerpnummer,
   VW_titel,
   --Laat het hoogste bod zien op het voorwerpnummer
-(SELECT TOP 1 BOD_Bodbedrag
+(COALESCE ((SELECT TOP 1 BOD_Bodbedrag
    FROM Bod
-   WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
                                FROM Bod
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC)                  AS prijs,
+   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
   --Tijdsverschil tussen nu en het einde van de veiling
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   COUNT(*)                                       AS Biedingen,
@@ -127,13 +127,13 @@ SELECT
   TOP 3
   VW_voorwerpnummer,
   VW_titel,
-  (SELECT TOP 1 BOD_Bodbedrag
+  (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
    FROM Bod
-   WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
                                FROM Bod
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC)                  AS prijs,
+   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   COUNT(*)                                       AS Biedingen,
   (SELECT TOP 1 BES_filenaam
@@ -201,14 +201,13 @@ $QueryAllAuctions = <<<EOT
 SELECT
   VW_voorwerpnummer,
   VW_titel,
-  (SELECT TOP 1 BOD_Bodbedrag
+  (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
    FROM Bod
-   WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
                                FROM Bod
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-                                                            ORDER BY BOD_Bodbedrag DESC)
-  AS prijs,
+   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
   BES_filenaam
 FROM Voorwerp
 RIGHT OUTER JOIN Bestand ON Voorwerp.VW_voorwerpnummer = Bestand.BES_voorwerpnummer
@@ -222,13 +221,13 @@ $QueryQualityNew = <<<EOT
 SELECT
 VW_voorwerpnummer,VW_titel,
 DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
-(SELECT TOP 1 BOD_Bodbedrag
+(COALESCE ((SELECT TOP 1 BOD_Bodbedrag
    FROM Bod
-   WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
                                FROM Bod
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC)                  AS prijs,
+   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
    (SELECT TOP 1 BES_filenaam
    FROM Bestand
    WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
@@ -285,7 +284,7 @@ SELECT
  WHERE r2.RB_Naam != 'root'
 	AND ('test' IS NULL OR VW_titel LIKE $zoekOpdracht)
 	AND ($maxOvergeblevenTijd IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $maxOvergeblevenTijd)
-	AND ($minOvergebelvenTijd IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $minOvergeblevenTijd)
+	AND ($minOvergeblevenTijd IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $minOvergeblevenTijd)
 	AND ($minimumPrijs IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
 									FROM Bod
 		                            WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag

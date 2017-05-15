@@ -1,5 +1,5 @@
 <?php
-require('PHP/connection-old.php');
+require('PHP/connection.php');
 require('PHP/Functions.php');
 
 //Read all categories from the database
