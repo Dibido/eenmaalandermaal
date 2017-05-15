@@ -8,7 +8,6 @@
 <meta name="author" content="Iproject - Groep 3">
 
 
-
 <!-- Theme colours for mobile -->
 <!-- Chrome, Firefox OS and Opera -->
 <meta name="theme-color" content="#F6D155">
@@ -35,8 +34,9 @@
 <link rel="stylesheet" href="CSS/navigation.css">
 <link rel="stylesheet" href="CSS/resultaten.css">
 
- <!-- CSS voor price slider -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
+<!-- CSS voor price slider -->
+<link rel="stylesheet" type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
 
 </head>
@@ -53,11 +53,13 @@
         <div class="navbar-right">
             <ul class="nav navbar-nav collapse navbar-collapse">
                 <li>
-                    <button class="btn btn-default navbar-btn hidden-md hidden-lg MobileButtonToggle" data-toggle="collapse"
+                    <button class="btn btn-default navbar-btn hidden-md hidden-lg MobileButtonToggle"
+                            data-toggle="collapse"
                             data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
                 </li>
                 <li>
-                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton">Plaats veiling</button>
+                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton">Plaats veiling
+                    </button>
                 </li>
                 <li>
                     <button class="btn btn-default navbar-btn hidden-sm hidden-xs NavRightButton"><i
@@ -70,8 +72,10 @@
         <form class="navbar-form" action="resultaten.php" method="GET">
             <div class="form-group" style="display:inline;">
                 <div class="input-group" style="display:table;">
-                    <input class="form-control" name="search" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
-                    <span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
+                    <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                           autofocus="autofocus" type="text">
+                    <span class="input-group-addon" style="width:1%;"><span
+                                class="glyphicon glyphicon-search"></span></span>
                 </div>
             </div>
         </form>
@@ -181,8 +185,8 @@
 
         <?php
         require 'PHP/connection.php';
-       global $zoekterm;
-       $zoekterm = $_GET['zoekterm'];
+        require 'PHP/functions.php';
+        $zoekterm = ($_GET['zoekterm']);
         if (!empty($zoekterm)) {
             //bouwen query
             $sql = "SELECT  * FROM Voorwerp v LEFT JOIN Bod b ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer 
@@ -195,19 +199,23 @@
             outputRows($result);
         }
 
-
         function outputRows($result)
         {
-
-    if (empty($result)) { 
-            echo "Geen resultaten voor: $zoekterm "  ; 
-            } 
+            global $zoekterm;
+            if (empty($result)) {
+                echo "Geen resultaten gevonden voor: '" . $zoekterm . "'";
+            }
 
             foreach ($result as $row) {
-                $titel=$row['VW_titel'];
-                $beschrijving=$row['VW_beschrijving'];
-                $bodBedrag=$row['BOD_bodbedrag'];
-                $tijd=$row['VW_looptijdEinde']-$row['VW_looptijdStart'];
+
+                DrawAuction($row);
+
+                /*
+
+                $titel = $row['VW_titel'];
+                $beschrijving = $row['VW_beschrijving'];
+                $bodBedrag = $row['BOD_bodbedrag'];
+                $tijd = $row['VW_looptijdEinde'] - $row['VW_looptijdStart'];
 
 
                 echo "<div class=\"item  col-xs-4 col-lg-4\">
@@ -236,6 +244,7 @@
                 </div>
             </div>
         </div>";
+                */
             }
         }
 
