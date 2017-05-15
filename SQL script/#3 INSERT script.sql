@@ -553,7 +553,7 @@ VALUES ('images/testImg1.jpg', 1),
   ('images/testImg7-kopie.jpg', 17),
   ('images/testImg8-kopie.jpg', 18),
   ('images/testImg9-kopie.jpg', 19),
-  ('images/testImg10-kopie.jpg',20)
+  ('images/testImg10-kopie.jpg',20),
   ('images/Model3.jpeg', 21),
   ('images/ModelS.jpeg', 22),
   ('images/ModelX.jpeg', 23),

@@ -62,7 +62,6 @@ try {
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/navigation.css">
-    <link rel="stylesheet" href="CSS/theme.css">
     <link rel="stylesheet" href="CSS/categorie.css">
 
 </head>
