@@ -78,12 +78,10 @@ function SendToDatabase($query)
 
 function DrawAuction($auction)
 {
-
     //testing for missing images and replacing with backup image
     if (empty($auction["ImagePath"])) {
         $auction["ImagePath"] = "images/no-image-available.jpg";
     }
-
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2\">
@@ -145,6 +143,18 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
+}
+
+function outputRows($result, $zoekterm)
+{
+    global $zoekterm;
+    if (empty($result)) {
+        echo "Geen resultaten gevonden voor: '" . $zoekterm . "'";
+    } else {
+        foreach ($result as $auction) {
+            DrawSearchResults($auction);
+        }
+    }
 }
 
 /*
