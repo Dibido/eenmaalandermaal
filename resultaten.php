@@ -1,3 +1,9 @@
+<?php
+require 'PHP/connection.php';
+require 'PHP/Functions.php';
+
+?>
+
 <!doctype html>
 
 <html lang="en">
@@ -101,32 +107,37 @@
             <div class="list-group">
                 <a href="#" class="list-group-item active">Opties</a>
 
-                <a href="#" class="list-group-item">Prijs: <b>€ 10 - € 1000</b> <input id="pslider" type="text"
-                                                                                       class="span2" value=""
-                                                                                       data-slider-min="10"
-                                                                                       data-slider-max="1000"
-                                                                                       data-slider-step="5"
-                                                                                       data-slider-value="[150,450]"/>
-                </a>
+                <form method="post" action="/action_page_post.php">
 
-                <a href="#" class="list-group-item">Rating: <b>1</b>
-                    <select>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-
-                    
-                    <script>
-                        var slider = new Slider('#pslider', {});
-                        var slider = new Slider('#aslider', {});
-                    </script>
-                    <a href="#" class="list-group-item active" style="background-color: #524bab; text-align: center;" )>
-                        Aanpassen
+                    <a href="#" class="list-group-item">Prijs: <b>€ 10 - € 1000</b>
+                        <input id="pslider" type="text"
+                               class="span2" value=""
+                               data-slider-min="10"
+                               data-slider-max="1000"
+                               data-slider-step="5"
+                               data-slider-value="[150,450]"/>
                     </a>
 
+
+                    <a href="#" class="list-group-item">Rating:
+                        <select class="form-control" id="rating">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </a>
+
+                    <a href="#" class="list-group-item">
+                        <input class="btn btn-primary" type="submit" data-inline="true" value="Aanpassen">
+                    </a>
+
+                    <script>
+                        var slider = new Slider('#pslider', {});
+                    </script>
+
+                </form>
             </div>
 
 
@@ -177,19 +188,24 @@
         </div>
 
         <?php
-        require 'PHP/connection.php';
-        require 'PHP/functions.php';
-        $zoekterm = ($_GET['zoekterm']);
-        if (!empty($zoekterm)) {
-            //bouwen query
-            $sql = "SELECT  * FROM Voorwerp v LEFT JOIN Bod b ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer 
-                              WHERE (B.BOD_bodbedrag = (SELECT TOP 1 BOD_Bodbedrag 
-                                                        FROM Bod 
-                                                        WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag 
-                                                                                    FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) OR b.BOD_bodbedrag IS NULL) 
-                                    AND VW_titel LIKE '%$zoekterm%'";
-            $result = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-            outputRows($result);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            if (isset($_GET['zoekterm'])) {
+                $zoekterm = ($_GET['zoekterm']);
+                if (!empty($zoekterm)) {
+                    //bouwen query
+                    $sql = "SELECT  * 
+                        FROM Voorwerp v 
+                        LEFT JOIN Bod b ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer 
+                        WHERE (B.BOD_bodbedrag = (SELECT TOP 1 BOD_Bodbedrag 
+                        FROM Bod 
+                        WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag 
+                        FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) OR b.BOD_bodbedrag IS NULL) 
+                        AND VW_titel LIKE '%$zoekterm%'";
+                    $result = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+                    outputRows($result);
+                }
+            }
         }
 
         function outputRows($result)
@@ -202,45 +218,45 @@
             foreach ($result as $row) {
 
                 DrawAuction($row);
-
-                /*
-
-                $titel = $row['VW_titel'];
-                $beschrijving = $row['VW_beschrijving'];
-                $bodBedrag = $row['BOD_bodbedrag'];
-                $tijd = $row['VW_looptijdEinde'] - $row['VW_looptijdStart'];
-
-
-                echo "<div class=\"item  col-xs-4 col-lg-4\">
-            <div class=\"veiling thumbnail\">
-                <div class=\"veiling-titel label label-info\">
-                    {$row['VW_titel']}
-                </div>
-                <div class=\"veiling-image\" style=\"background-image:url(images/16-9.jpeg)\"></div>
-                <p>{$row['VW_beschrijving']}</p>
-                <div class=\"veiling-prijs-tijd\">
-                    <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\">
-                                       {$row['BOD_bodbedrag']}
-                    </i>
-                    </div>
-                    <div class=\"tijd label label-default\"> $tijd <i class=\"glyphicon glyphicon-time\"></i></div>
-                </div>
-                <div class=\"veiling-rating-bied label label-default\">
-                    <div class=\"rating text-center\">
-                        <i class=\"glyphicon glyphicon-star\"></i>
-                        <i class=\"glyphicon glyphicon-star\"></i>
-                        <i class=\"glyphicon glyphicon-star\"></i>
-                        <i class=\"glyphicon glyphicon-star\"></i>
-                        <i class=\"glyphicon glyphicon-star-empty\"></i>
-                    </div>
-                    <button class=\"btn btn-primary bied\">Bied Nu!</button>
-                </div>
-            </div>
-        </div>";
-                */
             }
         }
 
+
+        /*
+
+        $titel = $row['VW_titel'];
+        $beschrijving = $row['VW_beschrijving'];
+        $bodBedrag = $row['BOD_bodbedrag'];
+        $tijd = $row['VW_looptijdEinde'] - $row['VW_looptijdStart'];
+
+
+        echo "<div class=\"item  col-xs-4 col-lg-4\">
+    <div class=\"veiling thumbnail\">
+        <div class=\"veiling-titel label label-info\">
+            {$row['VW_titel']}
+        </div>
+        <div class=\"veiling-image\" style=\"background-image:url(images/16-9.jpeg)\"></div>
+        <p>{$row['VW_beschrijving']}</p>
+        <div class=\"veiling-prijs-tijd\">
+            <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\">
+                               {$row['BOD_bodbedrag']}
+            </i>
+            </div>
+            <div class=\"tijd label label-default\"> $tijd <i class=\"glyphicon glyphicon-time\"></i></div>
+        </div>
+        <div class=\"veiling-rating-bied label label-default\">
+            <div class=\"rating text-center\">
+                <i class=\"glyphicon glyphicon-star\"></i>
+                <i class=\"glyphicon glyphicon-star\"></i>
+                <i class=\"glyphicon glyphicon-star\"></i>
+                <i class=\"glyphicon glyphicon-star\"></i>
+                <i class=\"glyphicon glyphicon-star-empty\"></i>
+            </div>
+            <button class=\"btn btn-primary bied\">Bied Nu!</button>
+        </div>
+    </div>
+</div>";
+        */
         ?>
 
 
@@ -260,11 +276,5 @@
         });
     });
 </script>
-
-
-</div>
-
-
 </body>
 </html>
-
