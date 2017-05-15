@@ -332,26 +332,31 @@ $response = NULL;
 
         <?php
 
-        print_r(SearchFunction(
-            NULL,
-            NULL,
-            NULL,
-            NULL,
-            NULL,
-            NULL,
-            NULL,
-            NULL,
-            NULL,
-            NULL
-            ));
 
-        $ExtraAuctions = SendToDatabase(SearchFunction());
-        if ($ExtraAuctions[0]) {
-            foreach ($ExtraAuctions as $advert) {
+        $StommeDictionary = array(
+           'SearchKeyword' => 'testproduct3',
+            'SearchFilter' => 'NULL',
+            'SearchPaymentMethod' => 'NULL',
+            'SearchCategory' => 'NULL',
+            'SearchSubCategory' => 'NULL',
+            'SearchSubSubCategory' => 'NULL',
+            'SearchMaxRemainingTime' => 'NULL',
+            'SearchMinRemainingTime' => 'NULL',
+            'SearchMinPrice' => 'NULL',
+            'SearchMaxPrice' => 'NULL'
+        );
+
+        $test = SearchFunction($StommeDictionary);
+
+
+        //$ExtraAuctions = SendToDatabase($QueryQualityNew);
+
+        if ($test[0]) {
+            foreach ($test as $advert) {
                 DrawAuction($advert);
             }
         } else {
-            echo "<b>Error on loading auctions: </b>" . "<br><br>" . $auctions[1];
+            echo "<b>Error on loading auctions: </b>" . "<br><br>" . $test[1];
         }
 
         ?>

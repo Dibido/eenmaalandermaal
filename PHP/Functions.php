@@ -211,21 +211,15 @@ function laadLetters()
 
 /* Zoekfilter - converteert input naar en query, stuurt results terug  */
 
-function SearchFunction(
-    $SearchKeyword = '',
-    $SearchFilter = '',
-    $SearchCategory = '',
-    $SearchPaymentMethod = '',
-    $SearchSubCategory= '',
-    $SearchSubSubCategory = '',
-    $SearchMaxRemainingTime = '',
-    $SearchMinRemainingTime = '',
-    $SearchMinPrice = '',
-    $SearchMaxPrice = ''
-)
+function SearchFunction($SearchOptions)
 {
-
-
+    print_r($SearchOptions);
+    //preparing for query
+    foreach($SearchOptions as $SearchOption){
+        if($SearchOptions = 'NULL'){
+            $SearchOptions[$SearchOption] = "'" . $SearchOption . "'";
+        }
+    }
 
 //clean the input
     /*
@@ -242,14 +236,25 @@ function SearchFunction(
 
     */
 
+    $SearchKeyword = $SearchOptions['SearchKeyword'];
+    $QuerySearchKeyword =  "'%" . $SearchKeyword . "%'";
+    $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
+    $SearchFilter = $SearchOptions['SearchFilter'];
+    $SearchCategory = $SearchOptions['SearchCategory'];
+    $SearchSubCategory = $SearchOptions['SearchSubCategory'];
+    $SearchSubSubCategory = $SearchOptions['SearchSubSubCategory'];
+    $SearchMaxRemainingTime = $SearchOptions['SearchMaxRemainingTime'];
+    $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
+    $SearchMinPrice = $SearchOptions['SearchMinPrice'];
+    $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
+
 
 
 //Prepare the query
     $QuerySearchProducts = <<< EOT
 
 SELECT
-   TOP 50
-   VW_voorwerpnummer,
+   DISTINCT VW_voorwerpnummer,
    VW_titel,
    (SELECT TOP 1 BOD_Bodbedrag
     FROM Bod
@@ -262,12 +267,9 @@ SELECT
     (SELECT TOP 1 BES_filenaam
     FROM Bestand
     WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
-   r2.RB_Naam                                           AS Hoofdcategorie,
-   r1.RB_Naam                                           AS SubCategorie,
-   Rubriek.RB_Naam                                      AS Rubriek,
    Voorwerp.VW_betalingswijze
  FROM Voorwerp
-   INNER JOIN Bod
+   inneR JOIN Bod
      ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
    INNER JOIN Voorwerp_Rubriek
      ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
@@ -278,39 +280,47 @@ SELECT
    INNER JOIN Rubriek r2
      ON r2.RB_Nummer = r1.RB_Parent
  WHERE r2.RB_Naam != 'root'
-	AND ($SearchKeyword IS NULL OR VW_titel LIKE $SearchKeyword)
-	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
-	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
-	AND ($SearchMinPrice IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
+
+	AND ('$SearchKeyword' IS NULL OR VW_titel LIKE $QuerySearchKeyword)
+	AND ('$SearchMaxRemainingTime' IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= '$SearchMaxRemainingTime')
+	AND ('$SearchMinRemainingTime' IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= '$SearchMinRemainingTime')
+	AND ('$SearchMinPrice' IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
 									FROM Bod
 		                            WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
 		                                                        FROM Bod
 			                                                    WHERE BOD_voorwerpnummer = VW_voorwerpnummer
 				                                                ORDER BY BOD_Bodbedrag DESC) AND
 																BOD_voorwerpnummer = VW_voorwerpnummer
-						               ORDER BY BOD_Bodbedrag DESC) >= $SearchMinPrice)
-	AND ($SearchMaxPrice  IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
+						               ORDER BY BOD_Bodbedrag DESC) >= '$SearchMinPrice')
+	AND ('$SearchMaxPrice' IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
 			                       FROM Bod
 		                           WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
                                                            FROM Bod
                                                            WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                                            ORDER BY BOD_Bodbedrag DESC)
 													 AND BOD_voorwerpnummer = VW_voorwerpnummer
-									 ORDER BY BOD_Bodbedrag DESC) <= $SearchMaxPrice)
-	AND ($SearchCategory IS NULL OR r2.RB_Naam = $SearchCategory)
-	AND ($SearchSubCategory IS NULL OR r1.RB_Naam = $SearchSubCategory)
-	AND ($SearchSubSubCategory IS NULL OR Rubriek.RB_Naam = $SearchSubSubCategory)
-	AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = $SearchPaymentMethod)
+									 ORDER BY BOD_Bodbedrag DESC) <= '$SearchMaxPrice')
+	AND ('$SearchCategory' IS NULL OR r2.RB_Naam = '$SearchCategory')
+	AND ('$SearchSubCategory' IS NULL OR r1.RB_Naam = '$SearchSubCategory')
+	AND ('$SearchSubSubCategory' IS NULL OR Rubriek.RB_Naam = '$SearchSubSubCategory')
+	AND ('$SearchPaymentMethod' IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
 	AND (VW_veilinggesloten != 1)
-	ORDER BY $SearchFilter
+	GROUP BY  VW_voorwerpnummer,VW_titel,Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze
+	ORDER BY VW_voorwerpnummer
 
 
 EOT;
 
+    print_r($QuerySearchProducts);
+
+
 
 //executing the query
 
+
     return SendToDatabase($QuerySearchProducts);
+
+
 
 }
 
