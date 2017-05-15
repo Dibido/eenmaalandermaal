@@ -203,7 +203,11 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
                                data-slider-max="1000"
                                data-slider-step="5"
                                <?php
-                               data-slider-value="[150,450]"/>
+                               if(isset($prijs)){
+                                   echo('data-slider-value="['. $prijs[0] . "," . $prijs[1] . ']"/>');
+                               } else {
+                                   echo('data-slider-value="[150,450]"/>');
+                               }
                                ?>
                     </a>
 
