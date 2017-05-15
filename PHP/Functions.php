@@ -212,22 +212,23 @@ function laadLetters()
 /* Zoekfilter - converteert input naar en query, stuurt results terug  */
 
 function SearchFunction(
-    $SearchKeyword,
-    $SearchFilter,
-    $SearchCategory,
-    $SearchPaymentMethod,
-    $SearchSubCategory,
-    $SearchSubSubCategory,
-    $SearchMaxRemainingTime,
-    $SearchMinRemainingTime,
-    $SearchMinPrice,
-    $SearchMaxPrice
+    $SearchKeyword = '',
+    $SearchFilter = '',
+    $SearchCategory = '',
+    $SearchPaymentMethod = '',
+    $SearchSubCategory= '',
+    $SearchSubSubCategory = '',
+    $SearchMaxRemainingTime = '',
+    $SearchMinRemainingTime = '',
+    $SearchMinPrice = '',
+    $SearchMaxPrice = ''
 )
 {
 
 
 
 //clean the input
+    /*
     $SearchKeyword = cleanInput($SearchKeyword);
     $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
     $SearchFilter = cleanInput($SearchFilter);
@@ -239,6 +240,7 @@ function SearchFunction(
     $SearchMinPrice = cleanInput($SearchMinPrice);
     $SearchMaxPrice = cleanInput($SearchMaxPrice);
 
+    */
 
 
 
@@ -287,7 +289,7 @@ SELECT
 				                                                ORDER BY BOD_Bodbedrag DESC) AND
 																BOD_voorwerpnummer = VW_voorwerpnummer
 						               ORDER BY BOD_Bodbedrag DESC) >= $SearchMinPrice)
-	AND ($SearchMaxPrice NULL OR (SELECT TOP 1 BOD_Bodbedrag
+	AND ($SearchMaxPrice  IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
 			                       FROM Bod
 		                           WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
                                                            FROM Bod
