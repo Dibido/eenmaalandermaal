@@ -1,8 +1,6 @@
 <?php
-require 'PHP/connection.php';
+require 'PHP/connection-old.php';
 require 'PHP/Functions.php';
-
-//testu
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['zoekterm'])) {
@@ -22,20 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) OR b.BOD_bodbedrag IS NULL) 
                         AND VW_titel LIKE '%$zoekterm%'";
         $result = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-        outputRows($result);
+        outputRows($result, $zoekterm);
     }
 }
-
-function outputRows($result)
-{
-    global $zoekterm;
-
-    foreach ($result as $row) {
-
-        DrawAuction($row);
-    }
-}
-
 
 /*
 
