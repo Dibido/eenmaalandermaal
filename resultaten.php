@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 <?php
 require 'PHP/connection-old.php';
 require 'PHP/Functions.php';
@@ -12,70 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['sorteerfilter'])) {
         $sorteerfilter = $_GET['sorteerfilter'];
     }
-    if (!empty($zoekterm)) {
-        //bouwen query
-        $sql = "SELECT  *
-                        FROM Voorwerp v 
-                        LEFT JOIN Bod b ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer 
-                        WHERE (B.BOD_bodbedrag = (SELECT TOP 1 BOD_Bodbedrag 
-                        FROM Bod 
-                        WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag 
-                        FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) OR b.BOD_bodbedrag IS NULL) 
-                        AND VW_titel LIKE '%$zoekterm%'";
-        $result = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-        outputRows($result);
-    }
+
 }
-
-function outputRows($result)
-{
-    global $zoekterm;
-
-    foreach ($result as $row) {
-
-        DrawAuction($row);
-    }
-}
-
-
-/*
-
-$titel = $row['VW_titel'];
-$beschrijving = $row['VW_beschrijving'];
-$bodBedrag = $row['BOD_bodbedrag'];
-$tijd = $row['VW_looptijdEinde'] - $row['VW_looptijdStart'];
-
-
-echo "<div class=\"item  col-xs-4 col-lg-4\">
-<div class=\"veiling thumbnail\">
-<div class=\"veiling-titel label label-info\">
-    {$row['VW_titel']}
-</div>
-<div class=\"veiling-image\" style=\"background-image:url(images/16-9.jpeg)\"></div>
-<p>{$row['VW_beschrijving']}</p>
-<div class=\"veiling-prijs-tijd\">
-    <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\">
-                       {$row['BOD_bodbedrag']}
-    </i>
-    </div>
-    <div class=\"tijd label label-default\"> $tijd <i class=\"glyphicon glyphicon-time\"></i></div>
-</div>
-<div class=\"veiling-rating-bied label label-default\">
-    <div class=\"rating text-center\">
-        <i class=\"glyphicon glyphicon-star\"></i>
-        <i class=\"glyphicon glyphicon-star\"></i>
-        <i class=\"glyphicon glyphicon-star\"></i>
-        <i class=\"glyphicon glyphicon-star\"></i>
-        <i class=\"glyphicon glyphicon-star-empty\"></i>
-    </div>
-    <button class=\"btn btn-primary bied\">Bied Nu!</button>
-</div>
-</div>
-</div>";
-*/
 ?>
 
->>>>>>> Stashed changes
 <!doctype html>
 
 <html lang="en">
@@ -255,38 +193,25 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
         </div>
 
         <?php
-        require 'PHP/connection.php';
-        require 'PHP/functions.php';
         $zoekterm = ($_GET['zoekterm']);
         if (!empty($zoekterm)) {
             //bouwen query
             $sql = "SELECT
-VW_voorwerpnummer,VW_titel,
-DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
-(COALESCE ((SELECT TOP 1 BOD_Bodbedrag
-   FROM Bod
-   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
-                               FROM Bod
-                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
-   (SELECT TOP 1 BES_filenaam
-   FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
-FROM Voorwerp WHERE VW_titel LIKE '%$zoekterm%'";;
+                        VW_voorwerpnummer,VW_titel,
+                        DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
+                        (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+                           FROM Bod
+                           WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                                                       FROM Bod
+                                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+                           ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
+                           (SELECT TOP 1 BES_filenaam
+                           FROM Bestand
+                           WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
+                        FROM Voorwerp WHERE VW_titel LIKE '%$zoekterm%'";
             $result = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-            outputRows($result);
-        }
-
-        function outputRows($result)
-        {
-            global $zoekterm;
-            if (empty($result)) {
-                echo "Geen resultaten gevonden voor: '" . $zoekterm . "'";
-            }
-            foreach ($result as $auction) {
-                DrawSearchResults($auction);
-            }
+            outputRows($result, $zoekterm);
         }
         ?>
 
