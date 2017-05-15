@@ -1,5 +1,5 @@
 <?php
-require 'PHP/connection-old.php';
+require 'PHP/connection.php';
 require 'PHP/Functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -7,7 +7,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $zoekterm = ($_GET['zoekterm']);
     }
     if (isset($_GET['sorteerfilter'])) {
-        $sorteerfilter = $_GET['sorteerfilter'];
+        $sorteerfilter = urldecode($_GET['sorteerfilter']);
+    }
+    if (isset($_GET['betalingsmethode'])) {
+        $betalingsmethode = $_GET['betalingsmethode'];
+    }
+    if (isset($_GET['prijs'])){
+        $prijs = explode(',',$_GET['prijs']);
     }
     if (!empty($zoekterm)) {
         //bouwen query
@@ -19,9 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag 
                         FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) OR b.BOD_bodbedrag IS NULL) 
                         AND VW_titel LIKE '%$zoekterm%'";
-        $result = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-        outputRows($result, $zoekterm);
+        $searchresult = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
+    $sql = "SELECT BW_betalingswijze AS Betalingswijze FROM Betalingswijzen";
+    $betalingswijzenresult = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /*
@@ -173,7 +180,21 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
                     <input type="hidden" name="zoekterm" value="<?php global $zoekterm;
                     echo($zoekterm); ?>">
 
-                    <input type="hidden" name="filter" value="<?php ?>">
+                    <a href="#" class="list-group-item"> Filter:
+                        <select class="form-control" name="sorteerfilter">
+                            <?php
+                            if (isset($sorteerfilter)) {
+                                global $sorteerfilter;
+                                echo('<option value="' . $sorteerfilter . '" selected> ' . $sorteerfilter . '</option>');
+                            }
+                            ?>
+                            <option value="Tijd: nieuw aangeboden">Tijd: nieuw aangeboden</option>
+                            <option value="Tijd: eerst afgelopen">Tijd: eerst afgelopen</option>
+                            <option value="Prijs: laagste bovenaan">Prijs: laagste bovenaan</option>
+                            <option value="Prijs: hoogste bovenaan">Prijs: hoogste bovenaan</option>
+                            <option value="Afstand: dichtstbijzijnde eerst">Afstand: dichtstbijzijnde eerst</option>
+                        </select>
+                    </a>
 
                     <a href="#" class="list-group-item">Prijs: <b>€ 10 - € 1000</b>
                         <input id="pslider" type="text" name="prijs"
@@ -181,17 +202,23 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
                                data-slider-min="10"
                                data-slider-max="1000"
                                data-slider-step="5"
+                               <?php
                                data-slider-value="[150,450]"/>
+                               ?>
                     </a>
 
 
                     <a href="#" class="list-group-item">Betalingsmethode:
                         <select class="form-control" id="betalingsmethode" name="betalingsmethode">
-                            <option>betalen jong</option>
                             <?php
-                            /*foreach(){
-
-                            }*/
+                            if (isset($betalingsmethode)) {
+                                global $betalingsmethode;
+                                echo('<option value="' . urldecode($betalingsmethode) . '" selected>' . urldecode($betalingsmethode) . '</option>');
+                            }
+                            global $betalingswijzenresult;
+                            foreach ($betalingswijzenresult as $betalingswijze) {
+                                echo('<option> ' . $betalingswijze[Betalingswijze] . '</option>');
+                            }
                             ?>
                         </select>
                     </a>
@@ -220,32 +247,6 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
                         class="text-right glyphicon glyphicon-plus-sign"></i></a>
         </div>
     </div>
-    <div class="col-md-9">
-        <ol class="breadcrumb">
-            <li><a href="index.php">Home</a></li>
-            <li class="active">Resultaten</li>
-
-            <div class="pull-right">
-                <b>Sorteer:</b>
-                <form method="get" action="resultaten.php">
-                    <select id="sorteerfilter" name="sorteerfilter" onchange="this.form.submit()">
-                        <?php
-                        if(isset($sorteerfilter)){
-                            global $sorteerfilter;
-                            echo('<option value="0" selected> ' . urldecode($sorteerfilter) . '</option>');
-                        }
-                        ?>
-                        <option value="Tijd: nieuw aangeboden">Tijd: nieuw aangeboden</option>
-                        <option value="Tijd: eerst afgelopen">Tijd: eerst afgelopen</option>
-                        <option value="Prijs: laagste bovenaan">Prijs: laagste bovenaan</option>
-                        <option value="Prijs: hoogste bovenaan">Prijs: hoogste bovenaan</option>
-                        <option value="Afstand: dichtstbijzijnde eerst">Afstand: dichtstbijzijnde eerst</option>
-                    </select>
-                    <noscript><input type="submit" value="aanpassen"</noscript>
-                </form>
-            </div>
-        </ol>
-    </div>
 
     <!-- Trending items -->
 
@@ -262,6 +263,10 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
                             class="glyphicon glyphicon-th"></span>Grid</a>
             </div>
         </div>
+        <?php
+        global $result;
+        outputRows($result, $zoekterm);
+        ?>
     </div>
 </div>
 
