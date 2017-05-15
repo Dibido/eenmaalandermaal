@@ -1,59 +1,143 @@
 <?php
-require 'PHP/connection.php';
+require 'PHP/connection-old.php';
 require 'PHP/Functions.php';
-
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['zoekterm'])) {
         $zoekterm = ($_GET['zoekterm']);
     }
     if (isset($_GET['sorteerfilter'])) {
-        $sorteerfilter = $_GET['sorteerfilter'];
+        $sorteerfilter = urldecode($_GET['sorteerfilter']);
+    }
+    if (isset($_GET['betalingsmethode'])) {
+        $betalingsmethode = $_GET['betalingsmethode'];
+    }
+    if (isset($_GET['prijs'])){
+        $tmp = explode(',',$_GET['prijs']);
+        $prijs = array('min' => $tmp[0], 'max' => $tmp[1]);
+        unset($tmp);
     }
 
+    global $prijs;
+    if(!isset($_GET['zoekterm'])){
+        $_GET['zoekterm'] = "test";
+    }
+    if(!isset($_GET['sorteerfilter'])){
+        $_GET['sorteerfilter'] = 'Tijd: nieuw aangeboden';
+    }
+    if(!isset($_GET['betalingsmethode'])){
+        $_GET['betalingsmethode'] = 'Anders';
+    }
+    $_GET['subcategory'] = "Auto's";
+    $_GET['subsubcategory'] = "Koopauto's";
+    $_GET['maxremainingtime'] = 200;
+
+    $Dictionary = array(
+            'SearchKeyword' => $_GET['zoekterm'],
+            'SearchFilter' => $_GET['sorteerfilter'],
+            'SearchPaymentMethod' => $_GET['betalingsmethode'],
+            'SearchSubCategory' => $_GET['subcategory'],
+            'SearchSubSubCategory' => $_GET['subsubcategory'],
+            'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
+            'SearchMinPrice' => $prijs['min'],
+            'SearchMaxPrice' => $prijs['max'],
+    );
+
+    if (!empty($zoekterm)) {
+        //bouwen query
+        $searchsql = "SELECT  *
+                        FROM Voorwerp v 
+                        LEFT JOIN Bod b ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer 
+                        WHERE (B.BOD_bodbedrag = (SELECT TOP 1 BOD_Bodbedrag 
+                        FROM Bod 
+                        WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag 
+                        FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) OR b.BOD_bodbedrag IS NULL) 
+                        AND VW_titel LIKE '%$zoekterm%'";
+        $searchresult = $connection->query($searchsql)->fetchAll(PDO::FETCH_ASSOC);
+    }
+    $paymethodssql = "SELECT BW_betalingswijze AS Betalingswijze FROM Betalingswijzen";
+    $betalingswijzenresult = $connection->query($paymethodssql)->fetchAll(PDO::FETCH_ASSOC);
 }
+
+/*
+
+$titel = $row['VW_titel'];
+$beschrijving = $row['VW_beschrijving'];
+$bodBedrag = $row['BOD_bodbedrag'];
+$tijd = $row['VW_looptijdEinde'] - $row['VW_looptijdStart'];
+
+
+echo "<div class=\"item  col-xs-4 col-lg-4\">
+<div class=\"veiling thumbnail\">
+<div class=\"veiling-titel label label-info\">
+    {$row['VW_titel']}
+</div>
+<div class=\"veiling-image\" style=\"background-image:url(images/16-9.jpeg)\"></div>
+<p>{$row['VW_beschrijving']}</p>
+<div class=\"veiling-prijs-tijd\">
+    <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\">
+                       {$row['BOD_bodbedrag']}
+    </i>
+    </div>
+    <div class=\"tijd label label-default\"> $tijd <i class=\"glyphicon glyphicon-time\"></i></div>
+</div>
+<div class=\"veiling-rating-bied label label-default\">
+    <div class=\"rating text-center\">
+        <i class=\"glyphicon glyphicon-star\"></i>
+        <i class=\"glyphicon glyphicon-star\"></i>
+        <i class=\"glyphicon glyphicon-star\"></i>
+        <i class=\"glyphicon glyphicon-star\"></i>
+        <i class=\"glyphicon glyphicon-star-empty\"></i>
+    </div>
+    <button class=\"btn btn-primary bied\">Bied Nu!</button>
+</div>
+</div>
+</div>";
+*/
 ?>
 
 <!doctype html>
 
+
 <html lang="en">
 <meta charset="utf-8">
 
-<title>EenmaalAndermaal - Beste veilingssite van Nederland</title>
-<meta name="description" content="EenmaalAndermaal">
-<meta name="author" content="Iproject - Groep 3">
+<head>
+
+    <title>EenmaalAndermaal - Beste veilingssite van Nederland</title>
+    <meta name="description" content="EenmaalAndermaal">
+    <meta name="author" content="Iproject - Groep 3">
+
+    <!-- Theme colours for mobile -->
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#F6D155">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#F6D155">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#F6D155">
 
 
-<!-- Theme colours for mobile -->
-<!-- Chrome, Firefox OS and Opera -->
-<meta name="theme-color" content="#F6D155">
-<!-- Windows Phone -->
-<meta name="msapplication-navbutton-color" content="#F6D155">
-<!-- iOS Safari -->
-<meta name="apple-mobile-web-app-status-bar-style" content="#F6D155">
+    <!-- setting the browser icon -->
+    <link rel="icon" href="images/Site-logo.png">
 
 
-<!-- setting the browser icon -->
-<link rel="icon" href="images/Site-logo.png">
+    <!-- bootstrap !-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="CSS/theme.css">
+    <link rel="stylesheet" href="CSS/BootstrapXL.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="CSS/HomePage.css">
+    <link rel="stylesheet" href="CSS/veiling.css">
+    <link rel="stylesheet" href="CSS/navigation.css">
+    <link rel="stylesheet" href="CSS/resultaten.css">
 
-<!-- bootstrap !-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="CSS/theme.css">
-<link rel="stylesheet" href="CSS/BootstrapXL.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-<!-- CSS -->
-<link rel="stylesheet" href="CSS/HomePage.css">
-<link rel="stylesheet" href="CSS/veiling.css">
-<link rel="stylesheet" href="CSS/navigation.css">
-<!--<link rel="stylesheet" href="CSS/resultaten.css">-->
-
-<!-- CSS voor price slider -->
-<link rel="stylesheet" type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
+    <!-- CSS voor price slider -->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
 
 </head>
 <body>
@@ -89,7 +173,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <div class="form-group" style="display:inline;">
                 <div class="input-group" style="display:table;">
                     <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
-                           autofocus="autofocus" type="text">
+                           autofocus="autofocus" type="text" value="<?php if (!empty($zoekterm)) {
+                        echo($zoekterm);
+                    } ?>">
                     <span class="input-group-addon" style="width:1%;"><span
                                 class="glyphicon glyphicon-search"></span></span>
                 </div>
@@ -117,32 +203,67 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <div class="list-group">
                 <a href="#" class="list-group-item active">Opties</a>
 
-                <a href="#" class="list-group-item">Prijs: <b>€ 10 - € 1000</b> <input id="pslider" type="text"
-                                                                                       class="span2" value=""
-                                                                                       data-slider-min="10"
-                                                                                       data-slider-max="1000"
-                                                                                       data-slider-step="5"
-                                                                                       data-slider-value="[150,450]"/>
-                </a>
+                <form method="get" action="resultaten.php">
 
-                <a href="#" class="list-group-item">Rating: <b>1</b>
-                    <select>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
+                    <input type="hidden" name="zoekterm" value="<?php global $zoekterm;
+                    echo($zoekterm); ?>">
 
+                    <a href="#" class="list-group-item"> Filter:
+                        <select class="form-control" name="sorteerfilter">
+                            <?php
+                            if (isset($sorteerfilter)) {
+                                global $sorteerfilter;
+                                echo('<option value="' . $sorteerfilter . '" selected> ' . $sorteerfilter . '</option>');
+                            }
+                            ?>
+                            <option value="Tijd: nieuw aangeboden">Tijd: nieuw aangeboden</option>
+                            <option value="Tijd: eerst afgelopen">Tijd: eerst afgelopen</option>
+                            <option value="Prijs: laagste bovenaan">Prijs: laagste bovenaan</option>
+                            <option value="Prijs: hoogste bovenaan">Prijs: hoogste bovenaan</option>
+                            <option value="Afstand: dichtstbijzijnde eerst">Afstand: dichtstbijzijnde eerst</option>
+                        </select>
+                    </a>
+
+                    <a href="#" class="list-group-item">Prijs: <b>€ 10 - € 1000</b>
+                        <input id="pslider" type="text" name="prijs"
+                               class="span2" value=""
+                               data-slider-min="10"
+                               data-slider-max="1000"
+                               data-slider-step="5"
+                               <?php
+                               if(isset($prijs)){
+                                   echo('data-slider-value="['. $prijs['min'] . "," . $prijs['max'] . ']"/>');
+                               } else {
+                                   echo('data-slider-value="[150,450]"/>');
+                               }
+                               ?>
+                    </a>
+
+
+                    <a href="#" class="list-group-item">Betalingsmethode:
+                        <select class="form-control" id="betalingsmethode" name="betalingsmethode">
+                            <?php
+                            if (isset($betalingsmethode)) {
+                                global $betalingsmethode;
+                                echo('<option value="' . urldecode($betalingsmethode) . '" selected>' . urldecode($betalingsmethode) . '</option>');
+                            }
+                            global $betalingswijzenresult;
+                            foreach ($betalingswijzenresult as $betalingswijze) {
+                                echo('<option> ' . $betalingswijze[Betalingswijze] . '</option>');
+                            }
+                            ?>
+                        </select>
+                    </a>
+
+                    <a href="#" class="list-group-item">
+                        <input class="btn btn-primary" type="submit" data-inline="true" value="Aanpassen">
+                    </a>
 
                     <script>
                         var slider = new Slider('#pslider', {});
-                        var slider = new Slider('#aslider', {});
                     </script>
-                    <a href="#" class="list-group-item active" style="background-color: #524bab; text-align: center;" )>
-                        Aanpassen
-                    </a>
 
+                </form>
             </div>
 
 
@@ -157,23 +278,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
                         class="text-right glyphicon glyphicon-plus-sign"></i></a>
         </div>
-    </div>
-    <div class="col-md-9">
-        <ol class="breadcrumb">
-            <li><a href="index.php">Home</a></li>
-            <li class="active">Resultaten</li>
-
-            <div class="pull-right">
-                <b>Sorteer:</b>
-                <select id="example">
-                    <option value="1">Tijd: nieuw aangeboden</option>
-                    <option value="2">Tijd: eerst afgelopen</option>
-                    <option value="3">Prijs: laagste bovenaan</option>
-                    <option value="4">Prijs: hoogste bovenaan</option>
-                    <option value="5">Afstand: dichtstbijzijnde eerst</option>
-                </select>
-            </div>
-        </ol>
     </div>
 
     <!-- Trending items -->
@@ -191,31 +295,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             class="glyphicon glyphicon-th"></span>Grid</a>
             </div>
         </div>
-
         <?php
-        $zoekterm = ($_GET['zoekterm']);
-        if (!empty($zoekterm)) {
-            //bouwen query
-            $sql = "SELECT
-                        VW_voorwerpnummer,VW_titel,
-                        DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
-                        (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
-                           FROM Bod
-                           WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
-                                                       FROM Bod
-                                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-                           ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
-                           (SELECT TOP 1 BES_filenaam
-                           FROM Bestand
-                           WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
-                        FROM Voorwerp WHERE VW_titel LIKE '%$zoekterm%'";
-            $result = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
-            outputRows($result, $zoekterm);
-        }
+        global $result;
+        outputRows($result, $zoekterm);
         ?>
-
-
     </div>
 </div>
 
@@ -232,11 +315,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         });
     });
 </script>
-
-
-</div>
-
-
 </body>
 </html>
-
