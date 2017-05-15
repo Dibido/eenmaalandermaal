@@ -13,11 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $betalingsmethode = $_GET['betalingsmethode'];
     }
     if (isset($_GET['prijs'])){
-        $prijs = explode(',',$_GET['prijs']);
+        $tmp = explode(',',$_GET['prijs']);
+        $prijs = array('min' => $tmp[0], 'max' => $tmp[1]);
+        unset($tmp);
     }
     if (!empty($zoekterm)) {
         //bouwen query
-        $sql = "SELECT  *
+        $searchsql = "SELECT  *
                         FROM Voorwerp v 
                         LEFT JOIN Bod b ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer 
                         WHERE (B.BOD_bodbedrag = (SELECT TOP 1 BOD_Bodbedrag 
@@ -25,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag 
                         FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) OR b.BOD_bodbedrag IS NULL) 
                         AND VW_titel LIKE '%$zoekterm%'";
-        $searchresult = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+        $searchresult = $connection->query($searchsql)->fetchAll(PDO::FETCH_ASSOC);
     }
-    $sql = "SELECT BW_betalingswijze AS Betalingswijze FROM Betalingswijzen";
-    $betalingswijzenresult = $connection->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    $paymethodssql = "SELECT BW_betalingswijze AS Betalingswijze FROM Betalingswijzen";
+    $betalingswijzenresult = $connection->query($paymethodssql)->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /*
@@ -204,7 +206,7 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
                                data-slider-step="5"
                                <?php
                                if(isset($prijs)){
-                                   echo('data-slider-value="['. $prijs[0] . "," . $prijs[1] . ']"/>');
+                                   echo('data-slider-value="['. $prijs['min'] . "," . $prijs['max'] . ']"/>');
                                } else {
                                    echo('data-slider-value="[150,450]"/>');
                                }
