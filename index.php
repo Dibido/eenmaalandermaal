@@ -493,6 +493,13 @@ $TopCarousel = $response;
         </div>
     </div>
 
+    <!--footer class="footer-inner">
+        <div>
+
+        </div>
+    </footer-->
+s
+
     <!-- Height corrections for carrousel -->
     <script>
 

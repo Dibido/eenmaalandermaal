@@ -215,7 +215,7 @@ RIGHT OUTER JOIN Bestand ON Voorwerp.VW_voorwerpnummer = Bestand.BES_voorwerpnum
 
 EOT;
 
-$QuerySearchProducts = <<< EOT
+$QuerySearchProducts;
 
 $QueryQualityNew = <<<EOT
 
@@ -228,7 +228,7 @@ DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
                                FROM Bod
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC)                  AS HoogsteBod,
+   ORDER BY BOD_Bodbedrag DESC)                  AS prijs,
    (SELECT TOP 1 BES_filenaam
    FROM Bestand
    WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
