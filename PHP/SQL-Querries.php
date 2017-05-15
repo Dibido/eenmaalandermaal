@@ -247,69 +247,69 @@ ORDER BY VW_looptijdStart ASC
 
 EOT;
 
-
+/*
 $QuerySearchProducts = <<< EOT
 
 
 
 SELECT
-  TOP 50
-  VW_voorwerpnummer,
-  VW_titel,
-  (SELECT TOP 1 BOD_Bodbedrag
-   FROM Bod
-   WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
-                               FROM Bod
-                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
-   DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
-   (SELECT TOP 1 BES_filenaam
-   FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
-  r2.RB_Naam                                           AS Hoofdcategorie,
-  r1.RB_Naam                                           AS SubCategorie,
-  Rubriek.RB_Naam                                      AS Rubriek,
-  Voorwerp.VW_betalingswijze
-FROM Voorwerp
-  INNER JOIN Bod
-    ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-  INNER JOIN Voorwerp_Rubriek
-    ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-  INNER JOIN Rubriek
-    ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-  INNER JOIN Rubriek r1
-    ON r1.RB_Nummer = Rubriek.RB_Parent
-  INNER JOIN Rubriek r2
-    ON r2.RB_Nummer = r1.RB_Parent
-WHERE r2.RB_Naam != 'root' AND ('test' IS NULL OR VW_titel LIKE $zoekOpdracht) AND ($maxOvergeblevenTijd IS NULL OR
-                                                                               DATEDIFF(HOUR, GETDATE(),
-                                                                                        Voorwerp.VW_looptijdEinde) <=
-                                                                               $maxOvergeblevenTijd) AND
-      ($minOvergebelvenTijd IS NULL OR
-       DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $minOvergeblevenTijd) AND
-      ($minimumPrijs IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
-                                  FROM Bod
-                                  WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
-                                                              FROM Bod
-                                                              WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                                              ORDER BY BOD_Bodbedrag DESC) AND
-                                        BOD_voorwerpnummer = VW_voorwerpnummer
-                                  ORDER BY BOD_Bodbedrag DESC) >= $minimumPrijs) AND
-      ($maximumPrijs IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
-                                  FROM Bod
-                                  WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
-                                                              FROM Bod
-                                                              WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                                              ORDER BY BOD_Bodbedrag DESC) AND
-                                        BOD_voorwerpnummer = VW_voorwerpnummer
-                                  ORDER BY BOD_Bodbedrag DESC) <= $maximumPrijs) AND
-      ($Hoofdcategorie IS NULL OR r2.RB_Naam = $Hoofdcategorie) AND
-      ($SubCategorie' IS NULL OR r1.RB_Naam = $SubCategorie) AND
-      ($SubSubCategorie' IS NULL OR Rubriek.RB_Naam = $SubSubCategorie) AND
-      ($Betalingswijze' IS NULL OR Voorwerp.VW_betalingswijze = $Betalignswijze) AND
-      (VW_veilinggesloten != 1)
+   TOP 50
+   VW_voorwerpnummer,
+   VW_titel,
+   (SELECT TOP 1 BOD_Bodbedrag
+    FROM Bod
+    WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+                                FROM Bod
+                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+    ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
+    DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
+    (SELECT TOP 1 BES_filenaam
+    FROM Bestand
+    WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
+   r2.RB_Naam                                           AS Hoofdcategorie,
+   r1.RB_Naam                                           AS SubCategorie,
+   Rubriek.RB_Naam                                      AS Rubriek,
+   Voorwerp.VW_betalingswijze
+ FROM Voorwerp
+   INNER JOIN Bod
+     ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+   INNER JOIN Voorwerp_Rubriek
+     ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+   INNER JOIN Rubriek
+     ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+   INNER JOIN Rubriek r1
+     ON r1.RB_Nummer = Rubriek.RB_Parent
+   INNER JOIN Rubriek r2
+     ON r2.RB_Nummer = r1.RB_Parent
+ WHERE r2.RB_Naam != 'root'
+	AND ('test' IS NULL OR VW_titel LIKE $zoekOpdracht)
+	AND ($maxOvergeblevenTijd IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $maxOvergeblevenTijd)
+	AND ($minOvergebelvenTijd IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $minOvergeblevenTijd)
+	AND ($minimumPrijs IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
+									FROM Bod
+		                            WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+		                                                        FROM Bod
+			                                                    WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+				                                                ORDER BY BOD_Bodbedrag DESC) AND
+																BOD_voorwerpnummer = VW_voorwerpnummer
+						               ORDER BY BOD_Bodbedrag DESC) >= $minimumPrijs)
+	AND ($maximumPrijs IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
+			                       FROM Bod
+		                           WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+                                                           FROM Bod
+                                                           WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                                           ORDER BY BOD_Bodbedrag DESC)
+													 AND BOD_voorwerpnummer = VW_voorwerpnummer
+									 ORDER BY BOD_Bodbedrag DESC) <= $maximumPrijs)
+	AND ($Hoofdcategorie IS NULL OR r2.RB_Naam = $Hoofdcategorie)
+	AND ($SubCategorie IS NULL OR r1.RB_Naam = $SubCategorie)
+	AND ($SubSubCategorie IS NULL OR Rubriek.RB_Naam = $SubSubCategorie)
+	AND ($Betalingswijze IS NULL OR Voorwerp.VW_betalingswijze = $Betalignswijze)
+	AND (VW_veilinggesloten != 1)
+	ORDER BY $SortByFilter
+
 
 EOT;
-
+*/
 ?>
