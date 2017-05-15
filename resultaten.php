@@ -118,14 +118,7 @@
                         <option value="5">5</option>
                     </select>
 
-                    <a href="#" class="list-group-item">Afstand: <b>10KM - 100KM</b> <input id="aslider" type="text"
-                                                                                            class="span2" value=""
-                                                                                            data-slider-min="10"
-                                                                                            data-slider-max="500"
-                                                                                            data-slider-step="5"
-                                                                                            data-slider-value="[10,100]"/>
-                    </a>
-
+                    
                     <script>
                         var slider = new Slider('#pslider', {});
                         var slider = new Slider('#aslider', {});
