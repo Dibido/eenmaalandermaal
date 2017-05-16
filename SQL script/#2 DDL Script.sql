@@ -124,7 +124,7 @@ CREATE TABLE Vraag (
 CREATE TABLE Gebruiker (
   GEB_gebruikersnaam VARCHAR(64) NOT NULL, --Zie RFC 5321.
   GEB_voornaam       VARCHAR(16)  NOT NULL, --Normale lengte van nederlandse voornaam
-  GEB_achternaam     CHAR(16)     NOT NULL, --Normale lengte van nederlandse achternaam
+  GEB_achternaam     CHAR(16)     NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
   GEB_adresregel_1   CHAR(15)    NOT NULL, --Normale lengte van een adresregel
   GEB_adresregel_2   CHAR(15)    NULL,    --Normale lengte van een adresregel
   GEB_postcode       CHAR(12)     NOT NULL, --Maximale Lengte van een postcode: ISO_3166
