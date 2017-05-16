@@ -1,4 +1,7 @@
-#!bin bash
+#!/bin/bash
 
-echo "git fetch --all"
-echo "git reset --hard"
+git fetch --all
+git reset --hard
+
+echo "\n"
+echo "properly fucked git up"
