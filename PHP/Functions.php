@@ -215,9 +215,9 @@ function SearchFunction($SearchOptions)
 {
     print_r($SearchOptions);
     //preparing for query
-    foreach($SearchOptions as $SearchOption){
+    foreach($SearchOptions AS $SearchOption){
         if($SearchOptions = 'NULL'){
-            $SearchOptions[$SearchOption] = "'" . $SearchOption . "'";
+            $SearchOptions[$SearchOption] = str_replace("'", "", $SearchOption);
         }
     }
 
