@@ -1,5 +1,5 @@
 <?php
-require 'PHP/connection-old.php';
+require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
