@@ -3,97 +3,76 @@ require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    if (isset($_GET['zoekterm'])) {
-        $zoekterm = ($_GET['zoekterm']);
-    }
-    if (isset($_GET['sorteerfilter'])) {
-        $sorteerfilter = urldecode($_GET['sorteerfilter']);
-    }
-    if (isset($_GET['betalingsmethode'])) {
-        $betalingsmethode = $_GET['betalingsmethode'];
-    }
-    if (isset($_GET['prijs'])){
-        $tmp = explode(',',$_GET['prijs']);
-        $prijs = array('min' => $tmp[0], 'max' => $tmp[1]);
-        unset($tmp);
-    }
-
-    global $prijs;
-    if(!isset($_GET['zoekterm'])){
-        $_GET['zoekterm'] = "test";
-    }
-    if(!isset($_GET['sorteerfilter'])){
-        $_GET['sorteerfilter'] = 'Tijd: nieuw aangeboden';
-    }
-    if(!isset($_GET['betalingsmethode'])){
-        $_GET['betalingsmethode'] = 'Anders';
-    }
-    $_GET['subcategory'] = "Auto's";
-    $_GET['subsubcategory'] = "Koopauto's";
-    $_GET['maxremainingtime'] = 200;
-
-    $Dictionary = array(
-            'SearchKeyword' => $_GET['zoekterm'],
-            'SearchFilter' => $_GET['sorteerfilter'],
-            'SearchPaymentMethod' => $_GET['betalingsmethode'],
-            'SearchSubCategory' => $_GET['subcategory'],
-            'SearchSubSubCategory' => $_GET['subsubcategory'],
-            'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
-            'SearchMinPrice' => $prijs['min'],
-            'SearchMaxPrice' => $prijs['max'],
-    );
-
-    if (!empty($zoekterm)) {
-        //bouwen query
-        $searchsql = "SELECT  *
-                        FROM Voorwerp v 
-                        LEFT JOIN Bod b ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer 
-                        WHERE (B.BOD_bodbedrag = (SELECT TOP 1 BOD_Bodbedrag 
-                        FROM Bod 
-                        WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag 
-                        FROM Bod WHERE BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_Bodbedrag DESC) OR b.BOD_bodbedrag IS NULL) 
-                        AND VW_titel LIKE '%$zoekterm%'";
-        $searchresult = $connection->query($searchsql)->fetchAll(PDO::FETCH_ASSOC);
-    }
-    $paymethodssql = "SELECT BW_betalingswijze AS Betalingswijze FROM Betalingswijzen";
-    $betalingswijzenresult = $connection->query($paymethodssql)->fetchAll(PDO::FETCH_ASSOC);
+if (isset($_GET['zoekterm'])) {
+    $zoekterm = ($_GET['zoekterm']);
+}
+if (isset($_GET['sorteerfilter'])) {
+    $sorteerfilter = urldecode($_GET['sorteerfilter']);
+}
+if (isset($_GET['betalingsmethode'])) {
+    $betalingsmethode = $_GET['betalingsmethode'];
+}
+if (isset($_GET['prijs'])) {
+    $tmp = explode(',', $_GET['prijs']);
+    $prijs = array('min' => $tmp[0], 'max' => $tmp[1]);
+    unset($tmp);
+}
+if (isset($_GET['categorie'])) {
+    $categorie = ($_GET['categorie']);
+}
+if (isset($_GET['subcategorie'])) {
+    $subcategorie = ($_GET['subcategorie']);
+}
+if (isset($_GET['subsubcategorie'])) {
+    $subsubcategorie = ($_GET['subsubcategorie']);
 }
 
-/*
+global $prijs;
+if (!isset($_GET['zoekterm'])) {
+    $_GET['zoekterm'] = "NULL";
+}
+if (!isset($_GET['sorteerfilter'])) {
+    $_GET['sorteerfilter'] = 'Tijd: nieuw aangeboden';
+}
+if (!isset($_GET['betalingsmethode'])) {
+    $_GET['betalingsmethode'] = "NULL";
+}
+if (!isset($_GET['categorie'])) {
+    $_GET['categorie'] = "NULL";
+}
+if (!isset($_GET['subcategorie'])) {
+    $_GET['subcategorie'] = "NULL";
+}
+if (isset($_GET['subsubcategorie'])) {
+    $_GET['subsubcategorie'] = "NULL";
+}
+if (!isset($_GET['min'])) {
+    $_GET['min'] = "NULL";
+}
+if (!isset($prijs['min'])) {
+    $prijs['min'] = 0;
+}
+if (!isset($prijs['max'])) {
+    $prijs['max'] = 5000;
+}
 
-$titel = $row['VW_titel'];
-$beschrijving = $row['VW_beschrijving'];
-$bodBedrag = $row['BOD_bodbedrag'];
-$tijd = $row['VW_looptijdEinde'] - $row['VW_looptijdStart'];
 
+$_GET['subsubcategory'] = "NULL";
+$_GET['maxremainingtime'] = "NULL";
+$_GET['minremainingtime'] = "NULL";
 
-echo "<div class=\"item  col-xs-4 col-lg-4\">
-<div class=\"veiling thumbnail\">
-<div class=\"veiling-titel label label-info\">
-    {$row['VW_titel']}
-</div>
-<div class=\"veiling-image\" style=\"background-image:url(images/16-9.jpeg)\"></div>
-<p>{$row['VW_beschrijving']}</p>
-<div class=\"veiling-prijs-tijd\">
-    <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\">
-                       {$row['BOD_bodbedrag']}
-    </i>
-    </div>
-    <div class=\"tijd label label-default\"> $tijd <i class=\"glyphicon glyphicon-time\"></i></div>
-</div>
-<div class=\"veiling-rating-bied label label-default\">
-    <div class=\"rating text-center\">
-        <i class=\"glyphicon glyphicon-star\"></i>
-        <i class=\"glyphicon glyphicon-star\"></i>
-        <i class=\"glyphicon glyphicon-star\"></i>
-        <i class=\"glyphicon glyphicon-star\"></i>
-        <i class=\"glyphicon glyphicon-star-empty\"></i>
-    </div>
-    <button class=\"btn btn-primary bied\">Bied Nu!</button>
-</div>
-</div>
-</div>";
-*/
+$Dictionary = array(
+    'SearchKeyword' => $_GET['zoekterm'],
+    'SearchFilter' => $_GET['sorteerfilter'],
+    'SearchPaymentMethod' => $_GET['betalingsmethode'],
+    'SearchCategory' => $_GET['categorie'],
+    'SearchSubCategory' => $_GET['subcategorie'],
+    'SearchSubSubCategory' => $_GET['subsubcategory'],
+    'SearchMinRemainingTime' => $_GET['minremainingtime'],
+    'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
+    'SearchMinPrice' => $prijs['min'],
+    'SearchMaxPrice' => $prijs['max']
+);
 ?>
 
 <!doctype html>
@@ -132,7 +111,7 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
-    <link rel="stylesheet" href="CSS/resultaten.css">
+    <!--<link rel="stylesheet" href="CSS/resultaten.css">
 
     <!-- CSS voor price slider -->
     <link rel="stylesheet" type="text/css"
@@ -224,19 +203,21 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
                         </select>
                     </a>
 
-                    <a href="#" class="list-group-item">Prijs: <b>€ 10 - € 1000</b>
+                    <a href="#" class="list-group-item">Prijs:
+                        <b><?php echo('€' . $prijs['min'] . '- €' . $prijs['max']); ?></b>
                         <input id="pslider" type="text" name="prijs"
                                class="span2" value=""
                                data-slider-min="10"
-                               data-slider-max="1000"
+                               data-slider-max="5000"
                                data-slider-step="5"
-                               <?php
-                               if(isset($prijs)){
-                                   echo('data-slider-value="['. $prijs['min'] . "," . $prijs['max'] . ']"/>');
-                               } else {
-                                   echo('data-slider-value="[150,450]"/>');
-                               }
-                               ?>
+                        <?php
+                        if (isset($prijs)) {
+                            echo('data-slider-value="[' . $prijs['min'] . "," . $prijs['max'] . ']"/>');
+                        } else {
+                            echo('data-slider-value="[150,450]"/>');
+                        }
+                        }
+                        ?>
                     </a>
 
 
@@ -266,17 +247,97 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
                 </form>
             </div>
 
-
+            <?php
+            if (isset($subcategorie)) {
+                $categorieQuery = "select
+                distinct Rubriek.RB_Naam as Subsubcategorie,
+                count(Rubriek.RB_Naam) as aantal,
+                Rubriek.RB_Nummer as CategorieNummer
+                from Voorwerp
+                Inner join Voorwerp_Rubriek
+                on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                Inner join Rubriek
+                on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                Inner join Rubriek r1
+                on r1.RB_Nummer = Rubriek.RB_Parent
+                Inner join Rubriek r2
+                on r2.RB_Nummer = r1.RB_Parent
+                Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%$zoekterm%' and Rubriek.RB_Parent = $subcategorie
+                GROUP BY Rubriek.RB_Naam, Rubriek.RB_Nummer
+                ORDER BY COUNT(Rubriek.RB_Naam) desc";
+                $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+                echo '
             <a href="#" class="list-group-item active" id="Header-Categories">
                 Categorieën
             </a>
-            <a href="#" class="list-group-item">Auto's</a>
-            <a href="#" class="list-group-item">Electronica</a>
-            <a href="#" class="list-group-item">Boeken</a>
-            <a href="#" class="list-group-item">Vestibulum at eros</a>
-            <a href="#" class="list-group-item">Electronica</a>
+            ';
+                foreach ($categorieResult as $categorie) {
+                    $url = urlencode($categorie['CategorieNummer']);
+                    echo('<a href= " ' . $_SERVER['REQUEST_URI'] . '&subsubcategorie=' . $url . '" class = \'list-group-item\'><h4>' . $categorie['Subsubcategorie'] . ' (' . $categorie['aantal'] . ')' . '</h4></a>');
+
+                }
+            } elseif (isset($categorie)) {
+                $categorieQuery = "select
+                                        distinct r1.RB_Naam as Subcategorie,
+                                        r2.RB_Nummer as Hoofdcategorie,
+                                        count(r1.RB_Naam) as aantal,
+                                        r1.RB_Nummer as CategorieNummer
+                                        from Voorwerp
+                                        Inner join Voorwerp_Rubriek
+                                        on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                                        Inner join Rubriek
+                                        on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                                        Inner join Rubriek r1
+                                        on r1.RB_Nummer = Rubriek.RB_Parent
+                                        Inner join Rubriek r2
+                                        on r2.RB_Nummer = r1.RB_Parent
+                                        Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%$zoekterm%' and r1.RB_Parent = $categorie
+                                        GROUP BY r1.RB_Naam,r1.RB_Nummer, r2.RB_Naam, r2.RB_Nummer
+                                        ORDER BY COUNT(r1.RB_Naam) desc";
+                $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+                echo '
+            <a href="#" class="list-group-item active" id="Header-Categories">
+                Categorieën
+            </a>';
+                foreach ($categorieResult as $categorie) {
+                    $url = urlencode($categorie['CategorieNummer']);
+                    echo('<a href= " ' . $_SERVER['REQUEST_URI'] . '&subcategorie=' . $url . '" class = \'list-group-item\'><h4>' . $categorie['Subcategorie'] . ' (' . $categorie['aantal'] . ')' . '</h4></a>');
+
+                }
+            } else {
+                $categorieQuery = "select
+                            distinct r2.RB_Naam as Hoofdcategorie,
+                            count(r2.RB_Naam) as aantal,
+                            r2.RB_Nummer as CategorieNummer
+                            from Voorwerp
+                            Inner join Voorwerp_Rubriek
+                            on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                            Inner join Rubriek
+                            on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                            Inner join Rubriek r1
+                            on r1.RB_Nummer = Rubriek.RB_Parent
+                            Inner join Rubriek r2
+                            on r2.RB_Nummer = r1.RB_Parent
+                            Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%$zoekterm%'
+                            GROUP BY r2.RB_Naam,r2.RB_Nummer
+                            ORDER BY COUNT(r2.RB_Naam) desc";
+                $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+                echo '
+            <a href="#" class="list-group-item active" id="Header-Categories">
+                Categorieën
+            </a>';
+                foreach ($categorieResult as $categorie) {
+                    $url = urlencode($categorie['CategorieNummer']);
+                    echo('<a href= " ' . $_SERVER['REQUEST_URI'] . '&categorie=' . $url . '" class = \'list-group-item\'><h4>' . $categorie['Hoofdcategorie'] . ' (' . $categorie['aantal'] . ')' . '</h4></a>');
+                }
+            }
+
+
+            /*<a href="#" class="list-group-item"></a>
+
             <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
                         class="text-right glyphicon glyphicon-plus-sign"></i></a>
+                        */ ?>
         </div>
     </div>
 
@@ -296,8 +357,17 @@ echo "<div class=\"item  col-xs-4 col-lg-4\">
             </div>
         </div>
         <?php
-        global $result;
-        outputRows($result, $zoekterm);
+        global $Dictionary;
+        $test = SearchFunction($Dictionary);
+        if (!empty($test)) {
+            if ($test[0]) {
+                foreach ($test as $advert) {
+                    DrawSearchResults($advert);
+                }
+            } else {
+                echo "<b>Error on loading auctions: </b>" . "<br><br>" . $test[1];
+            }
+        }
         ?>
     </div>
 </div>

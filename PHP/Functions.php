@@ -201,13 +201,8 @@ function laadLetters()
 
 function SearchFunction($SearchOptions)
 {
-    print_r($SearchOptions);
     //preparing for query
-    foreach($SearchOptions AS $SearchOption){
-        if($SearchOptions = 'NULL'){
-            $SearchOptions[$SearchOption] = str_replace("'", "", $SearchOption);
-        }
-    }
+
 
 //clean the input
     /*
@@ -269,42 +264,39 @@ SELECT
      ON r2.RB_Nummer = r1.RB_Parent
  WHERE r2.RB_Naam != 'root'
 
-	AND ('$SearchKeyword' IS NULL OR VW_titel LIKE $QuerySearchKeyword)
-	AND ('$SearchMaxRemainingTime' IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= '$SearchMaxRemainingTime')
-	AND ('$SearchMinRemainingTime' IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= '$SearchMinRemainingTime')
-	AND ('$SearchMinPrice' IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
+	AND ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
+	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
+	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
+	AND ($SearchMinPrice IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
 									FROM Bod
 		                            WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
 		                                                        FROM Bod
 			                                                    WHERE BOD_voorwerpnummer = VW_voorwerpnummer
 				                                                ORDER BY BOD_Bodbedrag DESC) AND
 																BOD_voorwerpnummer = VW_voorwerpnummer
-						               ORDER BY BOD_Bodbedrag DESC) >= '$SearchMinPrice')
-	AND ('$SearchMaxPrice' IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
+						               ORDER BY BOD_Bodbedrag DESC) >= $SearchMinPrice)
+	AND ($SearchMaxPrice IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
 			                       FROM Bod
 		                           WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
                                                            FROM Bod
                                                            WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                                            ORDER BY BOD_Bodbedrag DESC)
 													 AND BOD_voorwerpnummer = VW_voorwerpnummer
-									 ORDER BY BOD_Bodbedrag DESC) <= '$SearchMaxPrice')
-	AND ('$SearchCategory' IS NULL OR r2.RB_Naam = '$SearchCategory')
-	AND ('$SearchSubCategory' IS NULL OR r1.RB_Naam = '$SearchSubCategory')
-	AND ('$SearchSubSubCategory' IS NULL OR Rubriek.RB_Naam = '$SearchSubSubCategory')
-	AND ('$SearchPaymentMethod' IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
+									 ORDER BY BOD_Bodbedrag DESC) <= $SearchMaxPrice)
+	AND ($SearchCategory IS NULL OR r2.RB_Nummer = $SearchCategory)
+	AND ($SearchSubCategory IS NULL OR r1.RB_Nummer = $SearchSubCategory)
+	AND ($SearchSubSubCategory IS NULL OR Rubriek.RB_Nummer = $SearchSubSubCategory)
+	AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
 	AND (VW_veilinggesloten != 1)
 	GROUP BY  VW_voorwerpnummer,VW_titel,Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze
 	ORDER BY VW_voorwerpnummer
 
-
+    
 EOT;
-
-    print_r($QuerySearchProducts);
 
 
 
 //executing the query
-
 
     return SendToDatabase($QuerySearchProducts);
 
