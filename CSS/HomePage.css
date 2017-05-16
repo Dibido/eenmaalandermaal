@@ -20,6 +20,7 @@
 #myCarousel{
     height: 100%;
     min-height: 460px;
+    background-color:  #d3d2d1;
 }
 .carousel-inner{
     height: 100%;
@@ -42,8 +43,8 @@
     top: 0;
     width:100%;
     height: 8%;
-    background-color: #F6D155;
-    color: white;
+    background-color:  #FBFBFB;
+    color: #666666;
     font-size: 28px;
     overflow: hidden;
     white-space:nowrap;
@@ -65,4 +66,17 @@
     width: 49%;
 }
 
+
+/* Headers */
+
+.HeaderTitle{
+    height: 50px;
+    display: inline-block;
+    background-color: #F6B555;
+    width: 100%;
+    border-radius: 4px;
+    margin: 5px 0 5px 0;
+    font-size: 32px;
+    color: #ffffff;
+}
 

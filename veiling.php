@@ -31,7 +31,7 @@
 <!-- Veiling template -->
 <div class="veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2">
     <div class="veiling">
-        <div class="veiling-titel label label-info">
+        <div class="veiling-titel label label-default">
             Gratis Model S
         </div>
         <div class="veiling-image" style="background-image:url(images/16-9.jpeg)"></div>
@@ -40,14 +40,8 @@
             <div class="tijd label label-default">1:15:25 <i class="glyphicon glyphicon-time"></i></div>
         </div>
         <div class="veiling-rating-bied label label-default">
-            <div class="rating text-center">
-                <i class="glyphicon glyphicon-star"></i>
-                <i class="glyphicon glyphicon-star"></i>
-                <i class="glyphicon glyphicon-star"></i>
-                <i class="glyphicon glyphicon-star"></i>
-                <i class="glyphicon glyphicon-star-empty"></i>
-            </div>
-            <button class="btn btn-primary bied">Bied Nu!</button>
+            <button class="btn text-center btn-default bied">Meer info</button>
+            <button class="btn text-center btn-info bied">Bied Nu!</button>
         </div>
     </div>
 </div>

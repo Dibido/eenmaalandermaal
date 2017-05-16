@@ -86,7 +86,7 @@ function DrawAuction($auction)
     <!-- Veiling template -->
             <div class=\"veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-2\">
                 <div class=\"veiling\">
-                    <div class=\"veiling-titel label label-info\">" .
+                    <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
                     </div>
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
@@ -95,14 +95,8 @@ function DrawAuction($auction)
                         <div class=\"tijd label label-default\">" . $auction["tijd"] . " <i class=\"glyphicon glyphicon-time\"></i></div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
-                        <div class=\"rating text-center\">
-                            <i class=\"glyphicon glyphicon-star\"></i>
-                            <i class=\"glyphicon glyphicon-star\"></i>
-                            <i class=\"glyphicon glyphicon-star\"></i>
-                            <i class=\"glyphicon glyphicon-star\"></i>
-                            <i class=\"glyphicon glyphicon-star-empty\"></i>
-                        </div>
-                        <button class=\"btn btn-primary bied\">Bied Nu!</button>
+                        <button class=\"btn text-center btn-default bied\">Meer info</button>
+                        <button class=\"btn text-center btn-info bied\">Bied Nu!</button>
                     </div>
                 </div>
             </div>
@@ -121,7 +115,7 @@ function DrawSearchResults($auction)
     <!-- Veiling template -->
             <div class=\"veiling-rand col-md-4 col-sm-6\">
                 <div class=\"veiling\">
-                    <div class=\"veiling-titel label label-info\">" .
+                    <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
                     </div>
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
@@ -130,14 +124,8 @@ function DrawSearchResults($auction)
                         <div class=\"tijd label label-default\">" . $auction["tijd"] . " <i class=\"glyphicon glyphicon-time\"></i></div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
-                        <div class=\"rating text-center\">
-                            <i class=\"glyphicon glyphicon-star\"></i>
-                            <i class=\"glyphicon glyphicon-star\"></i>
-                            <i class=\"glyphicon glyphicon-star\"></i>
-                            <i class=\"glyphicon glyphicon-star\"></i>
-                            <i class=\"glyphicon glyphicon-star-empty\"></i>
-                        </div>
-                        <button class=\"btn btn-primary bied\">Bied Nu!</button>
+                        <button class=\"btn text-center btn-default bied\">Meer info</button>
+                        <button class=\"btn text-center btn-info bied\">Bied Nu!</button>
                     </div>
                 </div>
             </div>

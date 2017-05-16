@@ -121,7 +121,7 @@ $response = NULL;
 
 
 <div class="container-fluid">
-    <div class="row well">
+    <div class="row">
 
 
         <!-- Categoriën -->
@@ -129,7 +129,7 @@ $response = NULL;
         <div class="col-md-3 visible-lg Categoriën" id="Categoriën">
             <div class="list-group">
                 <a href="#" class="list-group-item active" id="Header-Categories">
-                    Categorieën
+                    Top 10 categorieën
                 </a>
                 <?php
 
@@ -156,11 +156,11 @@ $response = NULL;
         <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12">
 
             <div class="list-group">
-                <a href="#" class="list-group-item active text-center">Hot deals</a>
+                <a href="#" class="list-group-item active text-center">Veilingen uit populaire categorie</a>
             </div>
 
 
-            <div class="well">
+            <div>
                 <div id="myCarousel" class="carousel slide VeilingShowcase" id="VeilingShowcase" data-ride="carousel">
                     <!-- Indicators -->
                     <ol class="carousel-indicators">
@@ -270,7 +270,7 @@ $response = NULL;
         </div>
 
 
-        <div class="well col-xs-12 BijnaGesloten" id="BijnaGesloten">
+        <div class=" col-xs-12 BijnaGesloten" id="BijnaGesloten">
 
 
             <?php
@@ -285,7 +285,7 @@ $response = NULL;
                 foreach ($TopClosed as $veiling) {
                     echo "<div class=\"veiling-rand col-md-12 col-sm-6 col-xs-6\">
                     <div class=\"veiling\">
-                        <div class=\"veiling-titel label label-info\">"
+                        <div class=\"veiling-titel label label-default\">"
                         . $veiling["VW_titel"] .
                         "</div>
                         <div class=\"veiling-image\" ";
@@ -327,12 +327,12 @@ $response = NULL;
 
 <!-- Extra advertenties -->
 
-<div class="container-fluid">
-    <div class="row well">
+        <div class="col-sm-12 HeaderTitle text-center">Populaire nieuwe veilingen</div>
 
         <?php
 
 
+        /*
         $StommeDictionary = array(
            'SearchKeyword' => 'testproduct3',
             'SearchFilter' => 'NULL',
@@ -346,24 +346,23 @@ $response = NULL;
             'SearchMaxPrice' => 'NULL'
         );
 
-        $test = SearchFunction($StommeDictionary);
+        $QualityNewAuctions = sen($QueryQualityNew);
 
+        */
 
-        //$ExtraAuctions = SendToDatabase($QueryQualityNew);
+        $ExtraAuctions = SendToDatabase($QueryQualityNew);
 
-        if ($test[0]) {
-            foreach ($test as $advert) {
+        if ($ExtraAuctions[0]) {
+            foreach ($ExtraAuctions as $advert) {
                 DrawAuction($advert);
             }
         } else {
-            echo "<b>Error on loading auctions: </b>" . "<br><br>" . $test[1];
+            echo "<b>Error on loading auctions: </b>" . "<br><br>" . $ExtraAuctions[1];
         }
 
         ?>
 
 
-    </div>
-</div>
 </div>
 
 <div class="container-fluid" style="width: 100%; height: 300px; background-color: #F6D155; border-top: 4px solid #F6B555">

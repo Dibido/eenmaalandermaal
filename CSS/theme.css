@@ -4830,7 +4830,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   font-size: 75%;
   font-weight: bold;
   line-height: 1;
-  color: #ffffff;
+  color: #666666;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
@@ -4850,11 +4850,11 @@ a.label:focus {
   top: -1px;
 }
 .label-default {
-  background-color: #999999;
+  background-color: #fbfbfb;
 }
 .label-default[href]:hover,
 .label-default[href]:focus {
-  background-color: #808080;
+  background-color: #e2e2e2;
 }
 .label-primary {
   background-color: #524bab;
@@ -4871,11 +4871,11 @@ a.label:focus {
   background-color: #1f8c22;
 }
 .label-info {
-  background-color: #f6b555;
+  background-color: #f6d155;
 }
 .label-info[href]:hover,
 .label-info[href]:focus {
-  background-color: #f3a025;
+  background-color: #f3c425;
 }
 .label-warning {
   background-color: #f6b555;
