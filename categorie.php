@@ -15,7 +15,7 @@ FROM Rubriek H
     FROM Rubriek S
     WHERE S.RB_Parent = H.RB_Nummer
   ) S
-WHERE H.RB_Parent = 0
+WHERE H.RB_Parent = -1
 ORDER BY H.RB_volgnummer, H.RB_Naam, H.RB_Nummer";
 
 try {
@@ -24,6 +24,7 @@ try {
     echo('<h1>De categorieen konden niet opgehaald worden</h1>');
     echo('<p>Error: ' . $e->getMessage() . '</p>');
 }
+
 ?>
 
 <!doctype html>
