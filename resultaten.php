@@ -111,7 +111,7 @@ $Dictionary = array(
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
-    <!--<link rel="stylesheet" href="CSS/resultaten.css">
+    <link rel="stylesheet" href="CSS/resultaten.css">
 
     <!-- CSS voor price slider -->
     <link rel="stylesheet" type="text/css"
@@ -330,20 +330,29 @@ $Dictionary = array(
                     $url = urlencode($categorie['CategorieNummer']);
                     echo('<a href= " ' . $_SERVER['REQUEST_URI'] . '&categorie=' . $url . '" class = \'list-group-item\'><h4>' . $categorie['Hoofdcategorie'] . ' (' . $categorie['aantal'] . ')' . '</h4></a>');
                 }
-            }
+            }?>
 
-
-            /*<a href="#" class="list-group-item"></a>
-
-            <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
+             <!-- list items in dropdown  -->
+                            <a href="#item-1" class="list-group-item" data-toggle="collapse"><i class="fa fa-plus-circle"></i>&nbsp;Auto's</a>
+                            <div id="item-1">
+                                <a href="#item-1-1" class="list-group-item" data-toggle="collapse"><i class="fa fa-plus-circle"></i>&nbsp;Auto <span class="badge">722</span></a>
+                                <div class="list-group collapse" id="item-1-1">
+                                    <a href="#item-1-1-1" class="list-group-item" data-toggle="collapse"><i class="fa fa-plus-circle"></i>&nbsp;Oldtimers <span class="badge">209</span></a>
+                                    <div class="list-group collapse" id="item-1-1-1">
+                                        <a href="#" class="list-group-item">Rolls Royce <span class="badge">40</span></a>
+                                    </div><!-- /.list-group .collapse -->
+                            </div>
+                        </div>
+    
+            <a href="categorie.php" class="list-group-item active text-center">Meer rubrieken <i
                         class="text-right glyphicon glyphicon-plus-sign"></i></a>
-                        */ ?>
+<!-- EINDE  list items in dropdown -->                     
         </div>
     </div>
 
     <!-- Trending items -->
 
-    <div class="well well-sm col-md-9 pull-left">
+    <div class="col-md-9 pull-left">
         <h2>Resultaten</h2>
 
         <!-- test -->
