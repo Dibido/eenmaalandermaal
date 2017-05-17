@@ -1,6 +1,6 @@
 USE eenmaalandermaal
 
---dramah
+
 
 IF OBJECT_ID('dbo.Voorwerp_Rubriek') IS NOT NULL
   DROP TABLE dbo.Voorwerp_Rubriek
