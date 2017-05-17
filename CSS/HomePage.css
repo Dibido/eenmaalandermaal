@@ -16,11 +16,12 @@
 }
 
 
-/*carousel */
+/*carousel*/
 #myCarousel{
     height: 100%;
     min-height: 460px;
     background-color:  #d3d2d1;
+    border-radius: 4px;
 }
 .carousel-inner{
     height: 100%;
