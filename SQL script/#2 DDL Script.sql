@@ -121,11 +121,11 @@ CREATE TABLE Vraag (
 )
 
 CREATE TABLE Gebruikerstelefoon (
-  TEL_volgnr int NOT NULL, --
+  TEL_volgnr    INT         NOT NULL, --
   TEL_gebruiker VARCHAR(64) NOT NULL, --gebruiker uit de gebruiker tabel
-  TEL_telefoon char(15) NOT NULL, --Zie ITU-T recommendation E.164
+  TEL_telefoon  CHAR(15)    NOT NULL, --Zie ITU-T recommendation E.164
   CONSTRAINT PK_GebruikerstelefoonVolgnr PRIMARY KEY (TEL_volgnr),
-  CONSTRAINT FK_GebruikerGeberuikersnaam FOREIGN KEY (TEL_gebruiker) REFERENCES Gebruiker(GEB_gebruikersnaam)
+  CONSTRAINT FK_GebruikerGeberuikersnaam FOREIGN KEY (TEL_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
 )
 
 CREATE TABLE Gebruiker (
@@ -135,8 +135,8 @@ CREATE TABLE Gebruiker (
   GEB_adresregel_1   VARCHAR(15)  NOT NULL, --Normale lengte van een adresregel
   GEB_adresregel_2   VARCHAR(15)  NULL, --Normale lengte van een adresregel
   GEB_postcode       VARCHAR(12)  NOT NULL, --Maximale Lengte van een postcode: ISO_3166
-  GEB_plaatsnaam     VARCHAR(12)  NOT NULL, --Langste plaatsnaam in nederland
-  GEB_Land           VARCHAR(9)   NOT NULL, --Landcode uit de landen tabel TODO:Koppelen aan landen tabel
+  GEB_plaatsnaam     VARCHAR(85)  NOT NULL, --Langste plaatsnaam zie: "https://en.wikipedia.org/wiki/List_of_long_place_names"
+  GEB_Land           VARCHAR(9)   NOT NULL, --Landcode uit de landen tabel
   GEB_geboortedag    DATE         NOT NULL,
   GEB_mailbox        VARCHAR(256) NOT NULL, --Mailadres lengte volgens RFC 5321
   GEB_wachtwoord     CHAR(60)     NOT NULL, --BCRYPT dmv password_hash()
@@ -145,10 +145,9 @@ CREATE TABLE Gebruiker (
   GEB_verkoper       BIT          NOT NULL, --Of de gebruiker een verkoper is of niet
   CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
   CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
-  CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon(TEL_gebruiker),
-  CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen(LAN_landcode),
-  --TODO: check constraint voor postcode maken
-  --TODO: check constraint voor mailbox maken
+  CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon (TEL_gebruiker),
+  CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen (LAN_landcode),
+  CONSTRAINT CHK_LegitiemeMailbox CHECK (GEB_mailbox LIKE '%_@__%.__%'),
 )
 
 
