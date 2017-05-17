@@ -1,2 +1,0 @@
-#!/bin/basgit fetch --all"
-echo "git reset --hard"
