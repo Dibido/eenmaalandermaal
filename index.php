@@ -315,9 +315,8 @@ require('navbar.html');
         }
 
         ?>
-
-
 </div>
+
 
 <div class="container-fluid" style="width: 100%; height: 300px; background-color: #F6D155; border-top: 4px solid #F6B555">
     <div class="col-md-3 center-block">
