@@ -51,7 +51,10 @@ CREATE TABLE Voorwerp (
   CONSTRAINT PK_Voorwerp PRIMARY KEY (VW_voorwerpnummer),
   CONSTRAINT FK_Betaalwijze FOREIGN KEY (VW_betalingsWijze) REFERENCES Betalingswijzen (BW_betalingswijze),
   CONSTRAINT FK_Land FOREIGN KEY (VW_land) REFERENCES Landen (LAN_landcode)
-    ON UPDATE CASCADE
+    ON UPDATE CASCADE --Voor als de landnamen worden aangepast
+    ON DELETE NO ACTION,
+  CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (VW_koper) REFERENCES Gebruiker(GEB_gebruikersnaam)
+    ON UPDATE CASCADE --Voor als de gebruikersnaam wordt aangepast
     ON DELETE NO ACTION,
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
@@ -62,9 +65,8 @@ CREATE TABLE Voorwerp (
                                                       GETDATE()), --De begin datum van een veiling mag niet voor de huidige datum liggen.
   CONSTRAINT CHK_StartprijsHogerDan1 CHECK (VW_startprijs >= 1.00), --Appendix B, Mindstends een euro
   CONSTRAINT CHK_VerkoopprijsGroterOfGelijk CHECK (VW_verkoopprijs >=
-                                                   VW_startprijs) --Kijkt of de verkoop prijs wel groter is dan de start prijs
+                                                   VW_startprijs), --Kijkt of de verkoop prijs wel groter is dan de start prijs
   --TODO CONSTRAINT FK_verkoper naar verkopers tabel
-  --TODO CONSTRAINT FK_koper naar gebruikers tabel
 )
 
 
@@ -74,7 +76,7 @@ CREATE TABLE Rubriek (
   RB_Parent     INT          NULL,
   RB_volgnummer INT          NOT NULL, -- MOET MAX 2 worden
   CONSTRAINT PK_RB_Nummer PRIMARY KEY (RB_Nummer),
-  CONSTRAINT FK_PARENT FOREIGN KEY (RB_Parent) REFERENCES Rubriek (RB_Nummer)
+  CONSTRAINT FK_Parent FOREIGN KEY (RB_Parent) REFERENCES Rubriek (RB_Nummer)
 )
 
 
