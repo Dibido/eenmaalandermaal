@@ -111,8 +111,11 @@ CREATE TABLE Bod (
   CONSTRAINT FK_BodVoorwerpnummer FOREIGN KEY (BOD_voorwerpnummer) REFERENCES Voorwerp (VW_voorwerpnummer)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  --TODO foreign key voor gebruiker
+  CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (BOD_gebruiker) REFERENCES Gebruiker(GEB_gebruikersnaam)
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
   CONSTRAINT CHK_HogerDanStartprijs CHECK (dbo.bodHogerDanStartprijs(BOD_voorwerpnummer, BOD_bodbedrag) = 1),
+  --TODO: Hoeft nog niet voor deze sprint
   --CONSTRAINT CHK_BodBedrag CHECK (dbo.bodHoogGenoeg(voorwerpnummer, bodbedrag) = 1),
   CONSTRAINT CHK_NietEigenVoorwerp CHECK (dbo.nietEigenVoorwerp(BOD_voorwerpnummer, BOD_gebruiker) = 1)
 )
@@ -154,7 +157,7 @@ CREATE TABLE Gebruiker (
 
 
 
---Valt buiten de eerste sprint en wordt verder aan gewerkt in een latere sprint
+--TODO: Valt buiten de eerste sprint en wordt verder aan gewerkt in een latere sprint
 /*GO
 CREATE TRIGGER bodHoogGenoeg
   ON Bod
