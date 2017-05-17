@@ -5678,7 +5678,7 @@ button.list-group-item-danger.active:focus {
 }
 .panel-primary > .panel-heading {
   color: #ffffff;
-  background-color: #524bab;
+  background-color: #F6B555; /* old #524bab;*/
   border-color: transparent;
 }
 .panel-primary > .panel-heading + .panel-collapse > .panel-body {
@@ -7059,5 +7059,5 @@ label {
 }
 .panel {
   border: 1px solid #f4c836;
-  border-width: 0 1px 4px 1px;
+  border-width: 1px 1px 1px 1px;
 }

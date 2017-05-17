@@ -313,5 +313,16 @@ EOT;
 */
 
 
+/* Query landen ophalen registratie form */
+$GetLandenQuerie = <<<EOT
+
+SELECT LAN_landcode, LAN_landnaam FROM Landen
+EOT;
+
+
+/* Query landen ophalen registratie form */
+$GetVragenQuerie = <<<EOT
+SELECT * FROM Vraag
+EOT;
 
 ?>
