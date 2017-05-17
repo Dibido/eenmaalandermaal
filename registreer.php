@@ -2,6 +2,9 @@
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
+
+$Landen = SendToDatabase($GetLandenQuerie);
+$Vragen = SendToDatabase($GetVragenQuerie);
 ?>
 
 
@@ -83,51 +86,50 @@ require('navbar.html');
             <div class="row">
                 <div class="col-md-6 col-md-push-3">
 
-                    <form method="POST" id="registratieformulier"action="voltooi-registratie.php">
+                    <form method="POST" id="registratieformulier" action="voltooi-registratie.php">
 
                         <div class="form-group">
                             <label for="voornaam">Voornaam*</label>
-                            <input id="voornaam" type="text" placeholder="Voornaam"
+                            <input name="voornaam" id="voornaam" type="text" placeholder="Voornaam"
                                    class="form-control" required="true">
                         </div>
 
                         <div class="form-group">
                             <label for="achternaam">Achternaam*</label>
-                            <input id="achternaam" type="text" placeholder="Achternaam"
+                            <input name="achternaam" id="achternaam" type="text" placeholder="Achternaam"
                                    class="form-control" required="true">
                         </div>
 
                         <div class="form-group">
                             <label for="Email">Email*</label>
-                            <input id="email" type="text" placeholder="voorbeeld@voorbeeld.com"
+                            <input name="email" id="email" type="text" placeholder="voorbeeld@voorbeeld.com"
                                    class="form-control" required="true">
                         </div>
 
                         <div class="form-group">
                             <label for="adres1">Adresregel 1*</label>
-                            <input id="adres1" type="text" placeholder="Adresregel 1"
+                            <input name="adres1" id="adres1" type="text" placeholder="Adresregel 1"
                                    class="form-control" required="true">
                         </div>
 
                         <div class="form-group">
                             <label for="adres2">Adresregel 2</label>
-                            <input id="adres2" type="text" placeholder="Adresregel 2"
+                            <input name="adres2" id="adres2" type="text" placeholder="Adresregel 2"
                                    class="form-control" required="true">
                         </div>
 
                         <div class="form-group">
                             <label for="postcode">Postcode*</label>
-                            <input id="postcode" type="text" placeholder="1234 AB"
+                            <input name="postcode" id="postcode" type="text" placeholder="1234 AB"
                                    class="form-control" required="true">
                         </div>
 
 
                         <div class="form-group">
                             <label for="land">Land*</label>
-                            <select id="land" type="text" selected=Nederland"
+                            <select name="land" id="land" type="text" selected=Nederland"
                                     class="form-control" required="true">
                                 <?php
-                                $Landen = SendToDatabase($GetLandenQuerie);
                                 printLanden($Landen);
                                 ?>
                             </select>
@@ -135,7 +137,7 @@ require('navbar.html');
 
                         <div class="form-group">
                             <label for="geboortedatum">Geboortedatum*</label>
-                            <input id="geboortedatum" type="text" data-provide="datepicker"
+                            <input name="geboortedatum" id="geboortedatum" type="text" data-provide="datepicker"
                                    data-date-format="dd/mm/yyyy"
                                    placeholder="Geboortedatum"
                                    class="form-control" required="true">
@@ -145,19 +147,19 @@ require('navbar.html');
 
                         <div class="form-group">
                             <label for="gebruikersnaam">Gebruikersnaam*</label>
-                            <input id="gebruikersnaam" type="text" placeholder="Gebruikersnaam"
+                            <input name="gebruikersnaam" id="gebruikersnaam" type="text" placeholder="Gebruikersnaam"
                                    class="form-control" required="true">
                         </div>
 
                         <div class="form-group">
                             <label for="wachtwoord">Wachtwoord*</label>
-                            <input id="wachtwoord" type="password" placeholder="Wachtwoord"
+                            <input name="wachtwoord" id="wachtwoord" type="password" placeholder="Wachtwoord"
                                    class="form-control" required="true">
                         </div>
 
                         <div class="form-group">
                             <label for="wachtwoord2">Bevestig wachtwoord*</label>
-                            <input id="wachtwoord2" type="password" placeholder="Herhaal wachtwoord"
+                            <input name="wachtwoord2" id="wachtwoord2" type="password" placeholder="Herhaal wachtwoord"
                                    class="form-control" required="true">
                         </div>
 
@@ -165,10 +167,9 @@ require('navbar.html');
 
                         <div class="form-group">
                             <label for="geheimevraag">Geheime vraag*</label>
-                            <select id="geheimevraag" type="text" placeholder="Herhaal wachtwoord"
+                            <select name="geheimevraag" id="geheimevraag" type="text" placeholder="Herhaal wachtwoord"
                                     class="form-control" required="true">
                                 <?php
-                                $Vragen = SendToDatabase($GetVragenQuerie);
                                 printVragen($Vragen);
                                 ?>
                             </select>
@@ -176,7 +177,7 @@ require('navbar.html');
 
                         <div class="form-group">
                             <label for="antwoord">Antwoord op je geheime vraag*</label>
-                            <input id="antwoord" type="text" placeholder="Antwoord op je geheime vraag"
+                            <input name="antwoord" id="antwoord" type="text" placeholder="Antwoord op je geheime vraag"
                                    class="form-control" required="true">
                         </div>
 
@@ -185,7 +186,6 @@ require('navbar.html');
                                 <button type="submit" class="btn btn-primary">Registreer!</button>
                             </div>
                         </div>
-
 
 
                     </form>
