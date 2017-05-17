@@ -37,7 +37,7 @@ CREATE TABLE Voorwerp (
   VW_betalingswijze      VARCHAR(25)   NOT NULL DEFAULT 'Bank / Giro', --Korte keuzes (d.m.v. dropdown)
   VW_betalingsinstructie VARCHAR(255)  NULL, --Korte instructie
   VW_plaatsnaam          VARCHAR(85)   NOT NULL, --Langste plaatsnaam is 85 tekens
-  VW_land                CHAR(3)       NOT NULL DEFAULT 'NL', --Zie ISO 3166/1 alpha-2
+  VW_land                CHAR(2)       NOT NULL DEFAULT 'NL', --Zie ISO 3166/1 alpha-2
   VW_looptijd            TINYINT       NOT NULL DEFAULT 7, --Aantal dagen
   VW_looptijdStart       DATETIME      NOT NULL DEFAULT GETDATE(), --Normaal de huidige datum met daarbij de tijd
   VW_verzendkosten       NUMERIC(5, 2) NULL, --Bedrag mag 2 getallen achter de komma hebben en mag er maximaal 3 voor de komma hebben
