@@ -106,6 +106,7 @@ $Dictionary = array(
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="description"
           content="Bootstrap Multi-level tree view menu with Bootstrap. Expand and collapse sub sections. example.">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
@@ -116,21 +117,20 @@ $Dictionary = array(
     <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
 
     <!-- bootstrap !-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="CSS/theme.css">
     <link rel="stylesheet" href="CSS/BootstrapXL.css">
+    <link rel="stylesheet" href="CSS/theme.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
-    <link rel="stylesheet" href="CSS/resultaten.css">
     <link rel="stylesheet" href="CSS/navigation.css">
 
     <!-- CSS voor price slider -->
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
+    <link rel="stylesheet" href="CSS/resultaten.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
 
 </head>
@@ -166,7 +166,7 @@ $Dictionary = array(
         <form class="navbar-form" action="resultaten.php" method="GET">
             <div class="form-group" style="display:inline;">
                 <div class="input-group" style="display:table;">
-                    <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                    <input class="form-control" id="searchbar" name="zoekterm" placeholder="Search Here" autocomplete="off"
                            autofocus="autofocus" type="text">
                     <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
                                                                                                type="submit"
