@@ -23,7 +23,7 @@ CREATE TABLE Betalingswijzen (
 );
 
 CREATE TABLE Landen (
-  LAN_landcode CHAR(2)     NOT NULL, --Zie ISO 3166/1
+  LAN_landcode CHAR(2)     NOT NULL, --Zie ISO 3166-alpha2
   LAN_landnaam VARCHAR(50) NOT NULL, --De langste naam is 50 karakters
   CONSTRAINT PK_landen PRIMARY KEY (LAN_landcode),
   CONSTRAINT UQ_landnaam UNIQUE (LAN_landnaam), --In het nederlands
