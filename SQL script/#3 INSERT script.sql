@@ -312,7 +312,7 @@ VALUES
 */
 
 /* Toevpegen van test voorwerpen */
-INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
+/*INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
                       VW_land, VW_looptijd, VW_looptijdStart, VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
 VALUES
   ('Testproduct1', 'beschrijving1', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD',
@@ -343,9 +343,10 @@ VALUES
                     'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
   ('Testproduct24', 'beschrijving24', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem',
                     'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus')
+                    */
 
 /* Toevoegen van voorbeeld biedingen */
-INSERT INTO Bod (BOD_Voorwerpnummer, BOD_bodbedrag, BOD_gebruiker)
+/*INSERT INTO Bod (BOD_Voorwerpnummer, BOD_bodbedrag, BOD_gebruiker)
 VALUES
   (15, 10, 'Abdul'), (11, 11, 'Lucius'), (4, 21, 'Plato'), (6, 31, 'Wesley'), (12, 41, 'Basil'), (10, 51, 'Asher'),
   (3, 61, 'Orson'), (6, 71, 'Vaughan'), (18, 81, 'Oliver'), (8, 91, 'Beau'),
@@ -407,7 +408,11 @@ VALUES
   (2, 2850, 'Brenden'), (18, 2860, 'Samson'), (10, 2870, 'Isaac'), (11, 2880, 'Odysseus'), (10, 2890, 'Rigel'),
   (18, 2900, 'Vladimir'), (21, 2910, 'Blake'), (23, 2920, 'Rafael'), (8, 2930, 'Linus'), (10, 2940, 'Byron'),
   (24, 2950, 'Zeus'), (18, 2960, 'Cruz'), (12, 2970, 'Abraham'), (2, 2980, 'Christian'), (23, 2990, 'Chester')
+*/
 
+
+--Invoegen testrubrieken
+/*
 INSERT INTO Rubriek (RB_Nummer, RB_Naam, RB_Volgnummer)
 VALUES (0, 'root', 0)
 
@@ -756,10 +761,10 @@ VALUES (1, 'Antiek en Kunst', 0, 1),
   (342, 'Uitlaatsystemen', 62, 342),
   (343, 'Verlichting', 62, 343),
   (344, 'Overige onderdelen', 62, 344)
-
-
+*/
 
 /* Toevoegen rubrieken aan voorwerpen */
+/*
 INSERT INTO Voorwerp_Rubriek ([VR_Voorwerp_Nummer], [VR_Rubriek_Nummer])
 VALUES (4, 163), (15, 129), (8, 118), (14, 151), (14, 81), (16, 152), (14, 236), (6, 196), (7, 131), (3, 70), (19, 152),
   (5, 120), (19, 67), (22, 194), (19, 111), (23, 81), (12, 74), (18, 170), (13, 122), (9, 135),
@@ -771,8 +776,9 @@ VALUES (4, 163), (15, 129), (8, 118), (14, 151), (14, 81), (16, 152), (14, 236),
   (2, 65), (23, 210), (3, 116), (15, 113), (16, 147), (7, 153), (12, 132), (8, 159), (5, 203),
   (19, 69), (1, 151), (10, 239), (6, 118), (4, 141), (14, 87), (8, 109), (13, 204), (11, 140), (21, 146), (12, 233),
   (7, 181), (5, 91), (24, 104), (9, 129), (4, 94), (3, 131), (17, 125), (16, 207), (6, 97)
+*/
 
-
+/*
 DELETE FROM Bestand
 /* Toevoegen voorbeeld afbeeldingen aan voorwerpen */
 INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
@@ -800,3 +806,4 @@ VALUES ('images/testImg1.jpg', 1),
   ('images/ModelS.jpeg', 22),
   ('images/ModelX.jpeg', 23),
   ('images/Roadster.jpg', 24)
+*/
