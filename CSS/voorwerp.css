@@ -12,3 +12,45 @@
     overflow: hidden;
     white-space:nowrap;
 }
+
+
+
+/*right column */
+
+.TimeLeft{
+    font-size: 128px;
+    display: flex;
+
+}
+
+.TimeLeft i{
+    display: inline-block;
+}
+#Clock{
+    justify-self: right;
+    position:relative;
+    width: 20%;
+    height: 80px;
+    padding-bottom: 20% ; /* % of width, defines aspect ratio*/
+
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: center;
+    background-size: contain;
+    background-image: url(../images/no-image-available.jpg);
+
+}
+.Time{
+    font-size: 3vw;
+
+}
+
+@media( max-width: 992px){
+    .Time{
+        font-size: 9vw;
+    }
+}
+
+
+
+

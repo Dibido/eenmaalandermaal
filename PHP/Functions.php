@@ -291,7 +291,6 @@ SELECT
 	GROUP BY  VW_voorwerpnummer,VW_titel,Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze
 	ORDER BY VW_voorwerpnummer
 
-    
 EOT;
 
 

@@ -273,24 +273,6 @@ require('navbar.html');
         <?php
 
 
-        /*
-        $StommeDictionary = array(
-           'SearchKeyword' => 'testproduct3',
-            'SearchFilter' => 'NULL',
-            'SearchPaymentMethod' => 'NULL',
-            'SearchCategory' => 'NULL',
-            'SearchSubCategory' => 'NULL',
-            'SearchSubSubCategory' => 'NULL',
-            'SearchMaxRemainingTime' => 'NULL',
-            'SearchMinRemainingTime' => 'NULL',
-            'SearchMinPrice' => 'NULL',
-            'SearchMaxPrice' => 'NULL'
-        );
-
-        $QualityNewAuctions = sen($QueryQualityNew);
-
-        */
-
         $ExtraAuctions = SendToDatabase($QueryQualityNew);
 
         if ($ExtraAuctions[0]) {
