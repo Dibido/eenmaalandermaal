@@ -4,6 +4,10 @@
 *~
 .*.swp
 
+#ignore nano swap files
+*.save
+*.save.*
+
 #php connection file
 ./PHP/Connection.php
 ./PHP/connection.php
