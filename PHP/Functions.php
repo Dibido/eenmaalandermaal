@@ -220,7 +220,7 @@ function SearchFunction($SearchOptions)
     */
 
     $SearchKeyword = $SearchOptions['SearchKeyword'];
-    $QuerySearchKeyword =  "'%" . $SearchKeyword . "%'";
+    $QuerySearchKeyword = "'%" . $SearchKeyword . "%'";
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchFilter = $SearchOptions['SearchFilter'];
     $SearchCategory = $SearchOptions['SearchCategory'];
@@ -230,7 +230,6 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
-
 
 
 //Prepare the query
@@ -295,15 +294,12 @@ SELECT
 EOT;
 
 
-
 //executing the query
-
     return SendToDatabase($QuerySearchProducts);
-
-
-
 }
 
+
+// Print landen in registratie.php
 function printLanden($Landen)
 {
 
@@ -317,6 +313,16 @@ function printLanden($Landen)
             . $Land['LAN_landnaam'] . '</option>';
     }
 }
+
+// Print vragen in registratie.php
+function printVragen($Vragen)
+{
+    foreach ($Vragen as $Vraag) {
+        echo '<option value="' . $Vraag['VR_vraagnummer'] . '">'
+            . $Vraag['VR_tekstvraag'] . '</option>';
+    }
+}
+
 
 ?>
 

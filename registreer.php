@@ -164,6 +164,17 @@ require('navbar.html');
                         <hr>
 
                         <!-- Vragen ophalen DB-->
+
+                        <?php
+                        function printVragen($Vragen)
+                        {
+                            foreach ($Vragen as $Vraag) {
+                                echo '<option value="' . $Vraag['VR_vraagnummer'] . '">'
+                                    . $Vraag['VR_tekstvraag'] . '</option>';
+                            }
+                        }
+                        ?>
+
                         <div class="form-group">
                             <label for="geheimevraag">Geheime vraag*</label>
                             <select id="geheimevraag" type="text" placeholder="Herhaal wachtwoord"
