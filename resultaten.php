@@ -1,5 +1,5 @@
 <?php
-require 'PHP/Connection.php';
+require 'PHP/Connection-old.php';
 require 'PHP/Functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -99,6 +99,21 @@ $Dictionary = array(
     <!-- setting the browser icon -->
     <link rel="icon" href="images/Site-logo.png">
 
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Bootply snippet - Bootstrap Bootstrap Tree Menu</title>
+    <meta name="generator" content="Bootply">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description"
+          content="Bootstrap Multi-level tree view menu with Bootstrap. Expand and collapse sub sections. example.">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="apple-touch-icon" href="/bootstrap/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/bootstrap/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/bootstrap/img/apple-touch-icon-114x114.png">
 
     <!-- bootstrap !-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -110,8 +125,8 @@ $Dictionary = array(
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
-    <link rel="stylesheet" href="CSS/navigation.css">
     <link rel="stylesheet" href="CSS/resultaten.css">
+    <link rel="stylesheet" href="CSS/navigation.css">
 
     <!-- CSS voor price slider -->
     <link rel="stylesheet" type="text/css"
@@ -152,11 +167,11 @@ $Dictionary = array(
             <div class="form-group" style="display:inline;">
                 <div class="input-group" style="display:table;">
                     <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
-                           autofocus="autofocus" type="text" value="<?php if (!empty($zoekterm)) {
-                        echo($zoekterm);
-                    } ?>">
-                    <span class="input-group-addon" style="width:1%;"><span
-                                class="glyphicon glyphicon-search"></span></span>
+                           autofocus="autofocus" type="text">
+                    <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
+                                                                                               type="submit"
+                                                                                               style="background-color: #ffffff; border-color: #f2f2f2;"><span
+                                    class="glyphicon glyphicon-search"></span></button></span>
                 </div>
             </div>
         </form>
@@ -177,7 +192,7 @@ $Dictionary = array(
 <!-- Filter bar -->
 
 <div class="container-fluid">
-    <div class="col-md-3">
+    <div class="col-md-3 col-sm-12 col-xs-12">
         <div class="visible-lg visible-md visible-sm visible-xs">
             <div class="list-group">
                 <a href="#" class="list-group-item active">Opties</a>
@@ -246,38 +261,36 @@ $Dictionary = array(
 
                 </form>
             </div>
-
-            <?php
-            if (isset($subcategorie)) {
-                $categorieQuery = "select
-                distinct Rubriek.RB_Naam as Subsubcategorie,
-                count(Rubriek.RB_Naam) as aantal,
-                Rubriek.RB_Nummer as CategorieNummer
-                from Voorwerp
-                Inner join Voorwerp_Rubriek
-                on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                Inner join Rubriek
-                on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                Inner join Rubriek r1
-                on r1.RB_Nummer = Rubriek.RB_Parent
-                Inner join Rubriek r2
-                on r2.RB_Nummer = r1.RB_Parent
-                Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%$zoekterm%' and Rubriek.RB_Parent = $subcategorie
-                GROUP BY Rubriek.RB_Naam, Rubriek.RB_Nummer
-                ORDER BY COUNT(Rubriek.RB_Naam) desc";
-                $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-                echo '
             <a href="#" class="list-group-item active" id="Header-Categories">
                 Categorieën
             </a>
-            ';
-                foreach ($categorieResult as $categorie) {
-                    $url = urlencode($categorie['CategorieNummer']);
-                    echo('<a href= " ' . $_SERVER['REQUEST_URI'] . '&subsubcategorie=' . $url . '" class = \'list-group-item\'><h4>' . $categorie['Subsubcategorie'] . ' (' . $categorie['aantal'] . ')' . '</h4></a>');
-
-                }
-            } elseif (isset($categorie)) {
-                $categorieQuery = "select
+            <div class="list-group-item">
+                <ul class="nav nav-list">
+                    <?php
+                    $categorieQuery = "select
+                            distinct r2.RB_Naam as Hoofdcategorie,
+                            count(r2.RB_Naam) as aantal,
+                            r2.RB_Nummer as CategorieNummer
+                            from Voorwerp
+                            Inner join Voorwerp_Rubriek
+                            on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                            Inner join Rubriek
+                            on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                            Inner join Rubriek r1
+                            on r1.RB_Nummer = Rubriek.RB_Parent
+                            Inner join Rubriek r2
+                            on r2.RB_Nummer = r1.RB_Parent
+                            Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%test%'
+                            GROUP BY r2.RB_Naam,r2.RB_Nummer
+                            ORDER BY COUNT(r2.RB_Naam) desc";
+                    $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($categorieResult as $categorie) {
+                        $url = urlencode($categorie['CategorieNummer']);
+                        echo '
+                    <li><label class="tree-toggle nav-header">'. '<a href=" ' . $_SERVER['REQUEST_URI'] . '&subcategorie=' . $url . '">'. $categorie["Hoofdcategorie"] . '</a>'. '</label>
+                        <ul class="nav nav-list tree" style="display: none;">
+                        ';
+                        $subCategorieQuery = "select
                                         distinct r1.RB_Naam as Subcategorie,
                                         r2.RB_Nummer as Hoofdcategorie,
                                         count(r1.RB_Naam) as aantal,
@@ -291,62 +304,55 @@ $Dictionary = array(
                                         on r1.RB_Nummer = Rubriek.RB_Parent
                                         Inner join Rubriek r2
                                         on r2.RB_Nummer = r1.RB_Parent
-                                        Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%$zoekterm%' and r1.RB_Parent = $categorie
+                                        Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%test%' and r1.RB_Parent = " . $categorie["CategorieNummer"] . "
                                         GROUP BY r1.RB_Naam,r1.RB_Nummer, r2.RB_Naam, r2.RB_Nummer
                                         ORDER BY COUNT(r1.RB_Naam) desc";
-                $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-                echo '
-            <a href="#" class="list-group-item active" id="Header-Categories">
-                Categorieën
-            </a>';
-                foreach ($categorieResult as $categorie) {
-                    $url = urlencode($categorie['CategorieNummer']);
-                    echo('<a href= " ' . $_SERVER['REQUEST_URI'] . '&subcategorie=' . $url . '" class = \'list-group-item\'><h4>' . $categorie['Subcategorie'] . ' (' . $categorie['aantal'] . ')' . '</h4></a>');
+                        $subCategorieResult = $connection->query($subCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($subCategorieResult as $subCategorie) {
+                            $url = urlencode($subCategorie['CategorieNummer']);
+                            echo '<li><label class="tree-toggle nav-header">'. '<a href=" ' . $_SERVER['REQUEST_URI'] . '&subcategorie=' . $url . '">'. $subCategorie["Subcategorie"] . '</a>'. '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
+                                <ul class="nav nav-list tree" style="display: none;">';
+                            $subSubCategorieQuery = "select
+                distinct Rubriek.RB_Naam as Subsubcategorie,
+                count(Rubriek.RB_Naam) as aantal,
+                Rubriek.RB_Nummer as CategorieNummer
+                from Voorwerp
+                Inner join Voorwerp_Rubriek
+                on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                Inner join Rubriek
+                on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                Inner join Rubriek r1
+                on r1.RB_Nummer = Rubriek.RB_Parent
+                Inner join Rubriek r2
+                on r2.RB_Nummer = r1.RB_Parent
+                Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%test%' and Rubriek.RB_Parent = " . $subCategorie["CategorieNummer"] . "
+                GROUP BY Rubriek.RB_Naam, Rubriek.RB_Nummer
+                ORDER BY COUNT(Rubriek.RB_Naam) desc";
+                            $subSubCategorieResult = $connection->query($subSubCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($subSubCategorieResult as $subSubCategorie) {
+                                $url = urlencode($subSubCategorie['CategorieNummer']);
+                                echo ' <li><a href=" ' . $_SERVER['REQUEST_URI'] . '&subcategorie=' . $url . '">' . $subSubCategorie["Subsubcategorie"] . '<span class="badge pull-right label-info">' . $subSubCategorie["aantal"] . '</span>' . '</a></li>';
+                            }
+                            echo '</ul>
+                        </li>';
+                        }
+                        echo '
+                        </ul>
+                        </li>
+                                            <hr size="1">
+';
 
-                }
-            } else {
-                $categorieQuery = "select
-                            distinct r2.RB_Naam as Hoofdcategorie,
-                            count(r2.RB_Naam) as aantal,
-                            r2.RB_Nummer as CategorieNummer
-                            from Voorwerp
-                            Inner join Voorwerp_Rubriek
-                            on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                            Inner join Rubriek
-                            on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                            Inner join Rubriek r1
-                            on r1.RB_Nummer = Rubriek.RB_Parent
-                            Inner join Rubriek r2
-                            on r2.RB_Nummer = r1.RB_Parent
-                            Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%$zoekterm%'
-                            GROUP BY r2.RB_Naam,r2.RB_Nummer
-                            ORDER BY COUNT(r2.RB_Naam) desc";
-                $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-                echo '
-            <a href="#" class="list-group-item active" id="Header-Categories">
-                Categorieën
-            </a>';
-                foreach ($categorieResult as $categorie) {
-                    $url = urlencode($categorie['CategorieNummer']);
-                    echo('<a href= " ' . $_SERVER['REQUEST_URI'] . '&categorie=' . $url . '" class = \'list-group-item\'><h4>' . $categorie['Hoofdcategorie'] . ' (' . $categorie['aantal'] . ')' . '</h4></a>');
-                }
-            }?>
+                    }
 
-             <!-- list items in dropdown  -->
-                            <a href="#item-1" class="list-group-item" data-toggle="collapse"><i class="fa fa-plus-circle"></i>&nbsp;Auto's</a>
-                            <div id="item-1">
-                                <a href="#item-1-1" class="list-group-item" data-toggle="collapse"><i class="fa fa-plus-circle"></i>&nbsp;Auto <span class="badge">722</span></a>
-                                <div class="list-group collapse" id="item-1-1">
-                                    <a href="#item-1-1-1" class="list-group-item" data-toggle="collapse"><i class="fa fa-plus-circle"></i>&nbsp;Oldtimers <span class="badge">209</span></a>
-                                    <div class="list-group collapse" id="item-1-1-1">
-                                        <a href="#" class="list-group-item">Rolls Royce <span class="badge">40</span></a>
-                                    </div><!-- /.list-group .collapse -->
-                            </div>
-                        </div>
-    
-            <a href="categorie.php" class="list-group-item active text-center">Meer rubrieken <i
+                    ?>
+                </ul>
+            </div>
+
+
+            <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
                         class="text-right glyphicon glyphicon-plus-sign"></i></a>
-<!-- EINDE  list items in dropdown -->                     
+
+
         </div>
     </div>
 
@@ -354,17 +360,6 @@ $Dictionary = array(
 
     <div class="col-md-9 pull-left">
         <h2>Resultaten</h2>
-
-        <!-- test -->
-
-        <div class="well well-sm">
-            <strong>Display</strong>
-            <div class="btn-group">
-                <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
-            </span>List</a> <a href="#" id="grid" class="btn btn-default btn-sm"><span
-                            class="glyphicon glyphicon-th"></span>Grid</a>
-            </div>
-        </div>
         <?php
         global $Dictionary;
         $test = SearchFunction($Dictionary);
@@ -393,6 +388,37 @@ $Dictionary = array(
             $('#products .item').addClass('grid-group-item');
         });
     });
+</script>
+<script async="" src="//www.google-analytics.com/analytics.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.tree-toggle').click(function () {
+            $(this).parent().children('ul.tree').toggle(200);
+        });
+
+    });
+
+</script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-40413119-1', 'bootply.com');
+    ga('send', 'pageview');
 </script>
 </body>
 </html>
