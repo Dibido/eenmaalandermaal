@@ -1,5 +1,5 @@
 <?php
-require 'PHP/Connection-old.php';
+require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 
 $waardes = array("Tijd: nieuw aangeboden" => "VW_looptijdStart DESC", "Tijd: eerst afgelopen" => "VW_looptijdEinde ASC", "Prijs: laagste bovenaan" => "prijs ASC", "Prijs: hoogste bovenaan" => "prijs DESC");
