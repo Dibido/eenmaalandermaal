@@ -308,7 +308,7 @@ function printLanden($Landen)
 {
 
     foreach ($Landen as $Land) {
-        if ($Land['LAN_landcode'] == "NLD") {
+        if ($Land['LAN_landcode'] == "NL") {
             $selected = 'selected="Nederland"';
         } else {
             $selected = '';
