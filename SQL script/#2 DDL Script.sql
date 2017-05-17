@@ -5,16 +5,22 @@ IF OBJECT_ID('dbo.Voorwerp_Rubriek') IS NOT NULL
   DROP TABLE dbo.Voorwerp_Rubriek
 IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
   DROP TABLE dbo.Rubriek
+IF OBJECT_ID('dbo.Bestand') IS NOT NULL
+  DROP TABLE dbo.Bestand
 IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
   DROP TABLE dbo.Voorwerp
+IF OBJECT_ID('dbo.Gebruikerstelefoon') IS NOT NULL
+  DROP TABLE dbo.Gebruikerstelefoon
+IF OBJECT_ID('dbo.Gebruiker') IS NOT NULL
+  DROP TABLE dbo.Gebruiker
 IF OBJECT_ID('dbo.Landen') IS NOT NULL
   DROP TABLE dbo.Landen
 IF OBJECT_ID('dbo.Betalingswijzen') IS NOT NULL
   DROP TABLE dbo.Betalingswijzen
-IF OBJECT_ID('dbo.Bestand') IS NOT NULL
-  DROP TABLE dbo.Bestand
 IF OBJECT_ID('dbo.Bod') IS NOT NULL
   DROP TABLE dbo.Bod
+IF OBJECT_ID('dbo.Vraag') IS NOT NULL
+  DROP TABLE dbo.Vraag
 
 
 CREATE TABLE Betalingswijzen (
@@ -23,7 +29,7 @@ CREATE TABLE Betalingswijzen (
 );
 
 CREATE TABLE Landen (
-  LAN_landcode CHAR(2)     NOT NULL, --Zie ISO 3166/1
+  LAN_landcode CHAR(2)     NOT NULL, --Zie ISO 3166/1 alpha-2
   LAN_landnaam VARCHAR(50) NOT NULL, --De langste naam is 50 karakters
   CONSTRAINT PK_landen PRIMARY KEY (LAN_landcode),
   CONSTRAINT UQ_landnaam UNIQUE (LAN_landnaam), --In het nederlands
@@ -32,6 +38,29 @@ CREATE TABLE Landen (
 CREATE TABLE Vraag (
   VR_vraagnummer TINYINT NOT NULL, --Niet meer dan 255 vragen
   VR_tekstvraag  VARCHAR(255), --Goede lengte voor de vragen
+  CONSTRAINT PK_Vraag PRIMARY KEY (VR_vraagnummer)
+);
+
+CREATE TABLE Gebruiker (
+  GEB_gebruikersnaam VARCHAR(64)           NOT NULL, --Zie RFC 5321.
+  GEB_voornaam       VARCHAR(16)           NOT NULL, --Normale lengte van nederlandse voornaam
+  GEB_achternaam     VARCHAR(16)           NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
+  GEB_adresregel_1   VARCHAR(15)           NOT NULL, --Normale lengte van een adresregel
+  GEB_adresregel_2   VARCHAR(15)           NULL, --Normale lengte van een adresregel
+  GEB_postcode       VARCHAR(12)           NOT NULL, --Maximale Lengte van een postcode: ISO_3166
+  GEB_plaatsnaam     VARCHAR(85)           NOT NULL, --Langste plaatsnaam zie: "https://en.wikipedia.org/wiki/List_of_long_place_names"
+  GEB_Land           CHAR(2) DEFAULT 'NL'  NOT NULL, --Landcode uit de landen tabel
+  GEB_geboortedag    DATE                  NOT NULL,
+  GEB_mailbox        VARCHAR(256)          NOT NULL, --Mailadres lengte volgens RFC 5321
+  GEB_wachtwoord     CHAR(60)              NOT NULL, --BCRYPT dmv password_hash()
+  GEB_vraag          TINYINT               NOT NULL, --Nummer uit de Vraag tabel
+  GEB_antwoordtekst  VARCHAR(16)           NOT NULL, --Antwoord op de vraag,  (case sensitive?)
+  GEB_verkoper       BIT                   NOT NULL, --Of de gebruiker een verkoper is of niet
+  CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
+  CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
+  --TODO: vragen of deze moet: CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon (TEL_gebruiker),
+  CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen (LAN_landcode),
+  CONSTRAINT CHK_LegitiemeMailbox CHECK (GEB_mailbox LIKE '%_@__%.__%'),
 );
 
 CREATE TABLE Gebruikerstelefoon (
@@ -40,28 +69,8 @@ CREATE TABLE Gebruikerstelefoon (
   TEL_telefoon  CHAR(15)    NOT NULL, --Zie ITU-T recommendation E.164
   CONSTRAINT PK_GebruikerstelefoonVolgnr PRIMARY KEY (TEL_volgnr),
   CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (TEL_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
-);
-
-CREATE TABLE Gebruiker (
-  GEB_gebruikersnaam VARCHAR(64)              NOT NULL, --Zie RFC 5321.
-  GEB_voornaam       VARCHAR(16)              NOT NULL, --Normale lengte van nederlandse voornaam
-  GEB_achternaam     VARCHAR(16)              NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
-  GEB_adresregel_1   VARCHAR(15)              NOT NULL, --Normale lengte van een adresregel
-  GEB_adresregel_2   VARCHAR(15)              NULL, --Normale lengte van een adresregel
-  GEB_postcode       VARCHAR(12)              NOT NULL, --Maximale Lengte van een postcode: ISO_3166
-  GEB_plaatsnaam     VARCHAR(85)              NOT NULL, --Langste plaatsnaam zie: "https://en.wikipedia.org/wiki/List_of_long_place_names"
-  GEB_Land           VARCHAR(9) DEFAULT 'NL'  NOT NULL, --Landcode uit de landen tabel
-  GEB_geboortedag    DATE                     NOT NULL,
-  GEB_mailbox        VARCHAR(256)             NOT NULL, --Mailadres lengte volgens RFC 5321
-  GEB_wachtwoord     CHAR(60)                 NOT NULL, --BCRYPT dmv password_hash()
-  GEB_vraag          INT                      NOT NULL, --Nummer uit de Vraag tabel
-  GEB_antwoordtekst  VARCHAR(16)              NOT NULL, --Antwoord op de vraag,  (case sensitive?)
-  GEB_verkoper       BIT                      NOT NULL, --Of de gebruiker een verkoper is of niet
-  CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
-  CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
-  --TODO: vragen of deze moet: CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon (TEL_gebruiker),
-  CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen (LAN_landcode),
-  CONSTRAINT CHK_LegitiemeMailbox CHECK (GEB_mailbox LIKE '%_@__%.__%'),
+  ON UPDATE CASCADE
+  ON DELETE NO ACTION,
 );
 
 CREATE TABLE Voorwerp (
@@ -77,8 +86,8 @@ CREATE TABLE Voorwerp (
   VW_looptijdStart       DATETIME      NOT NULL DEFAULT GETDATE(), --Normaal de huidige datum met daarbij de tijd
   VW_verzendkosten       NUMERIC(5, 2) NULL, --Bedrag mag 2 getallen achter de komma hebben en mag er maximaal 3 voor de komma hebben
   VW_verzendinstructies  VARCHAR(255)  NULL, --Korte instructie
-  VW_verkoper            VARCHAR(40)   NOT NULL, --Marktplaats heeft 36 wij 4 meer dus 40
-  VW_koper               VARCHAR(40)   NULL, --Marktplaats heeft 36 wij 4 meer dus 40
+  VW_verkoper            VARCHAR(64)   NOT NULL, --Zie RFC 5321.
+  VW_koper               VARCHAR(64)   NULL, --Zie RFC 5321.
   VW_looptijdEinde                              AS DATEADD(DAY, VW_looptijd, VW_looptijdStart), --Bereken de einddatum
   VW_veilinggesloten     BIT           NOT NULL DEFAULT 0, --Veiling gesloten of open
   VW_verkoopprijs        NUMERIC(9, 2) NULL, --Prijs waarvoor het voorwerp verkocht is
@@ -88,7 +97,7 @@ CREATE TABLE Voorwerp (
   CONSTRAINT FK_Land FOREIGN KEY (VW_land) REFERENCES Landen (LAN_landcode)
     ON UPDATE CASCADE --Voor als de landnamen worden aangepast
     ON DELETE NO ACTION,
-  CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (VW_koper) REFERENCES Gebruiker (GEB_gebruikersnaam)
+  CONSTRAINT FK_VoorwerpGebruikerGebruikersnaam FOREIGN KEY (VW_koper) REFERENCES Gebruiker (GEB_gebruikersnaam)
     ON UPDATE CASCADE --Voor als de gebruikersnaam wordt aangepast
     ON DELETE NO ACTION,
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
@@ -140,14 +149,14 @@ CREATE TABLE Bestand (
 CREATE TABLE Bod (
   BOD_voorwerpnummer BIGINT        NOT NULL,
   BOD_bodbedrag      NUMERIC(9, 2) NOT NULL,
-  BOD_gebruiker      VARCHAR(40)   NOT NULL,
+  BOD_gebruiker      VARCHAR(64)   NOT NULL, --Zie RFC 5321.
   BOD_bodTijdEnDag   DATETIME      NOT NULL DEFAULT GETDATE(),
   CONSTRAINT PK_BodVoorwerpnummer PRIMARY KEY (BOD_voorwerpnummer, BOD_bodbedrag),
   CONSTRAINT FK_BodVoorwerpnummer FOREIGN KEY (BOD_voorwerpnummer) REFERENCES Voorwerp (VW_voorwerpnummer)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (BOD_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
-    ON UPDATE CASCADE
+  CONSTRAINT FK_BodGebruikerGebruikersnaam FOREIGN KEY (BOD_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
+    ON UPDATE NO ACTION 
     ON DELETE NO ACTION,
   CONSTRAINT CHK_HogerDanStartprijs CHECK (dbo.bodHogerDanStartprijs(BOD_voorwerpnummer, BOD_bodbedrag) = 1),
   --TODO: Hoeft nog niet voor deze sprint
