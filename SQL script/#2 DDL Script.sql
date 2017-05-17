@@ -29,6 +29,28 @@ CREATE TABLE Landen (
   CONSTRAINT UQ_landnaam UNIQUE (LAN_landnaam), --In het nederlands
 );
 
+CREATE TABLE Gebruiker (
+  GEB_gebruikersnaam VARCHAR(64)              NOT NULL, --Zie RFC 5321.
+  GEB_voornaam       VARCHAR(16)              NOT NULL, --Normale lengte van nederlandse voornaam
+  GEB_achternaam     VARCHAR(16)              NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
+  GEB_adresregel_1   VARCHAR(15)              NOT NULL, --Normale lengte van een adresregel
+  GEB_adresregel_2   VARCHAR(15)              NULL, --Normale lengte van een adresregel
+  GEB_postcode       VARCHAR(12)              NOT NULL, --Maximale Lengte van een postcode: ISO_3166
+  GEB_plaatsnaam     VARCHAR(85)              NOT NULL, --Langste plaatsnaam zie: "https://en.wikipedia.org/wiki/List_of_long_place_names"
+  GEB_Land           VARCHAR(9) DEFAULT 'NL'  NOT NULL, --Landcode uit de landen tabel
+  GEB_geboortedag    DATE                     NOT NULL,
+  GEB_mailbox        VARCHAR(256)             NOT NULL, --Mailadres lengte volgens RFC 5321
+  GEB_wachtwoord     CHAR(60)                 NOT NULL, --BCRYPT dmv password_hash()
+  GEB_vraag          INT                      NOT NULL, --Nummer uit de Vraag tabel
+  GEB_antwoordtekst  VARCHAR(16)              NOT NULL, --Antwoord op de vraag,  (case sensitive?)
+  GEB_verkoper       BIT                      NOT NULL, --Of de gebruiker een verkoper is of niet
+  CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
+  CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
+  CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon (TEL_gebruiker),
+  CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen (LAN_landcode),
+  CONSTRAINT CHK_LegitiemeMailbox CHECK (GEB_mailbox LIKE '%_@__%.__%'),
+);
+
 CREATE TABLE Voorwerp (
   VW_voorwerpnummer      BIGINT        NOT NULL IDENTITY, --Genereerd zelf nummer, zo veel mogelijk voorwerpen
   VW_titel               VARCHAR(60)   NOT NULL, --Hetzelfde als marktplaats
@@ -77,7 +99,7 @@ CREATE TABLE Rubriek (
   RB_volgnummer INT          NOT NULL, -- MOET MAX 2 worden
   CONSTRAINT PK_RB_Nummer PRIMARY KEY (RB_Nummer),
   CONSTRAINT FK_Parent FOREIGN KEY (RB_Parent) REFERENCES Rubriek (RB_Nummer)
-)
+);
 
 
 CREATE TABLE Voorwerp_Rubriek (
@@ -90,7 +112,7 @@ CREATE TABLE Voorwerp_Rubriek (
   CONSTRAINT FK_VR_RUB FOREIGN KEY (VR_Rubriek_Nummer) REFERENCES Rubriek (RB_Nummer)
     ON UPDATE CASCADE
     ON DELETE CASCADE
-)
+);
 
 CREATE TABLE Bestand (
   BES_filenaam       VARCHAR(260) NOT NULL, --Maximum lengte van file path is volgens microsoft 260 tekens.
@@ -100,7 +122,7 @@ CREATE TABLE Bestand (
     ON UPDATE CASCADE
     ON DELETE CASCADE,
   CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
-)
+);
 
 CREATE TABLE Bod (
   BOD_voorwerpnummer BIGINT        NOT NULL,
@@ -118,12 +140,12 @@ CREATE TABLE Bod (
   --TODO: Hoeft nog niet voor deze sprint
   --CONSTRAINT CHK_BodBedrag CHECK (dbo.bodHoogGenoeg(voorwerpnummer, bodbedrag) = 1),
   CONSTRAINT CHK_NietEigenVoorwerp CHECK (dbo.nietEigenVoorwerp(BOD_voorwerpnummer, BOD_gebruiker) = 1)
-)
+);
 
 CREATE TABLE Vraag (
   VR_vraagnummer TINYINT NOT NULL, --Niet meer dan 255 vragen
   VR_tekstvraag  VARCHAR(255), --Goede lengte voor de vragen
-)
+);
 
 CREATE TABLE Gebruikerstelefoon (
   TEL_volgnr    INT         NOT NULL, --
@@ -131,31 +153,7 @@ CREATE TABLE Gebruikerstelefoon (
   TEL_telefoon  CHAR(15)    NOT NULL, --Zie ITU-T recommendation E.164
   CONSTRAINT PK_GebruikerstelefoonVolgnr PRIMARY KEY (TEL_volgnr),
   CONSTRAINT FK_GebruikerGeberuikersnaam FOREIGN KEY (TEL_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
-)
-
-CREATE TABLE Gebruiker (
-  GEB_gebruikersnaam VARCHAR(64)              NOT NULL, --Zie RFC 5321.
-  GEB_voornaam       VARCHAR(16)              NOT NULL, --Normale lengte van nederlandse voornaam
-  GEB_achternaam     VARCHAR(16)              NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
-  GEB_adresregel_1   VARCHAR(15)              NOT NULL, --Normale lengte van een adresregel
-  GEB_adresregel_2   VARCHAR(15)              NULL, --Normale lengte van een adresregel
-  GEB_postcode       VARCHAR(12)              NOT NULL, --Maximale Lengte van een postcode: ISO_3166
-  GEB_plaatsnaam     VARCHAR(85)              NOT NULL, --Langste plaatsnaam zie: "https://en.wikipedia.org/wiki/List_of_long_place_names"
-  GEB_Land           VARCHAR(9) DEFAULT 'NL'  NOT NULL, --Landcode uit de landen tabel
-  GEB_geboortedag    DATE                     NOT NULL,
-  GEB_mailbox        VARCHAR(256)             NOT NULL, --Mailadres lengte volgens RFC 5321
-  GEB_wachtwoord     CHAR(60)                 NOT NULL, --BCRYPT dmv password_hash()
-  GEB_vraag          INT                      NOT NULL, --Nummer uit de Vraag tabel
-  GEB_antwoordtekst  VARCHAR(16)              NOT NULL, --Antwoord op de vraag,  (case sensitive?)
-  GEB_verkoper       BIT                      NOT NULL, --Of de gebruiker een verkoper is of niet
-  CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
-  CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
-  CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon (TEL_gebruiker),
-  CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen (LAN_landcode),
-  CONSTRAINT CHK_LegitiemeMailbox CHECK (GEB_mailbox LIKE '%_@__%.__%'),
-)
-
-
+);
 
 --TODO: Valt buiten de eerste sprint en wordt verder aan gewerkt in een latere sprint
 /*GO
