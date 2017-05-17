@@ -113,7 +113,7 @@ function DrawSearchResults($auction)
     }
     echo "
     <!-- Veiling template -->
-            <div class=\"veiling-rand col-md-3 col-sm-6\">
+            <div class=\"veiling-rand col-md-4 col-sm-6\">
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
@@ -241,7 +241,7 @@ SELECT
    VW_titel,
    (SELECT TOP 1 BOD_Bodbedrag
     FROM Bod
-    WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+    WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
                                 FROM Bod
                                 WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                 ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
