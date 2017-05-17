@@ -42,26 +42,10 @@
 
 <!-- Navigation -->
 
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
-        <a href="index.php" class="navbar-brand">
-            <img source="images/testLogo.png" alt="EenmaalAndermaal Logo">
-        </a>
-
-        <div class="navbar-right">
-            <ul class="nav navbar-nav collapse navbar-collapse">
-                <li>
-                    <button class="btn btn-default navbar-btn hidden-md hidden-lg MobileButtonToggle"
-                            data-toggle="collapse"
-                            data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
-                </li>
+<?php
+require('navbar.html');
+?>
 
 
-
-            </ul>
-        </div>
-
-    </div>
-</nav>
 </body>
 </html>
