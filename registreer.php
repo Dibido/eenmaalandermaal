@@ -69,143 +69,149 @@ require('navbar.html');
 
 <div class="container">
 
+    <div class="panel panel-default col-md-6 col-md-push-3">
 
-    <div class="row text-center">
-        <div class="col-md-6 col-md-push-3">
-            <div class="well well-lg ">
-                <h2>
-                    Vul hier uw gegevens in.
-                </h2>
-                <h3>
-                    Na de registratie en het valideren van uw Emailadres, kunt u direct mee bieden!
-                </h3>
+        <div class="panel-body">
+
+
+            <div class="row text-center">
+                <div class="col-md-6 col-md-push-3">
+
+                    <h2>
+                        Vul hier uw gegevens in.
+                    </h2>
+                    <h3>
+                        Na de registratie en het valideren van uw Emailadres, kunt u direct mee bieden!
+                    </h3>
+
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
+            <hr>
 
-        <div class="col-md-6 col-md-push-3">
+            <div class="row">
 
-            <form method="POST" id="registratieformulier">
+                <div class="col-md-6 col-md-push-3">
 
-                <div class="form-group">
-                    <label for="voornaam">Voornaam*</label>
-                    <input id="voornaam" type="text" placeholder="Voornaam"
-                           class="form-control" required="true">
+                    <form method="POST" id="registratieformulier">
+
+                        <div class="form-group">
+                            <label for="voornaam">Voornaam*</label>
+                            <input id="voornaam" type="text" placeholder="Voornaam"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="achternaam">Achternaam*</label>
+                            <input id="achternaam" type="text" placeholder="Achternaam"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Email">Email*</label>
+                            <input id="email" type="text" placeholder="voorbeeld@voorbeeld.com"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adres1">Adresregel 1*</label>
+                            <input id="adres1" type="text" placeholder="Adresregel 1"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adres2">Adresregel 2</label>
+                            <input id="adres2" type="text" placeholder="Adresregel 2"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="postcode">Postcode*</label>
+                            <input id="postcode" type="text" placeholder="1234 AB"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <!-- PHP en DB link fixen -->
+                        <div class="form-group">
+                            <label for="land">Land*</label>
+                            <select id="land" type="text" selected=Nederland"
+                                    class="form-control" required="true">
+                                <?php
+
+                                $Landen = SendToDatabase($GetLandenQuerie);
+
+
+                                foreach ($Landen as $Land) {
+                                    if ($Land['LAN_landcode'] == "NLD") {
+                                        $selected = 'selected="Nederland"';
+                                    } else {
+                                        $selected = '';
+                                    }
+                                    echo '<option value="' . $Land['LAN_landcode'] . '" ' . $selected . '>'
+                                        . $Land['LAN_landnaam'] . '</option>';
+                                }
+
+                                ?>
+
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="geboortedatum">Geboortedatum*</label>
+                            <input id="geboortedatum" type="text" data-provide="datepicker"
+                                   data-date-format="dd/mm/yyyy"
+                                   placeholder="Geboortedatum"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                            <label for="gebruikersnaam">Gebruikersnaam*</label>
+                            <input id="gebruikersnaam" type="text" placeholder="Gebruikersnaam"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wachtwoord">Wachtwoord*</label>
+                            <input id="wachtwoord" type="password" placeholder="Wachtwoord"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wachtwoord2">Bevestig wachtwoord*</label>
+                            <input id="wachtwoord2" type="password" placeholder="Herhaal wachtwoord"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <hr>
+
+                        <!-- Vragen ophalen DB-->
+                        <div class="form-group">
+                            <label for="geheimevraag">Geheime vraag*</label>
+                            <select id="geheimevraag" type="text" placeholder="Herhaal wachtwoord"
+                                    class="form-control" required="true">
+                                <option value="1">Optie 1</option>
+                                <option value="2">Optie 2</option>
+                                <option value="3">Optie 3</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="antwoord">Antwoord op je geheime vraag*</label>
+                            <input id="antwoord" type="text" placeholder="Antwoord op je geheime vraag"
+                                   class="form-control" required="true">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-push-3 text-center">
+                                <button type="submit" class="btn btn-primary">Registreer!</button>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
-
-                <div class="form-group">
-                    <label for="achternaam">Achternaam*</label>
-                    <input id="achternaam" type="text" placeholder="Achternaam"
-                           class="form-control" required="true">
-                </div>
-
-                <div class="form-group">
-                    <label for="Email">Email*</label>
-                    <input id="email" type="text" placeholder="voorbeeld@voorbeeld.com"
-                           class="form-control" required="true">
-                </div>
-
-                <div class="form-group">
-                    <label for="adres1">Adresregel 1*</label>
-                    <input id="adres1" type="text" placeholder="Adresregel 1"
-                           class="form-control" required="true">
-                </div>
-
-                <div class="form-group">
-                    <label for="adres2">Adresregel 2</label>
-                    <input id="adres2" type="text" placeholder="Adresregel 2"
-                           class="form-control" required="true">
-                </div>
-
-                <div class="form-group">
-                    <label for="postcode">Postcode*</label>
-                    <input id="postcode" type="text" placeholder="1234 AB"
-                           class="form-control" required="true">
-                </div>
-
-                <!-- PHP en DB link fixen -->
-                <div class="form-group">
-                    <label for="land">Land*</label>
-                    <select id="land" type="text" selected=Nederland"
-                            class="form-control" required="true">
-                        <?php
-
-                        $Landen = SendToDatabase($GetLandenQuerie);
-
-
-
-                        foreach ($Landen as $Land) {
-                            if ($Land['LAN_landcode']=="NLD") {
-                                $selected = 'selected="Nederland"';
-                            }
-                            else {
-                                $selected = '';
-                            }
-                            echo '<option value="'.$Land['LAN_landcode'].'" '. $selected . '>'
-                                . $Land['LAN_landnaam'] .'</option>';
-                        }
-
-                        ?>
-
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="geboortedatum">Geboortedatum*</label>
-                    <input id="geboortedatum" type="text" data-provide="datepicker"
-                           data-date-format="dd/mm/yyyy"
-                           placeholder="Geboortedatum"
-                           class="form-control" required="true">
-                </div>
-
-                <hr>
-
-                <div class="form-group">
-                    <label for="gebruikersnaam">Gebruikersnaam*</label>
-                    <input id="gebruikersnaam" type="text" placeholder="Gebruikersnaam"
-                           class="form-control" required="true">
-                </div>
-
-                <div class="form-group">
-                    <label for="wachtwoord">Wachtwoord*</label>
-                    <input id="wachtwoord" type="password" placeholder="Wachtwoord"
-                           class="form-control" required="true">
-                </div>
-
-                <div class="form-group">
-                    <label for="wachtwoord2">Bevestig wachtwoord*</label>
-                    <input id="wachtwoord2" type="password" placeholder="Herhaal wachtwoord"
-                           class="form-control" required="true">
-                </div>
-
-                <hr>
-
-                <!-- Vragen ophalen DB-->
-                <div class="form-group">
-                    <label for="geheimevraag">Geheime vraag*</label>
-                    <select id="geheimevraag" type="text" placeholder="Herhaal wachtwoord"
-                            class="form-control" required="true">
-                        <option value="1">Optie 1</option>
-                        <option value="2">Optie 2</option>
-                        <option value="3">Optie 3</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="antwoord">Antwoord op je geheime vraag*</label>
-                    <input id="antwoord" type="text" placeholder="Antwoord op je geheime vraag"
-                           class="form-control" required="true">
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-6 col-md-push-3 text-center">
-                        <button type="submit" class="btn btn-primary">Registreer!</button>
-                    </div>
-                </div>
-
-            </form>
+            </div>
         </div>
     </div>
 </div>
