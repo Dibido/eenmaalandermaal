@@ -113,7 +113,7 @@ function DrawSearchResults($auction)
     }
     echo "
     <!-- Veiling template -->
-            <div class=\"veiling-rand col-md-3 col-sm-6\">
+            <div class=\"veiling-rand col-md-4 col-sm-6\">
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
@@ -220,7 +220,7 @@ function SearchFunction($SearchOptions)
     */
 
     $SearchKeyword = $SearchOptions['SearchKeyword'];
-    $QuerySearchKeyword =  "'%" . $SearchKeyword . "%'";
+    $QuerySearchKeyword = "'%" . $SearchKeyword . "%'";
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchFilter = $SearchOptions['SearchFilter'];
     $SearchCategory = $SearchOptions['SearchCategory'];
@@ -232,7 +232,6 @@ function SearchFunction($SearchOptions)
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
 
 
-
 //Prepare the query
     $QuerySearchProducts = <<< EOT
 
@@ -241,7 +240,7 @@ SELECT
    VW_titel,
    (SELECT TOP 1 BOD_Bodbedrag
     FROM Bod
-    WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
+    WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
                                 FROM Bod
                                 WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                 ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
@@ -294,13 +293,33 @@ SELECT
 EOT;
 
 
-
 //executing the query
-
     return SendToDatabase($QuerySearchProducts);
+}
 
 
+// Print landen in registratie.php
+function printLanden($Landen)
+{
 
+    foreach ($Landen as $Land) {
+        if ($Land['LAN_landcode'] == "NL") {
+            $selected = 'selected="Nederland"';
+        } else {
+            $selected = '';
+        }
+        echo '<option value="' . $Land['LAN_landcode'] . '" ' . $selected . '>'
+            . $Land['LAN_landnaam'] . '</option>';
+    }
+}
+
+// Print vragen in registratie.php
+function printVragen($Vragen)
+{
+    foreach ($Vragen as $Vraag) {
+        echo '<option value="' . $Vraag['VR_vraagnummer'] . '">'
+            . $Vraag['VR_tekstvraag'] . '</option>';
+    }
 }
 
 

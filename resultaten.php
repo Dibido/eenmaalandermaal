@@ -2,13 +2,24 @@
 require 'PHP/Connection-old.php';
 require 'PHP/Functions.php';
 
+$waardes = array("TijdNieuwAangeboden" => "VW_looptijdStart DESC", "TijdEerstAfgelopen" => "VW_looptijdEinde ASC", "PrijsLaagsteBovenaan" => "(SELECT TOP 1 BOD_Bodbedrag
+                                FROM Bod
+                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+    ORDER BY BOD_Bodbedrag DESC) ASC", "PrijsHoogsteBovenaan" => "(SELECT TOP 1 BOD_Bodbedrag
+                                FROM Bod
+                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+    ORDER BY BOD_Bodbedrag DESC) DESC");
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 if (isset($_GET['zoekterm'])) {
     $zoekterm = ($_GET['zoekterm']);
 }
+
 if (isset($_GET['sorteerfilter'])) {
-    $sorteerfilter = urldecode($_GET['sorteerfilter']);
+    $sorteerfilter = $waardes[($_GET['sorteerfilter'])];
 }
+echo $sorteerfilter;
 if (isset($_GET['betalingsmethode'])) {
     $betalingsmethode = $_GET['betalingsmethode'];
 }
@@ -43,7 +54,7 @@ if (!isset($_GET['categorie'])) {
 if (!isset($_GET['subcategorie'])) {
     $_GET['subcategorie'] = "NULL";
 }
-if (isset($_GET['subsubcategorie'])) {
+if (!isset($_GET['subsubcategorie'])) {
     $_GET['subsubcategorie'] = "NULL";
 }
 if (!isset($_GET['min'])) {
@@ -67,7 +78,7 @@ $Dictionary = array(
     'SearchPaymentMethod' => $_GET['betalingsmethode'],
     'SearchCategory' => $_GET['categorie'],
     'SearchSubCategory' => $_GET['subcategorie'],
-    'SearchSubSubCategory' => $_GET['subsubcategory'],
+    'SearchSubSubCategory' => $_GET['subsubcategorie'],
     'SearchMinRemainingTime' => $_GET['minremainingtime'],
     'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
     'SearchMinPrice' => $prijs['min'],
@@ -130,9 +141,9 @@ $Dictionary = array(
     <!-- CSS voor price slider -->
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
-    <link rel="stylesheet" href="CSS/resultaten.css">
+    <link rel="stylesheet" href="CSS/resultaten.css">-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
-
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 </head>
 <body>
 
@@ -166,7 +177,8 @@ $Dictionary = array(
         <form class="navbar-form" action="resultaten.php" method="GET">
             <div class="form-group" style="display:inline;">
                 <div class="input-group" style="display:table;">
-                    <input class="form-control" id="searchbar" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                    <input class="form-control" id="searchbar" name="zoekterm" placeholder="Search Here"
+                           autocomplete="off"
                            autofocus="autofocus" type="text">
                     <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
                                                                                                type="submit"
@@ -210,11 +222,10 @@ $Dictionary = array(
                                 echo('<option value="' . $sorteerfilter . '" selected> ' . $sorteerfilter . '</option>');
                             }
                             ?>
-                            <option value="Tijd: nieuw aangeboden">Tijd: nieuw aangeboden</option>
-                            <option value="Tijd: eerst afgelopen">Tijd: eerst afgelopen</option>
-                            <option value="Prijs: laagste bovenaan">Prijs: laagste bovenaan</option>
-                            <option value="Prijs: hoogste bovenaan">Prijs: hoogste bovenaan</option>
-                            <option value="Afstand: dichtstbijzijnde eerst">Afstand: dichtstbijzijnde eerst</option>
+                            <option value="TijdNieuwAangeboden">Tijd: nieuw aangeboden</option>
+                            <option value="TijdEerstAfgelopen">Tijd: eerst afgelopen</option>
+                            <option value="PrijsLaagsteBovenaan">Prijs: laagste bovenaan</option>
+                            <option value="PrijsHoogsteBovenaan">Prijs: hoogste bovenaan</option>
                         </select>
                     </a>
 
@@ -287,7 +298,7 @@ $Dictionary = array(
                     foreach ($categorieResult as $categorie) {
                         $url = urlencode($categorie['CategorieNummer']);
                         echo '
-                    <li><label class="tree-toggle nav-header">'.  $categorie["Hoofdcategorie"] . '</label>
+                    <li><label class="tree-toggle nav-header">' . $categorie["Hoofdcategorie"] . '</label>
                         <ul class="nav nav-list tree" style="display: none;">
                         ';
                         $subCategorieQuery = "select
@@ -310,7 +321,7 @@ $Dictionary = array(
                         $subCategorieResult = $connection->query($subCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($subCategorieResult as $subCategorie) {
                             $url = urlencode($subCategorie['CategorieNummer']);
-                            echo '<li><label class="tree-toggle nav-header">'. $subCategorie["Subcategorie"] . '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
+                            echo '<li><label class="tree-toggle nav-header">' . $subCategorie["Subcategorie"] . '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
                                 <ul class="nav nav-list tree" style="display: none;">';
                             $subSubCategorieQuery = "select
                 distinct Rubriek.RB_Naam as Subsubcategorie,
@@ -330,8 +341,10 @@ $Dictionary = array(
                 ORDER BY COUNT(Rubriek.RB_Naam) desc";
                             $subSubCategorieResult = $connection->query($subSubCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
                             foreach ($subSubCategorieResult as $subSubCategorie) {
-                                $url = urlencode($subSubCategorie['CategorieNummer']);
-                                echo ' <li><a href=" ' . $_SERVER['REQUEST_URI'] . '&subcategorie=' . $url . '">' . $subSubCategorie["Subsubcategorie"] . '<span class="badge pull-right label-info">' . $subSubCategorie["aantal"] . '</span>' . '</a></li>';
+                                $url1 = urlencode($categorie["CategorieNummer"]);
+                                $url2 = urlencode($subCategorie["CategorieNummer"]);
+                                $url3 = urlencode($subSubCategorie['CategorieNummer']);
+                                echo ' <li><a href=" ' . '?zoekterm=' . $zoekterm . '&categorie=' . $url1 . '.&subcategorie=' . $url2 . '.&subsubcategorie=' . $url3 . '">' . $subSubCategorie["Subsubcategorie"] . '<span class="badge pull-right label-info">' . $subSubCategorie["aantal"] . '</span>' . '</a></li>';
                             }
                             echo '</ul>
                         </li>';
@@ -405,20 +418,6 @@ $Dictionary = array(
     });
 
 </script>
-<script>
-    (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r;
-        i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-    ga('create', 'UA-40413119-1', 'bootply.com');
-    ga('send', 'pageview');
-</script>
+
 </body>
 </html>
