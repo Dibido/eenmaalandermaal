@@ -45,9 +45,9 @@ $response = NULL;
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
+    <link rel="stylesheet" href="CSS/voorwerp.css">
 
 
 </head>
@@ -60,6 +60,35 @@ $response = NULL;
 require('navbar.html');
 ?>
 
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="HeaderTitle text-center">Titel van het te verkopen voorwerp</div>
+        </div>
+    </div>
 
+    <div class="col-md-8">
+
+
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">
+                Overgebleven tijd
+
+            </div>
+            <div class="panel-body">
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
 
 </body>

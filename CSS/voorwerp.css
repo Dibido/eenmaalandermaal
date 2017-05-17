@@ -1,0 +1,14 @@
+/* Headers */
+
+.HeaderTitle{
+    height: 50px;
+    display: inline-block;
+    background-color: #F6B555;
+    width: 100%;
+    border-radius: 4px;
+    margin: 5px 0 5px 0;
+    font-size: 32px;
+    color: #ffffff;
+    overflow: hidden;
+    white-space:nowrap;
+}
