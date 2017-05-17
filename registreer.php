@@ -166,13 +166,8 @@ require('navbar.html');
                         <!-- Vragen ophalen DB-->
 
                         <?php
-                        function printVragen($Vragen)
-                        {
-                            foreach ($Vragen as $Vraag) {
-                                echo '<option value="' . $Vraag['VR_vraagnummer'] . '">'
-                                    . $Vraag['VR_tekstvraag'] . '</option>';
-                            }
-                        }
+                        $Vragen = SendToDatabase($GetLandenQuerie);
+                        printVragen($Vragen);
                         ?>
 
                         <div class="form-group">
