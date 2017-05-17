@@ -304,6 +304,19 @@ EOT;
 
 }
 
+function printLanden($Landen)
+{
+
+    foreach ($Landen as $Land) {
+        if ($Land['LAN_landcode'] == "NLD") {
+            $selected = 'selected="Nederland"';
+        } else {
+            $selected = '';
+        }
+        echo '<option value="' . $Land['LAN_landcode'] . '" ' . $selected . '>'
+            . $Land['LAN_landnaam'] . '</option>';
+    }
+}
 
 ?>
 

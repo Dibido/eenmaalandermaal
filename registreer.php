@@ -68,29 +68,19 @@ require('navbar.html');
 
 
 <div class="container">
-
     <div class="panel panel-default col-md-6 col-md-push-3">
-
         <div class="panel-body">
-
 
             <div class="row text-center">
                 <div class="col-md-6 col-md-push-3">
-
-                    <h2>
-                        Vul hier uw gegevens in.
-                    </h2>
-                    <h3>
-                        Na de registratie en het valideren van uw Emailadres, kunt u direct mee bieden!
-                    </h3>
-
+                    <h2>Vul hier uw gegevens in.</h2>
+                    <h3>Na de registratie en het valideren van uw Emailadres, kunt u direct mee bieden!</h3>
                 </div>
             </div>
 
             <hr>
 
             <div class="row">
-
                 <div class="col-md-6 col-md-push-3">
 
                     <form method="POST" id="registratieformulier">
@@ -131,28 +121,15 @@ require('navbar.html');
                                    class="form-control" required="true">
                         </div>
 
-                        <!-- PHP en DB link fixen -->
+
                         <div class="form-group">
                             <label for="land">Land*</label>
                             <select id="land" type="text" selected=Nederland"
                                     class="form-control" required="true">
                                 <?php
-
                                 $Landen = SendToDatabase($GetLandenQuerie);
-
-
-                                foreach ($Landen as $Land) {
-                                    if ($Land['LAN_landcode'] == "NLD") {
-                                        $selected = 'selected="Nederland"';
-                                    } else {
-                                        $selected = '';
-                                    }
-                                    echo '<option value="' . $Land['LAN_landcode'] . '" ' . $selected . '>'
-                                        . $Land['LAN_landnaam'] . '</option>';
-                                }
-
+                                printLanden($Landen);
                                 ?>
-
                             </select>
                         </div>
 
