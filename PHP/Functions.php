@@ -220,7 +220,7 @@ function SearchFunction($SearchOptions)
     */
 
     $SearchKeyword = $SearchOptions['SearchKeyword'];
-    $QuerySearchKeyword = "'%" . $SearchKeyword . "%'";
+    $QuerySearchKeyword =  "'%" . $SearchKeyword . "%'";
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchFilter = $SearchOptions['SearchFilter'];
     $SearchCategory = $SearchOptions['SearchCategory'];
@@ -249,6 +249,8 @@ SELECT
     (SELECT TOP 1 BES_filenaam
     FROM Bestand
     WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
+    VW_looptijdStart, 
+    VW_looptijdEinde,
    Voorwerp.VW_betalingswijze
  FROM Voorwerp
    inneR JOIN Bod
@@ -262,7 +264,6 @@ SELECT
    INNER JOIN Rubriek r2
      ON r2.RB_Nummer = r1.RB_Parent
  WHERE r2.RB_Naam != 'root'
-
 	AND ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
 	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
 	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
@@ -287,14 +288,17 @@ SELECT
 	AND ($SearchSubSubCategory IS NULL OR Rubriek.RB_Nummer = $SearchSubSubCategory)
 	AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
 	AND (VW_veilinggesloten != 1)
-	GROUP BY  VW_voorwerpnummer,VW_titel,Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze
-	ORDER BY VW_voorwerpnummer
+GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
+   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde
+ORDER BY $SearchFilter , VW_voorwerpnummer
 
+    
 EOT;
-
-
 //executing the query
     return SendToDatabase($QuerySearchProducts);
+
+
+
 }
 
 
@@ -320,6 +324,90 @@ function printVragen($Vragen)
         echo '<option value="' . $Vraag['VR_vraagnummer'] . '">'
             . $Vraag['VR_tekstvraag'] . '</option>';
     }
+}
+
+
+function printCategoriën($zoekterm){
+    global $connection;
+    global $prijs;
+                    $categorieQuery = "select
+                            distinct r2.RB_Naam as Hoofdcategorie,
+                            count(r2.RB_Naam) as aantal,
+                            r2.RB_Nummer as CategorieNummer
+                            from Voorwerp
+                            Inner join Voorwerp_Rubriek
+                            on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                            Inner join Rubriek
+                            on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                            Inner join Rubriek r1
+                            on r1.RB_Nummer = Rubriek.RB_Parent
+                            Inner join Rubriek r2
+                            on r2.RB_Nummer = r1.RB_Parent
+                            Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%$zoekterm%'
+                            GROUP BY r2.RB_Naam,r2.RB_Nummer
+                            ORDER BY COUNT(r2.RB_Naam) desc";
+                    $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($categorieResult as $categorie) {
+                        $url = urlencode($categorie['CategorieNummer']);
+                        echo '
+                    <li><label class="tree-toggle nav-header">' . $categorie["Hoofdcategorie"] . '   '. '<span class="badge label-primary">' . $categorie["aantal"] . '</span>' .'</label>
+                        <ul class="nav nav-list tree" style="display: none;">
+                        ';
+                        $subCategorieQuery = "select
+                                        distinct r1.RB_Naam as Subcategorie,
+                                        r2.RB_Nummer as Hoofdcategorie,
+                                        count(r1.RB_Naam) as aantal,
+                                        r1.RB_Nummer as CategorieNummer
+                                        from Voorwerp
+                                        Inner join Voorwerp_Rubriek
+                                        on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                                        Inner join Rubriek
+                                        on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                                        Inner join Rubriek r1
+                                        on r1.RB_Nummer = Rubriek.RB_Parent
+                                        Inner join Rubriek r2
+                                        on r2.RB_Nummer = r1.RB_Parent
+                                        Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%$zoekterm%' and r1.RB_Parent = " . $categorie["CategorieNummer"] . "
+                                        GROUP BY r1.RB_Naam,r1.RB_Nummer, r2.RB_Naam, r2.RB_Nummer
+                                        ORDER BY COUNT(r1.RB_Naam) desc";
+                        $subCategorieResult = $connection->query($subCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($subCategorieResult as $subCategorie) {
+                            echo '<li><label class="tree-toggle nav-header">' . $subCategorie["Subcategorie"] . '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
+                                <ul class="nav nav-list tree" style="display: none;">';
+                            $subSubCategorieQuery = "select
+                distinct Rubriek.RB_Naam as Subsubcategorie,
+                count(Rubriek.RB_Naam) as aantal,
+                Rubriek.RB_Nummer as CategorieNummer
+                from Voorwerp
+                Inner join Voorwerp_Rubriek
+                on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                Inner join Rubriek
+                on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                Inner join Rubriek r1
+                on r1.RB_Nummer = Rubriek.RB_Parent
+                Inner join Rubriek r2
+                on r2.RB_Nummer = r1.RB_Parent
+                Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%$zoekterm%' and Rubriek.RB_Parent = " . $subCategorie["CategorieNummer"] . "
+                GROUP BY Rubriek.RB_Naam, Rubriek.RB_Nummer
+                ORDER BY COUNT(Rubriek.RB_Naam) desc";
+                            $subSubCategorieResult = $connection->query($subSubCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($subSubCategorieResult as $subSubCategorie) {
+                                $cat1 = urlencode($categorie["CategorieNummer"]);
+                                $cat2 = urlencode($subCategorie["CategorieNummer"]);
+                                $cat3 = urlencode($subSubCategorie['CategorieNummer']);
+                                $zoek = urlencode($zoekterm);
+                                $sort = urlencode($_GET['sorteerfilter']);
+                                echo ' <li><a href=" ' . '?zoekterm=' . $zoek . '&categorie=' . $cat1 . '&subcategorie=' . $cat2 . '&subsubcategorie=' . $cat3 . '&sorteerfilter=' . $sort . '&prijs=' . $prijs['min'] . ',' . $prijs['max'] . '">' . $subSubCategorie["Subsubcategorie"] . '<span class="badge pull-right label-info">' . $subSubCategorie["aantal"] . '</span>' . '</a></li>';
+                            }
+                            echo '</ul>
+                        </li>';
+                        }
+                        echo '
+                        </ul>
+                        </li>
+                      <hr size="1">';
+                    }
+
 }
 
 

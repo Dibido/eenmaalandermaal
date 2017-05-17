@@ -2,15 +2,8 @@
 require 'PHP/Connection-old.php';
 require 'PHP/Functions.php';
 
-$waardes = array("TijdNieuwAangeboden" => "VW_looptijdStart DESC", "TijdEerstAfgelopen" => "VW_looptijdEinde ASC", "PrijsLaagsteBovenaan" => "(SELECT TOP 1 BOD_Bodbedrag
-                                FROM Bod
-                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-    ORDER BY BOD_Bodbedrag DESC) ASC", "PrijsHoogsteBovenaan" => "(SELECT TOP 1 BOD_Bodbedrag
-                                FROM Bod
-                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-    ORDER BY BOD_Bodbedrag DESC) DESC");
+$waardes = array("Tijd: nieuw aangeboden" => "VW_looptijdStart DESC", "Tijd: eerst afgelopen" => "VW_looptijdEinde ASC", "Prijs: laagste bovenaan" => "prijs ASC", "Prijs: hoogste bovenaan" => "prijs DESC");
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 if (isset($_GET['zoekterm'])) {
     $zoekterm = ($_GET['zoekterm']);
@@ -19,7 +12,6 @@ if (isset($_GET['zoekterm'])) {
 if (isset($_GET['sorteerfilter'])) {
     $sorteerfilter = $waardes[($_GET['sorteerfilter'])];
 }
-echo $sorteerfilter;
 if (isset($_GET['betalingsmethode'])) {
     $betalingsmethode = $_GET['betalingsmethode'];
 }
@@ -37,25 +29,26 @@ if (isset($_GET['subcategorie'])) {
 if (isset($_GET['subsubcategorie'])) {
     $subsubcategorie = ($_GET['subsubcategorie']);
 }
-
-global $prijs;
 if (!isset($_GET['zoekterm'])) {
     $_GET['zoekterm'] = "NULL";
 }
 if (!isset($_GET['sorteerfilter'])) {
-    $_GET['sorteerfilter'] = 'Tijd: nieuw aangeboden';
+    $_GET['sorteerfilter'] = "Tijd: nieuw aangeboden";
 }
 if (!isset($_GET['betalingsmethode'])) {
     $_GET['betalingsmethode'] = "NULL";
 }
 if (!isset($_GET['categorie'])) {
     $_GET['categorie'] = "NULL";
+    $categorie = "NULL";
 }
 if (!isset($_GET['subcategorie'])) {
     $_GET['subcategorie'] = "NULL";
+    $subcategorie = "NULL";
 }
 if (!isset($_GET['subsubcategorie'])) {
     $_GET['subsubcategorie'] = "NULL";
+    $subsubcategorie = "NULL";
 }
 if (!isset($_GET['min'])) {
     $_GET['min'] = "NULL";
@@ -67,14 +60,12 @@ if (!isset($prijs['max'])) {
     $prijs['max'] = 5000;
 }
 
-
-$_GET['subsubcategory'] = "NULL";
 $_GET['maxremainingtime'] = "NULL";
 $_GET['minremainingtime'] = "NULL";
 
 $Dictionary = array(
     'SearchKeyword' => $_GET['zoekterm'],
-    'SearchFilter' => $_GET['sorteerfilter'],
+    'SearchFilter' => $waardes[($_GET['sorteerfilter'])],
     'SearchPaymentMethod' => $_GET['betalingsmethode'],
     'SearchCategory' => $_GET['categorie'],
     'SearchSubCategory' => $_GET['subcategorie'],
@@ -84,6 +75,7 @@ $Dictionary = array(
     'SearchMinPrice' => $prijs['min'],
     'SearchMaxPrice' => $prijs['max']
 );
+
 ?>
 
 <!doctype html>
@@ -141,7 +133,7 @@ $Dictionary = array(
     <!-- CSS voor price slider -->
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/css/bootstrap-slider.css">
-    <link rel="stylesheet" href="CSS/resultaten.css">-->
+    <link rel="stylesheet" href="CSS/resultaten.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.8.0/bootstrap-slider.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 </head>
@@ -213,19 +205,25 @@ $Dictionary = array(
 
                     <input type="hidden" name="zoekterm" value="<?php global $zoekterm;
                     echo($zoekterm); ?>">
+                    <input type="hidden" name="categorie" value="<?php global $categorie;
+                    echo($categorie); ?>">
+                    <input type="hidden" name="subcategorie" value="<?php global $subcategorie;
+                    echo($subcategorie); ?>">
+                    <input type="hidden" name="subsubcategorie" value="<?php global $subsubcategorie;
+                    echo($subsubcategorie); ?>">
 
                     <a href="#" class="list-group-item"> Filter:
                         <select class="form-control" name="sorteerfilter">
                             <?php
                             if (isset($sorteerfilter)) {
                                 global $sorteerfilter;
-                                echo('<option value="' . $sorteerfilter . '" selected> ' . $sorteerfilter . '</option>');
+                                echo('<option value="' . ($_GET['sorteerfilter']) . '" selected> ' . ($_GET['sorteerfilter']) . '</option>');
                             }
                             ?>
-                            <option value="TijdNieuwAangeboden">Tijd: nieuw aangeboden</option>
-                            <option value="TijdEerstAfgelopen">Tijd: eerst afgelopen</option>
-                            <option value="PrijsLaagsteBovenaan">Prijs: laagste bovenaan</option>
-                            <option value="PrijsHoogsteBovenaan">Prijs: hoogste bovenaan</option>
+                            <option value="Tijd: nieuw aangeboden">Tijd: nieuw aangeboden</option>
+                            <option value="Tijd: eerst afgelopen">Tijd: eerst afgelopen</option>
+                            <option value="Prijs: laagste bovenaan">Prijs: laagste bovenaan</option>
+                            <option value="Prijs: hoogste bovenaan">Prijs: hoogste bovenaan</option>
                         </select>
                     </a>
 
@@ -248,18 +246,18 @@ $Dictionary = array(
 
 
                     <a href="#" class="list-group-item">Betalingsmethode:
-                        <select class="form-control" id="betalingsmethode" name="betalingsmethode">
-                            <?php
-                            if (isset($betalingsmethode)) {
+                        <!--<select class="form-control" id="betalingsmethode" name="betalingsmethode">
+                            <?/*php
+                            if (!isset($betalingsmethode)) {
                                 global $betalingsmethode;
                                 echo('<option value="' . urldecode($betalingsmethode) . '" selected>' . urldecode($betalingsmethode) . '</option>');
                             }
                             global $betalingswijzenresult;
                             foreach ($betalingswijzenresult as $betalingswijze) {
                                 echo('<option> ' . $betalingswijze[Betalingswijze] . '</option>');
-                            }
+                            }*/
                             ?>
-                        </select>
+                        </select>-->
                     </a>
 
                     <a href="#" class="list-group-item">
@@ -277,86 +275,7 @@ $Dictionary = array(
             </a>
             <div class="list-group-item">
                 <ul class="nav nav-list">
-                    <?php
-                    $categorieQuery = "select
-                            distinct r2.RB_Naam as Hoofdcategorie,
-                            count(r2.RB_Naam) as aantal,
-                            r2.RB_Nummer as CategorieNummer
-                            from Voorwerp
-                            Inner join Voorwerp_Rubriek
-                            on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                            Inner join Rubriek
-                            on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                            Inner join Rubriek r1
-                            on r1.RB_Nummer = Rubriek.RB_Parent
-                            Inner join Rubriek r2
-                            on r2.RB_Nummer = r1.RB_Parent
-                            Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%test%'
-                            GROUP BY r2.RB_Naam,r2.RB_Nummer
-                            ORDER BY COUNT(r2.RB_Naam) desc";
-                    $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($categorieResult as $categorie) {
-                        $url = urlencode($categorie['CategorieNummer']);
-                        echo '
-                    <li><label class="tree-toggle nav-header">' . $categorie["Hoofdcategorie"] . '</label>
-                        <ul class="nav nav-list tree" style="display: none;">
-                        ';
-                        $subCategorieQuery = "select
-                                        distinct r1.RB_Naam as Subcategorie,
-                                        r2.RB_Nummer as Hoofdcategorie,
-                                        count(r1.RB_Naam) as aantal,
-                                        r1.RB_Nummer as CategorieNummer
-                                        from Voorwerp
-                                        Inner join Voorwerp_Rubriek
-                                        on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                                        Inner join Rubriek
-                                        on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                                        Inner join Rubriek r1
-                                        on r1.RB_Nummer = Rubriek.RB_Parent
-                                        Inner join Rubriek r2
-                                        on r2.RB_Nummer = r1.RB_Parent
-                                        Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%test%' and r1.RB_Parent = " . $categorie["CategorieNummer"] . "
-                                        GROUP BY r1.RB_Naam,r1.RB_Nummer, r2.RB_Naam, r2.RB_Nummer
-                                        ORDER BY COUNT(r1.RB_Naam) desc";
-                        $subCategorieResult = $connection->query($subCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($subCategorieResult as $subCategorie) {
-                            $url = urlencode($subCategorie['CategorieNummer']);
-                            echo '<li><label class="tree-toggle nav-header">' . $subCategorie["Subcategorie"] . '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
-                                <ul class="nav nav-list tree" style="display: none;">';
-                            $subSubCategorieQuery = "select
-                distinct Rubriek.RB_Naam as Subsubcategorie,
-                count(Rubriek.RB_Naam) as aantal,
-                Rubriek.RB_Nummer as CategorieNummer
-                from Voorwerp
-                Inner join Voorwerp_Rubriek
-                on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                Inner join Rubriek
-                on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                Inner join Rubriek r1
-                on r1.RB_Nummer = Rubriek.RB_Parent
-                Inner join Rubriek r2
-                on r2.RB_Nummer = r1.RB_Parent
-                Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%test%' and Rubriek.RB_Parent = " . $subCategorie["CategorieNummer"] . "
-                GROUP BY Rubriek.RB_Naam, Rubriek.RB_Nummer
-                ORDER BY COUNT(Rubriek.RB_Naam) desc";
-                            $subSubCategorieResult = $connection->query($subSubCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($subSubCategorieResult as $subSubCategorie) {
-                                $url1 = urlencode($categorie["CategorieNummer"]);
-                                $url2 = urlencode($subCategorie["CategorieNummer"]);
-                                $url3 = urlencode($subSubCategorie['CategorieNummer']);
-                                echo ' <li><a href=" ' . '?zoekterm=' . $zoekterm . '&categorie=' . $url1 . '.&subcategorie=' . $url2 . '.&subsubcategorie=' . $url3 . '">' . $subSubCategorie["Subsubcategorie"] . '<span class="badge pull-right label-info">' . $subSubCategorie["aantal"] . '</span>' . '</a></li>';
-                            }
-                            echo '</ul>
-                        </li>';
-                        }
-                        echo '
-                        </ul>
-                        </li>
-                                            <hr size="1">
-';
-
-                    }
-
+                    <?php printCategoriën($zoekterm);
                     ?>
                 </ul>
             </div>
