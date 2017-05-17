@@ -2,13 +2,6 @@
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
-
-$query = "SELECT *, dbo.All Animal.Group as allAnimal_Group
-            LEFT JOIN dbo.All Animal on dbo.Response.animalGroup = dbo.All Animal.Group
-            WHERE dbo.Response.animalGroup = %s";
-$db->query($query, $Group);
-$r = $db->fetch();
-
 ?>
 
 
@@ -135,21 +128,23 @@ require('navbar.html');
                 <!-- PHP en DB link fixen -->
                 <div class="form-group">
                     <label for="land">Land*</label>
-                    <select id="land" type="text" placeholder="Land"
+                    <select id="land" type="text" selected=Nederland"
                             class="form-control" required="true">
-                        <option value="1">Optie 1</option>
-                        <option>Select a type:</option>
-
-
                         <?php
 
                         $Landen = SendToDatabase($GetLandenQuerie);
 
 
+
                         foreach ($Landen as $Land) {
-                            ?>
-                            <option value="<?php echo $m['Group']; ?>"><?php echo $m['animalGroup']; ?></option>
-                            <?php
+                            if ($Land['LAN_landcode']=="NLD") {
+                                $selected = 'selected="Nederland"';
+                            }
+                            else {
+                                $selected = '';
+                            }
+                            echo '<option value="'.$Land['LAN_landcode'].'" '. $selected . '>'
+                                . $Land['LAN_landnaam'] .'</option>';
                         }
 
                         ?>
