@@ -23,7 +23,7 @@ CREATE TABLE Betalingswijzen (
 );
 
 CREATE TABLE Landen (
-  LAN_landcode CHAR(3)     NOT NULL, --Zie ISO 3166/1
+  LAN_landcode CHAR(2)     NOT NULL, --Zie ISO 3166/1
   LAN_landnaam VARCHAR(50) NOT NULL, --De langste naam is 50 karakters
   CONSTRAINT PK_landen PRIMARY KEY (LAN_landcode),
   CONSTRAINT UQ_landnaam UNIQUE (LAN_landnaam), --In het nederlands
@@ -120,26 +120,33 @@ CREATE TABLE Vraag (
   VR_tekstvraag  VARCHAR(255), --Goede lengte voor de vragen
 )
 
+CREATE TABLE Gebruikerstelefoon (
+  TEL_volgnr int NOT NULL, --
+  TEL_gebruiker VARCHAR(64) NOT NULL, --gebruiker uit de gebruiker tabel
+  TEL_telefoon char(15) NOT NULL, --Zie ITU-T recommendation E.164
+  CONSTRAINT PK_GebruikerstelefoonVolgnr PRIMARY KEY (TEL_volgnr),
+  CONSTRAINT FK_GebruikerGeberuikersnaam FOREIGN KEY (TEL_gebruiker) REFERENCES Gebruiker(GEB_gebruikersnaam)
+)
 
 CREATE TABLE Gebruiker (
-  GEB_gebruikersnaam VARCHAR(64) NOT NULL, --Zie RFC 5321.
+  GEB_gebruikersnaam VARCHAR(64)  NOT NULL, --Zie RFC 5321.
   GEB_voornaam       VARCHAR(16)  NOT NULL, --Normale lengte van nederlandse voornaam
-  GEB_achternaam     CHAR(16)     NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
-  GEB_adresregel_1   CHAR(15)    NOT NULL, --Normale lengte van een adresregel
-  GEB_adresregel_2   CHAR(15)    NULL,    --Normale lengte van een adresregel
-  GEB_postcode       CHAR(12)     NOT NULL, --Maximale Lengte van een postcode: ISO_3166
-  GEB_plaatsnaam     CHAR(12)    NOT NULL, --Langste plaatsnaam in nederland
-  GEB_Land           CHAR(9)     NOT NULL, --Landcode uit de landen tabel
-  GEB_geboortedag    DATE        NOT NULL,
-  GEB_mailbox        CHAR(256)    NOT NULL, --Mailadres lengte volgens RFC 5321
-  GEB_wachtwoord     CHAR(24)     NOT NULL, --TODO: Hangt af van welke hashing we gebruiken
-  GEB_vraag          INT         NOT NULL, --Nummer uit de Vraag tabel
-  GEB_antwoordtekst  CHAR(16)     NOT NULL, --Antwoord op de vraag,  (case sensitive?)
-  GEB_verkoper       BIT         NOT NULL, --Of de gebruiker een verkoper is of niet
+  GEB_achternaam     VARCHAR(16)  NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
+  GEB_adresregel_1   VARCHAR(15)  NOT NULL, --Normale lengte van een adresregel
+  GEB_adresregel_2   VARCHAR(15)  NULL, --Normale lengte van een adresregel
+  GEB_postcode       VARCHAR(12)  NOT NULL, --Maximale Lengte van een postcode: ISO_3166
+  GEB_plaatsnaam     VARCHAR(12)  NOT NULL, --Langste plaatsnaam in nederland
+  GEB_Land           VARCHAR(9)   NOT NULL, --Landcode uit de landen tabel TODO:Koppelen aan landen tabel
+  GEB_geboortedag    DATE         NOT NULL,
+  GEB_mailbox        VARCHAR(256) NOT NULL, --Mailadres lengte volgens RFC 5321
+  GEB_wachtwoord     CHAR(60)     NOT NULL, --BCRYPT dmv password_hash()
+  GEB_vraag          INT          NOT NULL, --Nummer uit de Vraag tabel
+  GEB_antwoordtekst  VARCHAR(16)  NOT NULL, --Antwoord op de vraag,  (case sensitive?)
+  GEB_verkoper       BIT          NOT NULL, --Of de gebruiker een verkoper is of niet
   CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
   CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
-  --CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon(TEL_gebruikersnaam),
-  --TODO: foreign key voor land maken
+  CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon(TEL_gebruiker),
+  CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen(LAN_landcode),
   --TODO: check constraint voor postcode maken
   --TODO: check constraint voor mailbox maken
 )
