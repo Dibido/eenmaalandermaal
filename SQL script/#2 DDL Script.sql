@@ -29,6 +29,19 @@ CREATE TABLE Landen (
   CONSTRAINT UQ_landnaam UNIQUE (LAN_landnaam), --In het nederlands
 );
 
+CREATE TABLE Vraag (
+  VR_vraagnummer TINYINT NOT NULL, --Niet meer dan 255 vragen
+  VR_tekstvraag  VARCHAR(255), --Goede lengte voor de vragen
+);
+
+CREATE TABLE Gebruikerstelefoon (
+  TEL_volgnr    INT         NOT NULL, --
+  TEL_gebruiker VARCHAR(64) NOT NULL, --gebruiker uit de gebruiker tabel
+  TEL_telefoon  CHAR(15)    NOT NULL, --Zie ITU-T recommendation E.164
+  CONSTRAINT PK_GebruikerstelefoonVolgnr PRIMARY KEY (TEL_volgnr),
+  CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (TEL_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
+);
+
 CREATE TABLE Gebruiker (
   GEB_gebruikersnaam VARCHAR(64)              NOT NULL, --Zie RFC 5321.
   GEB_voornaam       VARCHAR(16)              NOT NULL, --Normale lengte van nederlandse voornaam
@@ -140,19 +153,6 @@ CREATE TABLE Bod (
   --TODO: Hoeft nog niet voor deze sprint
   --CONSTRAINT CHK_BodBedrag CHECK (dbo.bodHoogGenoeg(voorwerpnummer, bodbedrag) = 1),
   CONSTRAINT CHK_NietEigenVoorwerp CHECK (dbo.nietEigenVoorwerp(BOD_voorwerpnummer, BOD_gebruiker) = 1)
-);
-
-CREATE TABLE Vraag (
-  VR_vraagnummer TINYINT NOT NULL, --Niet meer dan 255 vragen
-  VR_tekstvraag  VARCHAR(255), --Goede lengte voor de vragen
-);
-
-CREATE TABLE Gebruikerstelefoon (
-  TEL_volgnr    INT         NOT NULL, --
-  TEL_gebruiker VARCHAR(64) NOT NULL, --gebruiker uit de gebruiker tabel
-  TEL_telefoon  CHAR(15)    NOT NULL, --Zie ITU-T recommendation E.164
-  CONSTRAINT PK_GebruikerstelefoonVolgnr PRIMARY KEY (TEL_volgnr),
-  CONSTRAINT FK_GebruikerGeberuikersnaam FOREIGN KEY (TEL_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
 );
 
 --TODO: Valt buiten de eerste sprint en wordt verder aan gewerkt in een latere sprint
