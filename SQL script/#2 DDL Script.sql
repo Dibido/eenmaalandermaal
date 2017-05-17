@@ -1,5 +1,6 @@
 USE eenmaalandermaal
 
+--dramah
 
 IF OBJECT_ID('dbo.Voorwerp_Rubriek') IS NOT NULL
   DROP TABLE dbo.Voorwerp_Rubriek
@@ -156,7 +157,7 @@ CREATE TABLE Bod (
     ON UPDATE CASCADE
     ON DELETE CASCADE,
   CONSTRAINT FK_BodGebruikerGebruikersnaam FOREIGN KEY (BOD_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
-    ON UPDATE NO ACTION 
+    ON UPDATE NO ACTION
     ON DELETE NO ACTION,
   CONSTRAINT CHK_HogerDanStartprijs CHECK (dbo.bodHogerDanStartprijs(BOD_voorwerpnummer, BOD_bodbedrag) = 1),
   --TODO: Hoeft nog niet voor deze sprint
