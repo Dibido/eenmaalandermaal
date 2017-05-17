@@ -113,7 +113,7 @@ function DrawSearchResults($auction)
     }
     echo "
     <!-- Veiling template -->
-            <div class=\"veiling-rand col-md-4 col-sm-6\">
+            <div class=\"veiling-rand col-md-3 col-sm-6\">
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
