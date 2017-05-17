@@ -46,7 +46,7 @@ CREATE TABLE Voorwerp (
   VW_koper               VARCHAR(40)   NULL, --Marktplaats heeft 36 wij 4 meer dus 40
   VW_looptijdEinde                              AS DATEADD(DAY, VW_looptijd, VW_looptijdStart), --Bereken de einddatum
   VW_veilinggesloten     BIT           NOT NULL DEFAULT 0, --Veiling gesloten of open
-  VW_verkoopprijs        NUMERIC(9, 2) NULL, --huidige bod
+  VW_verkoopprijs        NUMERIC(9, 2) NULL, --Prijs waarvoor het voorwerp verkocht is
 
   CONSTRAINT PK_Voorwerp PRIMARY KEY (VW_voorwerpnummer),
   CONSTRAINT FK_Betaalwijze FOREIGN KEY (VW_betalingsWijze) REFERENCES Betalingswijzen (BW_betalingswijze),
