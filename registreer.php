@@ -83,7 +83,7 @@ require('navbar.html');
             <div class="row">
                 <div class="col-md-6 col-md-push-3">
 
-                    <form method="POST" id="registratieformulier">
+                    <form method="POST" id="registratieformulier"action="voltooi-registratie.php">
 
                         <div class="form-group">
                             <label for="voornaam">Voornaam*</label>
@@ -163,20 +163,14 @@ require('navbar.html');
 
                         <hr>
 
-                        <!-- Vragen ophalen DB-->
-
-                        <?php
-                        $Vragen = SendToDatabase($GetLandenQuerie);
-                        printVragen($Vragen);
-                        ?>
-
                         <div class="form-group">
                             <label for="geheimevraag">Geheime vraag*</label>
                             <select id="geheimevraag" type="text" placeholder="Herhaal wachtwoord"
                                     class="form-control" required="true">
-                                <option value="1">Optie 1</option>
-                                <option value="2">Optie 2</option>
-                                <option value="3">Optie 3</option>
+                                <?php
+                                $Vragen = SendToDatabase($GetVragenQuerie);
+                                printVragen($Vragen);
+                                ?>
                             </select>
                         </div>
 
@@ -191,6 +185,8 @@ require('navbar.html');
                                 <button type="submit" class="btn btn-primary">Registreer!</button>
                             </div>
                         </div>
+
+
 
                     </form>
                 </div>
