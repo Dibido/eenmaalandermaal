@@ -287,7 +287,7 @@ $Dictionary = array(
                     foreach ($categorieResult as $categorie) {
                         $url = urlencode($categorie['CategorieNummer']);
                         echo '
-                    <li><label class="tree-toggle nav-header">'. '<a href=" ' . $_SERVER['REQUEST_URI'] . '&subcategorie=' . $url . '">'. $categorie["Hoofdcategorie"] . '</a>'. '</label>
+                    <li><label class="tree-toggle nav-header">'.  $categorie["Hoofdcategorie"] . '</label>
                         <ul class="nav nav-list tree" style="display: none;">
                         ';
                         $subCategorieQuery = "select
@@ -310,7 +310,7 @@ $Dictionary = array(
                         $subCategorieResult = $connection->query($subCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($subCategorieResult as $subCategorie) {
                             $url = urlencode($subCategorie['CategorieNummer']);
-                            echo '<li><label class="tree-toggle nav-header">'. '<a href=" ' . $_SERVER['REQUEST_URI'] . '&subcategorie=' . $url . '">'. $subCategorie["Subcategorie"] . '</a>'. '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
+                            echo '<li><label class="tree-toggle nav-header">'. $subCategorie["Subcategorie"] . '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
                                 <ul class="nav nav-list tree" style="display: none;">';
                             $subSubCategorieQuery = "select
                 distinct Rubriek.RB_Naam as Subsubcategorie,
