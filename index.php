@@ -60,15 +60,6 @@ $response = NULL;
 require('navbar.html');
 ?>
 
-<!-- Advanced Search -->
-
-<div class="container-fluid collapse" id="AdvancedSearch">
-    <div class="col-xs-12">
-        <h1>Zoek hier!</h1>
-
-    </div>
-</div>
-
 
 <!-- Mobile Buttons -->
 
