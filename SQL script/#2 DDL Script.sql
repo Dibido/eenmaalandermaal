@@ -37,7 +37,7 @@ CREATE TABLE Voorwerp (
   VW_betalingswijze      VARCHAR(25)   NOT NULL DEFAULT 'Bank / Giro', --Korte keuzes (d.m.v. dropdown)
   VW_betalingsinstructie VARCHAR(255)  NULL, --Korte instructie
   VW_plaatsnaam          VARCHAR(85)   NOT NULL, --Langste plaatsnaam is 85 tekens
-  VW_land                CHAR(3)       NOT NULL DEFAULT 'NLD', --Zie ISO 3166/1
+  VW_land                CHAR(3)       NOT NULL DEFAULT 'NL', --Zie ISO 3166/1 alpha-2
   VW_looptijd            TINYINT       NOT NULL DEFAULT 7, --Aantal dagen
   VW_looptijdStart       DATETIME      NOT NULL DEFAULT GETDATE(), --Normaal de huidige datum met daarbij de tijd
   VW_verzendkosten       NUMERIC(5, 2) NULL, --Bedrag mag 2 getallen achter de komma hebben en mag er maximaal 3 voor de komma hebben
@@ -53,7 +53,7 @@ CREATE TABLE Voorwerp (
   CONSTRAINT FK_Land FOREIGN KEY (VW_land) REFERENCES Landen (LAN_landcode)
     ON UPDATE CASCADE --Voor als de landnamen worden aangepast
     ON DELETE NO ACTION,
-  CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (VW_koper) REFERENCES Gebruiker(GEB_gebruikersnaam)
+  CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (VW_koper) REFERENCES Gebruiker (GEB_gebruikersnaam)
     ON UPDATE CASCADE --Voor als de gebruikersnaam wordt aangepast
     ON DELETE NO ACTION,
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
@@ -111,7 +111,7 @@ CREATE TABLE Bod (
   CONSTRAINT FK_BodVoorwerpnummer FOREIGN KEY (BOD_voorwerpnummer) REFERENCES Voorwerp (VW_voorwerpnummer)
     ON UPDATE CASCADE
     ON DELETE CASCADE,
-  CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (BOD_gebruiker) REFERENCES Gebruiker(GEB_gebruikersnaam)
+  CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (BOD_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
     ON UPDATE CASCADE
     ON DELETE NO ACTION,
   CONSTRAINT CHK_HogerDanStartprijs CHECK (dbo.bodHogerDanStartprijs(BOD_voorwerpnummer, BOD_bodbedrag) = 1),
@@ -134,20 +134,20 @@ CREATE TABLE Gebruikerstelefoon (
 )
 
 CREATE TABLE Gebruiker (
-  GEB_gebruikersnaam VARCHAR(64)  NOT NULL, --Zie RFC 5321.
-  GEB_voornaam       VARCHAR(16)  NOT NULL, --Normale lengte van nederlandse voornaam
-  GEB_achternaam     VARCHAR(16)  NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
-  GEB_adresregel_1   VARCHAR(15)  NOT NULL, --Normale lengte van een adresregel
-  GEB_adresregel_2   VARCHAR(15)  NULL, --Normale lengte van een adresregel
-  GEB_postcode       VARCHAR(12)  NOT NULL, --Maximale Lengte van een postcode: ISO_3166
-  GEB_plaatsnaam     VARCHAR(85)  NOT NULL, --Langste plaatsnaam zie: "https://en.wikipedia.org/wiki/List_of_long_place_names"
-  GEB_Land           VARCHAR(9)   NOT NULL, --Landcode uit de landen tabel
-  GEB_geboortedag    DATE         NOT NULL,
-  GEB_mailbox        VARCHAR(256) NOT NULL, --Mailadres lengte volgens RFC 5321
-  GEB_wachtwoord     CHAR(60)     NOT NULL, --BCRYPT dmv password_hash()
-  GEB_vraag          INT          NOT NULL, --Nummer uit de Vraag tabel
-  GEB_antwoordtekst  VARCHAR(16)  NOT NULL, --Antwoord op de vraag,  (case sensitive?)
-  GEB_verkoper       BIT          NOT NULL, --Of de gebruiker een verkoper is of niet
+  GEB_gebruikersnaam VARCHAR(64)              NOT NULL, --Zie RFC 5321.
+  GEB_voornaam       VARCHAR(16)              NOT NULL, --Normale lengte van nederlandse voornaam
+  GEB_achternaam     VARCHAR(16)              NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
+  GEB_adresregel_1   VARCHAR(15)              NOT NULL, --Normale lengte van een adresregel
+  GEB_adresregel_2   VARCHAR(15)              NULL, --Normale lengte van een adresregel
+  GEB_postcode       VARCHAR(12)              NOT NULL, --Maximale Lengte van een postcode: ISO_3166
+  GEB_plaatsnaam     VARCHAR(85)              NOT NULL, --Langste plaatsnaam zie: "https://en.wikipedia.org/wiki/List_of_long_place_names"
+  GEB_Land           VARCHAR(9) DEFAULT 'NL'  NOT NULL, --Landcode uit de landen tabel
+  GEB_geboortedag    DATE                     NOT NULL,
+  GEB_mailbox        VARCHAR(256)             NOT NULL, --Mailadres lengte volgens RFC 5321
+  GEB_wachtwoord     CHAR(60)                 NOT NULL, --BCRYPT dmv password_hash()
+  GEB_vraag          INT                      NOT NULL, --Nummer uit de Vraag tabel
+  GEB_antwoordtekst  VARCHAR(16)              NOT NULL, --Antwoord op de vraag,  (case sensitive?)
+  GEB_verkoper       BIT                      NOT NULL, --Of de gebruiker een verkoper is of niet
   CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
   CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
   CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon (TEL_gebruiker),
