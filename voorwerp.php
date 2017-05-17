@@ -70,33 +70,35 @@ require('navbar.html');
     <div class="col-md-8 col-sm-12">
 
 
-
     </div>
 
     <div class="col-md-4 col-xs-12">
 
         <div class="panel panel-default">
-            <div class="panel-heading text-center">
-                Overgebleven tijd
-
-            </div>
+            <div class="panel-heading text-center">Overgebleven Tijd</div>
             <div class="panel-body">
                 <div class="TimeLeft">
-                    <div class="text-center" id="Clock" style="background-image:url(images/Clock.png)"></div>
                     <span class="Time">7D 23:59:59</span>
+                    <div id="Clock" style="background-image:url(images/Clock.png)"></div>
                 </div>
             </div>
+            <div class="panel-heading text-center">Prijs</div>
+            <div class="panel-body">
+                <div class="Price">
 
+                </div>
+            </div>
         </div>
 
     </div>
 
+</div>
 
-    <script>
-        $(".Categoriën").css({'height': ($(".BijnaGesloten").height() + 'px')});
-        $(".VeilingShowcase").css({'height': ($(".BijnaGesloten").height() + 'px')});
-    </script>
 
+<script>
+    $(".Categoriën").css({'height': ($(".BijnaGesloten").height() + 'px')});
+    $(".VeilingShowcase").css({'height': ($(".BijnaGesloten").height() + 'px')});
+</script>
 
 
 </div>
