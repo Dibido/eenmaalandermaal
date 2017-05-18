@@ -86,7 +86,7 @@ require('navbar.html');
 
 
                 ?>
-                <a href="categorie.php" class="list-group-item active text-center">Meer catogorieën <i
+                <a href="categorie.php" class="list-group-item active text-center">Meer categorieën <i
                             class="text-right glyphicon glyphicon-plus-sign"></i></a>
             </div>
         </div>
