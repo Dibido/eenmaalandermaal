@@ -196,7 +196,7 @@ $Dictionary = array(
 <!-- Filter bar -->
 
 <div class="container-fluid">
-    <div class="col-md-3 col-sm-12 col-xs-12">
+    <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="visible-lg visible-md visible-sm visible-xs">
             <div class="list-group">
                 <a href="#" class="list-group-item active">Opties</a>

@@ -92,7 +92,7 @@ function DrawAuction($auction)
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . $auction["tijd"] . " <i class=\"glyphicon glyphicon-time\"></i></div>
+                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . '"></p>'. "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -101,7 +101,10 @@ function DrawAuction($auction)
                 </div>
             </div>
             <!-- End template -->
+            
     ";
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"]);
+
 }
 
 function DrawSearchResults($auction)
@@ -113,7 +116,7 @@ function DrawSearchResults($auction)
     }
     echo "
     <!-- Veiling template -->
-            <div class=\"veiling-rand col-md-4 col-sm-6\">
+            <div class=\"veiling-rand col-md-4 col-sm-6 col-xs-6\">
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
@@ -121,7 +124,7 @@ function DrawSearchResults($auction)
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . $auction["tijd"] . " <i class=\"glyphicon glyphicon-time\"></i></div>
+                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . '"></p>'. " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -131,7 +134,10 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"]);
+
 }
+
 
 function outputRows($result, $zoekterm)
 {
@@ -220,7 +226,7 @@ function SearchFunction($SearchOptions)
     */
 
     $SearchKeyword = $SearchOptions['SearchKeyword'];
-    $QuerySearchKeyword =  "'%" . $SearchKeyword . "%'";
+    $QuerySearchKeyword = "'%" . $SearchKeyword . "%'";
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchFilter = $SearchOptions['SearchFilter'];
     $SearchCategory = $SearchOptions['SearchCategory'];
@@ -298,7 +304,6 @@ EOT;
     return SendToDatabase($QuerySearchProducts);
 
 
-
 }
 
 
@@ -327,10 +332,11 @@ function printVragen($Vragen)
 }
 
 
-function printCategoriën($zoekterm){
+function printCategoriën($zoekterm)
+{
     global $connection;
     global $prijs;
-                    $categorieQuery = "select
+    $categorieQuery = "select
                             distinct r2.RB_Naam as Hoofdcategorie,
                             count(r2.RB_Naam) as aantal,
                             r2.RB_Nummer as CategorieNummer
@@ -346,14 +352,14 @@ function printCategoriën($zoekterm){
                             Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%$zoekterm%'
                             GROUP BY r2.RB_Naam,r2.RB_Nummer
                             ORDER BY COUNT(r2.RB_Naam) desc";
-                    $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($categorieResult as $categorie) {
-                        $url = urlencode($categorie['CategorieNummer']);
-                        echo '
-                    <li><label class="tree-toggle nav-header">' . $categorie["Hoofdcategorie"] . '   '. '<span class="badge label-primary">' . $categorie["aantal"] . '</span>' .'</label>
+    $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($categorieResult as $categorie) {
+        $url = urlencode($categorie['CategorieNummer']);
+        echo '
+                    <li><label class="tree-toggle nav-header">' . $categorie["Hoofdcategorie"] . '   ' . '<span class="badge label-primary">' . $categorie["aantal"] . '</span>' . '</label>
                         <ul class="nav nav-list tree" style="display: none;">
                         ';
-                        $subCategorieQuery = "select
+        $subCategorieQuery = "select
                                         distinct r1.RB_Naam as Subcategorie,
                                         r2.RB_Nummer as Hoofdcategorie,
                                         count(r1.RB_Naam) as aantal,
@@ -370,11 +376,11 @@ function printCategoriën($zoekterm){
                                         Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%$zoekterm%' and r1.RB_Parent = " . $categorie["CategorieNummer"] . "
                                         GROUP BY r1.RB_Naam,r1.RB_Nummer, r2.RB_Naam, r2.RB_Nummer
                                         ORDER BY COUNT(r1.RB_Naam) desc";
-                        $subCategorieResult = $connection->query($subCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-                        foreach ($subCategorieResult as $subCategorie) {
-                            echo '<li><label class="tree-toggle nav-header">' . $subCategorie["Subcategorie"] . '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
+        $subCategorieResult = $connection->query($subCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($subCategorieResult as $subCategorie) {
+            echo '<li><label class="tree-toggle nav-header">' . $subCategorie["Subcategorie"] . '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
                                 <ul class="nav nav-list tree" style="display: none;">';
-                            $subSubCategorieQuery = "select
+            $subSubCategorieQuery = "select
                 distinct Rubriek.RB_Naam as Subsubcategorie,
                 count(Rubriek.RB_Naam) as aantal,
                 Rubriek.RB_Nummer as CategorieNummer
@@ -390,26 +396,66 @@ function printCategoriën($zoekterm){
                 Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%$zoekterm%' and Rubriek.RB_Parent = " . $subCategorie["CategorieNummer"] . "
                 GROUP BY Rubriek.RB_Naam, Rubriek.RB_Nummer
                 ORDER BY COUNT(Rubriek.RB_Naam) desc";
-                            $subSubCategorieResult = $connection->query($subSubCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-                            foreach ($subSubCategorieResult as $subSubCategorie) {
-                                $cat1 = urlencode($categorie["CategorieNummer"]);
-                                $cat2 = urlencode($subCategorie["CategorieNummer"]);
-                                $cat3 = urlencode($subSubCategorie['CategorieNummer']);
-                                $zoek = urlencode($zoekterm);
-                                $sort = urlencode($_GET['sorteerfilter']);
-                                echo ' <li><a href=" ' . '?zoekterm=' . $zoek . '&categorie=' . $cat1 . '&subcategorie=' . $cat2 . '&subsubcategorie=' . $cat3 . '&sorteerfilter=' . $sort . '&prijs=' . $prijs['min'] . ',' . $prijs['max'] . '">' . $subSubCategorie["Subsubcategorie"] . '<span class="badge pull-right label-info">' . $subSubCategorie["aantal"] . '</span>' . '</a></li>';
-                            }
-                            echo '</ul>
+            $subSubCategorieResult = $connection->query($subSubCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($subSubCategorieResult as $subSubCategorie) {
+                $cat1 = urlencode($categorie["CategorieNummer"]);
+                $cat2 = urlencode($subCategorie["CategorieNummer"]);
+                $cat3 = urlencode($subSubCategorie['CategorieNummer']);
+                $zoek = urlencode($zoekterm);
+                $sort = urlencode($_GET['sorteerfilter']);
+                echo ' <li><a href=" ' . '?zoekterm=' . $zoek . '&categorie=' . $cat1 . '&subcategorie=' . $cat2 . '&subsubcategorie=' . $cat3 . '&sorteerfilter=' . $sort . '&prijs=' . $prijs['min'] . ',' . $prijs['max'] . '">' . $subSubCategorie["Subsubcategorie"] . '<span class="badge pull-right label-info">' . $subSubCategorie["aantal"] . '</span>' . '</a></li>';
+            }
+            echo '</ul>
                         </li>';
-                        }
-                        echo '
+        }
+        echo '
                         </ul>
                         </li>
                       <hr size="1">';
-                    }
+    }
 
 }
 
+
+function createTimer($tijd, $VW_Titel)
+{
+
+
+    echo '<script>
+    // Set the date we\'re counting down to
+    var ' . $VW_Titel . ' = new Date("' . $tijd . '").getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+        // Get todays date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now an the count down date
+        var distance = ' . $VW_Titel . ' - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result in the element with id="demo"
+        
+        document.getElementById("timer' . $VW_Titel . '").innerHTML = days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s" ;
+        
+        
+
+        // If the count down is finished, write some text
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("timer' . $VW_Titel . '").innerHTML = "Veiling gesloten";
+        }
+    }, 1000)
+</script>
+';
+}
 
 ?>
 

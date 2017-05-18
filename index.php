@@ -236,20 +236,22 @@ require('navbar.html');
                         echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div>
                             <div class=\"veiling-prijs-tijd\">
                                 <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                <div class=\"tijd label label-default\">" . $veiling["tijd"] . "<i class=\"glyphicon glyphicon-time\"></i></div>
+                                <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] . '"></p>' . "</div>
                             </div>
                          </div>
                      </div>";
+                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"]);
 
                     } else {
                         echo ">
                             </div>
                                 <div class=\"veiling-prijs-tijd\">
                                     <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                    <div class=\"tijd label label-default\">" . $veiling["tijd"] . " <i class=\"glyphicon glyphicon-time\"></i></div>
+                                    <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] . '"></p>' . " </div>
                                 </div>
                             </div>
                         </div>";
+                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"]);
                     }
                 }
 
@@ -268,8 +270,7 @@ require('navbar.html');
 
 <!-- Extra advertenties -->
 
-        <div class="col-sm-12 HeaderTitle text-center">Populaire nieuwe veilingen</div>
-
+<div class="col-sm-12 HeaderTitle text-center">Populaire nieuwe veilingen</div>
         <?php
 
 
