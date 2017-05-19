@@ -86,6 +86,8 @@ CREATE TABLE Voorwerp (
   VW_verzendkosten       NUMERIC(5, 2) NULL, --Bedrag mag 2 getallen achter de komma hebben en mag er maximaal 3 voor de komma hebben
   VW_verzendinstructies  VARCHAR(255)  NULL, --Korte instructie
   VW_verkoper            VARCHAR(64)   NOT NULL, --Zie RFC 5321.
+  VW_conditie            VARCHAR(255)  NULL, --Korte beschrijving.
+  VW_thumbnail  VARCHAR(260) NOT NULL, --Bestandpadlengte hetzelfde als in Bestand
   VW_koper               VARCHAR(64)   NULL, --Zie RFC 5321.
   VW_looptijdEinde                              AS DATEADD(DAY, VW_looptijd, VW_looptijdStart), --Bereken de einddatum
   VW_veilinggesloten     BIT           NOT NULL DEFAULT 0, --Veiling gesloten of open
