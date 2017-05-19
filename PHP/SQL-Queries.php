@@ -265,4 +265,15 @@ $GetVragenQuerie = <<<EOT
 SELECT * FROM Vraag
 EOT;
 
+/* Query landen ophalen registratie form */
+function SetRegistratie($email, $code){
+$return = <<<EOT
+
+INSERT INTO Registreer(REG_email, REG_code)
+ VALUES ($email, $code);
+
+EOT;
+
+}
+
 ?>

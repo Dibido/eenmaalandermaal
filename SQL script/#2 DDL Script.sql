@@ -167,9 +167,9 @@ CREATE TABLE Bod (
 
 
 CREATE TABLE Registreer (
-REG_email	VarChar(255)	NOT NULL,
-REG_code	VarChar(255)	NOT NULL,
-RED_tijd	DATETIME		NOT NULL DEFAULT GETDATE()
+	REG_email	VarChar(255)	NOT NULL,
+	REG_code	VarChar(255)	NOT NULL,
+	RED_tijd	DATETIME		NOT NULL DEFAULT GETDATE()
 )
 
 --TODO: Valt buiten de eerste sprint en wordt verder aan gewerkt in een latere sprint
