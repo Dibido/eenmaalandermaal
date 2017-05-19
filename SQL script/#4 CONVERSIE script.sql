@@ -75,7 +75,7 @@ COMMIT
 
 /*
 Conversie script voor de illustraties naar de bestand tabel.
-Run dit op veilingsite database
+Run dit op veilingssite database
 Voor dat dit runbaar is moeten er eerst voorwerpen zijn met hetzelfde VW_voorwerpnummer als het BES_voorwerpnummer.
 Deze query zorgt ervoor dat van ieder voorwerp uit de verkregen database 3 afbeeldingen krijgt wanneer er 3 afbeeldingen beschikbaar zijn.
 */
