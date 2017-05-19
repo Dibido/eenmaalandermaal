@@ -4,6 +4,21 @@ require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
+
+
+mail('luckmatheushermsen@gmail.com','Jo mama','Is fat');
+echo 'mail verzonden!?';
+
+function getEmail() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            echo $email;
+
+        }
+    }
+}
+
 ?>
 
 <!doctype HTML>
@@ -69,11 +84,11 @@ require('navbar.html');
             <div class="row">
                 <div class="col-md-6 col-md-push-3">
 
-                    <form method="POST" id="emailverificatie" action="verifieer.php">
+                    <form method="POST" id="emailverificatie" action="registreer1.php">
 
                         <div class="form-group">
                             <label for="email">E-mailadres*</label>
-                            <input name="email" id="email" type="email" placeholder="E-mailadres"
+                            <input name="email" id="email" type="email" placeholder="E-mailadres" value="<?php getEmail();?>"
                                    class="form-control" required="true">
                         </div>
 
