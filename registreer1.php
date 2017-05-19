@@ -5,11 +5,20 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
 
+function checkEmailSent()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            mail($email, 'Subject', 'Message', 'From: info@iproject3.icasites.nl');
+            echo '<div class="alert alert-success">
+                  <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
+        }
+    }
+}
 
-mail('luckmatheushermsen@gmail.com','Jo mama','Is fat');
-echo 'mail verzonden!?';
-
-function getEmail() {
+function getEmail()
+{
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['email'])) {
             $email = $_POST['email'];
@@ -84,11 +93,16 @@ require('navbar.html');
             <div class="row">
                 <div class="col-md-6 col-md-push-3">
 
+                    <?php
+                    checkEmailSent();
+                    ?>
+
                     <form method="POST" id="emailverificatie" action="registreer1.php">
 
                         <div class="form-group">
                             <label for="email">E-mailadres*</label>
-                            <input name="email" id="email" type="email" placeholder="E-mailadres" value="<?php getEmail();?>"
+                            <input name="email" id="email" type="email" placeholder="E-mailadres"
+                                   value="<?php getEmail(); ?>"
                                    class="form-control" required="true">
                         </div>
 
