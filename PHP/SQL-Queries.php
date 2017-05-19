@@ -48,7 +48,7 @@ $QueryTopCategories = <<<EOT
                      GROUP BY RB_Parent)
                     eerste ON Rubriek.RB_Volgnummer = eerste.RB_Parent
        GROUP BY Rubriek.RB_Parent, aantal) tweede ON Rubriek.RB_Volgnummer = tweede.RB_Parent
-    WHERE Rubriek.RB_Parent = 0
+    WHERE Rubriek.RB_Parent = -1
     GROUP BY Rubriek.RB_Naam, Rubriek.RB_Nummer
     ORDER BY MAX(aantal) DESC
 
@@ -113,7 +113,7 @@ INNER JOIN
                                    ON Rubriek.RB_Volgnummer = eerste.RB_Parent
                                GROUP BY Rubriek.RB_Parent, aantal, BOD_voorwerpnummer) tweede
                                 ON Rubriek.RB_Volgnummer = tweede.RB_Parent
-                            WHERE Rubriek.RB_Parent = 0
+                            WHERE Rubriek.RB_Parent = -1
                             GROUP BY Rubriek.RB_Naam, BOD_voorwerpnummer)
 GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel
 ORDER BY tijd ASC,Biedingen DESC
