@@ -44,8 +44,8 @@ CREATE TABLE Gebruiker (
   GEB_gebruikersnaam VARCHAR(64)            NOT NULL, --Zie RFC 5321.
   GEB_voornaam       VARCHAR(16)            NOT NULL, --Normale lengte van nederlandse voornaam
   GEB_achternaam     VARCHAR(16)            NOT NULL, --Normale lengte van nederlandse achternaam inclusief tussenvoegsel
-  GEB_adresregel_1   VARCHAR(15)            NOT NULL, --Normale lengte van een adresregel
-  GEB_adresregel_2   VARCHAR(15)            NULL, --Normale lengte van een adresregel
+  GEB_adresregel_1   VARCHAR(255)           NOT NULL, --Normale lengte van een adresregel
+  GEB_adresregel_2   VARCHAR(255)           NULL, --Normale lengte van een adresregel
   GEB_postcode       VARCHAR(12)            NOT NULL, --Maximale Lengte van een postcode: ISO_3166
   GEB_plaatsnaam     VARCHAR(85)            NOT NULL, --Langste plaatsnaam zie: "https://en.wikipedia.org/wiki/List_of_long_place_names"
   GEB_Land           CHAR(2) DEFAULT 'NL'   NOT NULL, --Landcode uit de landen tabel
@@ -55,6 +55,7 @@ CREATE TABLE Gebruiker (
   GEB_vraag          TINYINT                NOT NULL, --Nummer uit de Vraag tabel
   GEB_antwoordtekst  VARCHAR(16)            NOT NULL, --Antwoord op de vraag,  TODO:(case sensitive?)
   GEB_verkoper       BIT DEFAULT 0          NOT NULL, --Of de gebruiker een verkoper is of niet, standaard is de gebruiker geen verkoper
+  GEB_rating         NUMERIC(4, 1)          NULL, --Rating van de gebruiker 0.0 - 100.0
   CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
   CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
   --TODO: vragen of deze moet: CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon (TEL_gebruiker),
