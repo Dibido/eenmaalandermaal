@@ -274,6 +274,7 @@ INSERT INTO Registreer(REG_email, REG_code)
 
 EOT;
 
+return $return;
 }
 
 ?>
