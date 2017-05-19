@@ -43,3 +43,19 @@ INSERT INTO eenmaalandermaal.dbo.Voorwerp_Rubriek
     ID        AS VR_Rubriek_Nummer
   FROM veilingssite.dbo.Items
 COMMIT
+
+/*Conversie script voor de illustraties naar de bestand tabel.
+Run dit op veilingsite database
+Voor dat dit runbaar is moeten er eerste voorwerpen zijn met hetzelfde VW_voorwerpnummer als het BES_voorwerpnummer.
+Deze query zorgt ervoor dat van ieder voorwerp uit de verkrege database 3 afbeeldingen krijgt wanneer beschikbaar. */
+
+INSERT INTO eenmaalandermaal.dbo.Bestand (BES_filenaam, BES_voorwerpnummer)
+SELECT IllustratieFile,ItemID
+            FROM (
+              SELECT ItemID,IllustratieFile, Rank()
+			    OVER (Partition BY ItemID --OVER voegt informatie samen zonder een group by te gebruiken.
+                ORDER BY IllustratieFile DESC ) AS Rank
+				 FROM Illustraties
+				 ) rs WHERE Rank <= 3
+				 AND EXISTS(SELECT * FROM eenmaalandermaal..Voorwerp V WHERE v.VW_voorwerpnummer = ItemID )
+
