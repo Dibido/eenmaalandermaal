@@ -10,7 +10,7 @@ function checkEmailSent()
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['email'])) {
             $email = $_POST['email'];
-            $code = 'testvanuitPHP';
+            $code = md5($email);
             global $SetRegistratie;
 
             // If already in DB
