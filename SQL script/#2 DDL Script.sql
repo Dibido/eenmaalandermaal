@@ -53,19 +53,21 @@ CREATE TABLE Gebruiker (
   GEB_mailbox        VARCHAR(256)           NOT NULL, --Mailadres lengte volgens RFC 5321
   GEB_wachtwoord     CHAR(60)               NOT NULL, --BCRYPT dmv password_hash()
   GEB_vraag          TINYINT                NOT NULL, --Nummer uit de Vraag tabel
-  GEB_antwoordtekst  VARCHAR(16)            NOT NULL, --Antwoord op de vraag,  (case sensitive?)
+  GEB_antwoordtekst  VARCHAR(16)            NOT NULL, --Antwoord op de vraag,  TODO:(case sensitive?)
   GEB_verkoper       BIT DEFAULT 0          NOT NULL, --Of de gebruiker een verkoper is of niet, standaard is de gebruiker geen verkoper
   CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
   CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
   --TODO: vragen of deze moet: CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon (TEL_gebruiker),
   CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen (LAN_landcode),
   CONSTRAINT CHK_LegitiemeMailbox CHECK (GEB_mailbox LIKE '%_@__%.__%'),
+  CONSTRAINT CHK_LegitiemeGeboortedag CHECK (GEB_geboortedag < getdate())
+  --TODO: check bouwen voor de lengte van het wachtwoord (bepaalde tekens verplicht maken?)
 );
 
 CREATE TABLE Gebruikerstelefoon (
-  TEL_volgnr    INT         NOT NULL, --
-  TEL_gebruiker VARCHAR(64) NOT NULL, --gebruiker uit de gebruiker tabel
-  TEL_telefoon  CHAR(15)    NOT NULL, --Zie ITU-T recommendation E.164
+  TEL_volgnr    INT IDENTITY NOT NULL, --Wordt verhoogd als er een nieuw nummer toegevoegd word
+  TEL_gebruiker VARCHAR(64)  NOT NULL, --gebruiker uit de gebruiker tabel
+  TEL_telefoon  CHAR(15)     NOT NULL, --Zie ITU-T recommendation E.164
   CONSTRAINT PK_GebruikerstelefoonVolgnr PRIMARY KEY (TEL_volgnr),
   CONSTRAINT FK_GebruikerGebruikersnaam FOREIGN KEY (TEL_gebruiker) REFERENCES Gebruiker (GEB_gebruikersnaam)
     ON UPDATE CASCADE
@@ -111,7 +113,7 @@ CREATE TABLE Voorwerp (
   CONSTRAINT CHK_StartprijsHogerDan1 CHECK (VW_startprijs >= 1.00), --Appendix B, Mindstends een euro
   CONSTRAINT CHK_VerkoopprijsGroterOfGelijk CHECK (VW_verkoopprijs >=
                                                    VW_startprijs), --Kijkt of de verkoop prijs wel groter is dan de start prijs
-  --TODO CONSTRAINT FK_verkoper naar verkopers tabel
+  --TODO: CONSTRAINT FK_verkoper naar verkopers tabel
 )
 
 
@@ -167,9 +169,9 @@ CREATE TABLE Bod (
 
 
 CREATE TABLE Registreer (
-	REG_email	VarChar(255)	NOT NULL,
-	REG_code	VarChar(255)	NOT NULL,
-	RED_tijd	DATETIME		NOT NULL DEFAULT GETDATE()
+  REG_email VARCHAR(255) NOT NULL,
+  REG_code  VARCHAR(255) NOT NULL,
+  RED_tijd  DATETIME     NOT NULL DEFAULT GETDATE()
 )
 
 --TODO: Valt buiten de eerste sprint en wordt verder aan gewerkt in een latere sprint
