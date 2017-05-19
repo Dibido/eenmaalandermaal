@@ -10,6 +10,9 @@ function checkEmailSent()
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['email'])) {
             $email = $_POST['email'];
+
+            // If already in DB
+
             mail($email, 'Subject', 'Message', 'From: info@iproject3.icasites.nl');
             echo '<div class="alert alert-success">
                   <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
