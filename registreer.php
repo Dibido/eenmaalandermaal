@@ -1,4 +1,5 @@
 <?php
+
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
@@ -9,8 +10,7 @@ $Vragen = SendToDatabase($GetVragenQuerie);
 
 
 <!doctype HTML>
-<html lang="eng">
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
 
