@@ -9,19 +9,33 @@ INSERT INTO eenmaalandermaal.dbo.Rubriek
     name   AS RB_naam,
     parent AS RB_parent,
     ID     AS RB_volgnummer
-  FROM veilingsite.dbo.Categorieen
+  FROM veilingssite.dbo.Categorieen
 COMMIT
 
 --Conversiescript Users
 BEGIN TRANSACTION
-INSERT INTO eenmaalandermaal.dbo.Gebruiker (GEB_gebruikersnaam, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
-    SELECT
-      Username AS GEB_gebruikersnaam,
-      Postalcode AS GEB_postcode,
-      Location AS GEB_plaatsnaam,
-      Country AS GEB_Land,
-      Rating AS GEB_Rating
-  FROM veilingsite.dbo.Users
+INSERT INTO eenmaalandermaal.dbo.Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord,
+                                            GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
+  SELECT DISTINCT
+    LTRIM(RTRIM(Username))   AS GEB_gebruikersnaam,
+    LTRIM(RTRIM('-'))        AS GEB_voornaam,
+    LTRIM(RTRIM('-'))        AS GEB_achternaam,
+    LTRIM(RTRIM('-'))        AS GEB_adresregel_1,
+    getdate()                AS GEB_geboortedag,
+    'Geen_mailadres@nope.nl' AS GEB_mailbox,
+    'P@ssw0rd'               AS GEB_wachtwoord,
+    1                        AS GEB_vraag,
+    --Default vraag
+    'Defaultantwoord'        AS GEB_antwoordtekst,
+    LTRIM(RTRIM(Postalcode)) AS GEB_postcode,
+    LTRIM(RTRIM(Location))   AS GEB_plaatsnaam,
+    LTRIM(RTRIM(Country))    AS GEB_Land,
+    --Als er dubbele gebruikers zijn pakken we de gebruiker met de hoogste rating
+    (SELECT TOP 1 Rating
+     FROM veilingssite.dbo.Users u
+     WHERE u.Username = Username
+     ORDER BY Rating DESC)   AS GEB_Rating
+  FROM veilingssite.dbo.Users
 COMMIT
 
 --Conversiescript Items
@@ -29,7 +43,7 @@ BEGIN TRANSACTION
 INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail)
   SELECT
     ID           AS VW_voorwerpnummer,
-    Titel        AS VW_titel,
+    Title        AS VW_titel,
     Beschrijving AS VW_beschrijving,
     --HTML tags filteren
     Land         AS VW_land,
@@ -38,7 +52,7 @@ INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_besch
     Thumbnail    AS VW_thumbnail
   FROM veilingssite.dbo.Items
 
-INSERT INTO eenmaalandermaal.dbo.Bod
+INSERT INTO eenmaalandermaal.dbo.Bod (BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker, BOD_bodTijdEnDag)
   SELECT
     ID        AS BOD_voorwerpnummer,
     Prijs     AS BOD_bodbedrag,
