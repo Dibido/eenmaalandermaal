@@ -84,7 +84,13 @@ require('navbar.html');
             </div>
             <div class="panel-heading text-center">Prijs</div>
             <div class="panel-body">
-                <span id="Price" class="text-center"><i class="glyphicon glyphicon-euro"></i>20000</span>
+                <span id="Price" class="text-center"><i class="glyphicon glyphicon-euro"></i> 20000.00</span>
+            </div>
+            <div class="panel-heading text-center">Oude boden</div>
+            <div class="panel-body">
+                <div class="OldOffer"><div class="OldOfferUserName">User2003</div><div class="OldOfferPrice"></div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">User12</div><div class="OldOfferPrice"></div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">User120009128</div><div class="OldOfferPrice"></div></div>
             </div>
         </div>
 
