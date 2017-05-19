@@ -1,4 +1,5 @@
 <?php
+
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
@@ -9,8 +10,7 @@ $Vragen = SendToDatabase($GetVragenQuerie);
 
 
 <!doctype HTML>
-<html lang="eng">
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
 
@@ -66,7 +66,7 @@ require('navbar.html');
 <!-- Breadcrumb -->
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-    <li class="breadcrumb-item active">Registreer</li>
+    <li class="breadcrumb-item active">Registreren - Stap 2</li>
 </ol>
 
 
