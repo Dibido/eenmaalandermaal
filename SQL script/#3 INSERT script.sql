@@ -246,6 +246,14 @@ INSERT INTO Landen VALUES ('ZA', 'Zuid Afrika');
 INSERT INTO Landen VALUES ('ZM', 'Zambia');
 INSERT INTO Landen VALUES ('ZW', 'Zimbabwe');
 
+INSERT INTO Vraag (VR_tekstvraag)
+    VALUES
+      ('In welke straat ben je geboren?'),
+      ('Wat is de meisjesnaam je moeder?'),
+      ('Wat is je lievelingsgerecht?'),
+      ('Hoe heet je oudste zusje?'),
+      ('Hoe heet je huisdier?')
+
 --Alle landnamen met 3 letterige LAN_landcode  volgens ISO 3166-1 alpha-3
 /*INSERT INTO Landen (LAN_landcode, LAN_landnaam)
 VALUES
