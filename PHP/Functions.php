@@ -60,19 +60,13 @@ function SendToDatabase($query)
 }
 
 
-// Insert / plaats data in de DB
-function InsertIntoDatabase($query)
-{
+// Insert data in de DB
+function InsertIntoDatabase($SetRegistratie, $email, $code) {
     GLOBAL $connection;
-
-    //tries to send the query and returns the response
-    try {
-        return $response = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
-
-        //if unsuccessful, returns a False as first item and the error as the second item in a list
-    } catch (Exception $e) {
-        return [False, 'Error: ' . $e->getMessage()];
-    }
+    $stmt = $connection->prepare($SetRegistratie);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':code', $code);
+    $stmt->execute();
 }
 
 

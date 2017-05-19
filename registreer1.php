@@ -10,20 +10,22 @@ function checkEmailSent()
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['email'])) {
             $email = $_POST['email'];
+            $code = 'testvanuitPHP';
+            global $SetRegistratie;
 
             // If already in DB
 
             // Send to DB
 
+            InsertIntoDatabase($SetRegistratie, $email, $code);
+            echo 'Data sent to DB';
 
 
-        /*    $code = 'testvanuitPHP';
-            SendToDatabase(SetRegistratie($email, $code));
-
-            mail($email, 'Subject', 'Message', 'From: info@iproject3.icasites.nl');
-            echo '<div class="alert alert-success">
-                  <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
-        */
+            /*
+                mail($email, 'Subject', 'Message', 'From: info@iproject3.icasites.nl');
+                echo '<div class="alert alert-success">
+                      <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
+            */
         }
     }
 }
