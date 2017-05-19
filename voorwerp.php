@@ -88,10 +88,34 @@ require('navbar.html');
             </div>
             <div class="panel-heading text-center">Oude boden</div>
             <div class="panel-body">
-                <div class="OldOffer"><div class="OldOfferUserName">User2003</div><div class="OldOfferPrice"></div></div>
-                <div class="OldOffer"><div class="OldOfferUserName">User12</div><div class="OldOfferPrice"></div></div>
-                <div class="OldOffer"><div class="OldOfferUserName">User120009128</div><div class="OldOfferPrice"></div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">1. User2003</div><div class="OldOfferPrice">&euro; 20000</div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">2. User12</div><div class="OldOfferPrice">&euro; 15</div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">&euro; 10</div></div>
+                <button type="button" class="btn btn-default MoreOffers">Meer boden +</button>
             </div>
+            <div class="panel-heading text-center">Bieden</div>
+            <div class="panel-body">
+                <form class="form-inline">
+                    <div class="input-group InputBod">
+                        <div class="input-group-addon">&euro;</div>
+                        <input type="text" class="form-control"  placeholder="voer hier uw bod in">
+                    </div>
+                    <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
+                </form>
+            </div>
+            <div class="panel-heading text-center">Gebruikers informatie</div>
+            <div class="panel-body">
+                <div class="TimeLeft">
+                    <div id="Clock" style="background-image:url(images/User.png)"></div>
+                    <span class="UserInfo">Gebruiker 20016</span>
+                    <div id="Rating">
+
+                    </div>
+                </div>
+
+            </div>
+
+
         </div>
 
     </div>

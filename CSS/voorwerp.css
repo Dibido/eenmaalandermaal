@@ -1,3 +1,7 @@
+.Titanic{
+    float: none;
+}
+
 /* Headers */
 
 .HeaderTitle{
@@ -18,9 +22,7 @@
 /*right column */
 
 .TimeLeft{
-    font-size: 128px;
     display: flex;
-
 }
 
 .TimeLeft i{
@@ -55,20 +57,21 @@
     display: inline-block;
 }
 .OldOffer{
-    width: 32.5%;
+    width: 100%;
     overflow: hidden;
     white-space: nowrap;
     font-size: 1vw;
     text-align: center;
-    display: flex;
+    display: inline-flex;
     justify-content: space-between;
+    border-bottom: #e5e5e5 solid 2px;
 }
 .OldOfferUserName{
     width: 48%;
     overflow: hidden;
     white-space: nowrap;
     font-size: 1vw;
-    text-align: center;
+    text-align: left;
     display: inline-block;
 }
 .OldOfferPrice{
@@ -76,17 +79,51 @@
     overflow: hidden;
     white-space: nowrap;
     font-size: 1vw;
-    text-align: center;
+    text-align: right;
     display: inline-block;
 }
+.MoreOffers{
+    width: 100%;
+}
 
+.InputBod{
+    width: 49%;
+    float: left;
+}
+.SubmitButton{
+    width: 48%;
+    float: right;
+}
+.UserInfo{
+    font-size: 1.2vw;
+    width: 80%;
+    text-align: left;
+    vertical-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#Rating{
+    width: 100%;
 
+}
 @media( max-width: 992px){
     .Time{
         font-size: 9vw;
     }
     #Price{
         font-size: 9vw;
+    }
+    .OldOffer{
+        font-size: 3vw;
+    }
+    .OldOfferPrice{
+        font-size: 3vw;
+    }
+    .OldOfferUserName{
+        font-size: 3vw;
+    }
+    .UserInfo{
+        font-size: 3vw;
     }
 }
 
