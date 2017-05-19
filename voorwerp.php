@@ -1,6 +1,6 @@
 <?php
 
-require('PHP/connection.php');
+//require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
@@ -67,10 +67,56 @@ require('navbar.html');
         </div>
     </div>
 
+
+    <!-- Carousel -->
+
+
     <div class="col-md-8 col-sm-12">
 
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+                <li data-target="#myCarousel" data-slide-to="3"></li>
+            </ol>
+
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <div class="AuctionImage" style="background-image: url(images/ModelS.jpeg);"></div>
+                </div>
+
+                <div class="item">
+                    <div class="AuctionImage" style="background-image: url(images/ModelX.jpeg);"></div>
+                </div>
+
+                <div class="item">
+                    <div class="AuctionImage" style="background-image: url(images/Model3.jpeg);"></div>
+                </div>
+
+                <div class="item">
+                    <div class="AuctionImage" style="background-image: url(images/Roadster.jpg);"></div>
+                </div>
+            </div>
+
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
 
     </div>
+
+
+    <!-- Sidebar -->
+
 
     <div class="col-md-4 col-xs-12">
 
@@ -86,13 +132,45 @@ require('navbar.html');
             <div class="panel-body">
                 <span id="Price" class="text-center"><i class="glyphicon glyphicon-euro"></i> 20000.00</span>
             </div>
-            <div class="panel-heading text-center">Oude boden</div>
+
+            <!-- Recent offers -->
+
+            <div class="panel-heading text-center">Recente boden</div>
             <div class="panel-body">
-                <div class="OldOffer"><div class="OldOfferUserName">1. User2003</div><div class="OldOfferPrice">&euro; 20000</div></div>
-                <div class="OldOffer"><div class="OldOfferUserName">2. User12</div><div class="OldOfferPrice">&euro; 15</div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">1. Athan88</div><div class="OldOfferPrice">&euro; 20000</div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">2. Leroy Jenkings</div><div class="OldOfferPrice">&euro; 15</div></div>
                 <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">&euro; 10</div></div>
-                <button type="button" class="btn btn-default MoreOffers">Meer boden +</button>
+
+
+                <!-- Extra offers -->
+
+                <div id="MoreOffers" class="collapse">
+                    <div class="OldOffer"><div class="OldOfferUserName">4. Athan88</div><div class="OldOfferPrice">&euro; 20000</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">5. Leroy Jenkings</div><div class="OldOfferPrice">&euro; 15</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">6. User120009128</div><div class="OldOfferPrice">&euro; 10</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">7. Athan88</div><div class="OldOfferPrice">&euro; 20000</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">8. Leroy Jenkings</div><div class="OldOfferPrice">&euro; 15</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">9. User120009128</div><div class="OldOfferPrice">&euro; 10</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">10. Athan88</div><div class="OldOfferPrice">&euro; 20000</div></div>
+                </div>
+
+                <button data-toggle="collapse" data-target="#MoreOffers" class="btn btn-default MoreOffers collapsed" value="Meer boden"></button>
+
+                <script type="text/javascript">
+
+
+                    function handleClick()
+                    {
+                        this.value = (this.value == 'Meer boden' ? 'Minder boden' : 'Meer boden');
+                    }
+                    document.getElementById('MoreOffers').onclick=handleClick;
+
+                </script>
+
             </div>
+
+            <!-- Biedknop -->
+
             <div class="panel-heading text-center">Bieden</div>
             <div class="panel-body">
                 <form class="form-inline">
@@ -105,16 +183,20 @@ require('navbar.html');
             </div>
             <div class="panel-heading text-center">Gebruikers informatie</div>
             <div class="panel-body">
-                <div class="TimeLeft">
-                    <div id="Clock" style="background-image:url(images/User.png)"></div>
+                <div class="UserContainer">
+                    <div id="User" style="background-image:url(images/User.png)"></div>
                     <span class="UserInfo">Gebruiker 20016</span>
-                    <div id="Rating">
-
+                </div>
+                <div id="UserRating" class="text-center">
+                    <div>
+                        <i class="glyphicon glyphicon-star"></i>
+                        <i class="glyphicon glyphicon-star"></i>
+                        <i class="glyphicon glyphicon-star"></i>
+                        <i class="glyphicon glyphicon-star"></i>
+                        <i class="glyphicon glyphicon-star-empty"></i>
                     </div>
                 </div>
-
             </div>
-
 
         </div>
 
