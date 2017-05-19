@@ -35,7 +35,7 @@ CREATE TABLE Landen (
 );
 
 CREATE TABLE Vraag (
-  VR_vraagnummer TINYINT NOT NULL, --Niet meer dan 255 vragen
+  VR_vraagnummer TINYINT IDENTITY NOT NULL, --Niet meer dan 255 vragen, automatische nummeren
   VR_tekstvraag  VARCHAR(255), --Goede lengte voor de vragen
   CONSTRAINT PK_Vraag PRIMARY KEY (VR_vraagnummer)
 );
@@ -61,8 +61,9 @@ CREATE TABLE Gebruiker (
   --TODO: vragen of deze moet: CONSTRAINT FK_GebruikerstelefoonGebruiker FOREIGN KEY (GEB_gebruikersnaam) REFERENCES Gebruikerstelefoon (TEL_gebruiker),
   CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen (LAN_landcode),
   CONSTRAINT CHK_LegitiemeMailbox CHECK (GEB_mailbox LIKE '%_@__%.__%'),
-  CONSTRAINT CHK_LegitiemeGeboortedag CHECK (GEB_geboortedag < getdate())
+  CONSTRAINT CHK_LegitiemeGeboortedag CHECK (GEB_geboortedag <= getdate())
   --TODO: check bouwen voor de lengte van het wachtwoord (bepaalde tekens verplicht maken?)
+  --CONSTRAINT CHK_WachtwoordComplexiteit CHECK ()
 );
 
 CREATE TABLE Gebruikerstelefoon (
