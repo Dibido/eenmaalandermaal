@@ -305,6 +305,19 @@ $Dictionary = array(
             }
         }
         ?>
+        <nav aria-label="pagination">
+            <ul class="pagination pull-right">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Vorige</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item active">
+                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Volgende</a></li>
+          </ul>
+        </nav>
     </div>
 </div>
 
@@ -321,7 +334,6 @@ $Dictionary = array(
         });
     });
 </script>
-<script async="" src="//www.google-analytics.com/analytics.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 
@@ -335,7 +347,6 @@ $Dictionary = array(
         });
 
     });
-
 </script>
 
 </body>
