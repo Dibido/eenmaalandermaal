@@ -67,6 +67,25 @@ CREATE FUNCTION nietEigenVoorwerp(
       END
     )
   END
+GO
+
+--Functie om de prijs om te zetten naar een numeric waarde
+IF OBJECT_ID('FN_Maaknumeric') IS NOT NULL
+  DROP FUNCTION [dbo].[FN_Maaknumeric]
+GO
+CREATE FUNCTION FN_Maaknumeric(@Prijs NUMERIC(9, 2))
+  RETURNS NUMERIC(9, 2)
+  BEGIN
+    DECLARE @PrijsNumeric NUMERIC(9, 2)
+    DECLARE @Een NUMERIC(9, 2)
+    SET @PrijsNumeric = (CAST(@Prijs AS NUMERIC(9, 2)))
+    SET @Een = (CAST(1.00 AS NUMERIC(9, 2)))
+    IF (@PrijsNumeric < 1.00)
+      @PrijsNumeric = @Een
+    RETURN @PrijsNumeric
+  END
+GO
+
 
 --Functie om de valuta om te rekenen voor het converteren van de voorwerpen
 GO
@@ -78,11 +97,12 @@ CREATE FUNCTION FN_Verandervaluta
   RETURNS NUMERIC
   BEGIN
     IF (@Valuta = 'GBP')
-      RETURN (@Prijs / 0.862403667)
+      RETURN (FN_Maaknumeric(@Prijs) / 0.862403667)
     ELSE IF (@Valuta = 'USD')
-      RETURN (@Prijs * 1.12128)
+      RETURN (FN_Maaknumeric(@Prijs) * 1.12128)
     RETURN @Prijs
   END
+
 
 --Functie om de HTML beschrijving te filteren
 GO

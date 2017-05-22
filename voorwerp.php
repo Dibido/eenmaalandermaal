@@ -3,10 +3,13 @@
 //require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
+require('PHP/connection.php');
 
-$response = NULL;
+$ItemID = $_GET['ItemID'];
 
+$ItemInfo = GetItemDetails($ItemID);
 
+print_r($ItemInfo);
 ?>
 
 <!doctype html>
@@ -49,6 +52,7 @@ $response = NULL;
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
     <link rel="stylesheet" href="CSS/voorwerp.css">
+    <link rel="stylesheet" href="CSS/footer.css">
 
 
 </head>
@@ -248,5 +252,7 @@ require('navbar.html');
 
 
 </div>
+
+<?php include('footer.html') ?>
 
 </body>
