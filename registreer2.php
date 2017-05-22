@@ -8,78 +8,26 @@ require('PHP/SQL-Queries.php');
 $Landen = SendToDatabase($GetLandenQuerie);
 $Vragen = SendToDatabase($GetVragenQuerie);
 
-
-
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-    if (isset($_POST['voornaam'])) {
+    if (isset($_POST['voornaam']) && ($_POST['achternaam']) && ($_POST['email']) && ($_POST['adres1']) && ($_POST['adres2']) && ($_POST['postcode']) && ($_POST['woonplaats']) && ($_POST['land']) && ($_POST['geboortedatum']) && ($_POST['gebruikersnaam']) && ($_POST['wachtwoord']) && ($_POST['wachtwoord2']) && ($_POST['geheimevraag']) && ($_POST['antwoord'])) {
         $voornaam = $_POST['voornaam'];
-    }
-
-    if (isset($_POST['achternaam'])) {
         $achternaam = $_POST['achternaam'];
-    }
-
-    if (isset($_POST['email'])) {
         $email = $_POST['email'];
-    }
-
-    if (isset($_POST['adres1'])) {
         $adres1 = $_POST['adres1'];
-    }
-
-    if (isset($_POST['adres2'])) {
         $adres2 = $_POST['adres2'];
-    }
-
-    if (isset($_POST['postcode'])) {
         $postcode = $_POST['postcode'];
-    }
-
-    if (isset($_POST['woonplaats'])) {
         $woonplaats = $_POST['woonplaats'];
-    }
-
-    if (isset($_POST['land'])) {
         $land = $_POST['land'];
-    }
-
-    if (isset($_POST['geboortedatum'])) {
         $geboortedatum = $_POST['geboortedatum'];
-    }
-
-    if (isset($_POST['gebruikersnaam'])) {
         $gebruikersnaam = $_POST['gebruikersnaam'];
-    }
-
-    if (isset($_POST['wachtwoord'])) {
         $wachtwoord = $_POST['wachtwoord'];
-    }
-
-    if (isset($_POST['wachtwoord2'])) {
         $wachtwoord2 = $_POST['wachtwoord2'];
-    }
-
-    if (isset($_POST['geheimevraag'])) {
         $geheimevraag = $_POST['geheimevraag'];
-    }
-
-    if (isset($_POST['antwoord'])) {
         $antwoord = $_POST['antwoord'];
     }
-
-    echo 'klaar met reload</br>';
-    echo 'wachtwoord1: ' . $wachtwoord . '</br> wachtwoord2: ' . $wachtwoord2;
-    echo 'land: ' . $land . '</br> geheime vraag: ' . $geheimevraag;
-
 } else {
-
     $emailadres = validateHash();
-
 }
-
-
 ?>
 
 
@@ -174,16 +122,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="form-group">
                                 <label for="achternaam">Achternaam*</label>
                                 <input name="achternaam" id="achternaam" type="text" placeholder="Achternaam"
-                                       class="form-control" required="true" maxlength="16" value="<?php if (!empty($achternaam)) {
-                                    echo $achternaam;
-                                } ?>" >
+                                       class="form-control" required="true" maxlength="16"
+                                       value="<?php if (!empty($achternaam)) {
+                                           echo $achternaam;
+                                       } ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="Email">Email*</label>
                                 <input name="email" id="email" type="text"
                                        value="<?php
-                                       if(empty($emailadres)){
+                                       if (empty($emailadres)) {
                                            echo $email;
                                        } else {
                                            echo $emailadres;
@@ -194,41 +143,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="form-group">
                                 <label for="adres1">Adresregel 1*</label>
                                 <input name="adres1" id="adres1" type="text" placeholder="Adresregel 1"
-                                       class="form-control" required="true" maxlength="255" value="<?php if (!empty($adres1)) {
-                                    echo $adres1;
-                                } ?>">
+                                       class="form-control" required="true" maxlength="255"
+                                       value="<?php if (!empty($adres1)) {
+                                           echo $adres1;
+                                       } ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="adres2">Adresregel 2</label>
                                 <input name="adres2" id="adres2" type="text" placeholder="Adresregel 2"
-                                       class="form-control" required="true" maxlength="255" value="<?php if (!empty($adres2)) {
-                                    echo $adres2;
-                                } ?>">
+                                       class="form-control" required="true" maxlength="255"
+                                       value="<?php if (!empty($adres2)) {
+                                           echo $adres2;
+                                       } ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="postcode">Postcode*</label>
                                 <input name="postcode" id="postcode" type="text" placeholder="1234 AB"
-                                       class="form-control" required="true" maxlength="12" value="<?php if (!empty($postcode)) {
-                                    echo $postcode;
-                                } ?>">
+                                       class="form-control" required="true" maxlength="12"
+                                       value="<?php if (!empty($postcode)) {
+                                           echo $postcode;
+                                       } ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="woonplaats">Woonplaats*</label>
                                 <input name="woonplaats" id="woonplaats" type="text" placeholder="Woonplaats"
-                                       class="form-control" required="true" maxlength="85" value="<?php if (!empty($woonplaats)) {
-                                    echo $woonplaats;
-                                } ?>">
+                                       class="form-control" required="true" maxlength="85"
+                                       value="<?php if (!empty($woonplaats)) {
+                                           echo $woonplaats;
+                                       } ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="land">Land*</label>
-                                <select name="land" id="land" type="text" selected=Nederland"
-                                        class="form-control" required="true" value="<?php if (!empty($land)) {
-                                    echo $land;
-                                } ?>">
+                                <select name="land" id="land" type="text"
+                                        class="form-control" required="true">
                                     <?php
                                     printLanden($Landen);
                                     ?>
@@ -276,9 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <label for="geheimevraag">Geheime vraag*</label>
                                 <select name="geheimevraag" id="geheimevraag" type="text"
                                         placeholder="Kies een geheime vraag"
-                                        class="form-control" required="true" value="<?php if (!empty($geheimevraag)) {
-                                    echo $geheimevraag;
-                                } ?>">
+                                        class="form-control" required="true">
                                     <?php
                                     printVragen($Vragen);
                                     ?>
@@ -289,9 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <label for="antwoord">Antwoord op je geheime vraag*</label>
                                 <input name="antwoord" id="antwoord" type="text"
                                        placeholder="Antwoord op je geheime vraag"
-                                       class="form-control" required="true" maxlength="16" value="<?php if (!empty($antwoord)) {
-                                    echo $antwoord;
-                                } ?>">
+                                       class="form-control" required="true" maxlength="16">
                             </div>
 
                             <div class="form-group">
