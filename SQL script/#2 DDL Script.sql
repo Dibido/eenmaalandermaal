@@ -29,7 +29,9 @@ CREATE TABLE Betalingswijzen (
 
 CREATE TABLE Landen (
   LAN_landcode CHAR(2)     NOT NULL, --Zie ISO 3166/1 alpha-2
-  LAN_landnaam VARCHAR(50) NOT NULL, --De langste naam is 50 karakters
+  LAN_landnaam VARCHAR(50) NOT NULL --De langste naam is 50 karakters
+  ON UPDATE CASCADE --Zodat de landen overal in de database overal aangepast worden.
+  ON DELETE NO ACTION, -- Zodat er geen errors komen als de er landen verwijdert worden, want voorwerpen moeten een land hebben.
   CONSTRAINT PK_landen PRIMARY KEY (LAN_landcode),
   CONSTRAINT UQ_landnaam UNIQUE (LAN_landnaam), --In het nederlands
 );
