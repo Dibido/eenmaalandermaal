@@ -47,8 +47,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $prijs['max'] = 5000;
     }
 
+
+
     $_GET['maxremainingtime'] = "NULL";
     $_GET['minremainingtime'] = "NULL";
+
+    /*$pagenum = $_GET['pagenum'];*/
 
     $Dictionary = array(
         'SearchKeyword' => $_GET['zoekterm'],
@@ -149,8 +153,6 @@ require('navbar.html');
                     </a>
                     <input type="hidden" name="categorie" value="<?php global $categorie;
                     echo($categorie); ?>">
-                    <input type="hidden" name="pagenum" value="<?php global $pagenum; echo($pagenum); ?>">  
-
 
                     <a href="#" class="list-group-item"> Filter:
                         <select class="form-control" name="sorteerfilter">
@@ -221,7 +223,7 @@ require('navbar.html');
                     <script>
                         var slider = new Slider('#pslider', {});
                     </script>
-
+                        <input type="hidden" name="pagenum" value="<?php global $pagenum; echo($pagenum); ?>">  
                 </form>
             </div>
             <a href="#" class="list-group-item active" id="Header-Categories">
@@ -281,10 +283,12 @@ $result = SendToDatabase($GetResultatenPagina);
 // First we check if we are on page one. If we are then we don't need a link to the previous page or the first page so we do nothing. If we aren't then we generate links to the first page, and to the previous page.
 if ($pagenum == 1) { } 
 else {
-echo " <a href='http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]&pagenum=1'> <<-Eerste pagina</a> ";
+echo " <a href='?pagenum=1'> <<-Eerste pagina</a> ";
 echo " ";
 $previous = $pagenum-1;
-echo " <a href='http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]&pagenum=$previous'> <-Vorige</a> ";
+echo "<a href=" . " 
+
+?zoekterm=" . $zoekterm . "&categorie=" .  $categorie . "&sorteerfilter=" . $sorteerfilter . " &prijs=" .$prijs . "&pagenum=" .$previous ."> <-Vorige</a>";
 } 
 
 //just a spacer
@@ -301,6 +305,29 @@ echo " ";
 echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last'>Laatste pagina ->></a> ";
 } 
 ?> 
+
+
+<!-- HTML -->
+<html>
+<nav aria-label="...">
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <span class="page-link">Vorige</span>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active">
+      <span class="page-link">
+        2
+        <span class="sr-only">(current)</span>
+      </span>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Volgende</a>
+    </li>
+  </ul>
+</nav>
+</html> 
 
     <!-- Einde Paginanummering-->
 
