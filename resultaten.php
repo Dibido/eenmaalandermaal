@@ -3,6 +3,7 @@ require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 require 'PHP/SQL-Queries.php';
 
+
 $waardes = array("Tijd: nieuw aangeboden" => "VW_looptijdStart DESC", "Tijd: eerst afgelopen" => "VW_looptijdEinde ASC", "Prijs: laagste bovenaan" => "prijs ASC", "Prijs: hoogste bovenaan" => "prijs DESC");
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -143,9 +144,7 @@ require('navbar.html');
                                 <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
                                        autofocus="autofocus" type="text" value='<?php $zoekterm?>'>
                                 <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
-                                                                                                           type="submit"
-                                                                                                           style="background-color: #ffffff; border-color: #f2f2f2;"><span
-                                                class="glyphicon glyphicon-search"></span></button></span>
+                                class="glyphicon glyphicon-search"></span></button></span>
                             </div>
                     </a>
                     <input type="hidden" name="categorie" value="<?php global $categorie;
