@@ -160,7 +160,6 @@ require('navbar.html');
                                 </div>
                             </div>
                         </div>
-
                         <div class=\"item\">
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[2]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[2]["ImagePath"] . ")\"></div>
@@ -219,7 +218,7 @@ require('navbar.html');
             /* Printing the top 2 almost closed auctions*/
 
             $TopClosed = SendToDatabase($QueryTop2);
-
+            $pagina = 'BijnaGesloten';
             //If the query was succesfull, build the adverts
             if ($TopClosed[0]) {
 
@@ -236,22 +235,22 @@ require('navbar.html');
                         echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div>
                             <div class=\"veiling-prijs-tijd\">
                                 <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] . '"></p>' . "</div>
+                                <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] .$pagina.'"></p>' . "</div>
                             </div>
                          </div>
                      </div>";
-                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"]);
+                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$pagina);
 
                     } else {
                         echo ">
                             </div>
                                 <div class=\"veiling-prijs-tijd\">
                                     <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                    <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] . '"></p>' . " </div>
+                                    <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] .$pagina.'"></p>' . " </div>
                                 </div>
                             </div>
                         </div>";
-                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"]);
+                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$pagina);
                     }
                 }
 

@@ -362,7 +362,6 @@ VALUES
   ('Testproduct24', 'beschrijving24', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem',
                     'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin')
 
-
 /* Toevoegen van voorbeeld biedingen */
 /*INSERT INTO Bod (BOD_Voorwerpnummer, BOD_bodbedrag, BOD_gebruiker)
 VALUES
