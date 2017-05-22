@@ -6,9 +6,6 @@ require('PHP/SQL-Queries.php');
 
 $response = NULL;
 
-$password= 'henk';
-
-echo password_hash($password, PASSWORD_DEFAULT);
 
 ?>
 
