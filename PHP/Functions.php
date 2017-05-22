@@ -175,8 +175,8 @@ function DrawAuction($auction)
                         <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . $pagina . '"></p>' . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
-                        <button class=\"btn text-center btn-default bied\">Meer info</button>
-                        <button class=\"btn text-center btn-info bied\">Bied Nu!</button>
+                        <a href=\"voorwerp.php?ItemID="  . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
+                        <a class=\"btn text-center btn-info bied\">Bied Nu!</a>
                     </div>
                 </div>
             </div>

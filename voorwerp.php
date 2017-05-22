@@ -8,8 +8,18 @@ require('PHP/connection.php');
 $ItemID = $_GET['ItemID'];
 
 $ItemInfo = GetItemDetails($ItemID);
+$ItemInfo = $ItemInfo[0];
+
+if (!isset($ItemInfo["ImagePath"]) OR empty($ItemInfo["ImagePath"])){
+    $ItemInfo["ImagePath"] = "images/no-image-available.jpg";
+}
+if (!isset($ItemInfo["VW_thumbnail"]) OR empty($ItemInfo["VW_thumbnail"])){
+    $ItemInfo["VW_thumbnail"] = "images/no-image-available.jpg";
+}
+
 
 print_r($ItemInfo);
+
 ?>
 
 <!doctype html>
@@ -68,7 +78,7 @@ require('navbar.html');
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div class="HeaderTitle text-center">Titel van het te verkopen voorwerp</div>
+            <div class="HeaderTitle text-center"><?php echo $ItemInfo["VW_titel"] ?></div>
         </div>
     </div>
 
@@ -90,7 +100,7 @@ require('navbar.html');
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <div class="AuctionImage" style="background-image: url(images/ModelS.jpeg);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemInfo["ImagePath"] ?>);"></div>
                 </div>
 
                 <div class="item">
