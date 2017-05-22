@@ -97,3 +97,31 @@ INSERT INTO eenmaalandermaal.dbo.Bestand (BES_filenaam, BES_voorwerpnummer)
                    FROM eenmaalandermaal.dbo.Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)
 COMMIT
+
+SET IDENTITY_INSERT eenmaalandermaal.dbo.voorwerp  ON
+INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
+  SELECT
+    ID           AS VW_voorwerpnummer,
+      (  SELECT
+  CASE
+    WHEN len(titel)>=56
+    THEN left(titel, 56) + '...'
+    ELSE titel end titel)  AS VW_titel,
+    Beschrijving AS VW_beschrijving,
+    --HTML tags filteren
+    Land         AS VW_land,
+    Verkoper     AS VW_verkoper,
+    Conditie     AS VW_conditie,
+    Thumbnail    AS VW_thumbnail,
+	1.00         AS VW_startprijs,
+	'2017-05-24' AS VW_looptijdstart,
+	7 AS VW_looptijd,
+	'Bank / giro' AS VW_betalingswijze,
+	CASE WHEN CHARINDEX(',', [locatie]) > 0
+		THEN REPLACE(LEFT([locatie], CHARINDEX(',',[locatie])),',','')
+		ELSE 'Geen plaatsnaam bekend'
+	END AS VW_plaatsnaam,
+	0 AS VW_veilinggesloten
+  FROM veilingsite.dbo.Items
+
+  SET IDENTITY_INSERT eenmaalandermaal.dbo.voorwerp OFF
