@@ -1,4 +1,72 @@
 <?php
+/* function for getting the results for the product page */
+
+/* intake:
+ * voorwerp id
+ *
+ *
+ */
+
+
+/* output:
+ * the result from the database (array)
+ *
+ *
+ */
+
+function GetItemDetails($ItemID){
+
+    $Query = <<<EOT
+
+SELECT
+  DISTINCT VW_voorwerpnummer,
+  VW_titel,
+  (SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
+                           FROM Bod
+                           WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                           ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
+  DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
+  (SELECT TOP 1 BES_filenaam
+   FROM Bestand
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
+  VW_looptijdStart,
+  VW_looptijdEinde,
+  VW_betalingswijze,
+  VW_beschrijving,
+  VW_plaatsnaam,
+  VW_land,
+  VW_looptijdStart,
+  VW_verkoper,
+  VW_thumbnail,
+  VW_veilinggesloten,
+  VW_koper,
+  VW_verkoopprijs,
+  VW_verzendinstructies,
+  VW_verzendkosten
+FROM Voorwerp
+  LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+  LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
+  LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
+  LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
+  LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
+WHERE VW_voorwerpnummer = $ItemID
+
+SELECT * FROM Voorwerp
+
+EOT;
+
+Return SendToDatabase($Query);
+
+
+}
+
+
+
 
 /*function for cleaning user input in order to attempt to prevent cross-site scripting/Html injection/sql injection */
 
