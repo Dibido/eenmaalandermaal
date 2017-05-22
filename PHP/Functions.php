@@ -71,6 +71,7 @@ function InsertIntoDatabase($SetRegistratie, $email, $code)
 }
 
 
+
 /* This function draws an auction */
 
 /* intake:
@@ -335,7 +336,7 @@ function printVragen($Vragen)
 }
 
 
-function printCategoriën($zoekterm)
+function printCategoriën($zoekterm, $rubriekNummer)
 {
     global $connection;
     $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek
@@ -364,7 +365,7 @@ function printCategoriën($zoekterm)
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/
+                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
                         GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
@@ -386,10 +387,12 @@ function printCategoriën($zoekterm)
         //For loop to close the list items and unorderd lists it "closes" backwards
         for ($k = sizeof($rubrieken[$i]) - 1; $k >= 0; $k--) {
             //If the last rubric is set and the Last Rubric is not the same as the next Rubric
-            if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
+            if($i+1 >= sizeof($rubrieken)){
                 echo '</ul></li>';
-                if ($k == 0) {
-                    echo '<hr class="line"  size="1">';
+            }else if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
+                echo '</ul></li>';
+                if($k == 0){
+                   echo '<hr class="line"  size="1">';
                 }
             }
         }
@@ -442,72 +445,6 @@ function createTimer($tijd, $VW_Titel)
 </script>
 ';
 }
-
-
-
-
-// Indien gebruiker email heeft ingevuld en op verstuur heeft geklikt, wordt er een check uitgevoerd.
-// Vervolgens wordt er een email verstuurd en een message weergegeven.
-function checkEmailSent()
-{
-
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['email'])) {
-            $email = $_POST['email'];
-            $code = md5($email . date("Y/m/d"));
-            global $SetRegistratie;
-
-            $subject = 'Uw EenmaalAndermaal registratie';
-
-            $message = 'Beste toekomstige gebruiker,
-
-u heeft aangegeven zich aan te willen melden op onze website.
-
-Dit is uw persoonlijke code: ' . $code . '
-Vul deze in op de website om de registratieprocedure af te ronden.
-
-Met vriendelijke groet,
-
-Het EenmaalAndermaal Team';
-
-
-// If already in DB
-            $sql = " SELECT REG_email FROM Registreer WHERE REG_email = '$email'";
-            $getUser = SendToDatabase($sql);
-
-            if ($getUser) { //IF waarde (dus niet leeg)
-                // Display error
-                echo '  <div class="alert alert-danger" >
-                        <strong > Fout!</strong > Er is al een verificatie verstuurd naar ' . $email . '
-                        </div > ';
-            } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
-                // Send to DB
-                InsertIntoDatabase($SetRegistratie, $email, $code);
-                mail($email, $subject, $message, 'From: info@iproject3.icasites.nl');
-                echo '  <div class="alert alert-success">
-                            <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
-            }
-        }
-    }
-}
-
-
-
-// functie die email adres invult bij laden registreer1.php indien al ingevuld.
-
-function getEmail()
-{
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['email'])) {
-            $email = $_POST['email'];
-            echo $email;
-        }
-    }
-}
-
-
-
 
 ?>
 
