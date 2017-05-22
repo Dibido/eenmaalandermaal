@@ -185,7 +185,7 @@ WHERE VW_voorwerpnummer IN (
           GROUP BY RB_Parent)
          eerste ON Rubriek.RB_Volgnummer = eerste.RB_Parent
        GROUP BY Rubriek.RB_Parent, aantal) tweede ON Rubriek.RB_Volgnummer = tweede.RB_Parent
-    WHERE Rubriek.RB_Parent = 0 --AND DATEDIFF(DAY,BOD_bodTijdEnDag, GETDATE())< 1000
+    WHERE Rubriek.RB_Parent = -1 --AND DATEDIFF(DAY,BOD_bodTijdEnDag, GETDATE())< 1000
     GROUP BY Rubriek.RB_Naam
     ORDER BY MAX(aantal) DESC)
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews

@@ -2,39 +2,3 @@
     padding-left: 15px;
 }
 
-.form-control #searchbar{
-    height: 36px;
-}
-
-input#searchbar.form-control{
-    height: 36px;
-    margin: 0px;
-}
-
-form.navbar-form{
-    margin: 7px 0 0px;
-
-}
-button.btn.btn-secondary{
-    margin: 0px 0 0 -1px;
-}
-
-button.btn.btn-primary.navbar-btn.hidden-sm.hidden-xsv.NavLeftButton{
-    margin:7px 0px 7px 15px;
-}
-
-button.btn.btn-default.navbar-btn.hidden-sm.hidden-xs.NavRightButton{
-    margin:7px 15px 7px 15px;
-}
-
-label.tree-toggle.nav-header{
-    font-family: Ubuntu;
-}
-
-ul.nav.nav-list-tree{
-    font-family: Ubuntu;
-}
-
-div.list-group-item{
-font-family: inherit; !important;
-}
