@@ -8,8 +8,13 @@ require('PHP/SQL-Queries.php');
 $Landen = SendToDatabase($GetLandenQuerie);
 $Vragen = SendToDatabase($GetVragenQuerie);
 
+if(isset($_SESSION['emailadres']) && !empty($_SESSION['emailadres'])) {
+    $emailadres = $_SESSION["emailadres"];
+    echo $emailadres;
+   } else {
+    header('Location: registreer1.php');
+}
 
-echo "Meegegeven mailadres: " . $_SESSION["emailadres"];
 
 
 
@@ -109,7 +114,7 @@ require('navbar.html');
 
                         <div class="form-group">
                             <label for="Email">Email*</label>
-                            <input name="email" id="email" type="text" placeholder="voorbeeld@voorbeeld.com"
+                            <input name="email" id="email" type="text" placeholder="voorbeeld@voorbeeld.com" value="<?php echo $emailadres; ?>"
                                    class="form-control" required="true">
                         </div>
 
@@ -205,3 +210,5 @@ require('navbar.html');
 
 </body>
 </html>
+
+<?php session_destroy(); ?>
