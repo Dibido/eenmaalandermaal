@@ -160,7 +160,6 @@ require('navbar.html');
                                 </div>
                             </div>
                         </div>
-
                         <div class=\"item\">
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[2]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[2]["ImagePath"] . ")\"></div>

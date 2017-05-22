@@ -393,7 +393,6 @@ function printCategoriën($zoekterm, $rubriekNummer)
     echo '</ul>';
 }
 
-
 function createTimer($tijd, $VW_Titel, $pagina)
 {
     echo '<script>
