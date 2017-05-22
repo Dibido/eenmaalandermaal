@@ -6,6 +6,7 @@ require('PHP/SQL-Queries.php');
 
 $response = NULL;
 
+
 ?>
 
 <!doctype html>
@@ -112,6 +113,40 @@ require('navbar.html');
             </a>
         </div>
 
+
+        <!--  carousel end -->
+
+        <!-- Details panel -->
+
+        <div class="panel panel-default Details-wrapper">
+            <div class="panel-heading text-center">Kenmerken</div>
+            <div class="Details">
+                <div class="Detail"><b>Categorie:</b> voorbeeld categorie</div>
+                <div class="Detail"><b>Locatie:</b> voorbeeld locatie</div>
+                <div class="Detail"><b>geplaatst:</b> 22 mei 2017</div>
+                <div class="Detail"><b>conditie:</b> goed als nieuw</div>
+            </div>
+        </div>
+
+        <!-- panel end -->
+
+        <!-- Description panel -->
+
+        <div class="panel panel-default ">
+            <div class="panel-heading text-center">Kenmerken</div>
+                <div class="panel-body">
+                    <div>
+
+
+                    </div>
+                </div>
+        </div>
+
+        <!-- Description end -->
+
+
+        <!-- end of left col -->
+
     </div>
 
 
@@ -137,35 +172,24 @@ require('navbar.html');
 
             <div class="panel-heading text-center">Recente boden</div>
             <div class="panel-body">
-                <div class="OldOffer"><div class="OldOfferUserName">1. Athan88</div><div class="OldOfferPrice">&euro; 20000</div></div>
-                <div class="OldOffer"><div class="OldOfferUserName">2. Leroy Jenkings</div><div class="OldOfferPrice">&euro; 15</div></div>
-                <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">&euro; 10</div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">1. Athan88</div><div class="OldOfferPrice">10 minuten</div><div class="OldOfferPrice">&euro; 20000</div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">2. Leroy Jenkings</div><div class="OldOfferPrice">2 uur</div><div class="OldOfferPrice">&euro; 15</div></div>
+                <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">3 weken</div><div class="OldOfferPrice">&euro; 10</div></div>
 
 
                 <!-- Extra offers -->
 
                 <div id="MoreOffers" class="collapse">
-                    <div class="OldOffer"><div class="OldOfferUserName">4. Athan88</div><div class="OldOfferPrice">&euro; 20000</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">5. Leroy Jenkings</div><div class="OldOfferPrice">&euro; 15</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">6. User120009128</div><div class="OldOfferPrice">&euro; 10</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">7. Athan88</div><div class="OldOfferPrice">&euro; 20000</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">8. Leroy Jenkings</div><div class="OldOfferPrice">&euro; 15</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">9. User120009128</div><div class="OldOfferPrice">&euro; 10</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">10. Athan88</div><div class="OldOfferPrice">&euro; 20000</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">1. Athan88</div><div class="OldOfferPrice">10 minuten</div><div class="OldOfferPrice">&euro; 20000</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">2. Leroy Jenkings</div><div class="OldOfferPrice">2 uur</div><div class="OldOfferPrice">&euro; 15</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">3 weken</div><div class="OldOfferPrice">&euro; 10</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">1. Athan88</div><div class="OldOfferPrice">10 minuten</div><div class="OldOfferPrice">&euro; 20000</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">2. Leroy Jenkings</div><div class="OldOfferPrice">2 uur</div><div class="OldOfferPrice">&euro; 15</div></div>
+                    <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">3 weken</div><div class="OldOfferPrice">&euro; 10</div></div>
                 </div>
 
                 <button data-toggle="collapse" data-target="#MoreOffers" class="btn btn-default MoreOffers collapsed" value="Meer boden"></button>
 
-                <script type="text/javascript">
-
-
-                    function handleClick()
-                    {
-                        this.value = (this.value == 'Meer boden' ? 'Minder boden' : 'Meer boden');
-                    }
-                    document.getElementById('MoreOffers').onclick=handleClick;
-
-                </script>
 
             </div>
 
@@ -185,7 +209,7 @@ require('navbar.html');
             <div class="panel-body">
                 <div class="UserContainer">
                     <div id="User" style="background-image:url(images/User.png)"></div>
-                    <span class="UserInfo">Gebruiker 20016</span>
+                    <div class="UserInfo">Gebruiker 20016</div>
                 </div>
                 <div id="UserRating" class="text-center">
                     <div>
@@ -199,6 +223,18 @@ require('navbar.html');
             </div>
 
         </div>
+
+
+        <!-- gelijksoortige advertenties -->
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">Gelijksoortige advertenties</div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+
+        <!-- einde gelijksoortige advertenties -->
 
     </div>
 

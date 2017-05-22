@@ -61,7 +61,8 @@ function SendToDatabase($query)
 
 
 // Insert data in de DB
-function InsertIntoDatabase($SetRegistratie, $email, $code) {
+function InsertIntoDatabase($SetRegistratie, $email, $code)
+{
     GLOBAL $connection;
     $stmt = $connection->prepare($SetRegistratie);
     $stmt->bindParam(':email', $email);
@@ -261,39 +262,30 @@ SELECT
     VW_looptijdEinde,
    Voorwerp.VW_betalingswijze
  FROM Voorwerp
-   inneR JOIN Bod
-     ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-   INNER JOIN Voorwerp_Rubriek
-     ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-   inner JOIN Rubriek
-     ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-   inner  JOIN Rubriek r1
-     ON r1.RB_Nummer = Rubriek.RB_Parent
-   inner JOIN Rubriek r2
-     ON r2.RB_Nummer = r1.RB_Parent
-   inner  JOIN Rubriek r3
-     ON r3.RB_Nummer = r2.RB_Parent
-	left outer JOIN Rubriek r4
-	 on r4.RB_Nummer = r3.RB_Parent
+  LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+ LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+  LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
+  LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
+  LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
+  LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
 	WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
 	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
 	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
-	AND ($SearchMinPrice IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
-									FROM Bod
-		                            WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
-		                                                        FROM Bod
-			                                                    WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-				                                                ORDER BY BOD_Bodbedrag DESC) AND
-																BOD_voorwerpnummer = VW_voorwerpnummer
-						               ORDER BY BOD_Bodbedrag DESC) >= $SearchMinPrice)
-	AND ($SearchMaxPrice IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
-			                       FROM Bod
-		                           WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
-                                                           FROM Bod
-                                                           WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                                           ORDER BY BOD_Bodbedrag DESC)
-													 AND BOD_voorwerpnummer = VW_voorwerpnummer
-									 ORDER BY BOD_Bodbedrag DESC) <= $SearchMaxPrice)
+	AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) >= $SearchMinPrice)
+	AND ($SearchMaxPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) <= $SearchMaxPrice)
 		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
 		AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
 	AND (VW_veilinggesloten != 1)
@@ -303,6 +295,7 @@ ORDER BY $SearchFilter , VW_voorwerpnummer
 
     
 EOT;
+    print_r($QuerySearchProducts);
     //executing the query
     return SendToDatabase($QuerySearchProducts);
 
@@ -335,7 +328,7 @@ function printVragen($Vragen)
 }
 
 
-function printCategoriën($zoekterm)
+function printCategoriën($zoekterm, $rubriekNummer)
 {
     global $connection;
     $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek
@@ -364,7 +357,7 @@ function printCategoriën($zoekterm)
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/
+                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
                         GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
@@ -386,7 +379,9 @@ function printCategoriën($zoekterm)
         //For loop to close the list items and unorderd lists it "closes" backwards
         for ($k = sizeof($rubrieken[$i]) - 1; $k >= 0; $k--) {
             //If the last rubric is set and the Last Rubric is not the same as the next Rubric
-            if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
+            if($i+1 >= sizeof($rubrieken)){
+                echo '</ul></li>';
+            }else if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
                 echo '</ul></li>';
                 if($k == 0){
                    echo '<hr class="line"  size="1">';

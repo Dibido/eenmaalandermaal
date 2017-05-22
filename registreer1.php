@@ -1,51 +1,16 @@
 <?php
 
+/*registratie Check op:
+    username max 32
+    lengte
+    email
+    password
+
+DataBase check (trigger) die Registratie opschoond*/
+
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
-
-
-function checkEmailSent()
-{
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['email'])) {
-            $email = $_POST['email'];
-            $code = md5($email . date("Y/m/d"));
-            global $SetRegistratie;
-
-            // If already in DB
-            $sql = " SELECT REG_email FROM Registreer WHERE REG_email = '$email'";
-            $getUser = SendToDatabase($sql);
-
-            if ($getUser) { //IF waarde (dus niet leeg)
-                // Display error
-                echo '  <div class="alert alert-danger" >
-                        <strong > Fout!</strong > Er is al een verificatie verstuurd naar ' . $email . '
-                        </div > ';
-            } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
-                // Send to DB
-                InsertIntoDatabase($SetRegistratie, $email, $code);
-                mail($email, 'Subject', 'Message', 'From: info@iproject3.icasites.nl');
-                echo '  <div class="alert alert-success">
-                            <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
-
-
-            }
-        }
-    }
-}
-
-
-function getEmail()
-{
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['email'])) {
-            $email = $_POST['email'];
-            echo $email;
-
-        }
-    }
-}
 
 ?>
 

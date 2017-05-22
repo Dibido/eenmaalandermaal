@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $categorie = ($_GET['categorie']);
     }
     if (!isset($_GET['zoekterm'])) {
-        $_GET['zoekterm'] = "";
+        $zoekterm = $_GET['zoekterm'] = "";
     }
     if (!isset($_GET['sorteerfilter'])) {
         $_GET['sorteerfilter'] = "Tijd: nieuw aangeboden";
@@ -138,9 +138,16 @@ require('navbar.html');
                 <a href="#" class="list-group-item active">Opties</a>
 
                 <form method="get" action="resultaten.php">
-
-                    <input type="hidden" name="zoekterm" value="<?php global $zoekterm;
-                    echo($zoekterm); ?>">
+                    <a href="#" class="list-group-item">
+                            <div class="input-group" style="display:table;">
+                                <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                                       autofocus="autofocus" type="text" value='<?php $zoekterm?>'>
+                                <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
+                                                                                                           type="submit"
+                                                                                                           style="background-color: #ffffff; border-color: #f2f2f2;"><span
+                                                class="glyphicon glyphicon-search"></span></button></span>
+                            </div>
+                    </a>
                     <input type="hidden" name="categorie" value="<?php global $categorie;
                     echo($categorie); ?>">
                     <input type="hidden" name="pagenum" value="<?php global $pagenum; echo($pagenum); ?>">  
@@ -223,7 +230,7 @@ require('navbar.html');
             </a>
             <div class="list-group-item">
                 <ul class="nav nav-list">
-                    <?php printCategoriën($zoekterm);
+                    <?php printCategoriën($zoekterm, $categorie);
                     ?>
                 </ul>
             </div>
