@@ -279,22 +279,20 @@ SELECT
 	WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
 	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
 	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
-	AND ($SearchMinPrice IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
-									FROM Bod
-		                            WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
-		                                                        FROM Bod
-			                                                    WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-				                                                ORDER BY BOD_Bodbedrag DESC) AND
-																BOD_voorwerpnummer = VW_voorwerpnummer
-						               ORDER BY BOD_Bodbedrag DESC) >= $SearchMinPrice)
-	AND ($SearchMaxPrice IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
-			                       FROM Bod
-		                           WHERE BOD_Bodbedrag NOT IN (SELECT TOP 1 BOD_Bodbedrag
-                                                           FROM Bod
-                                                           WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                                           ORDER BY BOD_Bodbedrag DESC)
-													 AND BOD_voorwerpnummer = VW_voorwerpnummer
-									 ORDER BY BOD_Bodbedrag DESC) <= $SearchMaxPrice)
+	AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) >= $SearchMinPrice)
+	AND ($SearchMaxPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) <= $SearchMaxPrice)
 		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
 		AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
 	AND (VW_veilinggesloten != 1)
@@ -304,6 +302,7 @@ ORDER BY $SearchFilter , VW_voorwerpnummer
 
     
 EOT;
+    print_r($QuerySearchProducts);
     //executing the query
     return SendToDatabase($QuerySearchProducts);
 
