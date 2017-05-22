@@ -10,6 +10,26 @@ $Vragen = SendToDatabase($GetVragenQuerie);
 
 $emailadres = validateHash();
 
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['code'])) {
+        $code = $_POST['code'];
+        $sql = "SELECT * FROM Registreer WHERE REG_code = '$code'";
+        $getUser = SendToDatabase($sql);
+
+        if (!$getUser) {
+            echo '  <div class="alert alert-danger" >
+                                    <strong > Fout!</strong > Er is geen gebruiker gekoppeld aan deze code </div > ';
+        } else {
+            $_SESSION["emailadres"] = $getUser[0]['REG_email'];
+            header('Location: registreer2.php');
+        }
+
+    }
+}
+
+
 ?>
 
 
@@ -96,40 +116,45 @@ $emailadres = validateHash();
                             <div class="form-group">
                                 <label for="voornaam">Voornaam*</label>
                                 <input name="voornaam" id="voornaam" type="text" placeholder="Voornaam"
-                                       class="form-control" required="true">
+                                       class="form-control" required="true" maxlength="16">
                             </div>
 
                             <div class="form-group">
                                 <label for="achternaam">Achternaam*</label>
                                 <input name="achternaam" id="achternaam" type="text" placeholder="Achternaam"
-                                       class="form-control" required="true">
+                                       class="form-control" required="true" maxlength="16">
                             </div>
 
                             <div class="form-group">
                                 <label for="Email">Email*</label>
-                                <input name="email" id="email" type="text" placeholder="voorbeeld@voorbeeld.com"
-                                       value="<?php echo $emailadres; ?>"
+                                <input name="email" id="email" type="text"
+                                       value="<?php echo $emailadres; ?>" readonly
                                        class="form-control" required="true">
                             </div>
 
                             <div class="form-group">
                                 <label for="adres1">Adresregel 1*</label>
                                 <input name="adres1" id="adres1" type="text" placeholder="Adresregel 1"
-                                       class="form-control" required="true">
+                                       class="form-control" required="true" maxlength="255">
                             </div>
 
                             <div class="form-group">
                                 <label for="adres2">Adresregel 2</label>
                                 <input name="adres2" id="adres2" type="text" placeholder="Adresregel 2"
-                                       class="form-control" required="true">
+                                       class="form-control" required="true" maxlength="255">
                             </div>
 
                             <div class="form-group">
                                 <label for="postcode">Postcode*</label>
                                 <input name="postcode" id="postcode" type="text" placeholder="1234 AB"
-                                       class="form-control" required="true">
+                                       class="form-control" required="true" maxlength="60">
                             </div>
 
+                            <div class="form-group">
+                                <label for="woonplaats">Woonplaats*</label>
+                                <input name="woonplaats" id="woonplaats" type="text" placeholder="Woonplaats"
+                                       class="form-control" required="true" maxlength="85">
+                            </div>
 
                             <div class="form-group">
                                 <label for="land">Land*</label>
@@ -154,19 +179,19 @@ $emailadres = validateHash();
                             <div class="form-group">
                                 <label for="gebruikersnaam">Gebruikersnaam*</label>
                                 <input name="gebruikersnaam" id="gebruikersnaam" type="text"
-                                       placeholder="Gebruikersnaam"
+                                       placeholder="Gebruikersnaam" maxlength="64"
                                        class="form-control" required="true">
                             </div>
 
                             <div class="form-group">
                                 <label for="wachtwoord">Wachtwoord*</label>
-                                <input name="wachtwoord" id="wachtwoord" type="password" placeholder="Wachtwoord"
+                                <input name="wachtwoord" id="wachtwoord" type="password" placeholder="Wachtwoord" maxlength="60"
                                        class="form-control" required="true">
                             </div>
 
                             <div class="form-group">
                                 <label for="wachtwoord2">Bevestig wachtwoord*</label>
-                                <input name="wachtwoord2" id="wachtwoord2" type="password"
+                                <input name="wachtwoord2" id="wachtwoord2" type="password" maxlength="60"
                                        placeholder="Herhaal wachtwoord"
                                        class="form-control" required="true">
                             </div>
@@ -176,7 +201,7 @@ $emailadres = validateHash();
                             <div class="form-group">
                                 <label for="geheimevraag">Geheime vraag*</label>
                                 <select name="geheimevraag" id="geheimevraag" type="text"
-                                        placeholder="Herhaal wachtwoord"
+                                        placeholder="Kies een geheime vraag"
                                         class="form-control" required="true">
                                     <?php
                                     printVragen($Vragen);
@@ -188,7 +213,7 @@ $emailadres = validateHash();
                                 <label for="antwoord">Antwoord op je geheime vraag*</label>
                                 <input name="antwoord" id="antwoord" type="text"
                                        placeholder="Antwoord op je geheime vraag"
-                                       class="form-control" required="true">
+                                       class="form-control" required="true" maxlength="16">
                             </div>
 
                             <div class="form-group">

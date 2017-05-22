@@ -105,9 +105,6 @@ CREATE TABLE Voorwerp (
   CONSTRAINT FK_VoorwerpGebruikerGebruikersnaam FOREIGN KEY (VW_koper) REFERENCES Gebruiker (GEB_gebruikersnaam)
     ON UPDATE CASCADE --Voor als de gebruikersnaam wordt aangepast
     ON DELETE NO ACTION,
-  CONSTRAINT FK_BestandVoorwerpnummer FOREIGN KEY (VW_voorwerpnummer) REFERENCES Bestand (BES_voorwerpnummer)
-    ON UPDATE CASCADE
-    ON DELETE NO ACTION,
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2), --Kan niet leeg zijn
@@ -120,6 +117,16 @@ CREATE TABLE Voorwerp (
                                                    VW_startprijs), --Kijkt of de verkoop prijs wel groter is dan de start prijs
   --TODO: CONSTRAINT FK_verkoper naar verkopers tabel
 )
+
+CREATE TABLE Bestand (
+  BES_filenaam       VARCHAR(260) NOT NULL, --Maximum lengte van file path is volgens microsoft 260 tekens.
+  BES_voorwerpnummer BIGINT       NOT NULL,
+  CONSTRAINT PK_Filenaam PRIMARY KEY (BES_filenaam),
+  CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (BES_voorwerpnummer) REFERENCES Voorwerp (VW_voorwerpnummer)
+    ON UPDATE CASCADE --Wanneer het voorwerp wordt aangepast, overnemen
+    ON DELETE CASCADE, --Wanneer het voorwerp delete wordt, overnemen
+  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
+);
 
 
 CREATE TABLE Rubriek (
@@ -142,16 +149,6 @@ CREATE TABLE Voorwerp_Rubriek (
   CONSTRAINT FK_VR_RUB FOREIGN KEY (VR_Rubriek_Nummer) REFERENCES Rubriek (RB_Nummer)
     ON UPDATE CASCADE
     ON DELETE CASCADE
-);
-
-CREATE TABLE Bestand (
-  BES_filenaam       VARCHAR(260) NOT NULL, --Maximum lengte van file path is volgens microsoft 260 tekens.
-  BES_voorwerpnummer BIGINT       NOT NULL,
-  CONSTRAINT PK_Filenaam PRIMARY KEY (BES_filenaam),
-  CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (BES_voorwerpnummer) REFERENCES Voorwerp (VW_voorwerpnummer)
-    ON UPDATE CASCADE --Wanneer het voorwerp wordt aangepast, overnemen
-    ON DELETE CASCADE, --Wanneer het voorwerp delete wordt, overnemen
-  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
 );
 
 CREATE TABLE Bod (

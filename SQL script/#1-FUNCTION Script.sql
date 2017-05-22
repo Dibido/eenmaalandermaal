@@ -68,7 +68,8 @@ CREATE FUNCTION nietEigenVoorwerp(
     )
   END
 
-/*GO
+--Functie om de valuta om te rekenen voor het converteren van de voorwerpen
+GO
 IF OBJECT_ID('FN_Verandervaluta') IS NOT NULL
 DROP FUNCTION [dbo].[FN_Verandervaluta]
 GO
@@ -82,4 +83,3 @@ RETURNS NUMERIC
 		 RETURN (@Prijs  * 1.12128)
 	 RETURN @Prijs
 END
-*/
