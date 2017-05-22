@@ -1,5 +1,3 @@
-USE eenmaalandermaal
-
 IF OBJECT_ID('dbo.Voorwerp_Rubriek') IS NOT NULL
   DROP TABLE dbo.Voorwerp_Rubriek
 IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
@@ -20,6 +18,8 @@ IF OBJECT_ID('dbo.Bod') IS NOT NULL
   DROP TABLE dbo.Bod
 IF OBJECT_ID('dbo.Vraag') IS NOT NULL
   DROP TABLE dbo.Vraag
+IF OBJECT_ID('dbo.Registreer') IS NOT NULL
+  DROP TABLE dbo.Registreer
 
 
 CREATE TABLE Betalingswijzen (

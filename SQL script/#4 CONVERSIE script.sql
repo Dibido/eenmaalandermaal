@@ -1,6 +1,3 @@
---Dit bestand bevat alle conversiescripts om de
-
-USE eenmaalandermaal
 --Conversiescript rubrieken
 BEGIN TRANSACTION
 INSERT INTO eenmaalandermaal.dbo.Rubriek
