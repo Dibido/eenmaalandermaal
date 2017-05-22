@@ -61,14 +61,14 @@ function SendToDatabase($query)
 
 
 // Insert data in de DB
-function InsertIntoDatabase($SetRegistratie, $email, $code) {
+function InsertIntoDatabase($SetRegistratie, $email, $code)
+{
     GLOBAL $connection;
     $stmt = $connection->prepare($SetRegistratie);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':code', $code);
     $stmt->execute();
 }
-
 
 
 /* This function draws an auction */
@@ -388,8 +388,8 @@ function printCategoriën($zoekterm)
             //If the last rubric is set and the Last Rubric is not the same as the next Rubric
             if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
                 echo '</ul></li>';
-                if($k == 0){
-                   echo '<hr class="line"  size="1">';
+                if ($k == 0) {
+                    echo '<hr class="line"  size="1">';
                 }
             }
         }
@@ -442,6 +442,74 @@ function createTimer($tijd, $VW_Titel)
 </script>
 ';
 }
+
+
+
+
+// Indien gebruiker email heeft ingevuld en op verstuur heeft geklikt, wordt er een check uitgevoerd.
+// Vervolgens wordt er een email verstuurd en een message weergegeven.
+function checkEmailSent()
+{
+
+    $subject = 'Uw EenmaalAndermaal registratie';
+
+    $message = 'Beste toekomstige gebruiker,
+
+u heeft aangegeven zich aan te willen melden op onze website.
+
+Dit is uw persoonlijke code: ' . $code . '
+Vul deze in op de website om de registratieprocedure af te ronden.
+
+Met vriendelijke groet,
+
+Het EenmaalAndermaal Team';
+
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            $code = md5($email . date("Y/m/d"));
+            global $SetRegistratie;
+            global $subject;
+            global $message;
+
+// If already in DB
+            $sql = " SELECT REG_email FROM Registreer WHERE REG_email = '$email'";
+            $getUser = SendToDatabase($sql);
+
+            if ($getUser) { //IF waarde (dus niet leeg)
+                // Display error
+                echo '  <div class="alert alert-danger" >
+                        <strong > Fout!</strong > Er is al een verificatie verstuurd naar ' . $email . '
+                        </div > ';
+            } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
+                // Send to DB
+                InsertIntoDatabase($SetRegistratie, $email, $code);
+                mail($email, $subject, $message, 'From: info@iproject3.icasites.nl');
+                echo '  <div class="alert alert-success">
+                            <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
+
+
+            }
+        }
+    }
+}
+
+
+
+// functie die email adres invult bij laden registreer1.php indien al ingevuld.
+function getEmail()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            echo $email;
+
+        }
+    }
+}
+
+
 
 ?>
 
