@@ -1,13 +1,6 @@
 <?php
 session_start();
 ob_start();
-/*registratie Check op:
-    username max 32
-    lengte
-    email
-    password
-
-DataBase check (trigger) die Registratie opschoond*/
 
 require('PHP/connection.php');
 require('PHP/Functions.php');

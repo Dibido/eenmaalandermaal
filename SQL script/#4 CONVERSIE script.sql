@@ -1,4 +1,5 @@
 --Conversiescript rubrieken
+--TODO: unicode characters goed representeren ipv een vraagteken.
 BEGIN TRANSACTION
 INSERT INTO Rubriek
   SELECT
@@ -12,7 +13,7 @@ COMMIT
 --Conversiescript Users
 BEGIN TRANSACTION
 INSERT INTO eenmaalandermaal.dbo.Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord,
-                       GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
+                                            GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
   SELECT DISTINCT
     LTRIM(RTRIM(Username))   AS GEB_gebruikersnaam,
     LTRIM(RTRIM('-'))        AS GEB_voornaam,
@@ -36,40 +37,53 @@ INSERT INTO eenmaalandermaal.dbo.Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GE
 COMMIT
 
 --Conversiescript Items
-SET IDENTITY_INSERT eenmaalandermaal.dbo.Voorwerp ON
 BEGIN TRANSACTION
-INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail)
+SET IDENTITY_INSERT eenmaalandermaal.dbo.voorwerp ON
+INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
-    ID           AS VW_voorwerpnummer,
-    Titel        AS VW_titel,
-    Beschrijving AS VW_beschrijving,
+    ID                                              AS VW_voorwerpnummer,
+    (SELECT CASE
+            WHEN len(titel) >= 56
+              THEN left(titel, 56) + '...'
+            ELSE titel END titel)                   AS VW_titel,
+    eenmaalandermaal.dbo.FN_StripHTML(Beschrijving) AS VW_beschrijving,
     --HTML tags filteren
-    Land         AS VW_land,
-    Verkoper     AS VW_verkoper,
-    Conditie     AS VW_conditie,
-    Thumbnail    AS VW_thumbnail
+    Land                                            AS VW_land,
+    Verkoper                                        AS VW_verkoper,
+    Conditie                                        AS VW_conditie,
+    Thumbnail                                       AS VW_thumbnail,
+    1.00                                            AS VW_startprijs,
+    '2017-05-24'                                    AS VW_looptijdstart,
+    7                                               AS VW_looptijd,
+    'Bank / giro'                                   AS VW_betalingswijze,
+    CASE WHEN CHARINDEX(',', [locatie]) > 0
+      THEN REPLACE(LEFT([locatie], CHARINDEX(',', [locatie])), ',', '')
+    ELSE 'Geen plaatsnaam bekend'
+    END                                             AS VW_plaatsnaam,
+    0                                               AS VW_veilinggesloten
   FROM veilingssite.dbo.Items
-SET IDENTITY_INSERT eenmaalandermaal.dbo.Voorwerp OFF
+SET IDENTITY_INSERT eenmaalandermaal.dbo.voorwerp OFF
+GO
 
+BEGIN TRANSACTION
 INSERT INTO eenmaalandermaal.dbo.Bod (BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker, BOD_bodTijdEnDag)
   SELECT
-    ID                               AS BOD_voorwerpnummer,
+    ID                                                    AS BOD_voorwerpnummer,
     eenmaalandermaal.dbo.FN_Verandervaluta(Valuta, Prijs) AS BOD_bodbedrag,
-    --Prijs omzetten naar euro aan de hand van een wisselkoers
-    Verkoper                         AS BOD_gebruiker,
-    getdate()                        AS BOD_bodTijdEnDag
+    --TODO: Prijs omzetten naar euro aan de hand van een wisselkoers en zorgen dat het hoger is dan 1 euro. Afronden checken.
+    'kees'                                                AS BOD_gebruiker,
+    getdate()                                             AS BOD_bodTijdEnDag
   FROM veilingssite.dbo.Items
+GO
 
-INSERT INTO eenmaalandermaal.dbo.Gebruiker (GEB_postcode)
-  SELECT Postcode AS GEB_postcode
-  FROM veilingssite.dbo.Items
-
+BEGIN TRANSACTION
 INSERT INTO eenmaalandermaal.dbo.Voorwerp_Rubriek
   SELECT
-    Categorie AS VR_Voorwerp_Nummer,
-    ID        AS VR_Rubriek_Nummer
+    ID        AS VR_Voorwerp_Nummer,
+    Categorie AS VR_Rubriek_Nummer
   FROM veilingssite.dbo.Items
 COMMIT
+GO
 
 
 /*
@@ -97,3 +111,16 @@ INSERT INTO eenmaalandermaal.dbo.Bestand (BES_filenaam, BES_voorwerpnummer)
                    FROM eenmaalandermaal.dbo.Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)
 COMMIT
+
+INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail)
+  SELECT
+    ID           AS VW_voorwerpnummer,
+    Titel        AS VW_titel,
+    Beschrijving AS VW_beschrijving,
+    --HTML tags filteren
+    Land         AS VW_land,
+    Verkoper     AS VW_verkoper,
+    Conditie     AS VW_conditie,
+    Thumbnail    AS VW_thumbnail
+  FROM veilingssite.dbo.Items
+SET IDENTITY_INSERT eenmaalandermaal.dbo.Voorwerp OFF

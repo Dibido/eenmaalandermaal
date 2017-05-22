@@ -71,15 +71,40 @@ CREATE FUNCTION nietEigenVoorwerp(
 --Functie om de valuta om te rekenen voor het converteren van de voorwerpen
 GO
 IF OBJECT_ID('FN_Verandervaluta') IS NOT NULL
-DROP FUNCTION [dbo].[FN_Verandervaluta]
+  DROP FUNCTION [dbo].[FN_Verandervaluta]
 GO
 CREATE FUNCTION FN_Verandervaluta
-(@Valuta CHAR(3), @Prijs NUMERIC(9,2))
-RETURNS NUMERIC
-	BEGIN
-	 IF (@Valuta  = 'GBP')
-		 RETURN (@Prijs  / 0.862403667)
-	 ELSE IF (@Valuta = 'USD')
-		 RETURN (@Prijs  * 1.12128)
-	 RETURN @Prijs
-END
+  (@Valuta CHAR(3), @Prijs NUMERIC(9, 2))
+  RETURNS NUMERIC
+  BEGIN
+    IF (@Valuta = 'GBP')
+      RETURN (@Prijs / 0.862403667)
+    ELSE IF (@Valuta = 'USD')
+      RETURN (@Prijs * 1.12128)
+    RETURN @Prijs
+  END
+
+--Functie om de HTML beschrijving te filteren
+GO
+IF OBJECT_ID('FN_StripHTML') IS NOT NULL
+  DROP FUNCTION [dbo].[FN_StripHTML]
+GO
+CREATE FUNCTION [dbo].[FN_StripHTML](@HTMLText VARCHAR(MAX))
+  RETURNS VARCHAR(MAX) AS
+  BEGIN
+    DECLARE @Start INT
+    DECLARE @End INT
+    DECLARE @Length INT
+    SET @Start = CHARINDEX('<', @HTMLText)
+    SET @End = CHARINDEX('>', @HTMLText, CHARINDEX('<', @HTMLText))
+    SET @Length = (@End - @Start) + 1
+    WHILE @Start > 0 AND @End > 0 AND @Length > 0
+      BEGIN
+        SET @HTMLText = STUFF(@HTMLText, @Start, @Length, '')
+        SET @Start = CHARINDEX('<', @HTMLText)
+        SET @End = CHARINDEX('>', @HTMLText, CHARINDEX('<', @HTMLText))
+        SET @Length = (@End - @Start) + 1
+      END
+    RETURN LTRIM(RTRIM(@HTMLText))
+  END
+GO
