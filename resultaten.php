@@ -288,7 +288,7 @@ EOT;
             $previous = $pagenum - 1;
             echo "<a href=" . " 
 
-?zoekterm=" . $zoekterm . "&categorie=" . $categorie . "&sorteerfilter=" . $sorteerfilter . " &prijs=" . $prijs . "&pagenum=" . $previous . "> <-Vorige</a>";
+?zoekterm=" . $zoekterm . "&categorie=" . $categorie . "&sorteerfilter=" . urldecode($sorteerfilter) . " &prijs=" . $prijs . "&pagenum=" . $previous . "> <-Vorige</a>";
         }
         //just a spacer
         echo " ---- ";

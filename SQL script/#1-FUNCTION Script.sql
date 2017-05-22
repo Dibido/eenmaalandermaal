@@ -76,19 +76,16 @@ GO
 CREATE FUNCTION FN_Maaknumeric(@Prijs NUMERIC(9, 2))
   RETURNS NUMERIC(9, 2)
   BEGIN
-    DECLARE @PrijsNumeric NUMERIC(9, 2)
-    DECLARE @Een NUMERIC(9, 2)
-    SET @PrijsNumeric = (CAST(@Prijs AS NUMERIC(9, 2)))
-    SET @Een = (CAST(1.00 AS NUMERIC(9, 2)))
-    IF (@PrijsNumeric < 1.00)
-      @PrijsNumeric = @Een
-    RETURN @PrijsNumeric
+    DECLARE @PrijsNumeric NUMERIC(9, 2);
+    SET @PrijsNumeric = (CAST(@Prijs AS NUMERIC(9, 2)));
+    IF (@PrijsNumeric <= 1.00)
+        SET @PrijsNumeric = 1.50
+        RETURN @PrijsNumeric
   END
 GO
 
 
 --Functie om de valuta om te rekenen voor het converteren van de voorwerpen
-GO
 IF OBJECT_ID('FN_Verandervaluta') IS NOT NULL
   DROP FUNCTION [dbo].[FN_Verandervaluta]
 GO
@@ -97,15 +94,14 @@ CREATE FUNCTION FN_Verandervaluta
   RETURNS NUMERIC
   BEGIN
     IF (@Valuta = 'GBP')
-      RETURN (FN_Maaknumeric(@Prijs) / 0.862403667)
+      RETURN (@Prijs / 0.862403667)
     ELSE IF (@Valuta = 'USD')
-      RETURN (FN_Maaknumeric(@Prijs) * 1.12128)
+      RETURN (@Prijs * 1.12128)
     RETURN @Prijs
   END
-
+GO
 
 --Functie om de HTML beschrijving te filteren
-GO
 IF OBJECT_ID('FN_StripHTML') IS NOT NULL
   DROP FUNCTION [dbo].[FN_StripHTML]
 GO

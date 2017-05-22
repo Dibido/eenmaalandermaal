@@ -68,8 +68,8 @@ BEGIN TRANSACTION
 INSERT INTO eenmaalandermaal.dbo.Bod (BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker, BOD_bodTijdEnDag)
   SELECT
     ID                                                    AS BOD_voorwerpnummer,
-    eenmaalandermaal.dbo.FN_Verandervaluta(Valuta, Prijs) AS BOD_bodbedrag,
-    --TODO: Prijs omzetten naar euro aan de hand van een wisselkoers en zorgen dat het hoger is dan 1 euro. Afronden checken.
+    eenmaalandermaal.dbo.FN_Verandervaluta(Valuta, eenmaalandermaal.dbo.FN_Maaknumeric(Prijs)) AS BOD_bodbedrag,
+    --Prijs omzetten naar euro aan de hand van een wisselkoers en zorgen dat het hoger is dan 1 euro. Afronden checken.
     'kees'                                                AS BOD_gebruiker,
     getdate()                                             AS BOD_bodTijdEnDag
   FROM veilingssite.dbo.Items
@@ -110,16 +110,3 @@ INSERT INTO eenmaalandermaal.dbo.Bestand (BES_filenaam, BES_voorwerpnummer)
                    FROM eenmaalandermaal.dbo.Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)
 COMMIT
-
-INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail)
-  SELECT
-    ID           AS VW_voorwerpnummer,
-    Titel        AS VW_titel,
-    Beschrijving AS VW_beschrijving,
-    --HTML tags filteren
-    Land         AS VW_land,
-    Verkoper     AS VW_verkoper,
-    Conditie     AS VW_conditie,
-    Thumbnail    AS VW_thumbnail
-  FROM veilingssite.dbo.Items
-SET IDENTITY_INSERT eenmaalandermaal.dbo.Voorwerp OFF
