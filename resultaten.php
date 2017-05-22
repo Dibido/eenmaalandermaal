@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $zoekterm = ($_GET['zoekterm']);
     }
     if (isset($_GET['sorteerfilter'])) {
-        $sorteerfilter = $waardes[($_GET['sorteerfilter'])];
+        $sorteerfilter = ($_GET['sorteerfilter']);
     }
     if (isset($_GET['betalingsmethode'])) {
         $betalingsmethode = $_GET['betalingsmethode'];
@@ -134,14 +134,16 @@ require('navbar.html');
 
                 <form method="get" action="resultaten.php">
                     <a href="#" class="list-group-item">
-                            <div class="input-group" style="display:table;">
-                                <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
-                                       autofocus="autofocus" type="text" value='<?php $zoekterm?>'>
-                                <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
-                                class="glyphicon glyphicon-search"></span></button></span>
-                            </div>
+                        <div class="input-group" style="display:table;">
+                            <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                                   autofocus="autofocus" type="text" value='<?php $zoekterm ?>'>
+                            <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
+                                        class="btn btn-secondary" type="submit"
+                                        style="background-color: #ffffff; border-color: #f2f2f2;"><span
+                                            class="glyphicon glyphicon-search"></span></button></span>
+                        </div>
                     </a>
-            
+
                     <a href="#" class="list-group-item"> Filter:
                         <select class="form-control" name="sorteerfilter">
                             <?php
@@ -159,6 +161,8 @@ require('navbar.html');
 
                     <a href="#" class="list-group-item">Prijs:
                         <b><?php echo('€' . $prijs['min'] . '- €' . $prijs['max']); ?></b>
+
+                        <div list-group-item>
                         <input id="pslider" type="text" name="prijs"
                                class="span2" value=""
                                data-slider-min="10"
@@ -171,10 +175,23 @@ require('navbar.html');
                             echo('data-slider-value="[150,450]"/>');
                         }
                         ?>
+                        </div>
                     </a>
 
 
                     <a href="#" class="list-group-item">Betalingsmethode:
+                        <select class="form-control" name="betalingsmethode">
+                            <?php
+                            if (isset($betalingsmethode)) {
+                                global $betalingsmethode;
+                                echo('<option value="' . $_GET['betalingsmethode'] . '" selected> ' . $_GET['betalingsmethode'] . '</option>');
+                            }
+                            ?>
+                            <option value="Bank / Giro">Bank / Giro</option>
+                            <option value="Contant">Contant</option>
+                            <option value="Anders">Anders</option>
+                            <option value="Prijs: hoogste bovenaan">Prijs: hoogste bovenaan</option>
+                        </select>
                         <!--<select class="form-control" id="betalingsmethode" name="betalingsmethode">
                             <? /*php
                             if (!isset($betalingsmethode)) {
@@ -188,14 +205,15 @@ require('navbar.html');
                         ?>
                         </select>-->
                     </a>
-                        <ul class="list-group-item">
-                            <div class="row">
-                                <div class="col-sm-6 left">
-                                    <a href="resultaten.php?zoekterm=<?php echo $zoekterm ?>">
-                                        <input class="btn btn-warning center-block" data-inline="true" value="Reset" type="button">
-                                    </a>
+                    <ul class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6 left">
+                                <a href="resultaten.php?zoekterm=<?php echo $zoekterm ?>">
+                                    <input class="btn btn-warning center-block" data-inline="true" value="Reset"
+                                           type="button">
+                                </a>
 
-                                </div>
+                            </div>
                             <div class="col-sm-6 right">
 
                                 <a href="#">
@@ -205,14 +223,15 @@ require('navbar.html');
                             </div>
 
 
-                    </div>
+                        </div>
                     </ul>
                     <script>
                         var slider = new Slider('#pslider', {});
                     </script>
                     <input type="hidden" name="categorie" value="<?php global $categorie;
                     echo($categorie); ?>">
-                    <input type="hidden" name="pagenum" value="<?php global $pagenum; echo($pagenum); ?>">
+                    <input type="hidden" name="pagenum" value="<?php global $pagenum;
+                    echo($pagenum); ?>">
                 </form>
             </div>
             <a href="#" class="list-group-item active" id="Header-Categories">
@@ -243,71 +262,69 @@ require('navbar.html');
         outputRows($result, $Dictionary["SearchKeyword"]);
         ?>
 
-    <!-- pagina nummering -->
-    <?php 
-    //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
-if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) 
-    { 
-        $pagenum = 1; 
-    }
-else { $pagenum = $_GET['pagenum']; }
-//results per page 
-$ResultsPerPage = 10;
-$Offset = $ResultsPerPage * $pagenum;
-$GetResultatenPagina = <<<EOT
+        <!-- pagina nummering -->
+        <?php
+        //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
+        if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
+            $pagenum = 1;
+        } else {
+            $pagenum = $_GET['pagenum'];
+        }
+        //results per page
+        $ResultsPerPage = 10;
+        $Offset = $ResultsPerPage * $pagenum;
+        $GetResultatenPagina = <<<EOT
 SELECT * FROM Voorwerp
 ORDER BY VW_voorwerpnummer
 OFFSET $Offset ROWS
 FETCH NEXT $ResultsPerPage ROWS ONLY
 EOT;
-$result = SendToDatabase($GetResultatenPagina);
-// First we check if we are on page one. If we are then we don't need a link to the previous page or the first page so we do nothing. If we aren't then we generate links to the first page, and to the previous page.
-if ($pagenum == 1) { } 
-else {
-echo " <a href='?pagenum=1'> <<-Eerste pagina</a> ";
-echo " ";
-$previous = $pagenum-1;
-echo "<a href=" . " 
+        $result = SendToDatabase($GetResultatenPagina);
+        // First we check if we are on page one. If we are then we don't need a link to the previous page or the first page so we do nothing. If we aren't then we generate links to the first page, and to the previous page.
+        if ($pagenum == 1) {
+        } else {
+            echo " <a href='?pagenum=1'> <<-Eerste pagina</a> ";
+            echo " ";
+            $previous = $pagenum - 1;
+            echo "<a href=" . " 
 
-?zoekterm=" . $zoekterm . "&categorie=" .  $categorie . "&sorteerfilter=" . $sorteerfilter . " &prijs=" .$prijs . "&pagenum=" .$previous ."> <-Vorige</a>";
-} 
-//just a spacer
-echo " ---- ";
-//This does the same as above, only checking if we are on the last page, and then generating the Next and Last links
-if ($pagenum == $last) 
-{
-} 
-else {
-$next = $pagenum+1;
-echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$next'>Volgende -></a> ";
-echo " ";
-echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last'>Laatste pagina ->></a> ";
-} 
-?> 
+?zoekterm=" . $zoekterm . "&categorie=" . $categorie . "&sorteerfilter=" . $sorteerfilter . " &prijs=" . $prijs . "&pagenum=" . $previous . "> <-Vorige</a>";
+        }
+        //just a spacer
+        echo " ---- ";
+        //This does the same as above, only checking if we are on the last page, and then generating the Next and Last links
+        if ($pagenum == $last) {
+        } else {
+            $next = $pagenum + 1;
+            echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$next'>Volgende -></a> ";
+            echo " ";
+            echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last'>Laatste pagina ->></a> ";
+        }
+        ?>
 
-<!-- HTML --> 
-<html>
-<nav aria-label="...">
-  <ul class="pagination">
-    <li class="page-item disabled">
-      <span class="page-link">Vorige</span>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active">
+        <!-- HTML -->
+        <html>
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <span class="page-link">Vorige</span>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item active">
       <span class="page-link">
         2
         <span class="sr-only">(current)</span>
       </span>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Volgende</a>
-    </li>
-  </ul>
-</nav>
-</html> 
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Volgende</a>
+                </li>
+            </ul>
+        </nav>
+        </html>
 
-    <!-- Einde Paginanummering-->
+        <!-- Einde Paginanummering-->
 
     </div>
 </div>
