@@ -1,6 +1,6 @@
 <?php
 
-require('PHP/connection-old.php');
+require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
