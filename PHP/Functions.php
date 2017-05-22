@@ -94,6 +94,7 @@ function DrawAuction($auction)
     if (empty($auction["ImagePath"])) {
         $auction["ImagePath"] = "images/no-image-available.jpg";
     }
+    $pagina = 'Voorpagina';
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-3\">
@@ -103,7 +104,7 @@ function DrawAuction($auction)
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . '"></p>' . "</div>
+                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . $pagina . '"></p>' . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -114,7 +115,7 @@ function DrawAuction($auction)
             <!-- End template -->
             
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"]);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $pagina);
 
 }
 
@@ -124,6 +125,7 @@ function DrawSearchResults($auction)
     if (empty($auction["ImagePath"])) {
         $auction["ImagePath"] = "images/no-image-available.jpg";
     }
+    $pagina = 'Zoekpagina';
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-md-4 col-sm-6 col-xs-6\">
@@ -134,7 +136,7 @@ function DrawSearchResults($auction)
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<div class="bottom-align-text" id="timer' . $auction["VW_titel"] . '"></div>' . " </div>
+                        <div class=\"tijd label label-default\">" . '<div class="bottom-align-text" id="timer' . $auction["VW_titel"] . $pagina. '"></div>' . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -144,7 +146,7 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"]);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"],$pagina);
 
 }
 
@@ -367,7 +369,7 @@ function printCategoriën($zoekterm, $rubriekNummer)
         for ($j = 0; $j < sizeof($rubrieken[$i]); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
             if (!isset($rubrieken[$i][$j + 1]) OR ($j == sizeof($rubrieken[$i]) - 1) AND isset($rubrieken[$i][$j])) {
-                echo '<li><a href="">' . $rubrieken[$i][$j] . '</a><ul>';
+                echo '<li><a href="&categorie='.$rubrieken[$i][$j].'">' . $rubrieken[$i][$j] . '</a><ul>';
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
@@ -392,11 +394,11 @@ function printCategoriën($zoekterm, $rubriekNummer)
 }
 
 
-function createTimer($tijd, $VW_Titel)
+function createTimer($tijd, $VW_Titel, $pagina)
 {
     echo '<script>
     // Set the date we\'re counting down to
-    var ' . $VW_Titel . ' = new Date("' . $tijd . '").getTime();
+    var ' . $VW_Titel . $pagina .  ' = new Date("' . $tijd . '").getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function() {
@@ -405,7 +407,7 @@ function createTimer($tijd, $VW_Titel)
         var now = new Date().getTime();
 
         // Find the distance between now an the count down date
-        var distance = ' . $VW_Titel . ' - now;
+        var distance = ' . $VW_Titel . $pagina . ' - now;
 
         // Time calculations for days, hours, minutes and seconds
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -416,21 +418,19 @@ function createTimer($tijd, $VW_Titel)
         // Display the result in the element with id="demo"
         
         if(days >= 3){
-        document.getElementById("timer' . $VW_Titel . '").innerHTML = days + "d " + hours + "h "
+        document.getElementById("timer' . $VW_Titel . $pagina. '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
         }else if(days < 3 && seconds < 10){
-        document.getElementById("timer' . $VW_Titel . '").innerHTML = hours + "h "
+        document.getElementById("timer' . $VW_Titel . $pagina.  '").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("timer' . $VW_Titel . '").innerHTML = hours + "h "
+        document.getElementById("timer' . $VW_Titel . $pagina.  '").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
-        
-
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("timer' . $VW_Titel . '").innerHTML = "Veiling gesloten";
+            document.getElementById("timer' . $VW_Titel . $pagina.  '").innerHTML = "Veiling gesloten";
         }
     }, 1000)
 </script>
