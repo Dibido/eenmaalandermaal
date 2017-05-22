@@ -451,9 +451,16 @@ function createTimer($tijd, $VW_Titel)
 function checkEmailSent()
 {
 
-    $subject = 'Uw EenmaalAndermaal registratie';
 
-    $message = 'Beste toekomstige gebruiker,
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            $code = md5($email . date("Y/m/d"));
+            global $SetRegistratie;
+
+            $subject = 'Uw EenmaalAndermaal registratie';
+
+            $message = 'Beste toekomstige gebruiker,
 
 u heeft aangegeven zich aan te willen melden op onze website.
 
@@ -464,14 +471,6 @@ Met vriendelijke groet,
 
 Het EenmaalAndermaal Team';
 
-
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['email'])) {
-            $email = $_POST['email'];
-            $code = md5($email . date("Y/m/d"));
-            global $SetRegistratie;
-            global $subject;
-            global $message;
 
 // If already in DB
             $sql = " SELECT REG_email FROM Registreer WHERE REG_email = '$email'";
@@ -488,8 +487,6 @@ Het EenmaalAndermaal Team';
                 mail($email, $subject, $message, 'From: info@iproject3.icasites.nl');
                 echo '  <div class="alert alert-success">
                             <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
-
-
             }
         }
     }
@@ -498,16 +495,17 @@ Het EenmaalAndermaal Team';
 
 
 // functie die email adres invult bij laden registreer1.php indien al ingevuld.
+
 function getEmail()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['email'])) {
             $email = $_POST['email'];
             echo $email;
-
         }
     }
 }
+
 
 
 
