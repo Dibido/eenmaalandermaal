@@ -305,6 +305,7 @@ $Dictionary = array(
             }
         }
         ?>
+        <!-- Nummering van resultaten-->
         <nav aria-label="pagination">
             <ul class="pagination pull-right">
                 <li class="page-item disabled">
@@ -318,6 +319,64 @@ $Dictionary = array(
                 <li class="page-item"><a class="page-link" href="#">Volgende</a></li>
           </ul>
         </nav>
+
+        <?php    
+$limit = 2;  
+if (isset($_GET["page"])) { $page  = $_GET["page"]; } else { $page=1; };  
+$start_from = ($page-1) * $limit;  
+$sql = "SELECT * FROM landen";  
+$rs_result = $sql;  
+?>  
+<table class="table table-bordered table-striped">  
+<thead>  
+<tr>  
+<th>title</th>  
+<th>body</th>  
+</tr>  
+</thead>  
+<tbody>  
+<?php  
+while ($row = sqlsrv_fetch_array($rs_result)) {  
+?>  
+            <tr>  
+            <td><? echo $row["title"]; ?></td>  
+            <td><? echo $row["body"]; ?></td>  
+            </tr>  
+<?php  
+};  
+?>  
+</tbody>  
+</table>  
+<?php  
+$sql = "SELECT COUNT(LAN_landcode) FROM landen";  
+$rs_result = sqlsrv_query($sql);  
+$row =  sqlsrv_fetch_row($rs_result);  
+$total_records = $row[0];  
+$total_pages = ceil($total_records / $limit);  
+$pagLink = "<ul class='pagination'>";  
+for ($i=1; $i<=$total_pages; $i++) {  
+             $pagLink .= "<li><a href='resultaten.php?page=".$i."'>".$i."</a></li>";  
+};  
+echo $pagLink . "</ul>";  
+?>  
+</div>
+</body>
+<script>
+jQuery(document).ready(function() {
+jQuery("#extId").select2({
+                width: 'element',
+                matcher: function(term, text) {
+                    return text === 'Add New Number' || $.fn.select2.defaults.matcher.apply(this, arguments);
+                },
+                sortResults: function(results) {
+                    if (results.length > 1) results.pop();
+                    return results;
+                }
+            });
+    });
+</script>
+
+        <!-- EINDE van nummering van resultaten-->
     </div>
 </div>
 
