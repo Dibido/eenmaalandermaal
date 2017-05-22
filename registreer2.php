@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 require('PHP/connection.php');
 require('PHP/Functions.php');
@@ -8,6 +9,7 @@ $Landen = SendToDatabase($GetLandenQuerie);
 $Vragen = SendToDatabase($GetVragenQuerie);
 
 
+echo "Meegegeven mailadres: " . $_SESSION["emailadres"];
 
 
 

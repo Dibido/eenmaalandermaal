@@ -25,14 +25,11 @@ function checkUserLinked()
             if (!$getUser) {
                 echo '  <div class="alert alert-danger" >
                                     <strong > Fout!</strong > Er is geen gebruiker gekoppeld aan deze code </div > ';
-
             } else {
-
-
+                $_SESSION["emailadres"] = $getUser[0]['REG_email'];
                 header('Location: registreer2.php');
-
-
             }
+
         }
     }
 }
@@ -78,7 +75,7 @@ function checkUserLinked()
 
 <!-- Navigation -->
 <?php
-require ('navbar.html');
+require('navbar.html');
 ?>
 
 <!-- Breadcrumb -->
