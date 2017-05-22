@@ -3,11 +3,13 @@
 //require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
-require('PHP/SQL-Queries.php');
+require('PHP/connection.php');
 
-$ItemInfo = SendToDatabase($QueryDetailsFromItem)
+$ItemID = $_GET['ItemID'];
 
+$ItemInfo = GetItemDetails($ItemID);
 
+print_r($ItemInfo);
 ?>
 
 <!doctype html>

@@ -329,7 +329,6 @@ SELECT * FROM Voorwerp
 
 
 
-
 EOT;
 
 
