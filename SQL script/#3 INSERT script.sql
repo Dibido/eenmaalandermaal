@@ -1,5 +1,4 @@
 --Alle insert scripts voor de tabellen
-USE eenmaalandermaal
 
 --Alle Betalingswijzen
 INSERT INTO Betalingswijzen (BW_betalingswijze) VALUES ('Bank / Giro'), ('Contant'), ('Anders');

@@ -1,5 +1,3 @@
-USE eenmaalandermaal
-
 IF OBJECT_ID('dbo.Voorwerp_Rubriek') IS NOT NULL
   DROP TABLE dbo.Voorwerp_Rubriek
 IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
@@ -20,6 +18,8 @@ IF OBJECT_ID('dbo.Bod') IS NOT NULL
   DROP TABLE dbo.Bod
 IF OBJECT_ID('dbo.Vraag') IS NOT NULL
   DROP TABLE dbo.Vraag
+IF OBJECT_ID('dbo.Registreer') IS NOT NULL
+  DROP TABLE dbo.Registreer
 
 
 CREATE TABLE Betalingswijzen (
@@ -105,6 +105,9 @@ CREATE TABLE Voorwerp (
   CONSTRAINT FK_VoorwerpGebruikerGebruikersnaam FOREIGN KEY (VW_koper) REFERENCES Gebruiker (GEB_gebruikersnaam)
     ON UPDATE CASCADE --Voor als de gebruikersnaam wordt aangepast
     ON DELETE NO ACTION,
+  CONSTRAINT FK_BestandVoorwerpnummer FOREIGN KEY (VW_voorwerpnummer) REFERENCES Bestand (BES_voorwerpnummer)
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2), --Kan niet leeg zijn
@@ -146,8 +149,8 @@ CREATE TABLE Bestand (
   BES_voorwerpnummer BIGINT       NOT NULL,
   CONSTRAINT PK_Filenaam PRIMARY KEY (BES_filenaam),
   CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (BES_voorwerpnummer) REFERENCES Voorwerp (VW_voorwerpnummer)
-    ON UPDATE CASCADE
-    ON DELETE CASCADE,
+    ON UPDATE CASCADE --Wanneer het voorwerp wordt aangepast, overnemen
+    ON DELETE CASCADE, --Wanneer het voorwerp delete wordt, overnemen
   CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
 );
 
@@ -171,10 +174,10 @@ CREATE TABLE Bod (
 
 
 CREATE TABLE Registreer (
-  REG_email			VARCHAR(255) NOT NULL,
-  REG_code			VARCHAR(255) NOT NULL,
-  REG_tijd			DATETIME     NOT NULL DEFAULT GETDATE(),
-  REG_gevalideerd	BIT		NULL DEFAULT 0,
+  REG_email       VARCHAR(255) NOT NULL,
+  REG_code        VARCHAR(255) NOT NULL,
+  REG_tijd        DATETIME     NOT NULL DEFAULT GETDATE(),
+  REG_gevalideerd BIT          NULL     DEFAULT 0,
   CONSTRAINT PK_Registreer PRIMARY KEY (REG_email)
 )
 

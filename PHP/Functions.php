@@ -61,14 +61,14 @@ function SendToDatabase($query)
 
 
 // Insert data in de DB
-function InsertIntoDatabase($SetRegistratie, $email, $code) {
+function InsertIntoDatabase($SetRegistratie, $email, $code)
+{
     GLOBAL $connection;
     $stmt = $connection->prepare($SetRegistratie);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':code', $code);
     $stmt->execute();
 }
-
 
 
 /* This function draws an auction */
@@ -98,13 +98,12 @@ function DrawAuction($auction)
     <!-- Veiling template -->
             <div class=\"veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-3\">
                 <div class=\"veiling\">
-                    <div class=\"veiling-titel label label-default\">" .
-        $auction["VW_titel"] . "
+                    <div class=\"veiling-titel label label-default\">" . $auction["VW_titel"] . "
                     </div>
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . '"></p>'. "</div>
+                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . '"></p>' . '<i class="glyphicon glyphicon-euro"></i>' . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -121,7 +120,6 @@ function DrawAuction($auction)
 
 function DrawSearchResults($auction)
 {
-
     //testing for missing images and replacing with backup image
     if (empty($auction["ImagePath"])) {
         $auction["ImagePath"] = "images/no-image-available.jpg";
@@ -136,7 +134,7 @@ function DrawSearchResults($auction)
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . '"></p>'. " </div>
+                        <div class=\"tijd label label-default\">" . '<div class="bottom-align-text" id="timer' . $auction["VW_titel"] . '"></div>' . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -222,33 +220,25 @@ function SearchFunction($SearchOptions)
     //preparing for query
 
 
-//clean the input
-    /*
-    $SearchKeyword = cleanInput($SearchKeyword);
-    $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
-    $SearchFilter = cleanInput($SearchFilter);
-    $SearchCategory = cleanInput($SearchCategory);
-    $SearchSubCategory = cleanInput($SearchSubCategory);
-    $SearchSubSubCategory = cleanInput($SearchSubSubCategory);
-    $SearchMaxRemainingTime = cleanInput($SearchMaxRemainingTime);
-    $SearchMinRemainingTime = cleanInput($SearchMinRemainingTime);
-    $SearchMinPrice = cleanInput($SearchMinPrice);
-    $SearchMaxPrice = cleanInput($SearchMaxPrice);
-
-    */
-
     $SearchKeyword = $SearchOptions['SearchKeyword'];
-    $QuerySearchKeyword = "'%" . $SearchKeyword . "%'";
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchFilter = $SearchOptions['SearchFilter'];
     $SearchCategory = $SearchOptions['SearchCategory'];
-    $SearchSubCategory = $SearchOptions['SearchSubCategory'];
-    $SearchSubSubCategory = $SearchOptions['SearchSubSubCategory'];
     $SearchMaxRemainingTime = $SearchOptions['SearchMaxRemainingTime'];
     $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
 
+    //clean the input
+
+    $SearchKeyword = cleanInput($SearchKeyword);
+    $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
+    $SearchFilter = cleanInput($SearchFilter);
+    $SearchCategory = cleanInput($SearchCategory);
+    $SearchMaxRemainingTime = cleanInput($SearchMaxRemainingTime);
+    $SearchMinRemainingTime = cleanInput($SearchMinRemainingTime);
+    $SearchMinPrice = cleanInput($SearchMinPrice);
+    $SearchMaxPrice = cleanInput($SearchMaxPrice);
 
 //Prepare the query
     $QuerySearchProducts = <<< EOT
@@ -275,14 +265,17 @@ SELECT
      ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
    INNER JOIN Voorwerp_Rubriek
      ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-   INNER JOIN Rubriek
+   inner JOIN Rubriek
      ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-   INNER JOIN Rubriek r1
+   inner  JOIN Rubriek r1
      ON r1.RB_Nummer = Rubriek.RB_Parent
-   INNER JOIN Rubriek r2
+   inner JOIN Rubriek r2
      ON r2.RB_Nummer = r1.RB_Parent
- WHERE r2.RB_Naam != 'root'
-	AND ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
+   inner  JOIN Rubriek r3
+     ON r3.RB_Nummer = r2.RB_Parent
+	left outer JOIN Rubriek r4
+	 on r4.RB_Nummer = r3.RB_Parent
+	WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
 	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
 	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
 	AND ($SearchMinPrice IS NULL OR (SELECT TOP 1 BOD_Bodbedrag
@@ -301,10 +294,8 @@ SELECT
                                                            ORDER BY BOD_Bodbedrag DESC)
 													 AND BOD_voorwerpnummer = VW_voorwerpnummer
 									 ORDER BY BOD_Bodbedrag DESC) <= $SearchMaxPrice)
-	AND ($SearchCategory IS NULL OR r2.RB_Nummer = $SearchCategory)
-	AND ($SearchSubCategory IS NULL OR r1.RB_Nummer = $SearchSubCategory)
-	AND ($SearchSubSubCategory IS NULL OR Rubriek.RB_Nummer = $SearchSubSubCategory)
-	AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
+		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
+		AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
    Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde
@@ -312,7 +303,7 @@ ORDER BY $SearchFilter , VW_voorwerpnummer
 
     
 EOT;
-//executing the query
+    //executing the query
     return SendToDatabase($QuerySearchProducts);
 
 
@@ -347,92 +338,68 @@ function printVragen($Vragen)
 function printCategoriën($zoekterm)
 {
     global $connection;
-    global $prijs;
-    $categorieQuery = "select
-                            distinct r2.RB_Naam as Hoofdcategorie,
-                            count(r2.RB_Naam) as aantal,
-                            r2.RB_Nummer as CategorieNummer
-                            from Voorwerp
-                            Inner join Voorwerp_Rubriek
-                            on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                            Inner join Rubriek
-                            on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                            Inner join Rubriek r1
-                            on r1.RB_Nummer = Rubriek.RB_Parent
-                            Inner join Rubriek r2
-                            on r2.RB_Nummer = r1.RB_Parent
-                            Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%$zoekterm%'
-                            GROUP BY r2.RB_Naam,r2.RB_Nummer
-                            ORDER BY COUNT(r2.RB_Naam) desc";
-    $categorieResult = $connection->query($categorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($categorieResult as $categorie) {
-        $url = urlencode($categorie['CategorieNummer']);
-        echo '
-                    <li><label class="tree-toggle nav-header">' . $categorie["Hoofdcategorie"] . '   ' . '<span class="badge label-primary">' . $categorie["aantal"] . '</span>' . '</label>
-                        <ul class="nav nav-list tree" style="display: none;">
-                        ';
-        $subCategorieQuery = "select
-                                        distinct r1.RB_Naam as Subcategorie,
-                                        r2.RB_Nummer as Hoofdcategorie,
-                                        count(r1.RB_Naam) as aantal,
-                                        r1.RB_Nummer as CategorieNummer
-                                        from Voorwerp
-                                        Inner join Voorwerp_Rubriek
-                                        on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                                        Inner join Rubriek
-                                        on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                                        Inner join Rubriek r1
-                                        on r1.RB_Nummer = Rubriek.RB_Parent
-                                        Inner join Rubriek r2
-                                        on r2.RB_Nummer = r1.RB_Parent
-                                        Where r2.RB_Naam != 'root' and Voorwerp.VW_titel like '%$zoekterm%' and r1.RB_Parent = " . $categorie["CategorieNummer"] . "
-                                        GROUP BY r1.RB_Naam,r1.RB_Nummer, r2.RB_Naam, r2.RB_Nummer
-                                        ORDER BY COUNT(r1.RB_Naam) desc";
-        $subCategorieResult = $connection->query($subCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($subCategorieResult as $subCategorie) {
-            echo '<li><label class="tree-toggle nav-header">' . $subCategorie["Subcategorie"] . '<span class="badge pull-right label-primary">' . $subCategorie["aantal"] . '</label>
-                                <ul class="nav nav-list tree" style="display: none;">';
-            $subSubCategorieQuery = "select
-                distinct Rubriek.RB_Naam as Subsubcategorie,
-                count(Rubriek.RB_Naam) as aantal,
-                Rubriek.RB_Nummer as CategorieNummer
-                from Voorwerp
-                Inner join Voorwerp_Rubriek
-                on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                Inner join Rubriek
-                on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                Inner join Rubriek r1
-                on r1.RB_Nummer = Rubriek.RB_Parent
-                Inner join Rubriek r2
-                on r2.RB_Nummer = r1.RB_Parent
-                Where r2.RB_Naam != 'root'and Voorwerp.VW_titel like '%$zoekterm%' and Rubriek.RB_Parent = " . $subCategorie["CategorieNummer"] . "
-                GROUP BY Rubriek.RB_Naam, Rubriek.RB_Nummer
-                ORDER BY COUNT(Rubriek.RB_Naam) desc";
-            $subSubCategorieResult = $connection->query($subSubCategorieQuery)->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($subSubCategorieResult as $subSubCategorie) {
-                $cat1 = urlencode($categorie["CategorieNummer"]);
-                $cat2 = urlencode($subCategorie["CategorieNummer"]);
-                $cat3 = urlencode($subSubCategorie['CategorieNummer']);
-                $zoek = urlencode($zoekterm);
-                $sort = urlencode($_GET['sorteerfilter']);
-                echo ' <li><a href=" ' . '?zoekterm=' . $zoek . '&categorie=' . $cat1 . '&subcategorie=' . $cat2 . '&subsubcategorie=' . $cat3 . '&sorteerfilter=' . $sort . '&prijs=' . $prijs['min'] . ',' . $prijs['max'] . '">' . $subSubCategorie["Subsubcategorie"] . '<span class="badge pull-right label-info">' . $subSubCategorie["aantal"] . '</span>' . '</a></li>';
+    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek
+                        FROM Rubriek H
+                        OUTER APPLY
+                        (
+                          SELECT * FROM Rubriek S
+                          WHERE S.RB_Parent = H.RB_Nummer
+                        ) X
+                        OUTER APPLY
+                        (
+                          SELECT * FROM Rubriek T
+                          WHERE T.RB_Parent = X.RB_Nummer
+                        ) Y
+                        OUTER APPLY
+                        (
+                          SELECT * FROM Rubriek U
+                          WHERE U.RB_Parent = Y.RB_Nummer
+                        ) Z
+                       /*
+                        cross APPLY
+                        (
+                            select * FROM Voorwerp_Rubriek E
+                            INNER JOIN Voorwerp 
+                            on Voorwerp.VW_voorwerpnummer = E.VR_Voorwerp_Nummer
+                            WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
+                            )E
+                        */                           
+                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/
+                        GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam
+                        ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
+    $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
+    echo '<ul class="nav nav-list" id="accordion">';
+//Goes through the first dimensional of the array
+    for ($i = 0; $i < sizeof($rubrieken); $i++) {
+        //Goes through the second dimensional of the array
+        for ($j = 0; $j < sizeof($rubrieken[$i]); $j++) {
+            //If the next value is not set OR the value is the last value a line is printed
+            if (!isset($rubrieken[$i][$j + 1]) OR ($j == sizeof($rubrieken[$i]) - 1) AND isset($rubrieken[$i][$j])) {
+                echo '<li><a href="">' . $rubrieken[$i][$j] . '</a><ul>';
+                $j = sizeof($rubrieken[$i]);
+            } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
+            else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
+                echo '<li><label class="tree-toggle nav-header">' . $rubrieken[$i][$j] . '</label>
+                        <ul class="nav nav-list tree" style="display: none;">';
             }
-            echo '</ul>
-                        </li>';
         }
-        echo '
-                        </ul>
-                        </li>
-                      <hr size="1">';
+        //For loop to close the list items and unorderd lists it "closes" backwards
+        for ($k = sizeof($rubrieken[$i]) - 1; $k >= 0; $k--) {
+            //If the last rubric is set and the Last Rubric is not the same as the next Rubric
+            if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
+                echo '</ul></li>';
+                if ($k == 0) {
+                    echo '<hr class="line"  size="1">';
+                }
+            }
+        }
     }
-
+    echo '</ul>';
 }
 
 
 function createTimer($tijd, $VW_Titel)
 {
-
-
     echo '<script>
     // Set the date we\'re counting down to
     var ' . $VW_Titel . ' = new Date("' . $tijd . '").getTime();
@@ -454,9 +421,16 @@ function createTimer($tijd, $VW_Titel)
 
         // Display the result in the element with id="demo"
         
+        if(days >= 3){
         document.getElementById("timer' . $VW_Titel . '").innerHTML = days + "d " + hours + "h "
-            + minutes + "m " + seconds + "s" ;
-        
+            + minutes + "m " ;
+        }else if(days < 3 && seconds < 10){
+        document.getElementById("timer' . $VW_Titel . '").innerHTML = hours + "h "
+            + minutes + "m " + "0" + seconds + "s" ;
+        }else{
+        document.getElementById("timer' . $VW_Titel . '").innerHTML = hours + "h "
+            + minutes + "m " + seconds +  "s" ;
+        }
         
 
         // If the count down is finished, write some text
@@ -468,6 +442,72 @@ function createTimer($tijd, $VW_Titel)
 </script>
 ';
 }
+
+
+
+
+// Indien gebruiker email heeft ingevuld en op verstuur heeft geklikt, wordt er een check uitgevoerd.
+// Vervolgens wordt er een email verstuurd en een message weergegeven.
+function checkEmailSent()
+{
+
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            $code = md5($email . date("Y/m/d"));
+            global $SetRegistratie;
+
+            $subject = 'Uw EenmaalAndermaal registratie';
+
+            $message = 'Beste toekomstige gebruiker,
+
+u heeft aangegeven zich aan te willen melden op onze website.
+
+Dit is uw persoonlijke code: ' . $code . '
+Vul deze in op de website om de registratieprocedure af te ronden.
+
+Met vriendelijke groet,
+
+Het EenmaalAndermaal Team';
+
+
+// If already in DB
+            $sql = " SELECT REG_email FROM Registreer WHERE REG_email = '$email'";
+            $getUser = SendToDatabase($sql);
+
+            if ($getUser) { //IF waarde (dus niet leeg)
+                // Display error
+                echo '  <div class="alert alert-danger" >
+                        <strong > Fout!</strong > Er is al een verificatie verstuurd naar ' . $email . '
+                        </div > ';
+            } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
+                // Send to DB
+                InsertIntoDatabase($SetRegistratie, $email, $code);
+                mail($email, $subject, $message, 'From: info@iproject3.icasites.nl');
+                echo '  <div class="alert alert-success">
+                            <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
+            }
+        }
+    }
+}
+
+
+
+// functie die email adres invult bij laden registreer1.php indien al ingevuld.
+
+function getEmail()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            echo $email;
+        }
+    }
+}
+
+
+
 
 ?>
 

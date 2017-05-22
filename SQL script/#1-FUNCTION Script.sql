@@ -1,4 +1,3 @@
-USE eenmaalandermaal
 --Functie om te het aantal bestanden te returnen
 GO
 IF OBJECT_ID('dbo.aantalBestandenPervoorwerpnummer') IS NOT NULL

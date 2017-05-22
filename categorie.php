@@ -1,5 +1,5 @@
 <?php
-require('PHP/connection.php');
+require('PHP/connection-old.php');
 require('PHP/Functions.php');
 
 //Read all categories from the database
@@ -16,7 +16,7 @@ FROM Rubriek H
     WHERE S.RB_Parent = H.RB_Nummer
   ) S
 WHERE H.RB_Parent = -1
-ORDER BY H.RB_volgnummer, H.RB_Naam, H.RB_Nummer";
+ORDER BY H.RB_Naam, Sub_Naam, H.RB_Nummer, H.RB_volgnummer";
 
 try {
     $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
@@ -66,7 +66,6 @@ try {
     <link rel="stylesheet" href="CSS/categorie.css">
 
 </head>
-
 <body>
 
 <!-- Navigation -->
@@ -117,12 +116,12 @@ require('navbar.html');
                 $url = urlencode($group['Hoofd_Nummer']);
                 echo('<div class="col-xs-6 col-sm-5 col-md-4 col-xs-push-1 col-sm-push-2 col-md-push-0 col-lg-push-1">');
                 echo('<section id="' . $group['Hoofd_Naam'][0] . '">');
-                echo('<a href="resultaten.php?category=' . $url . '"><h4>' . $group['Hoofd_Naam'] . '</h4></a>');
+                echo('<a href="resultaten.php?categorie=' . $url . '"><h4>' . $group['Hoofd_Naam'] . '</h4></a>');
                 echo('</section>');
             }
             $eerstekeer = false;
             $url = urlencode($group['Sub_Nummer']);
-            echo('<a href="resultaten.php?category=' . $url . '"><h6>' . $group['Sub_Naam'] . '</h6></a>');
+            echo('<a href="resultaten.php?categorie=' . $url . '"><h6>' . $group['Sub_Naam'] . '</h6></a>');
         }
     }
     echo('</div>');

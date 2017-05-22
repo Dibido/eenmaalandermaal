@@ -1,81 +1,65 @@
 <?php
-require 'PHP/Connection.php';
+require 'PHP/Connection-old.php';
 require 'PHP/Functions.php';
 
 $waardes = array("Tijd: nieuw aangeboden" => "VW_looptijdStart DESC", "Tijd: eerst afgelopen" => "VW_looptijdEinde ASC", "Prijs: laagste bovenaan" => "prijs ASC", "Prijs: hoogste bovenaan" => "prijs DESC");
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-if (isset($_GET['zoekterm'])) {
-    $zoekterm = ($_GET['zoekterm']);
-}
+    if (isset($_GET['zoekterm'])) {
+        $zoekterm = ($_GET['zoekterm']);
+    }
+    if (isset($_GET['sorteerfilter'])) {
+        $sorteerfilter = $waardes[($_GET['sorteerfilter'])];
+    }
+    if (isset($_GET['betalingsmethode'])) {
+        $betalingsmethode = $_GET['betalingsmethode'];
+    }
+    if (isset($_GET['prijs'])) {
+        $tmp = explode(',', $_GET['prijs']);
+        $prijs = array('min' => $tmp[0], 'max' => $tmp[1]);
+        unset($tmp);
+    }
+    if (isset($_GET['categorie'])) {
+        $categorie = ($_GET['categorie']);
+    }
+    if (!isset($_GET['zoekterm'])) {
+        $_GET['zoekterm'] = "";
+    }
+    if (!isset($_GET['sorteerfilter'])) {
+        $_GET['sorteerfilter'] = "Tijd: nieuw aangeboden";
+    }
+    if (!isset($_GET['betalingsmethode'])) {
+        $_GET['betalingsmethode'] = "NULL";
+    }
+    if (!isset($_GET['categorie'])) {
+        $_GET['categorie'] = "NULL";
+        $categorie = "NULL";
+    }
+    if (!isset($_GET['min'])) {
+        $_GET['min'] = "NULL";
+    }
+    if (!isset($prijs['min'])) {
+        $prijs['min'] = 0;
+    }
+    if (!isset($prijs['max'])) {
+        $prijs['max'] = 5000;
+    }
 
-if (isset($_GET['sorteerfilter'])) {
-    $sorteerfilter = $waardes[($_GET['sorteerfilter'])];
-}
-if (isset($_GET['betalingsmethode'])) {
-    $betalingsmethode = $_GET['betalingsmethode'];
-}
-if (isset($_GET['prijs'])) {
-    $tmp = explode(',', $_GET['prijs']);
-    $prijs = array('min' => $tmp[0], 'max' => $tmp[1]);
-    unset($tmp);
-}
-if (isset($_GET['categorie'])) {
-    $categorie = ($_GET['categorie']);
-}
-if (isset($_GET['subcategorie'])) {
-    $subcategorie = ($_GET['subcategorie']);
-}
-if (isset($_GET['subsubcategorie'])) {
-    $subsubcategorie = ($_GET['subsubcategorie']);
-}
-if (!isset($_GET['zoekterm'])) {
-    $_GET['zoekterm'] = "NULL";
-}
-if (!isset($_GET['sorteerfilter'])) {
-    $_GET['sorteerfilter'] = "Tijd: nieuw aangeboden";
-}
-if (!isset($_GET['betalingsmethode'])) {
-    $_GET['betalingsmethode'] = "NULL";
-}
-if (!isset($_GET['categorie'])) {
-    $_GET['categorie'] = "NULL";
-    $categorie = "NULL";
-}
-if (!isset($_GET['subcategorie'])) {
-    $_GET['subcategorie'] = "NULL";
-    $subcategorie = "NULL";
-}
-if (!isset($_GET['subsubcategorie'])) {
-    $_GET['subsubcategorie'] = "NULL";
-    $subsubcategorie = "NULL";
-}
-if (!isset($_GET['min'])) {
-    $_GET['min'] = "NULL";
-}
-if (!isset($prijs['min'])) {
-    $prijs['min'] = 0;
-}
-if (!isset($prijs['max'])) {
-    $prijs['max'] = 5000;
-}
+    $_GET['maxremainingtime'] = "NULL";
+    $_GET['minremainingtime'] = "NULL";
 
-$_GET['maxremainingtime'] = "NULL";
-$_GET['minremainingtime'] = "NULL";
+    $Dictionary = array(
+        'SearchKeyword' => $_GET['zoekterm'],
+        'SearchFilter' => $waardes[($_GET['sorteerfilter'])],
+        'SearchPaymentMethod' => $_GET['betalingsmethode'],
+        'SearchCategory' => $_GET['categorie'],
 
-$Dictionary = array(
-    'SearchKeyword' => $_GET['zoekterm'],
-    'SearchFilter' => $waardes[($_GET['sorteerfilter'])],
-    'SearchPaymentMethod' => $_GET['betalingsmethode'],
-    'SearchCategory' => $_GET['categorie'],
-    'SearchSubCategory' => $_GET['subcategorie'],
-    'SearchSubSubCategory' => $_GET['subsubcategorie'],
-    'SearchMinRemainingTime' => $_GET['minremainingtime'],
-    'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
-    'SearchMinPrice' => $prijs['min'],
-    'SearchMaxPrice' => $prijs['max']
-);
-
+        'SearchMinRemainingTime' => $_GET['minremainingtime'],
+        'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
+        'SearchMinPrice' => $prijs['min'],
+        'SearchMaxPrice' => $prijs['max']
+    );
+}
 ?>
 
 <!doctype html>
@@ -110,7 +94,6 @@ $Dictionary = array(
     <meta name="description"
           content="Bootstrap Multi-level tree view menu with Bootstrap. Expand and collapse sub sections. example.">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -140,58 +123,10 @@ $Dictionary = array(
 <body>
 
 <!-- Navigation -->
+<?php
+require('navbar.html');
+?>
 
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
-        <a href="index.php" class="navbar-brand">
-            <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
-        </a>
-
-        <div class="navbar-right">
-            <ul class="nav navbar-nav collapse navbar-collapse">
-                <li>
-                    <button class="btn btn-default navbar-btn hidden-md hidden-lg MobileButtonToggle"
-                            data-toggle="collapse"
-                            data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
-                </li>
-                <li>
-                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton">Plaats veiling
-                    </button>
-                </li>
-                <li>
-                    <button class="btn btn-default navbar-btn hidden-sm hidden-xs NavRightButton"><i
-                                class="glyphicon glyphicon-user"></i></button>
-                </li>
-            </ul>
-        </div>
-
-
-        <form class="navbar-form" action="resultaten.php" method="GET">
-            <div class="form-group" style="display:inline;">
-                <div class="input-group" style="display:table;">
-                    <input class="form-control" id="searchbar" name="zoekterm" placeholder="Search Here"
-                           autocomplete="off"
-                           autofocus="autofocus" type="text">
-                    <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
-                                                                                               type="submit"
-                                                                                               style="background-color: #ffffff; border-color: #f2f2f2;"><span
-                                    class="glyphicon glyphicon-search"></span></button></span>
-                </div>
-            </div>
-        </form>
-
-    </div>
-</nav>
-<!-- Mobile Buttons -->
-
-<div class="container-fluid collapse text-center" id="MobileButtons" style="font-size: 24px;">
-    <div class="row">
-        <ul class="nav nav-pills nav-stacked">
-            <li><a class="row-md-12" href="#">Plaats veiling</a></li>
-            <li><a class="row-md-12" href="#">Login</a></li>
-        </ul>
-    </div>
-</div>
 
 <!-- Filter bar -->
 
@@ -207,10 +142,7 @@ $Dictionary = array(
                     echo($zoekterm); ?>">
                     <input type="hidden" name="categorie" value="<?php global $categorie;
                     echo($categorie); ?>">
-                    <input type="hidden" name="subcategorie" value="<?php global $subcategorie;
-                    echo($subcategorie); ?>">
-                    <input type="hidden" name="subsubcategorie" value="<?php global $subsubcategorie;
-                    echo($subsubcategorie); ?>">
+
 
                     <a href="#" class="list-group-item"> Filter:
                         <select class="form-control" name="sorteerfilter">
@@ -240,14 +172,14 @@ $Dictionary = array(
                         } else {
                             echo('data-slider-value="[150,450]"/>');
                         }
-                        }
+
                         ?>
                     </a>
 
 
                     <a href="#" class="list-group-item">Betalingsmethode:
                         <!--<select class="form-control" id="betalingsmethode" name="betalingsmethode">
-                            <?/*php
+                            <? /*php
                             if (!isset($betalingsmethode)) {
                                 global $betalingsmethode;
                                 echo('<option value="' . urldecode($betalingsmethode) . '" selected>' . urldecode($betalingsmethode) . '</option>');
@@ -256,14 +188,28 @@ $Dictionary = array(
                             foreach ($betalingswijzenresult as $betalingswijze) {
                                 echo('<option> ' . $betalingswijze[Betalingswijze] . '</option>');
                             }*/
-                            ?>
+                        ?>
                         </select>-->
                     </a>
+                        <ul class="list-group-item">
+                            <div class="row">
 
-                    <a href="#" class="list-group-item">
-                        <input class="btn btn-primary" type="submit" data-inline="true" value="Aanpassen">
-                    </a>
+                            <div class="col-sm-6 left">
 
+                                <a href="#">
+                                    <input class="btn btn-primary center-block" type="submit" data-inline="true"
+                                           value="Aanpassen">
+                                </a>
+                            </div>
+                            <div class="col-sm-6 right">
+                                <a href="resultaten.php?zoekterm=<?php echo $zoekterm ?>">
+                                    <input class="btn btn-warning center-block" data-inline="true" value="Reset" type="button">
+                                </a>
+
+                            </div>
+
+                    </div>
+                    </ul>
                     <script>
                         var slider = new Slider('#pslider', {});
                     </script>
@@ -294,30 +240,9 @@ $Dictionary = array(
         <h2>Resultaten</h2>
         <?php
         global $Dictionary;
-        $test = SearchFunction($Dictionary);
-        if (!empty($test)) {
-            if ($test[0]) {
-                foreach ($test as $advert) {
-                    DrawSearchResults($advert);
-                }
-            } else {
-                echo "<b>Error on loading auctions: </b>" . "<br><br>" . $test[1];
-            }
-        }
+        $result = SearchFunction($Dictionary);
+        outputRows($result, $Dictionary["SearchKeyword"]);
         ?>
-        <nav aria-label="pagination">
-            <ul class="pagination pull-right">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1">Vorige</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Volgende</a></li>
-          </ul>
-        </nav>
     </div>
 </div>
 
@@ -334,10 +259,6 @@ $Dictionary = array(
         });
     });
 </script>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-
-<script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 
     $(document).ready(function () {
@@ -347,6 +268,7 @@ $Dictionary = array(
         });
 
     });
+
 </script>
 
 </body>
