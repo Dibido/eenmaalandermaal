@@ -262,20 +262,13 @@ SELECT
     VW_looptijdEinde,
    Voorwerp.VW_betalingswijze
  FROM Voorwerp
-   inneR JOIN Bod
-     ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-   INNER JOIN Voorwerp_Rubriek
-     ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-   inner JOIN Rubriek
-     ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-   inner  JOIN Rubriek r1
-     ON r1.RB_Nummer = Rubriek.RB_Parent
-   inner JOIN Rubriek r2
-     ON r2.RB_Nummer = r1.RB_Parent
-   inner  JOIN Rubriek r3
-     ON r3.RB_Nummer = r2.RB_Parent
-	left outer JOIN Rubriek r4
-	 on r4.RB_Nummer = r3.RB_Parent
+  LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+ LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+  LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
+  LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
+  LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
+  LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
 	WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
 	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
 	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
