@@ -71,7 +71,6 @@ function InsertIntoDatabase($SetRegistratie, $email, $code)
 }
 
 
-
 /* This function draws an auction */
 
 /* intake:
@@ -379,12 +378,12 @@ function printCategoriën($zoekterm, $rubriekNummer)
         //For loop to close the list items and unorderd lists it "closes" backwards
         for ($k = sizeof($rubrieken[$i]) - 1; $k >= 0; $k--) {
             //If the last rubric is set and the Last Rubric is not the same as the next Rubric
-            if($i+1 >= sizeof($rubrieken)){
+            if ($i + 1 >= sizeof($rubrieken)) {
                 echo '</ul></li>';
-            }else if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
+            } else if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
                 echo '</ul></li>';
-                if($k == 0){
-                   echo '<hr class="line"  size="1">';
+                if ($k == 0) {
+                    echo '<hr class="line"  size="1">';
                 }
             }
         }
@@ -518,6 +517,16 @@ function checkUserLinked()
 
         }
     }
+}
+
+function validateHash()
+{
+    if (isset($_SESSION['emailadres']) && !empty($_SESSION['emailadres'])) {
+        $emailadres = $_SESSION["emailadres"];
+    } else {
+        header('Location: registreer1.php');
+    }
+    return $emailadres;
 }
 
 

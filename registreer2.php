@@ -8,15 +8,8 @@ require('PHP/SQL-Queries.php');
 $Landen = SendToDatabase($GetLandenQuerie);
 $Vragen = SendToDatabase($GetVragenQuerie);
 
-if(isset($_SESSION['emailadres']) && !empty($_SESSION['emailadres'])) {
-    $emailadres = $_SESSION["emailadres"];
-    echo $emailadres;
-   } else {
-    header('Location: registreer1.php');
-}
-
-
-
+validateHash();
+global $emailadres;
 
 ?>
 
