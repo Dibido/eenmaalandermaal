@@ -1,5 +1,6 @@
 <?php
-
+session_start();
+ob_start();
 /*registratie Check op:
     username max 32
     lengte
@@ -86,7 +87,7 @@ require('navbar.html');
                         <div class="form-group">
                             <label for="email">E-mailadres*</label>
                             <input name="email" id="email" type="email" placeholder="E-mailadres"
-                                   value="<?php getEmail(); ?>"
+                                   value="<?php getEmail(); ?>" size="255"
                                    class="form-control" required="true">
                         </div>
 
@@ -104,7 +105,11 @@ require('navbar.html');
 
             <div class="row">
                 <div class="col-md-6 col-md-push-3">
-                    <form method="POST" id="codeverificatie" action="registreer.php">
+                    <form method="POST" id="codeverificatie" action="registreer1.php">
+
+                        <?php
+                        checkUserLinked();
+                        ?>
 
                         <div class="form-group">
                             <label for="code">Verificatiecode*</label>

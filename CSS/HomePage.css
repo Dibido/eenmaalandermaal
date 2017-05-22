@@ -83,3 +83,15 @@
 
 /*footer*/
 
+#Footer-Top{
+    width: 100%;
+    height: 200px;
+    background-color: #FFFFFF;
+    border-top: 6px solid #f5f5f5;
+    margin-top: 15px;
+}
+#Footer-Bottom{
+    width: 100%;
+    height: 50px;
+    background-color: #444
+}

@@ -71,7 +71,6 @@ function InsertIntoDatabase($SetRegistratie, $email, $code)
 }
 
 
-
 /* This function draws an auction */
 
 /* intake:
@@ -95,6 +94,7 @@ function DrawAuction($auction)
     if (empty($auction["ImagePath"])) {
         $auction["ImagePath"] = "images/no-image-available.jpg";
     }
+    $pagina = 'Voorpagina';
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-3\">
@@ -104,7 +104,7 @@ function DrawAuction($auction)
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . '"></p>' . '<i class="glyphicon glyphicon-euro"></i>' . "</div>
+                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . $pagina . '"></p>' . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -115,7 +115,7 @@ function DrawAuction($auction)
             <!-- End template -->
             
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"]);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $pagina);
 
 }
 
@@ -125,6 +125,7 @@ function DrawSearchResults($auction)
     if (empty($auction["ImagePath"])) {
         $auction["ImagePath"] = "images/no-image-available.jpg";
     }
+    $pagina = 'Zoekpagina';
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-md-4 col-sm-6 col-xs-6\">
@@ -135,7 +136,7 @@ function DrawSearchResults($auction)
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<div class="bottom-align-text" id="timer' . $auction["VW_titel"] . '"></div>' . " </div>
+                        <div class=\"tijd label label-default\">" . '<div class="bottom-align-text" id="timer' . $auction["VW_titel"] . $pagina. '"></div>' . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -145,7 +146,7 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"]);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"],$pagina);
 
 }
 
@@ -368,7 +369,7 @@ function printCategoriën($zoekterm, $rubriekNummer)
         for ($j = 0; $j < sizeof($rubrieken[$i]); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
             if (!isset($rubrieken[$i][$j + 1]) OR ($j == sizeof($rubrieken[$i]) - 1) AND isset($rubrieken[$i][$j])) {
-                echo '<li><a href="">' . $rubrieken[$i][$j] . '</a><ul>';
+                echo '<li><a href="&categorie='.$rubrieken[$i][$j].'">' . $rubrieken[$i][$j] . '</a><ul>';
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
@@ -379,12 +380,12 @@ function printCategoriën($zoekterm, $rubriekNummer)
         //For loop to close the list items and unorderd lists it "closes" backwards
         for ($k = sizeof($rubrieken[$i]) - 1; $k >= 0; $k--) {
             //If the last rubric is set and the Last Rubric is not the same as the next Rubric
-            if($i+1 >= sizeof($rubrieken)){
+            if ($i + 1 >= sizeof($rubrieken)) {
                 echo '</ul></li>';
-            }else if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
+            } else if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
                 echo '</ul></li>';
-                if($k == 0){
-                   echo '<hr class="line"  size="1">';
+                if ($k == 0) {
+                    echo '<hr class="line"  size="1">';
                 }
             }
         }
@@ -392,12 +393,11 @@ function printCategoriën($zoekterm, $rubriekNummer)
     echo '</ul>';
 }
 
-
-function createTimer($tijd, $VW_Titel)
+function createTimer($tijd, $VW_Titel, $pagina)
 {
     echo '<script>
     // Set the date we\'re counting down to
-    var ' . $VW_Titel . ' = new Date("' . $tijd . '").getTime();
+    var ' . $VW_Titel . $pagina .  ' = new Date("' . $tijd . '").getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function() {
@@ -406,7 +406,7 @@ function createTimer($tijd, $VW_Titel)
         var now = new Date().getTime();
 
         // Find the distance between now an the count down date
-        var distance = ' . $VW_Titel . ' - now;
+        var distance = ' . $VW_Titel . $pagina . ' - now;
 
         // Time calculations for days, hours, minutes and seconds
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -417,26 +417,117 @@ function createTimer($tijd, $VW_Titel)
         // Display the result in the element with id="demo"
         
         if(days >= 3){
-        document.getElementById("timer' . $VW_Titel . '").innerHTML = days + "d " + hours + "h "
+        document.getElementById("timer' . $VW_Titel . $pagina. '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
         }else if(days < 3 && seconds < 10){
-        document.getElementById("timer' . $VW_Titel . '").innerHTML = hours + "h "
+        document.getElementById("timer' . $VW_Titel . $pagina.  '").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("timer' . $VW_Titel . '").innerHTML = hours + "h "
+        document.getElementById("timer' . $VW_Titel . $pagina.  '").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
-        
-
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("timer' . $VW_Titel . '").innerHTML = "Veiling gesloten";
+            document.getElementById("timer' . $VW_Titel . $pagina.  '").innerHTML = "Veiling gesloten";
         }
     }, 1000)
 </script>
 ';
 }
+
+
+// functie die email adres invult bij laden registreer1.php indien al ingevuld.
+
+function getEmail()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            echo $email;
+        }
+    }
+}
+
+
+// Indien gebruiker email heeft ingevuld en op verstuur heeft geklikt, wordt er een check uitgevoerd.
+// Vervolgens wordt er een email verstuurd en een message weergegeven.
+function checkEmailSent()
+{
+
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            $code = md5($email . date("Y/m/d"));
+            $code = substr($code, 0, 16);
+            global $SetRegistratie;
+
+            $subject = 'Uw EenmaalAndermaal registratie';
+
+            $message = 'Beste toekomstige gebruiker,
+
+u heeft aangegeven zich aan te willen melden op onze website.
+
+Dit is uw persoonlijke code: ' . $code . '
+Vul deze in op de website om de registratieprocedure af te ronden.
+
+Met vriendelijke groet,
+
+Het EenmaalAndermaal Team';
+
+
+// If already in DB
+            $sql = " SELECT REG_email FROM Registreer WHERE REG_email = '$email'";
+            $getUser = SendToDatabase($sql);
+
+            if ($getUser) { //IF waarde (dus niet leeg)
+                // Display error
+                echo '  <div class="alert alert-danger" >
+                        <strong > Fout!</br></strong > Er is al een verificatie verstuurd naar ' . $email . '
+                        </div > ';
+            } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
+                // Send to DB
+                InsertIntoDatabase($SetRegistratie, $email, $code);
+                mail($email, $subject, $message, 'From: info@iproject3.icasites.nl');
+                echo '  <div class="alert alert-success">
+                            <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
+            }
+        }
+    }
+}
+
+// Controlleert of de ingevoerde validatiecode op registreerq.php correct is. Indien ja > doorverwijzing naar registreer2.php, zo niet dan error.
+function checkUserLinked()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['code'])) {
+            $code = $_POST['code'];
+            $sql = "SELECT * FROM Registreer WHERE REG_code = '$code'";
+            $getUser = SendToDatabase($sql);
+
+            if (!$getUser) {
+                echo '  <div class="alert alert-danger" >
+                                    <strong > Fout!</strong > Er is geen gebruiker gekoppeld aan deze code </div > ';
+            } else {
+                $_SESSION["emailadres"] = $getUser[0]['REG_email'];
+                header('Location: registreer2.php');
+            }
+
+        }
+    }
+}
+
+function validateHash()
+{
+    if (isset($_SESSION['emailadres']) && !empty($_SESSION['emailadres'])) {
+        $emailadres = $_SESSION["emailadres"];
+    } else {
+        header('Location: registreer1.php');
+    }
+    return $emailadres;
+}
+
 
 ?>
 

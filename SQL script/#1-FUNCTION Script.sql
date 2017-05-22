@@ -68,3 +68,18 @@ CREATE FUNCTION nietEigenVoorwerp(
     )
   END
 
+--Functie om de valuta om te rekenen voor het converteren van de voorwerpen
+GO
+IF OBJECT_ID('FN_Verandervaluta') IS NOT NULL
+DROP FUNCTION [dbo].[FN_Verandervaluta]
+GO
+CREATE FUNCTION FN_Verandervaluta
+(@Valuta CHAR(3), @Prijs NUMERIC(9,2))
+RETURNS NUMERIC
+	BEGIN
+	 IF (@Valuta  = 'GBP')
+		 RETURN (@Prijs  / 0.862403667)
+	 ELSE IF (@Valuta = 'USD')
+		 RETURN (@Prijs  * 1.12128)
+	 RETURN @Prijs
+END
