@@ -1,6 +1,8 @@
 <?php
-require 'PHP/Connection-old.php';
+require 'PHP/Connection.php';
 require 'PHP/Functions.php';
+require 'PHP/SQL-Queries.php';
+
 
 $waardes = array("Tijd: nieuw aangeboden" => "VW_looptijdStart DESC", "Tijd: eerst afgelopen" => "VW_looptijdEinde ASC", "Prijs: laagste bovenaan" => "prijs ASC", "Prijs: hoogste bovenaan" => "prijs DESC");
 
@@ -23,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $categorie = ($_GET['categorie']);
     }
     if (!isset($_GET['zoekterm'])) {
-        $_GET['zoekterm'] = "";
+        $zoekterm = $_GET['zoekterm'] = "";
     }
     if (!isset($_GET['sorteerfilter'])) {
         $_GET['sorteerfilter'] = "Tijd: nieuw aangeboden";
@@ -137,11 +139,17 @@ require('navbar.html');
                 <a href="#" class="list-group-item active">Opties</a>
 
                 <form method="get" action="resultaten.php">
-
-                    <input type="hidden" name="zoekterm" value="<?php global $zoekterm;
-                    echo($zoekterm); ?>">
+                    <a href="#" class="list-group-item">
+                            <div class="input-group" style="display:table;">
+                                <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                                       autofocus="autofocus" type="text" value='<?php $zoekterm?>'>
+                                <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
+                                class="glyphicon glyphicon-search"></span></button></span>
+                            </div>
+                    </a>
                     <input type="hidden" name="categorie" value="<?php global $categorie;
                     echo($categorie); ?>">
+                    <input type="hidden" name="pagenum" value="<?php global $pagenum; echo($pagenum); ?>">  
 
 
                     <a href="#" class="list-group-item"> Filter:
@@ -221,7 +229,7 @@ require('navbar.html');
             </a>
             <div class="list-group-item">
                 <ul class="nav nav-list">
-                    <?php printCategoriën($zoekterm);
+                    <?php printCategoriën($zoekterm, $categorie);
                     ?>
                 </ul>
             </div>
@@ -243,6 +251,59 @@ require('navbar.html');
         $result = SearchFunction($Dictionary);
         outputRows($result, $Dictionary["SearchKeyword"]);
         ?>
+
+    <!-- pagina nummering -->
+    <?php 
+    //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
+if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) 
+    { 
+        $pagenum = 1; 
+    }
+
+else { $pagenum = $_GET['pagenum']; }
+
+//results per page 
+$ResultsPerPage = 10;
+$Offset = $ResultsPerPage * $pagenum;
+
+$GetResultatenPagina = <<<EOT
+SELECT * FROM Voorwerp
+ORDER BY VW_voorwerpnummer
+OFFSET $Offset ROWS
+FETCH NEXT $ResultsPerPage ROWS ONLY
+EOT;
+
+$result = SendToDatabase($GetResultatenPagina);
+
+
+
+
+// First we check if we are on page one. If we are then we don't need a link to the previous page or the first page so we do nothing. If we aren't then we generate links to the first page, and to the previous page.
+if ($pagenum == 1) { } 
+else {
+echo " <a href='http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]&pagenum=1'> <<-Eerste pagina</a> ";
+echo " ";
+$previous = $pagenum-1;
+echo " <a href='http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]&pagenum=$previous'> <-Vorige</a> ";
+} 
+
+//just a spacer
+echo " ---- ";
+
+//This does the same as above, only checking if we are on the last page, and then generating the Next and Last links
+if ($pagenum == $last) 
+{
+} 
+else {
+$next = $pagenum+1;
+echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$next'>Volgende -></a> ";
+echo " ";
+echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last'>Laatste pagina ->></a> ";
+} 
+?> 
+
+    <!-- Einde Paginanummering-->
+
     </div>
 </div>
 

@@ -67,7 +67,7 @@
     border-bottom: #e5e5e5 solid 2px;
 }
 .OldOfferUserName{
-    width: 73%;
+    width: 50%;
     overflow: hidden;
     white-space: nowrap;
     font-size: 1vw;
@@ -114,13 +114,17 @@
     background-image: url(../images/no-image-available.jpg);
 }
 .UserInfo{
+
     font-size: 1.2vw;
     max-width: 90%;
-    text-align: left;
-    vertical-align: Middle;
     overflow: hidden;
     white-space: nowrap;
-    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    justify-items: center;
+
 }
 #UserRating{
     width: 100%;
@@ -135,6 +139,51 @@
     justify-content: center;
     justify-items: center;
 }
+/*carousel*/
+.AuctionImage{
+    position:relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25% ; /* % of width, defines aspect ratio*/
+
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-position-x: center;
+    background-size: contain;
+    background-image: url(../images/no-image-available.jpg);
+}
+
+/*details*/
+.Details-wrapper{
+    margin-top: 15px;
+}
+
+.Details{
+    width: 100%;
+    height: 148px;
+    font-size: 1.3vw;
+    display: inline-flex;
+    justify-content: center;
+    text-align: center;
+    justify-items: center;
+    flex-wrap: wrap;
+}
+
+.Detail{
+    width: 50%;
+    height: 50%;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+    justify-items: center;
+    padding-left: 15px;
+}
+
+
+
 
 @media( max-width: 992px){
     .Time{
@@ -158,22 +207,15 @@
     #UserRating{
         font-size: 6vw;
     }
+    .Details{
+        font-size: 3vw;
+        height: 296px;
+
+    }
+    .Detail{
+        width: 100%;
+        height: 25%;
+        text-align: center;
+    }
 }
-
-/*carousel*/
-.AuctionImage{
-    position:relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 56.25% ; /* % of width, defines aspect ratio*/
-
-    background-repeat: no-repeat;
-    background-position-y: center;
-    background-position-x: center;
-    background-size: contain;
-    background-image: url(../images/no-image-available.jpg);
-}
-
-
-
 

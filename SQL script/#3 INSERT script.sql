@@ -317,38 +317,50 @@ VALUES
   ('WSM', 'Samoa'), ('YEM', 'Jemen'), ('ZAF', 'Zuid-Afrika'), ('ZWE', 'Zimbabwe'), ('ZMB', 'Zambia')
 */
 
+
+/*toevoegen van gebruikers */
+
+INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_adresregel_2, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord, GEB_vraag, GEB_antwoordtekst, GEB_verkoper, GEB_rating)
+    VALUES
+      ('kees', 'kees', 'Jansen', 'hansestraat', 'hanseweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'onzin@meeronzin.dk', '$2y$10$ioA3GMCD446M0yaKgaWg1O587gnVw.RCSs3GAOG32d5b6n/snJmQG', '3', 'kees', 0, 4),
+      ('tinus', 'tinus', 'kabouter', 'ruitenberglaan', 'ruitenbergweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'tinus@meeronzin.dk', '$2y$10$bCi5SfdhPREAlzKUiiB8o.eCsjLbO1.1FrzlH805zIdpizTYSspZ2', '1', 'tinus', 0, 0)
+
+
+
 /* Toevpegen van test voorwerpen */
-/*INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
-                      VW_land, VW_looptijd, VW_looptijdStart, VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper)
+
+
+INSERT INTO Voorwerp (VW_titel, VW_beschrijving, VW_startprijs, VW_betalingswijze, VW_betalingsinstructie, VW_plaatsnaam,
+                      VW_land, VW_looptijd, VW_looptijdStart, VW_verzendkosten, VW_verzendinstructies, VW_verkoper, VW_koper, VW_thumbnail, VW_conditie)
 VALUES
   ('Testproduct1', 'beschrijving1', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD',
-                   3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct2', 'beschrijving2', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct3', 'beschrijving3', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct4', 'beschrijving4', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct5', 'beschrijving5', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct6', 'beschrijving6', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct7', 'beschrijving7', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct8', 'beschrijving8', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct9', 'beschrijving9', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct10', 'beschrijving10', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct11', 'beschrijving11', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct12', 'beschrijving12', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct13', 'beschrijving13', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct14', 'beschrijving14', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct15', 'beschrijving15', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct16', 'beschrijving16', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct17', 'beschrijving17', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct18', 'beschrijving18', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct19', 'beschrijving19', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct20', 'beschrijving20', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus'),
-  ('Testproduct21', 'beschrijving21', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus'),
+                   3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct2', 'beschrijving2', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct3', 'beschrijving3', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct4', 'beschrijving4', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct5', 'beschrijving5', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct6', 'beschrijving6', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct7', 'beschrijving7', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct8', 'beschrijving8', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct9', 'beschrijving9', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct10', 'beschrijving10', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct11', 'beschrijving11', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct12', 'beschrijving12', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct13', 'beschrijving13', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct14', 'beschrijving14', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct15', 'beschrijving15', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct16', 'beschrijving16', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct17', 'beschrijving17', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct18', 'beschrijving18', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct19', 'beschrijving19', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct20', 'beschrijving20', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
+  ('Testproduct21', 'beschrijving21', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem', 'NLD', 3, '2017-06-14 04:32:02', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
   ('Testproduct22', 'beschrijving22', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem',
-                    'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus'),
+                    'NLD', 3, '2017-05-19 06:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
   ('Testproduct23', 'beschrijving23', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem',
-                    'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus'),
+                    'NLD', 3, '2017-05-27 08:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin'),
   ('Testproduct24', 'beschrijving24', 4, 'Bank / Giro', 'Maak 500 euro over naar NLINGB#030493032039384', 'Arnhem',
-                    'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus')
+                    'NLD', 3, '2017-05-25 04:03:12', 14.20, 'test', 'kees', 'tinus', 'onzin', 'meer onzin')
                     */
 
 /* Toevoegen van voorbeeld biedingen */
