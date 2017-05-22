@@ -175,7 +175,7 @@ CREATE TABLE Bod (
 
 CREATE TABLE Registreer (
   REG_email       VARCHAR(255) NOT NULL,
-  REG_code        VARCHAR(255) NOT NULL,
+  REG_code        VARCHAR(16) NOT NULL,
   REG_tijd        DATETIME     NOT NULL DEFAULT GETDATE(),
   REG_gevalideerd BIT          NULL     DEFAULT 0,
   CONSTRAINT PK_Registreer PRIMARY KEY (REG_email)
