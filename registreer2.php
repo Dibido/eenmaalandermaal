@@ -6,6 +6,11 @@ require('PHP/SQL-Queries.php');
 
 $Landen = SendToDatabase($GetLandenQuerie);
 $Vragen = SendToDatabase($GetVragenQuerie);
+
+
+
+
+
 ?>
 
 

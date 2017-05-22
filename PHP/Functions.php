@@ -479,7 +479,7 @@ Het EenmaalAndermaal Team';
             if ($getUser) { //IF waarde (dus niet leeg)
                 // Display error
                 echo '  <div class="alert alert-danger" >
-                        <strong > Fout!</strong > Er is al een verificatie verstuurd naar ' . $email . '
+                        <strong > Fout!</br></strong > Er is al een verificatie verstuurd naar ' . $email . '
                         </div > ';
             } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
                 // Send to DB
@@ -505,7 +505,6 @@ function getEmail()
         }
     }
 }
-
 
 
 

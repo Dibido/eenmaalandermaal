@@ -1,5 +1,6 @@
 <?php
-
+session_start();
+ob_start();
 /*registratie Check op:
     username max 32
     lengte
@@ -11,6 +12,31 @@ DataBase check (trigger) die Registratie opschoond*/
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
+
+
+function checkUserLinked()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['code'])) {
+            $code = $_POST['code'];
+            $sql = "SELECT * FROM Registreer WHERE REG_code = '$code'";
+            $getUser = SendToDatabase($sql);
+
+            if (!$getUser) {
+                echo '  <div class="alert alert-danger" >
+                                    <strong > Fout!</strong > Er is geen gebruiker gekoppeld aan deze code </div > ';
+
+            } else {
+
+
+                header('Location: registreer2.php');
+
+
+            }
+        }
+    }
+}
+
 
 ?>
 
@@ -52,7 +78,7 @@ require('PHP/SQL-Queries.php');
 
 <!-- Navigation -->
 <?php
-require('navbar.html');
+require ('navbar.html');
 ?>
 
 <!-- Breadcrumb -->
@@ -104,7 +130,11 @@ require('navbar.html');
 
             <div class="row">
                 <div class="col-md-6 col-md-push-3">
-                    <form method="POST" id="codeverificatie" action="registreer.php">
+                    <form method="POST" id="codeverificatie" action="registreer1.php">
+
+                        <?php
+                        checkUserLinked();
+                        ?>
 
                         <div class="form-group">
                             <label for="code">Verificatiecode*</label>
