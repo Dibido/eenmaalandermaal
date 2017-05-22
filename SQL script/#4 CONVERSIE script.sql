@@ -1,4 +1,5 @@
 --Conversiescript rubrieken
+--TODO: unicode characters goed representeren ipv een vraagteken.
 BEGIN TRANSACTION
 INSERT INTO Rubriek
   SELECT
