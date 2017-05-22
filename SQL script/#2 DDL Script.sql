@@ -105,7 +105,9 @@ CREATE TABLE Voorwerp (
   CONSTRAINT FK_VoorwerpGebruikerGebruikersnaam FOREIGN KEY (VW_koper) REFERENCES Gebruiker (GEB_gebruikersnaam)
     ON UPDATE CASCADE --Voor als de gebruikersnaam wordt aangepast
     ON DELETE NO ACTION,
-  CONSTRAINT FK_BestandVoorwerpnummer FOREIGN KEY (VW_voorwerpnummer) REFERENCES Bestand (BES_voorwerpnummer),
+  CONSTRAINT FK_BestandVoorwerpnummer FOREIGN KEY (VW_voorwerpnummer) REFERENCES Bestand (BES_voorwerpnummer)
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION,
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2), --Kan niet leeg zijn
