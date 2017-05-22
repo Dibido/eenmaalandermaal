@@ -72,27 +72,26 @@ COMMIT
 
 /*
 Conversie script voor de illustraties naar de bestand tabel.
-Run dit op veilingssite database
 Voor dat dit runbaar is moeten er eerst voorwerpen zijn met hetzelfde VW_voorwerpnummer als het BES_voorwerpnummer.
 Deze query zorgt ervoor dat van ieder voorwerp uit de verkregen database 3 afbeeldingen krijgt wanneer er 3 afbeeldingen beschikbaar zijn.
 */
 
 BEGIN TRANSACTION
-INSERT INTO eenmaalandermaal.dbo.Bestand (BES_filenaam, BES_voorwerpnummer)
+INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
   SELECT
-    IllustratieFile,
-    ItemID
+    IllustratieFile AS BES_filenaam,
+    ItemID          AS BES_voorwerpnummer
   FROM (
          SELECT
            ItemID,
            IllustratieFile,
            Rank()
-           OVER ( PARTITION BY ItemID --OVER voegt informatie samen zonder een group by te gebruiken.
+           OVER ( PARTITION BY ItemID --OVER voegt informatie samen zonder te groeperen
              ORDER BY IllustratieFile DESC ) AS Rank
-         FROM Illustraties
+         FROM veilingssite.dbo.Illustraties
        ) rs
-  WHERE Rank <= 3
-        AND EXISTS(SELECT *
-                   FROM eenmaalandermaal..Voorwerp V
+  WHERE Rank <= 3 --Selecteerd de top 3
+        AND EXISTS(SELECT * --Als het voorwerp bestaat.
+                   FROM Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)
 COMMIT
