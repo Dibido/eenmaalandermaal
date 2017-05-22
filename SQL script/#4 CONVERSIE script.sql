@@ -47,7 +47,6 @@ INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_besch
               THEN left(titel, 56) + '...'
             ELSE titel END titel) AS VW_titel,
     Beschrijving                  AS VW_beschrijving,
-    --HTML tags filteren
     Land                          AS VW_land,
     Verkoper                      AS VW_verkoper,
     Conditie                      AS VW_conditie,
