@@ -48,6 +48,7 @@ $response = NULL;
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
+    <link rel="stylesheet" href="CSS/footer.css">
 
 
 </head>
@@ -286,17 +287,7 @@ require('navbar.html');
         ?>
 </div>
 
-
-<div class="container-fluid"  id="Footer-Top">
-    <div class="col-md-3 center-block">
-        <ul class="list-unstyled">
-
-        </ul>
-    </div>
-</div>
-<div class="container-fluid"  id="Footer-Bottom">
-
-</div>
+<?php include('footer.html') ?>
 
 
 <!-- Height corrections for carrousel -->
