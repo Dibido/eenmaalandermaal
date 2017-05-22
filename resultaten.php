@@ -201,20 +201,20 @@ require('navbar.html');
                     </a>
                         <ul class="list-group-item">
                             <div class="row">
+                                <div class="col-sm-6 left">
+                                    <a href="resultaten.php?zoekterm=<?php echo $zoekterm ?>">
+                                        <input class="btn btn-warning center-block" data-inline="true" value="Reset" type="button">
+                                    </a>
 
-                            <div class="col-sm-6 left">
+                                </div>
+                            <div class="col-sm-6 right">
 
                                 <a href="#">
                                     <input class="btn btn-primary center-block" type="submit" data-inline="true"
                                            value="Aanpassen">
                                 </a>
                             </div>
-                            <div class="col-sm-6 right">
-                                <a href="resultaten.php?zoekterm=<?php echo $zoekterm ?>">
-                                    <input class="btn btn-warning center-block" data-inline="true" value="Reset" type="button">
-                                </a>
 
-                            </div>
 
                     </div>
                     </ul>
