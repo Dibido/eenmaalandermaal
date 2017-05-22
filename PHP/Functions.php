@@ -438,5 +438,19 @@ function createTimer($tijd, $VW_Titel)
 ';
 }
 
+
+// functie die email adres invult bij laden registreer1.php indien al ingevuld.
+
+function getEmail()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['email'])) {
+            $email = $_POST['email'];
+            echo $email;
+        }
+    }
+}
+
+
 ?>
 
