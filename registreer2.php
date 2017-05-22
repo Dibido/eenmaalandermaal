@@ -115,8 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             <div class="form-group">
                                 <label for="voornaam">Voornaam*</label>
-                                <input name="voornaam" id="voornaam" type="text" placeholder="Voornaam"
-                                       class="form-control" required="true" maxlength="16">
+                                <input name="voornaam" id="voornaam" type="text" placeholder="Voornaam" maxlength="16"
+                                       class="form-control" required="true" >
                             </div>
 
                             <div class="form-group">
@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="form-group">
                                 <label for="postcode">Postcode*</label>
                                 <input name="postcode" id="postcode" type="text" placeholder="1234 AB"
-                                       class="form-control" required="true" maxlength="60">
+                                       class="form-control" required="true" maxlength="12">
                             </div>
 
                             <div class="form-group">
