@@ -2,10 +2,7 @@
 require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 require 'PHP/SQL-Queries.php';
-
-
 $waardes = array("Tijd: nieuw aangeboden" => "VW_looptijdStart DESC", "Tijd: eerst afgelopen" => "VW_looptijdEinde ASC", "Prijs: laagste bovenaan" => "prijs ASC", "Prijs: hoogste bovenaan" => "prijs DESC");
-
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['zoekterm'])) {
         $zoekterm = ($_GET['zoekterm']);
@@ -46,20 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (!isset($prijs['max'])) {
         $prijs['max'] = 5000;
     }
-
-
-
     $_GET['maxremainingtime'] = "NULL";
     $_GET['minremainingtime'] = "NULL";
-
-    /*$pagenum = $_GET['pagenum'];*/
-
     $Dictionary = array(
         'SearchKeyword' => $_GET['zoekterm'],
         'SearchFilter' => $waardes[($_GET['sorteerfilter'])],
         'SearchPaymentMethod' => $_GET['betalingsmethode'],
         'SearchCategory' => $_GET['categorie'],
-
         'SearchMinRemainingTime' => $_GET['minremainingtime'],
         'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
         'SearchMinPrice' => $prijs['min'],
@@ -151,9 +141,7 @@ require('navbar.html');
                                 class="glyphicon glyphicon-search"></span></button></span>
                             </div>
                     </a>
-                    <input type="hidden" name="categorie" value="<?php global $categorie;
-                    echo($categorie); ?>">
-
+            
                     <a href="#" class="list-group-item"> Filter:
                         <select class="form-control" name="sorteerfilter">
                             <?php
@@ -182,7 +170,6 @@ require('navbar.html');
                         } else {
                             echo('data-slider-value="[150,450]"/>');
                         }
-
                         ?>
                     </a>
 
@@ -223,7 +210,9 @@ require('navbar.html');
                     <script>
                         var slider = new Slider('#pslider', {});
                     </script>
-                        <input type="hidden" name="pagenum" value="<?php global $pagenum; echo($pagenum); ?>">  
+                    <input type="hidden" name="categorie" value="<?php global $categorie;
+                    echo($categorie); ?>">
+                    <input type="hidden" name="pagenum" value="<?php global $pagenum; echo($pagenum); ?>">
                 </form>
             </div>
             <a href="#" class="list-group-item active" id="Header-Categories">
@@ -261,25 +250,17 @@ if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pag
     { 
         $pagenum = 1; 
     }
-
 else { $pagenum = $_GET['pagenum']; }
-
 //results per page 
 $ResultsPerPage = 10;
 $Offset = $ResultsPerPage * $pagenum;
-
 $GetResultatenPagina = <<<EOT
 SELECT * FROM Voorwerp
 ORDER BY VW_voorwerpnummer
 OFFSET $Offset ROWS
 FETCH NEXT $ResultsPerPage ROWS ONLY
 EOT;
-
 $result = SendToDatabase($GetResultatenPagina);
-
-
-
-
 // First we check if we are on page one. If we are then we don't need a link to the previous page or the first page so we do nothing. If we aren't then we generate links to the first page, and to the previous page.
 if ($pagenum == 1) { } 
 else {
@@ -290,10 +271,8 @@ echo "<a href=" . "
 
 ?zoekterm=" . $zoekterm . "&categorie=" .  $categorie . "&sorteerfilter=" . $sorteerfilter . " &prijs=" .$prijs . "&pagenum=" .$previous ."> <-Vorige</a>";
 } 
-
 //just a spacer
 echo " ---- ";
-
 //This does the same as above, only checking if we are on the last page, and then generating the Next and Last links
 if ($pagenum == $last) 
 {
@@ -306,8 +285,7 @@ echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last'>Laatste pagina ->></a> ";
 } 
 ?> 
 
-
-<!-- HTML -->
+<!-- HTML --> 
 <html>
 <nav aria-label="...">
   <ul class="pagination">
@@ -348,15 +326,11 @@ echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last'>Laatste pagina ->></a> ";
     });
 </script>
 <script type="text/javascript">
-
     $(document).ready(function () {
-
         $('.tree-toggle').click(function () {
             $(this).parent().children('ul.tree').toggle(200);
         });
-
     });
-
 </script>
 
 </body>
