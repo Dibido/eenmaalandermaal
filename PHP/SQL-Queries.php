@@ -272,4 +272,13 @@ $SetRegistratie = <<<EOT
 INSERT INTO Registreer(REG_email, REG_code) VALUES (:email, :code)
 EOT;
 
+/* Query voor paginanummering op resultaten.php */
+
+$GetResultatenPagina = <<<EOT
+SELECT * FROM Voorwerp
+ORDER BY VW_voorwerpnummer
+OFFSET 3 ROWS
+FETCH NEXT 10 ROWS ONLY
+EOT;
+
 ?>
