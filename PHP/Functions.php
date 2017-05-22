@@ -462,6 +462,7 @@ function checkEmailSent()
         if (isset($_POST['email'])) {
             $email = $_POST['email'];
             $code = md5($email . date("Y/m/d"));
+            $code = substr($code, 0, 5);
             global $SetRegistratie;
 
             $subject = 'Uw EenmaalAndermaal registratie';
