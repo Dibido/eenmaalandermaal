@@ -8,10 +8,15 @@ $connect_db = mssql_connect ( $dbhost, $dbuser, $dbpass ) or die(mssql_error());
 mssql_select_db ( $db, $connect_db ) or die(mssql_error());
 */
 
-require 'PHP/Connection.php';
+require 'PHP/connection.php';
+require 'PHP/Functions.php';
 require 'PHP/SQL-Queries.php';
 //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
-if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) { $pagenum = 1; }
+if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) 
+	{ 
+		$pagenum = 1; 
+	}
+
 else { $pagenum = $_GET['pagenum']; }
 
 //Now you can use this query to see how many rows you are dealing with
