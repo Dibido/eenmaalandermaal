@@ -498,6 +498,27 @@ Het EenmaalAndermaal Team';
     }
 }
 
+// Controlleert of de ingevoerde validatiecode op registreerq.php correct is. Indien ja > doorverwijzing naar registreer2.php, zo niet dan error.
+function checkUserLinked()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['code'])) {
+            $code = $_POST['code'];
+            $sql = "SELECT * FROM Registreer WHERE REG_code = '$code'";
+            $getUser = SendToDatabase($sql);
+
+            if (!$getUser) {
+                echo '  <div class="alert alert-danger" >
+                                    <strong > Fout!</strong > Er is geen gebruiker gekoppeld aan deze code </div > ';
+            } else {
+                $_SESSION["emailadres"] = $getUser[0]['REG_email'];
+                header('Location: registreer2.php');
+            }
+
+        }
+    }
+}
+
 
 ?>
 
