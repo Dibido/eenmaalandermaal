@@ -6,12 +6,12 @@ INSERT INTO Rubriek
     name   AS RB_naam,
     parent AS RB_parent,
     ID     AS RB_volgnummer
-  FROM veilingssite.dbo.Categorieen
+  FROM Categorieen
 COMMIT
 
 --Conversiescript Users
 BEGIN TRANSACTION
-INSERT INTO eenmaalandermaal.dbo.Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord,
+INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord,
                                             GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
   SELECT DISTINCT
     LTRIM(RTRIM(Username))   AS GEB_gebruikersnaam,
@@ -32,13 +32,13 @@ INSERT INTO eenmaalandermaal.dbo.Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GE
      FROM veilingssite.dbo.Users u
      WHERE u.Username = Username
      ORDER BY Rating DESC)   AS GEB_Rating
-  FROM veilingssite.dbo.Users
+  FROM Users
 COMMIT
 
 --Conversiescript Items
 BEGIN TRANSACTION
-SET IDENTITY_INSERT eenmaalandermaal.dbo.voorwerp ON
-INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
+SET IDENTITY_INSERT voorwerp ON
+INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
     ID                                                                                         AS VW_voorwerpnummer,
     (SELECT CASE
@@ -50,7 +50,7 @@ INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_besch
     Verkoper                                                                                   AS VW_verkoper,
     Conditie                                                                                   AS VW_conditie,
     Thumbnail                                                                                  AS VW_thumbnail,
-    eenmaalandermaal.dbo.FN_Verandervaluta(Valuta, eenmaalandermaal.dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
+    dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
     '2017-05-24'                                                                               AS VW_looptijdstart,
     7                                                                                          AS VW_looptijd,
     'Bank / giro'                                                                              AS VW_betalingswijze,
@@ -59,16 +59,16 @@ INSERT INTO eenmaalandermaal.dbo.Voorwerp (VW_voorwerpnummer, VW_titel, VW_besch
     ELSE 'Geen plaatsnaam bekend'
     END                                                                                        AS VW_plaatsnaam,
     0                                                                                          AS VW_veilinggesloten
-  FROM veilingssite.dbo.Items
-SET IDENTITY_INSERT eenmaalandermaal.dbo.voorwerp OFF
+  FROM Items
+SET IDENTITY_INSERT voorwerp OFF
 GO
 
 BEGIN TRANSACTION
-INSERT INTO eenmaalandermaal.dbo.Voorwerp_Rubriek
+INSERT INTO Voorwerp_Rubriek
   SELECT
     ID        AS VR_Voorwerp_Nummer,
     Categorie AS VR_Rubriek_Nummer
-  FROM veilingssite.dbo.Items
+  FROM Items
 COMMIT
 GO
 
@@ -80,7 +80,7 @@ Deze query zorgt ervoor dat van ieder voorwerp uit de verkregen database 3 afbee
 */
 
 BEGIN TRANSACTION
-INSERT INTO eenmaalandermaal.dbo.Bestand (BES_filenaam, BES_voorwerpnummer)
+INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
   SELECT
     IllustratieFile AS BES_filenaam,
     ItemID          AS BES_voorwerpnummer
@@ -91,10 +91,10 @@ INSERT INTO eenmaalandermaal.dbo.Bestand (BES_filenaam, BES_voorwerpnummer)
            Rank()
            OVER ( PARTITION BY ItemID --OVER voegt informatie samen zonder te groeperen
              ORDER BY IllustratieFile DESC ) AS Rank
-         FROM veilingssite.dbo.Illustraties
+         FROM Illustraties
        ) rs
   WHERE Rank <= 3 --Selecteerd de top 3
         AND EXISTS(SELECT * --Als het voorwerp bestaat.
-                   FROM eenmaalandermaal.dbo.Voorwerp V
+                   FROM Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)
 COMMIT
