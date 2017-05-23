@@ -15,9 +15,9 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
                                             GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
   SELECT DISTINCT
     LTRIM(RTRIM(Username))   AS GEB_gebruikersnaam,
-    LTRIM(RTRIM('-'))        AS GEB_voornaam,
-    LTRIM(RTRIM('-'))        AS GEB_achternaam,
-    LTRIM(RTRIM('-'))        AS GEB_adresregel_1,
+    ('-')                    AS GEB_voornaam,
+    ('-')                    AS GEB_achternaam,
+    ('-')                    AS GEB_adresregel_1,
     getdate()                AS GEB_geboortedag,
     'Geen_mailadres@nope.nl' AS GEB_mailbox,
     'P@ssw0rd'               AS GEB_wachtwoord,
