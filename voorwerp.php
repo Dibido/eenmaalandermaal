@@ -18,12 +18,10 @@ if (!isset($ItemInfo["VW_thumbnail"]) OR empty($ItemInfo["VW_thumbnail"])){
     $ItemInfo["VW_thumbnail"] = "images/no-image-available.jpg";
 }
 foreach ($ItemImages as $ItemImage) {
-    echo $ItemImage;
-    if(!isset($ItemImage[0]) OR empty($ItemImage[0])){
-        $ItemImage[0] = "images/no-image-available.jpg";
+    if(!isset($ItemImage["BES_filenaam"]) OR empty("BES_filenaam")){
+        $ItemImage["BES_filenaam"] = "images/no-image-available.jpg";
     }
 }
-
 
 print_r($ItemInfo);
 print_r($ItemImages);
@@ -112,15 +110,15 @@ require('navbar.html');
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[0][0] ?>);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[0]["BES_filenaam"] ?>);"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[1][0] ?>);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[1]["BES_filenaam"] ?>);"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[2][0] ?>);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[2]["BES_filenaam"] ?>);"></div>
                 </div>
             </div>
 

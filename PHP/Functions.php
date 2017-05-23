@@ -83,17 +83,14 @@ Return SendToDatabase($Query);
 
 function GetItemImages($ItemID){
 
-    $Query = <<<EOT
+    $Query = <<< EOT
 
-SELECT BES_filenaam
+SELECT DISTINCT BES_filenaam
 FROM Bestand, Voorwerp
 WHERE Bestand.BES_voorwerpnummer = $ItemID
 
 EOT;
-
     return SendToDatabase($Query);
-
-
 }
 
 
