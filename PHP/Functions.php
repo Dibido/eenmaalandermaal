@@ -751,14 +751,17 @@ EOT;
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 
-        //    session_destroy();
+        session_destroy();
+
+        echo '  <div class="alert alert-success">
+                            <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>';
 
     } else {
         echo 'somethings wrong';
         header('Location: registreer1.php');
     }
 
-    echo 'U bent geregistreerd';
+
 
 }
 
