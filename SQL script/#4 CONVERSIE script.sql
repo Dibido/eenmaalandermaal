@@ -8,8 +8,7 @@ INSERT INTO Rubriek
   FROM Categorieen
 GO
 
-/* Dit conversiescript converteert de gegevens van de user tabel naar de Gebruiker tabel.
-Om dit te kunnen runnen moeten eerst het DDL script en de van de product owner gekregen database succesvol gerund zijn.*/
+--Conversiescript Users
 BEGIN TRANSACTION
 INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord,
                                             GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
