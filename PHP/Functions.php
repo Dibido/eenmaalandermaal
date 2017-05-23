@@ -555,7 +555,7 @@ function checkEmailSent()
 
             $subject = 'Uw EenmaalAndermaal registratie';
 
-            $message = 'Beste toekomstige gebruiker,
+            $message = 'Beste gebruiker,
 
 u heeft aangegeven zich aan te willen melden op onze website.
 
