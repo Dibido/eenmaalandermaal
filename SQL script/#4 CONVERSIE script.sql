@@ -1,5 +1,4 @@
 --Conversiescript rubrieken
-BEGIN TRANSACTION
 INSERT INTO Rubriek
   SELECT
     ID     AS RB_Nummer,
@@ -7,7 +6,7 @@ INSERT INTO Rubriek
     parent AS RB_parent,
     ID     AS RB_volgnummer
   FROM Categorieen
-COMMIT
+GO
 
 --Conversiescript Users
 BEGIN TRANSACTION
@@ -33,10 +32,9 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
      WHERE u.Username = Username
      ORDER BY Rating DESC)   AS GEB_Rating
   FROM Users
-COMMIT
+GO
 
 --Conversiescript Items
-BEGIN TRANSACTION
 SET IDENTITY_INSERT voorwerp ON
 INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
@@ -63,13 +61,11 @@ INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_
 SET IDENTITY_INSERT voorwerp OFF
 GO
 
-BEGIN TRANSACTION
 INSERT INTO Voorwerp_Rubriek
   SELECT
     ID        AS VR_Voorwerp_Nummer,
     Categorie AS VR_Rubriek_Nummer
   FROM Items
-COMMIT
 GO
 
 
@@ -78,8 +74,6 @@ Conversie script voor de illustraties naar de bestand tabel.
 Voor dat dit runbaar is moeten er eerst voorwerpen zijn met hetzelfde VW_voorwerpnummer als het BES_voorwerpnummer.
 Deze query zorgt ervoor dat van ieder voorwerp uit de verkregen database 3 afbeeldingen krijgt wanneer er 3 afbeeldingen beschikbaar zijn.
 */
-
-BEGIN TRANSACTION
 INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
   SELECT
     IllustratieFile AS BES_filenaam,
@@ -97,4 +91,4 @@ INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
         AND EXISTS(SELECT * --Als het voorwerp bestaat.
                    FROM Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)
-COMMIT
+GO
