@@ -625,5 +625,70 @@ function validateHash()
 }
 
 
+function checkRegistratie()
+{
+    global $voornaam;
+    global $achternaam;
+    global $email;
+    global $adres1;
+    global $adres2;
+    global $postcode;
+    global $woonplaats;
+    global $land;
+    global $geboortedatum;
+    global $gebruikersnaam;
+    global $wachtwoord;
+    global $wachtwoord2;
+    global $geheimevraag;
+    global $antwoord;
+
+    global $emailadres;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['voornaam']) && ($_POST['achternaam']) && ($_POST['email']) && ($_POST['adres1']) && ($_POST['adres2']) && ($_POST['postcode']) && ($_POST['woonplaats']) && ($_POST['land']) && ($_POST['geboortedatum']) && ($_POST['gebruikersnaam']) && ($_POST['wachtwoord']) && ($_POST['wachtwoord2']) && ($_POST['geheimevraag']) && ($_POST['antwoord'])) {
+            $voornaam = cleanInput($_POST['voornaam']);
+            $achternaam = cleanInput($_POST['achternaam']);
+            $email = cleanInput($_POST['email']);
+            $adres1 = cleanInput($_POST['adres1']);
+            $adres2 = cleanInput($_POST['adres2']);
+            $postcode = cleanInput($_POST['postcode']);
+            $woonplaats = cleanInput($_POST['woonplaats']);
+            $land = cleanInput($_POST['land']);
+            $geboortedatum = cleanInput($_POST['geboortedatum']);
+            $gebruikersnaam = cleanInput($_POST['gebruikersnaam']);
+            $wachtwoord = cleanInput($_POST['wachtwoord']);
+            $wachtwoord2 = cleanInput($_POST['wachtwoord2']);
+            $geheimevraag = cleanInput($_POST['geheimevraag']);
+            $antwoord = cleanInput($_POST['antwoord']);
+
+            if ($wachtwoord == $wachtwoord2) {
+
+                $_SESSION["voornaam"] = $voornaam;
+                $_SESSION["achternaam"] = $achternaam;
+                $_SESSION["email"] = $email;
+                $_SESSION["adres1"] = $adres1;
+                $_SESSION["adres2"] = $adres2;
+                $_SESSION["postcode"] = $postcode;
+                $_SESSION["woonplaats"] = $woonplaats;
+                $_SESSION["land"] = $land;
+                $_SESSION["geboortedatum"] = $geboortedatum;
+                $_SESSION["gebruikersnaam"] = $gebruikersnaam;
+                $_SESSION["wachtwoord"] = password_hash($wachtwoord, PASSWORD_DEFAULT);
+                $_SESSION["geheimevraag"] = $geheimevraag;
+                $_SESSION["antwoord"] = password_hash($antwoord, PASSWORD_DEFAULT);
+
+                header('Location: voltooi-registratie.php');
+            } else {
+                echo '  <div class="alert alert-danger" >
+                        <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
+            }
+
+        }
+    } else {
+        $emailadres = validateHash();
+    }
+}
+
+
 ?>
 
