@@ -273,10 +273,7 @@ function outputRows($result, $zoekterm)
         )
  *
  *
- */
-
-
-/Function to load the header letters for the categories/
+/*Function to load the header letters for the categories*/
 function laadLetters()
 {
     //load the groups
