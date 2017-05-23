@@ -29,7 +29,7 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
     LTRIM(RTRIM(Country))    AS GEB_Land,
     --Als er dubbele gebruikers zijn pakken we de gebruiker met de hoogste rating
     (SELECT TOP 1 Rating
-     FROM veilingssite.dbo.Users u
+     FROM Users u
      WHERE u.Username = Username
      ORDER BY Rating DESC)   AS GEB_Rating
   FROM Users
