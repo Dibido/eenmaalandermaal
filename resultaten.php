@@ -235,6 +235,7 @@ require('navbar.html');
                 </form>
             </div>
             <a href="#" class="list-group-item active" id="Header-Categories">
+                <i class="text-right glyphicon glyphicon-th-list"></i>
                 Categorieën
             </a>
             <div class="list-group-item">

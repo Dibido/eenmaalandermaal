@@ -428,7 +428,7 @@ function printVragen($Vragen)
 function printCategoriën($zoekterm, $rubriekNummer)
 {
     global $connection;
-    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek
+    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Naam as SubSubRubriekNummer
                         FROM Rubriek H
                         OUTER APPLY
                         (
@@ -455,17 +455,17 @@ function printCategoriën($zoekterm, $rubriekNummer)
                             )E
                         */                           
                         WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
-                        GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam
+                        GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
-    echo '<ul class="nav nav-list" id="accordion">';
+    echo '<ul class="nav">';
 //Goes through the first dimensional of the array
     for ($i = 0; $i < sizeof($rubrieken); $i++) {
         //Goes through the second dimensional of the array
-        for ($j = 0; $j < sizeof($rubrieken[$i]); $j++) {
+        for ($j = 0; $j < (sizeof($rubrieken[$i])/2); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
             if (!isset($rubrieken[$i][$j + 1]) OR ($j == sizeof($rubrieken[$i]) - 1) AND isset($rubrieken[$i][$j])) {
-                echo '<li><a href="&categorie='.$rubrieken[$i][$j].'">' . $rubrieken[$i][$j] . '</a><ul>';
+                echo '<li><a class="testen" href="&categorie='.$rubrieken[$i][$j+4].'">' . $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
@@ -474,17 +474,15 @@ function printCategoriën($zoekterm, $rubriekNummer)
             }
         }
         //For loop to close the list items and unorderd lists it "closes" backwards
-        for ($k = sizeof($rubrieken[$i]) - 1; $k >= 0; $k--) {
+        for ($k = (sizeof($rubrieken[$i])/2) - 1; $k >= 0; $k--) {
             //If the last rubric is set and the Last Rubric is not the same as the next Rubric
             if ($i + 1 >= sizeof($rubrieken)) {
                 echo '</ul></li>';
             } else if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
                 echo '</ul></li>';
-                if ($k == 0) {
-                    echo '<hr class="line"  size="1">';
-                }
             }
         }
+        echo'<hr size="6">';
     }
     echo '</ul>';
 }
