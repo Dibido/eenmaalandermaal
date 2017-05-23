@@ -612,6 +612,7 @@ function validateHash()
 {
     if (isset($_SESSION['emailadres']) && !empty($_SESSION['emailadres'])) {
         $emailadres = cleanInput($_SESSION["emailadres"]);
+        session_unset();
     } else {
         header('Location: registreer1.php');
         session_destroy();
