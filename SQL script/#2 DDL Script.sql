@@ -124,6 +124,7 @@ CREATE TABLE Bestand (
     ON UPDATE CASCADE --Wanneer het voorwerp wordt aangepast, overnemen
     ON DELETE CASCADE, --Wanneer het voorwerp delete wordt, overnemen
   CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
+  --TODO: check maken om tot 3 foto's te limiteren
 );
 
 
