@@ -2,6 +2,7 @@
 require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 require 'PHP/SQL-Queries.php';
+
 $waardes = array("0" => "VW_looptijdStart DESC", "1" => "VW_looptijdEinde ASC", "2" => "prijs ASC", "3" => "prijs DESC");
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['zoekterm'])) {
@@ -191,11 +192,11 @@ require('navbar.html');
                                data-slider-max="100"
                                data-slider-step="5"
                         <?php
-                        if (isset($rating)) {
+                        /*if (isset($rating)) {
                             echo('data-slider-value="[' . $rating['min'] . "," . $rating['max'] . ']"/>');
                         } else {
                             echo('data-slider-value="[10,100]"/>');
-                        }
+                        }*/
                         ?>
                         </div>
                     </a>
