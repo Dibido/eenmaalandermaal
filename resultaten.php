@@ -43,6 +43,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (!isset($prijs['max'])) {
         $prijs['max'] = 5000;
     }
+     if (!isset($_GET['pagenum'])) {
+        $_GET['pagenum'] = 1;
+    }
+
+        //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
+        if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
+            $pagenum = 1;
+        } else {
+            $pagenum = $_GET['pagenum'];
+        }
+        //results per page
+        $ResultsPerPage = 10;
+        $Offset = $ResultsPerPage * ($pagenum-1);
+
     $_GET['maxremainingtime'] = "NULL";
     $_GET['minremainingtime'] = "NULL";
     $Dictionary = array(
@@ -53,8 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         'SearchMinRemainingTime' => $_GET['minremainingtime'],
         'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
         'SearchMinPrice' => $prijs['min'],
-        'SearchMaxPrice' => $prijs['max']
-    );
+        'SearchMaxPrice' => $prijs['max'],
+        'ResultsPerPage' => $ResultsPerPage,
+        'Offset' => $Offset
+        );
 }
 ?>
 
@@ -280,7 +296,7 @@ require('navbar.html');
 
         </div>
     </div>
-
+</div>
     <!-- Trending items -->
 
     <div class="col-md-9 pull-left">
@@ -293,22 +309,7 @@ require('navbar.html');
 
         <!-- pagina nummering -->
         <?php
-        //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
-        if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
-            $pagenum = 1;
-        } else {
-            $pagenum = $_GET['pagenum'];
-        }
-        //results per page
-        $ResultsPerPage = 10;
-        $Offset = $ResultsPerPage * $pagenum;
-        $GetResultatenPagina = <<<EOT
-SELECT * FROM Voorwerp
-ORDER BY VW_voorwerpnummer
-OFFSET $Offset ROWS
-FETCH NEXT $ResultsPerPage ROWS ONLY
-EOT;
-        $result = SendToDatabase($GetResultatenPagina);
+
         // First we check if we are on page one. If we are then we don't need a link to the previous page or the first page so we do nothing. If we aren't then we generate links to the first page, and to the previous page.
         if ($pagenum == 1) {
         } else {

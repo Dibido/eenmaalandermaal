@@ -18,7 +18,6 @@ function GetItemDetails($ItemID)
 {
 
     $Query = <<<EOT
-
 SELECT
   DISTINCT VW_voorwerpnummer,
   VW_titel,
@@ -323,6 +322,9 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
+    $ResultsPerPage = $SearchOptions['ResultsPerPage'];
+    $Offset = $SearchOptions['Offset'];
+
 
     //clean the input
 
@@ -335,9 +337,11 @@ function SearchFunction($SearchOptions)
     $SearchMinPrice = cleanInput($SearchMinPrice);
     $SearchMaxPrice = cleanInput($SearchMaxPrice);
 
+    $ResultsPerPage = cleanInput($ResultsPerPage);
+    $Offset = cleanInput($Offset);
+    
 //Prepare the query
     $QuerySearchProducts = <<< EOT
-
 SELECT
    DISTINCT VW_voorwerpnummer,
    VW_titel,
@@ -381,12 +385,13 @@ SELECT
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) <= $SearchMaxPrice)
 		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
-		AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
+		AND ('$SearchPaymentMethod' IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
    Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde
 ORDER BY $SearchFilter , VW_voorwerpnummer
-
+OFFSET $Offset ROWS
+FETCH NEXT $ResultsPerPage ROWS ONLY
     
 EOT;
     print_r($QuerySearchProducts);
