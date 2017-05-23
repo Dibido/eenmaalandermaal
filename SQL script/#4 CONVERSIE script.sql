@@ -15,12 +15,12 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
                                             GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
   SELECT DISTINCT
     LTRIM(RTRIM(Username))   AS GEB_gebruikersnaam,
-    ('-')                    AS GEB_voornaam,
-    ('-')                    AS GEB_achternaam,
-    ('-')                    AS GEB_adresregel_1,
+    ('-')                    AS GEB_voornaam,--is niet bekend.
+    ('-')                    AS GEB_achternaam,--is niet bekend.
+    ('-')                    AS GEB_adresregel_1, -- is niet bekend.
     getdate()                AS GEB_geboortedag,
-    'Geen_mailadres@nope.nl' AS GEB_mailbox,
-    'P@ssw0rd'               AS GEB_wachtwoord,
+    'Geen_mailadres@nope.nl' AS GEB_mailbox, -- is niet bekend.
+    'P@ssw0rd'               AS GEB_wachtwoord, -- is niet bekend.
     1                        AS GEB_vraag,
     --Default vraag
     'Defaultantwoord'        AS GEB_antwoordtekst,
