@@ -320,7 +320,7 @@ FROM Voorwerp
   LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
   LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
-WHERE VW_voorwerpnummer = $voorwerpnummer
+WHERE VW_voorwerpnummer = 
 
 
 EOT;
@@ -331,7 +331,7 @@ $QueryImagesFromItem = <<<EOT
 
 SELECT BES_filenaam
 FROM Bestand, Voorwerp
-WHERE Bestand.BES_voorwerpnummer = $voorwerpnummer
+WHERE Bestand.BES_voorwerpnummer =
 
 EOT;
 
