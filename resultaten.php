@@ -2,7 +2,7 @@
 require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 require 'PHP/SQL-Queries.php';
-$waardes = array("Tijd: nieuw aangeboden" => "VW_looptijdStart DESC", "Tijd: eerst afgelopen" => "VW_looptijdEinde ASC", "Prijs: laagste bovenaan" => "prijs ASC", "Prijs: hoogste bovenaan" => "prijs DESC");
+$waardes = array("0" => "VW_looptijdStart DESC", "1" => "VW_looptijdEinde ASC", "2" => "prijs ASC", "3" => "prijs DESC");
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['zoekterm'])) {
         $zoekterm = ($_GET['zoekterm']);
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $zoekterm = $_GET['zoekterm'] = "";
     }
     if (!isset($_GET['sorteerfilter'])) {
-        $_GET['sorteerfilter'] = "Tijd: nieuw aangeboden";
+        $_GET['sorteerfilter'] = ("Tijd: nieuw aangeboden");
     }
     if (!isset($_GET['betalingsmethode'])) {
         $_GET['betalingsmethode'] = "NULL";
@@ -144,18 +144,21 @@ require('navbar.html');
                         </div>
                     </a>
 
-                    <a href="#" class="list-group-item"> Filter:
+                    <a href="#" class="list-group-item"> Sorteer op:
                         <select class="form-control" name="sorteerfilter">
                             <?php
+                            $filterNamen = array("Tijd: nieuw aangeboden", "Tijd: eerst afgelopen", "Prijs: laagste bovenaan", "Prijs: hoogste bovenaan");
                             if (isset($sorteerfilter)) {
                                 global $sorteerfilter;
-                                echo('<option value="' . ($_GET['sorteerfilter']) . '" selected> ' . ($_GET['sorteerfilter']) . '</option>');
+                                /*echo "<option value=\"" . ($_GET['sorteerfilter']) . "\" selected>" . $filterNamen[($_GET['$sorteerfilter'])] . "</option>"; */
+
+                                $query_age = (isset($_GET['query_age']) ? $_GET['query_age'] : null);
                             }
                             ?>
-                            <option value="Tijd: nieuw aangeboden">Tijd: nieuw aangeboden</option>
-                            <option value="Tijd: eerst afgelopen">Tijd: eerst afgelopen</option>
-                            <option value="Prijs: laagste bovenaan">Prijs: laagste bovenaan</option>
-                            <option value="Prijs: hoogste bovenaan">Prijs: hoogste bovenaan</option>
+                            <option value="0">Tijd: nieuw aangeboden</option>
+                            <option value="1">Tijd: eerst afgelopen</option>
+                            <option value="2">Prijs: laagste bovenaan</option>
+                            <option value="3">Prijs: hoogste bovenaan</option>
                         </select>
                     </a>
 
@@ -178,6 +181,24 @@ require('navbar.html');
                         </div>
                     </a>
 
+                    <a href="#" class="list-group-item">Rating:
+                        <b><?php echo('€' . $rating['min'] . '- €' . $rating['max']); ?></b>
+
+                        <div list-group-item>
+                        <input id="rslider" type="text" name="rating"
+                               class="span2" value=""
+                               data-slider-min="10"
+                               data-slider-max="100"
+                               data-slider-step="5"
+                        <?php
+                        if (isset($rating)) {
+                            echo('data-slider-value="[' . $rating['min'] . "," . $rating['max'] . ']"/>');
+                        } else {
+                            echo('data-slider-value="[10,100]"/>');
+                        }
+                        ?>
+                        </div>
+                    </a>
 
                     <a href="#" class="list-group-item">Betalingsmethode:
                         <select class="form-control" name="betalingsmethode">
@@ -208,7 +229,11 @@ require('navbar.html');
                     <ul class="list-group-item">
                         <div class="row">
                             <div class="col-sm-6 left">
-                                <a href="resultaten.php?zoekterm=<?php echo $zoekterm ?>">
+                                <a href="resultaten.php?zoekterm=<?php echo " <a href=" . " 
+ 
+                                ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urldecode($sorteerfilter) . "&prijs=" . urldecode($prijs) . "&pagenum=". $pagenum. ">Volgende ></a> ";
+                                    ?>">
+
                                     <input class="btn btn-warning center-block" data-inline="true" value="Reset"
                                            type="button">
                                 </a>
@@ -227,6 +252,7 @@ require('navbar.html');
                     </ul>
                     <script>
                         var slider = new Slider('#pslider', {});
+                        var slider = new Slider('#rslider', {});
                     </script>
                     <input type="hidden" name="categorie" value="<?php global $categorie;
                     echo($categorie); ?>">
@@ -283,12 +309,14 @@ EOT;
         // First we check if we are on page one. If we are then we don't need a link to the previous page or the first page so we do nothing. If we aren't then we generate links to the first page, and to the previous page.
         if ($pagenum == 1) {
         } else {
-            echo " <a href='?pagenum=1'> <<-Eerste pagina</a> ";
+            //eerste pagina  
+            echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . "> <<-Eerste pagina</a>";
+
+
             echo " ";
             $previous = $pagenum - 1;
-            echo "<a href=" . " 
-
-?zoekterm=" . $zoekterm . "&categorie=" . $categorie . "&sorteerfilter=" . urldecode($sorteerfilter) . " &prijs=" . $prijs . "&pagenum=" . $previous . "> <-Vorige</a>";
+            //vorige pagina 
+            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $previous . "> <-Vorige</a>";
         }
         //just a spacer
         echo " ---- ";
@@ -296,9 +324,11 @@ EOT;
         if ($pagenum == $last) {
         } else {
             $next = $pagenum + 1;
-            echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$next'>Volgende -></a> ";
+            echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $next. ">Volgende ></a> ";
             echo " ";
-            echo " <a href='{$_SERVER['PHP_SELF']}?pagenum=$last'>Laatste pagina ->></a> ";
+            echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $last. ">Laatste pagina ->></a> ";
+            //"<a href='?pagenum=$last'>Laatste pagina ->></a> ";
+            print_r ($prijs);
         }
         ?>
 
