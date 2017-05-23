@@ -531,6 +531,7 @@ function createTimer($tijd, $VW_Titel, $pagina)
 }
 
 
+
 // functie die email adres invult bij laden registreer1.php indien al ingevuld.
 
 function getEmailReg1()
@@ -572,13 +573,13 @@ Het EenmaalAndermaal Team';
 
 
 // If already in DB
-            $sql = " SELECT REG_email FROM Registreer WHERE REG_email = '$email'";
+            $sql = " select * from (select GEB_mailbox as email from Gebruiker union all select REG_email from Registreer) a where email = '$email'";
             $getUser = SendToDatabase($sql);
 
             if ($getUser) { //IF waarde (dus niet leeg)
                 // Display error
                 echo '  <div class="alert alert-danger" >
-                        <strong > Fout!</br></strong > Er is al een verificatie verstuurd naar ' . $email . '
+                        <strong > Fout!</br></strong > Er is al een verificatie verstuurd naar ' . $email . ' of er bestaat al een account met dit E-mailadres.
                         </div > ';
             } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
                 // Send to DB
@@ -688,4 +689,67 @@ function checkRegistratie()
 }
 
 
+function doRegistratie()
+{
+
+    if (isset($_SESSION['voornaam'])) {
+
+        $gebruikersnaam = $_SESSION['gebruikersnaam'];
+        $voornaam = $_SESSION['voornaam'];
+        $achternaam = $_SESSION['achternaam'];
+        $adres1 = $_SESSION['adres1'];
+        $adres2 = $_SESSION['adres2'];
+        $postcode = $_SESSION['postcode'];
+        $woonplaats = $_SESSION['woonplaats'];
+        $land = $_SESSION['land'];
+        $geboortedatum = $_SESSION['geboortedatum'];
+        $email = $_SESSION['email'];
+        $wachtwoord = $_SESSION['wachtwoord'];
+        $geheimevraag = $_SESSION['geheimevraag'];
+        $antwoord = $_SESSION['antwoord'];
+
+
+
+        // Insert new user into Gebruiker Table
+        $sqlInsertUser = <<<EOT
+        INSERT INTO Gebruiker ( GEB_gebruikersnaam,  GEB_voornaam,   GEB_achternaam,   GEB_adresregel_1, GEB_adresregel_2,   GEB_postcode,   GEB_plaatsnaam,   GEB_Land,   GEB_geboortedag,    GEB_mailbox,  GEB_wachtwoord,   GEB_vraag,      GEB_antwoordtekst,  GEB_verkoper)
+        VALUES        ( :gebruikersnaam,     :voornaam,      :achternaam,      :adres1,          :adres2,            :postcode,      :woonplaats,      :land   ,   :geboortedatum ,    :email,       :wachtwoord,      :geheimevraag,  :antwoord,          '0')
+EOT;
+
+
+        GLOBAL $connection;
+        $stmt = $connection->prepare($sqlInsertUser);
+        $stmt->bindParam(':gebruikersnaam', $gebruikersnaam);
+        $stmt->bindParam(':voornaam', $voornaam);
+        $stmt->bindParam(':achternaam', $achternaam);
+        $stmt->bindParam(':adres1', $adres1);
+        $stmt->bindParam(':adres2', $adres2);
+        $stmt->bindParam(':postcode', $postcode);
+        $stmt->bindParam(':woonplaats', $woonplaats);
+        $stmt->bindParam(':land', $land);
+        $stmt->bindParam(':geboortedatum', $geboortedatum);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':wachtwoord', $wachtwoord);
+        $stmt->bindParam(':geheimevraag', $geheimevraag);
+        $stmt->bindParam(':antwoord', $antwoord);
+        $stmt->execute();
+
+        // Delete user from Registratie Table
+        $sqlDeleteUser = <<<EOT
+        DELETE FROM Registreer WHERE REG_email = :email
+EOT;
+
+        GLOBAL $connection;
+        $stmt = $connection->prepare($sqlDeleteUser);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+
+        session_destroy();
+
+    } else {
+        header('Location: registreer1.php');
+    }
+}
+
 ?>
+
