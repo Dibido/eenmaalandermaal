@@ -678,7 +678,6 @@ function checkRegistratie()
                 echo '  <div class="alert alert-danger" >
                         <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
             }
-
         }
     } else {
         $emailadres = validateHash();

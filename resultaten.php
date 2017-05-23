@@ -200,6 +200,7 @@ require('navbar.html');
                         </div>
                     </a>
 
+
                     <a href="#" class="list-group-item">Betalingsmethode:
                         <select class="form-control" name="betalingsmethode">
                             <?php
