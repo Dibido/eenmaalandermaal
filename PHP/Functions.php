@@ -555,7 +555,7 @@ function checkEmailSent()
 
             $subject = 'Uw EenmaalAndermaal registratie';
 
-            $message = 'Beste toekomstige gebruiker,
+            $message = 'Beste gebruiker,
 
 u heeft aangegeven zich aan te willen melden op onze website.
 
@@ -614,6 +614,7 @@ function validateHash()
         $emailadres = cleanInput($_SESSION["emailadres"]);
     } else {
         header('Location: registreer1.php');
+        session_destroy();
     }
     return $emailadres;
 }
@@ -663,7 +664,11 @@ function checkRegistratie()
 
                 if ($date_timestamp > $today_start) {
                     echo '  <div class="alert alert-danger" >
-                        <strong >Fout!</br></strong > UW geboortedatum moet in het verleden liggen! </div > ';
+                        <strong >Fout!</br></strong > Uw geboortedatum moet in het verleden liggen! </div > ';
+
+                } else if (strlen($wachtwoord) < 8) {
+                    echo '  <div class="alert alert-danger" >
+                        <strong >Fout!</br></strong > Het opgegeven wachtwoord moet minimaal 8 tekens lang zijn! </div > ';
 
                 } else if ($wachtwoord == $wachtwoord2) {
 
@@ -760,7 +765,6 @@ EOT;
         echo 'somethings wrong';
         header('Location: registreer1.php');
     }
-
 
 
 }
