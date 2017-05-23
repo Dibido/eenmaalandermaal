@@ -642,6 +642,8 @@ function checkRegistratie()
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['voornaam']) && ($_POST['achternaam']) && ($_POST['email']) && ($_POST['adres1']) && ($_POST['adres2']) && ($_POST['postcode']) && ($_POST['woonplaats']) && ($_POST['land']) && ($_POST['geboortedatum']) && ($_POST['gebruikersnaam']) && ($_POST['wachtwoord']) && ($_POST['wachtwoord2']) && ($_POST['geheimevraag']) && ($_POST['antwoord'])) {
+
+
             $voornaam = cleanInput($_POST['voornaam']);
             $achternaam = cleanInput($_POST['achternaam']);
             $email = cleanInput($_POST['email']);
@@ -696,6 +698,8 @@ function checkRegistratie()
                 echo '  <div class="alert alert-danger" >
                         <strong >Fout!</br></strong > Niet alle velden zijn ingevuld! </div > ';
             }
+        } else {
+
         }
     } else {
         $emailadres = validateHash();
@@ -705,68 +709,76 @@ function checkRegistratie()
 
 function doRegistratie()
 {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_SESSION['gebruikersnaam'])) {
 
-    if (isset($_SESSION['voornaam'])) {
+            $gebruikersnaam = $_SESSION['gebruikersnaam'];
+            $voornaam = $_SESSION['voornaam'];
+            $achternaam = $_SESSION['achternaam'];
+            $adres1 = $_SESSION['adres1'];
+            $adres2 = $_SESSION['adres2'];
+            $postcode = $_SESSION['postcode'];
+            $woonplaats = $_SESSION['woonplaats'];
+            $land = $_SESSION['land'];
+            $geboortedatum = $_SESSION['geboortedatum'];
+            $email = $_SESSION['email'];
+            $wachtwoord = $_SESSION['wachtwoord'];
+            $geheimevraag = $_SESSION['geheimevraag'];
+            $antwoord = $_SESSION['antwoord'];
 
-        $gebruikersnaam = $_SESSION['gebruikersnaam'];
-        $voornaam = $_SESSION['voornaam'];
-        $achternaam = $_SESSION['achternaam'];
-        $adres1 = $_SESSION['adres1'];
-        $adres2 = $_SESSION['adres2'];
-        $postcode = $_SESSION['postcode'];
-        $woonplaats = $_SESSION['woonplaats'];
-        $land = $_SESSION['land'];
-        $geboortedatum = $_SESSION['geboortedatum'];
-        $email = $_SESSION['email'];
-        $wachtwoord = $_SESSION['wachtwoord'];
-        $geheimevraag = $_SESSION['geheimevraag'];
-        $antwoord = $_SESSION['antwoord'];
+            if (!empty($voornaam && $achternaam && $email && $adres1 && $adres2 && $postcode && $woonplaats && $land && $geboortedatum && $gebruikersnaam && $wachtwoord && $wachtwoord2 && $geheimevraag && $antwoord)) {
 
-
-        // Insert new user into Gebruiker Table
-        $sqlInsertUser = <<<EOT
+                // Insert new user into Gebruiker Table
+                $sqlInsertUser = <<<EOT
         INSERT INTO Gebruiker ( GEB_gebruikersnaam,  GEB_voornaam,   GEB_achternaam,   GEB_adresregel_1, GEB_adresregel_2,   GEB_postcode,   GEB_plaatsnaam,   GEB_Land,   GEB_geboortedag,    GEB_mailbox,  GEB_wachtwoord,   GEB_vraag,      GEB_antwoordtekst,  GEB_verkoper)
         VALUES        ( :gebruikersnaam,     :voornaam,      :achternaam,      :adres1,          :adres2,            :postcode,      :woonplaats,      :land   ,   :geboortedatum ,    :email,       :wachtwoord,      :geheimevraag,  :antwoord,          '0')
 EOT;
 
+                GLOBAL $connection;
+                $stmt = $connection->prepare($sqlInsertUser);
+                $stmt->bindParam(':gebruikersnaam', $gebruikersnaam);
+                $stmt->bindParam(':voornaam', $voornaam);
+                $stmt->bindParam(':achternaam', $achternaam);
+                $stmt->bindParam(':adres1', $adres1);
+                $stmt->bindParam(':adres2', $adres2);
+                $stmt->bindParam(':postcode', $postcode);
+                $stmt->bindParam(':woonplaats', $woonplaats);
+                $stmt->bindParam(':land', $land);
+                $stmt->bindParam(':geboortedatum', $geboortedatum);
+                $stmt->bindParam(':email', $email);
+                $stmt->bindParam(':wachtwoord', $wachtwoord);
+                $stmt->bindParam(':geheimevraag', $geheimevraag);
+                $stmt->bindParam(':antwoord', $antwoord);
+                $stmt->execute();
 
-        GLOBAL $connection;
-        $stmt = $connection->prepare($sqlInsertUser);
-        $stmt->bindParam(':gebruikersnaam', $gebruikersnaam);
-        $stmt->bindParam(':voornaam', $voornaam);
-        $stmt->bindParam(':achternaam', $achternaam);
-        $stmt->bindParam(':adres1', $adres1);
-        $stmt->bindParam(':adres2', $adres2);
-        $stmt->bindParam(':postcode', $postcode);
-        $stmt->bindParam(':woonplaats', $woonplaats);
-        $stmt->bindParam(':land', $land);
-        $stmt->bindParam(':geboortedatum', $geboortedatum);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':wachtwoord', $wachtwoord);
-        $stmt->bindParam(':geheimevraag', $geheimevraag);
-        $stmt->bindParam(':antwoord', $antwoord);
-        $stmt->execute();
-
-        // Delete user from Registratie Table
-        $sqlDeleteUser = <<<EOT
+                // Delete user from Registratie Table
+                $sqlDeleteUser = <<<EOT
         DELETE FROM Registreer WHERE REG_email = :email
 EOT;
 
-        GLOBAL $connection;
-        $stmt = $connection->prepare($sqlDeleteUser);
-        $stmt->bindParam(':email', $email);
-        $stmt->execute();
+                GLOBAL $connection;
+                $stmt = $connection->prepare($sqlDeleteUser);
+                $stmt->bindParam(':email', $email);
+                $stmt->execute();
 
-        session_destroy();
+                session_destroy();
 
-        echo '  <div class="alert alert-success">
+                echo '  <div class="alert alert-success">
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>';
 
+            } else {
+                echo '  <div class="alert alert-danger" >
+                        <strong >Fout!</br></strong > Niet alle velden waren ingevuld! </div > ';
+            }
+        } else {
+            echo '  <div class="alert alert-danger" >
+                        <strong >Fout!</br></strong > Sessie leeg! </div > ';
+
+        }
     } else {
-        echo 'somethings wrong';
+        session_destroy();
         header('Location: registreer1.php');
     }
-
 
 }
 
