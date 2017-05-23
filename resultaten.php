@@ -135,9 +135,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 <body>
 
 <!-- Navigation -->
-<?php
-require('navbar.html');
-?>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <a href="index.php" class="navbar-brand">
+            <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
+        </a>
+
+        <div class="navbar-right">
+            <ul class="nav navbar-nav collapse navbar-collapse">
+                <li>
+                    <button class="btn btn-default navbar-btn hidden-md hidden-lg MobileButtonToggle"
+                            data-toggle="collapse"
+                            data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
+                </li>
+                <li>
+                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton">Plaats veiling
+                    </button>
+                </li>
+                <li>
+                    <button class="btn btn-default navbar-btn hidden-sm hidden-xsv NavRightButton">
+                        <i class="glyphicon glyphicon-user"></i>
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+
+        <form class="navbar-form" action="resultaten.php" method="GET">
+            <div class="form-group" style="display:inline;">
+                <div class="input-group" style="display:table;">
+                    <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                           autofocus="autofocus" type="text" form="sorteerForm"">
+                    <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
+                                                                                               type="submit"
+                                                                                               style="background-color: #ffffff; border-color: #f2f2f2;"><span
+                                    class="glyphicon glyphicon-search"></span></button></span>
+                </div>
+            </div>
+        </form>
+    </div>
+</nav>
+
 
 
 <!-- Filter bar -->
@@ -148,7 +186,7 @@ require('navbar.html');
             <div class="list-group">
                 <a href="#" class="list-group-item active">Opties</a>
 
-                <form method="get" action="resultaten.php">
+                <form method="get" action="resultaten.php" id="sorteerForm">
                     <a href="#" class="list-group-item">
                         <div class="input-group" style="display:table;">
                             <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
@@ -184,7 +222,7 @@ require('navbar.html');
                         <div list-group-item>
                         <input id="pslider" type="text" name="prijs"
                                class="span2" value=""
-                               data-slider-min="10"
+                               data-slider-min="0"
                                data-slider-max="5000"
                                data-slider-step="5"
                         <?php
