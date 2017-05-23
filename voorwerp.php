@@ -10,15 +10,21 @@ $ItemID = $_GET['ItemID'];
 $ItemInfo = GetItemDetails($ItemID);
 $ItemInfo = $ItemInfo[0];
 
-if (!isset($ItemInfo["ImagePath"]) OR empty($ItemInfo["ImagePath"])){
-    $ItemInfo["ImagePath"] = "images/no-image-available.jpg";
-}
+$ItemImages = GetItemImages($ItemID);
+
+
+/* making sure an image is available */
 if (!isset($ItemInfo["VW_thumbnail"]) OR empty($ItemInfo["VW_thumbnail"])){
     $ItemInfo["VW_thumbnail"] = "images/no-image-available.jpg";
 }
-
+foreach ($ItemImages as $ItemImage) {
+    if(!isset($ItemImage["BES_filenaam"]) OR empty("BES_filenaam")){
+        $ItemImage["BES_filenaam"] = "images/no-image-available.jpg";
+    }
+}
 
 print_r($ItemInfo);
+print_r($ItemImages);
 
 ?>
 
@@ -100,19 +106,19 @@ require('navbar.html');
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemInfo["ImagePath"] ?>);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemInfo["VW_thumbnail"] ?>);"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(images/ModelX.jpeg);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[0]["BES_filenaam"] ?>);"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(images/Model3.jpeg);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[1]["BES_filenaam"] ?>);"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(images/Roadster.jpg);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[2]["BES_filenaam"] ?>);"></div>
                 </div>
             </div>
 

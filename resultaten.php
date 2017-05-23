@@ -127,7 +127,7 @@ require('navbar.html');
 <!-- Filter bar -->
 
 <div class="container-fluid">
-    <div class="col-md-3 col-sm-6 col-xs-12">
+    <div class="col-lg-3 col-md-3 col-sm-8 col-xs-12">
         <div class="visible-lg visible-md visible-sm visible-xs">
             <div class="list-group">
                 <a href="#" class="list-group-item active">Opties</a>
@@ -228,22 +228,24 @@ require('navbar.html');
                     </a>
                     <ul class="list-group-item">
                         <div class="row">
-                            <div class="col-sm-6 left">
-                                <a href="resultaten.php?zoekterm=<?php echo " <a href=" . " 
- 
-                                ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urldecode($sorteerfilter) . "&prijs=" . urldecode($prijs) . "&pagenum=". $pagenum. ">Volgende ></a> ";
-                                    ?>">
+                            <div class="col-xs-6 col-sm-6 col-md-5 col-lg-6">
+                                <a href="resultaten.php?zoekterm=<?php echo "<a href=" . "
 
-                                    <input class="btn btn-warning center-block" data-inline="true" value="Reset"
-                                           type="button">
+                                    ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urldecode($sorteerfilter) . "&prijs=" . urldecode($prijs) . "&pagenum=". $pagenum. ">Volgende ></a> ";
+                                    ?>">
+                                    <button class="btn btn-warning"
+                                            type="button">
+                                            <span
+                                                class="glyphicon glyphicon-repeat"></span> Reset</button>
                                 </a>
 
                             </div>
-                            <div class="col-sm-6 right">
+                            <div class="col-xs-6 col-sm-6s col-md-5 col-lg-6">
 
                                 <a href="#">
-                                    <input class="btn btn-primary center-block" type="submit" data-inline="true"
-                                           value="Aanpassen">
+                                    <button class="btn btn-primary"
+                                            type="submit"><span
+                                                class="glyphicon glyphicon-wrench"></span>Aanpassen</button>
                                 </a>
                             </div>
 
@@ -261,6 +263,7 @@ require('navbar.html');
                 </form>
             </div>
             <a href="#" class="list-group-item active" id="Header-Categories">
+                <i class="text-right glyphicon glyphicon-th-list"></i>
                 Categorieën
             </a>
             <div class="list-group-item">
@@ -309,13 +312,13 @@ EOT;
         // First we check if we are on page one. If we are then we don't need a link to the previous page or the first page so we do nothing. If we aren't then we generate links to the first page, and to the previous page.
         if ($pagenum == 1) {
         } else {
-            //eerste pagina  
+            //eerste pagina
             echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . "> <<-Eerste pagina</a>";
 
 
             echo " ";
             $previous = $pagenum - 1;
-            //vorige pagina 
+            //vorige pagina
             echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $previous . "> <-Vorige</a>";
         }
         //just a spacer

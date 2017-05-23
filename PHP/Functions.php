@@ -10,7 +10,7 @@
 
 /* output:
  * the result from the database (array)
- *
+ * or an list with false, and the database error
  *
  */
 
@@ -60,9 +60,37 @@ SELECT * FROM Voorwerp
 
 EOT;
 
-Return SendToDatabase($Query);
+    Return SendToDatabase($Query);
+
+}
+
+/* function for getting the images for an product */
 
 
+/* input:
+ * item id
+ *
+ *
+ */
+
+
+/* output:
+ * array results from the database
+ * or a list with false and a database error
+ *
+ *
+ */
+
+function GetItemImages($ItemID){
+
+    $Query = <<< EOT
+
+SELECT DISTINCT BES_filenaam
+FROM Bestand, Voorwerp
+WHERE Bestand.BES_voorwerpnummer = $ItemID
+
+EOT;
+    return SendToDatabase($Query);
 }
 
 
@@ -245,9 +273,6 @@ function outputRows($result, $zoekterm)
         )
  *
  *
- */
-
-
 /*Function to load the header letters for the categories*/
 function laadLetters()
 {
@@ -400,7 +425,7 @@ function printVragen($Vragen)
 function printCategoriën($zoekterm, $rubriekNummer)
 {
     global $connection;
-    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek
+    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Naam as SubSubRubriekNummer
                         FROM Rubriek H
                         OUTER APPLY
                         (
@@ -426,18 +451,18 @@ function printCategoriën($zoekterm, $rubriekNummer)
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
-                        GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam
+                        WHERE H.RB_Parent = -1  /and VW_titel like '%$zoekterm%'/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
+                        GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
-    echo '<ul class="nav nav-list" id="accordion">';
+    echo '<ul class="nav">';
 //Goes through the first dimensional of the array
     for ($i = 0; $i < sizeof($rubrieken); $i++) {
         //Goes through the second dimensional of the array
-        for ($j = 0; $j < sizeof($rubrieken[$i]); $j++) {
+        for ($j = 0; $j < (sizeof($rubrieken[$i])/2); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
             if (!isset($rubrieken[$i][$j + 1]) OR ($j == sizeof($rubrieken[$i]) - 1) AND isset($rubrieken[$i][$j])) {
-                echo '<li><a href="&categorie='.$rubrieken[$i][$j].'">' . $rubrieken[$i][$j] . '</a><ul>';
+                echo '<li><a class="testen" href="&categorie='.$rubrieken[$i][$j+4].'">' . $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
@@ -446,17 +471,15 @@ function printCategoriën($zoekterm, $rubriekNummer)
             }
         }
         //For loop to close the list items and unorderd lists it "closes" backwards
-        for ($k = sizeof($rubrieken[$i]) - 1; $k >= 0; $k--) {
+        for ($k = (sizeof($rubrieken[$i])/2) - 1; $k >= 0; $k--) {
             //If the last rubric is set and the Last Rubric is not the same as the next Rubric
             if ($i + 1 >= sizeof($rubrieken)) {
                 echo '</ul></li>';
             } else if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
                 echo '</ul></li>';
-                if ($k == 0) {
-                    echo '<hr class="line"  size="1">';
-                }
             }
         }
+        echo'<hr size="6">';
     }
     echo '</ul>';
 }
@@ -505,13 +528,14 @@ function createTimer($tijd, $VW_Titel, $pagina)
 }
 
 
+
 // functie die email adres invult bij laden registreer1.php indien al ingevuld.
 
-function getEmail()
+function getEmailReg1()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['email'])) {
-            $email = $_POST['email'];
+            $email = cleanInput($_POST['email']);
             echo $email;
         }
     }
@@ -526,7 +550,7 @@ function checkEmailSent()
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['email'])) {
-            $email = $_POST['email'];
+            $email = cleanInput($_POST['email']);
             $code = md5($email . date("Y/m/d"));
             $code = substr($code, 0, 16);
             global $SetRegistratie;
@@ -546,13 +570,13 @@ Het EenmaalAndermaal Team';
 
 
 // If already in DB
-            $sql = " SELECT REG_email FROM Registreer WHERE REG_email = '$email'";
+            $sql = " select * from (select GEB_mailbox as email from Gebruiker union all select REG_email from Registreer) a where email = '$email'";
             $getUser = SendToDatabase($sql);
 
             if ($getUser) { //IF waarde (dus niet leeg)
                 // Display error
                 echo '  <div class="alert alert-danger" >
-                        <strong > Fout!</br></strong > Er is al een verificatie verstuurd naar ' . $email . '
+                        <strong > Fout!</br></strong > Er is al een verificatie verstuurd naar ' . $email . ' of er bestaat al een account met dit E-mailadres.
                         </div > ';
             } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
                 // Send to DB
@@ -578,7 +602,7 @@ function checkUserLinked()
                 echo '  <div class="alert alert-danger" >
                                     <strong > Fout!</strong > Er is geen gebruiker gekoppeld aan deze code </div > ';
             } else {
-                $_SESSION["emailadres"] = $getUser[0]['REG_email'];
+                $_SESSION["emailadres"] = cleanInput($getUser[0]['REG_email']);
                 header('Location: registreer2.php');
             }
 
@@ -589,13 +613,140 @@ function checkUserLinked()
 function validateHash()
 {
     if (isset($_SESSION['emailadres']) && !empty($_SESSION['emailadres'])) {
-        $emailadres = $_SESSION["emailadres"];
+        $emailadres = cleanInput($_SESSION["emailadres"]);
     } else {
         header('Location: registreer1.php');
     }
     return $emailadres;
 }
 
+
+function checkRegistratie()
+{
+    global $voornaam;
+    global $achternaam;
+    global $email;
+    global $adres1;
+    global $adres2;
+    global $postcode;
+    global $woonplaats;
+    global $land;
+    global $geboortedatum;
+    global $gebruikersnaam;
+    global $wachtwoord;
+    global $wachtwoord2;
+    global $geheimevraag;
+    global $antwoord;
+
+    global $emailadres;
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['voornaam']) && ($_POST['achternaam']) && ($_POST['email']) && ($_POST['adres1']) && ($_POST['adres2']) && ($_POST['postcode']) && ($_POST['woonplaats']) && ($_POST['land']) && ($_POST['geboortedatum']) && ($_POST['gebruikersnaam']) && ($_POST['wachtwoord']) && ($_POST['wachtwoord2']) && ($_POST['geheimevraag']) && ($_POST['antwoord'])) {
+            $voornaam = cleanInput($_POST['voornaam']);
+            $achternaam = cleanInput($_POST['achternaam']);
+            $email = cleanInput($_POST['email']);
+            $adres1 = cleanInput($_POST['adres1']);
+            $adres2 = cleanInput($_POST['adres2']);
+            $postcode = cleanInput($_POST['postcode']);
+            $woonplaats = cleanInput($_POST['woonplaats']);
+            $land = cleanInput($_POST['land']);
+            $geboortedatum = cleanInput($_POST['geboortedatum']);
+            $gebruikersnaam = cleanInput($_POST['gebruikersnaam']);
+            $wachtwoord = cleanInput($_POST['wachtwoord']);
+            $wachtwoord2 = cleanInput($_POST['wachtwoord2']);
+            $geheimevraag = cleanInput($_POST['geheimevraag']);
+            $antwoord = cleanInput($_POST['antwoord']);
+
+            if ($wachtwoord == $wachtwoord2) {
+
+                $_SESSION["voornaam"] = $voornaam;
+                $_SESSION["achternaam"] = $achternaam;
+                $_SESSION["email"] = $email;
+                $_SESSION["adres1"] = $adres1;
+                $_SESSION["adres2"] = $adres2;
+                $_SESSION["postcode"] = $postcode;
+                $_SESSION["woonplaats"] = $woonplaats;
+                $_SESSION["land"] = $land;
+                $_SESSION["geboortedatum"] = $geboortedatum;
+                $_SESSION["gebruikersnaam"] = $gebruikersnaam;
+                $_SESSION["wachtwoord"] = password_hash($wachtwoord, PASSWORD_DEFAULT);
+                $_SESSION["geheimevraag"] = $geheimevraag;
+                $_SESSION["antwoord"] = password_hash($antwoord, PASSWORD_DEFAULT);
+
+                header('Location: voltooi-registratie.php');
+            } else {
+                echo '  <div class="alert alert-danger" >
+                        <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
+            }
+
+        }
+    } else {
+        $emailadres = validateHash();
+    }
+}
+
+
+function doRegistratie()
+{
+
+    if (isset($_SESSION['voornaam'])) {
+
+        $gebruikersnaam = $_SESSION['gebruikersnaam'];
+        $voornaam = $_SESSION['voornaam'];
+        $achternaam = $_SESSION['achternaam'];
+        $adres1 = $_SESSION['adres1'];
+        $adres2 = $_SESSION['adres2'];
+        $postcode = $_SESSION['postcode'];
+        $woonplaats = $_SESSION['woonplaats'];
+        $land = $_SESSION['land'];
+        $geboortedatum = $_SESSION['geboortedatum'];
+        $email = $_SESSION['email'];
+        $wachtwoord = $_SESSION['wachtwoord'];
+        $geheimevraag = $_SESSION['geheimevraag'];
+        $antwoord = $_SESSION['antwoord'];
+
+
+
+        // Insert new user into Gebruiker Table
+        $sqlInsertUser = <<<EOT
+        INSERT INTO Gebruiker ( GEB_gebruikersnaam,  GEB_voornaam,   GEB_achternaam,   GEB_adresregel_1, GEB_adresregel_2,   GEB_postcode,   GEB_plaatsnaam,   GEB_Land,   GEB_geboortedag,    GEB_mailbox,  GEB_wachtwoord,   GEB_vraag,      GEB_antwoordtekst,  GEB_verkoper)
+        VALUES        ( :gebruikersnaam,     :voornaam,      :achternaam,      :adres1,          :adres2,            :postcode,      :woonplaats,      :land   ,   :geboortedatum ,    :email,       :wachtwoord,      :geheimevraag,  :antwoord,          '0')
+EOT;
+
+
+        GLOBAL $connection;
+        $stmt = $connection->prepare($sqlInsertUser);
+        $stmt->bindParam(':gebruikersnaam', $gebruikersnaam);
+        $stmt->bindParam(':voornaam', $voornaam);
+        $stmt->bindParam(':achternaam', $achternaam);
+        $stmt->bindParam(':adres1', $adres1);
+        $stmt->bindParam(':adres2', $adres2);
+        $stmt->bindParam(':postcode', $postcode);
+        $stmt->bindParam(':woonplaats', $woonplaats);
+        $stmt->bindParam(':land', $land);
+        $stmt->bindParam(':geboortedatum', $geboortedatum);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':wachtwoord', $wachtwoord);
+        $stmt->bindParam(':geheimevraag', $geheimevraag);
+        $stmt->bindParam(':antwoord', $antwoord);
+        $stmt->execute();
+
+        // Delete user from Registratie Table
+        $sqlDeleteUser = <<<EOT
+        DELETE FROM Registreer WHERE REG_email = :email
+EOT;
+
+        GLOBAL $connection;
+        $stmt = $connection->prepare($sqlDeleteUser);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+
+        session_destroy();
+
+    } else {
+        header('Location: registreer1.php');
+    }
+}
 
 ?>
 
