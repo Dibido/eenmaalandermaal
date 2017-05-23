@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $zoekterm = $_GET['zoekterm'] = "";
     }
     if (!isset($_GET['sorteerfilter'])) {
-        $_GET['sorteerfilter'] = ("Tijd: nieuw aangeboden");
+        $_GET['sorteerfilter'] = 0;
     }
     if (!isset($_GET['betalingsmethode'])) {
         $_GET['betalingsmethode'] = "NULL";
@@ -43,6 +43,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (!isset($prijs['max'])) {
         $prijs['max'] = 5000;
     }
+     if (!isset($_GET['pagenum'])) {
+        $_GET['pagenum'] = 1;
+    }
+
+        //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
+        if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
+            $pagenum = 1;
+        } else {
+            $pagenum = $_GET['pagenum'];
+        }
+        //results per page
+        $ResultsPerPage = 10;
+        $Offset = $ResultsPerPage * ($pagenum-1);
+        echo $pagenum;
     $_GET['maxremainingtime'] = "NULL";
     $_GET['minremainingtime'] = "NULL";
     $Dictionary = array(
@@ -53,8 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         'SearchMinRemainingTime' => $_GET['minremainingtime'],
         'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
         'SearchMinPrice' => $prijs['min'],
-        'SearchMaxPrice' => $prijs['max']
-    );
+        'SearchMaxPrice' => $prijs['max'],
+        'ResultsPerPage' => $ResultsPerPage,
+        'Offset' => $Offset
+        );
 }
 ?>
 
@@ -119,9 +135,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 <body>
 
 <!-- Navigation -->
-<?php
-require('navbar.html');
-?>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container-fluid">
+        <a href="index.php" class="navbar-brand">
+            <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
+        </a>
+
+        <div class="navbar-right">
+            <ul class="nav navbar-nav collapse navbar-collapse">
+                <li>
+                    <button class="btn btn-default navbar-btn hidden-md hidden-lg MobileButtonToggle"
+                            data-toggle="collapse"
+                            data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
+                </li>
+                <li>
+                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton">Plaats veiling
+                    </button>
+                </li>
+                <li>
+                    <button class="btn btn-default navbar-btn hidden-sm hidden-xsv NavRightButton">
+                        <i class="glyphicon glyphicon-user"></i>
+                    </button>
+                </li>
+
+            </ul>
+        </div>
+
+        <form class="navbar-form" action="resultaten.php" method="GET">
+            <div class="form-group" style="display:inline;">
+                <div class="input-group" style="display:table;">
+                    <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                           autofocus="autofocus" type="text" form="sorteerForm"">
+                    <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
+                                                                                               type="submit"
+                                                                                               style="background-color: #ffffff; border-color: #f2f2f2;"><span
+                                    class="glyphicon glyphicon-search"></span></button></span>
+                </div>
+            </div>
+        </form>
+    </div>
+</nav>
+
 
 
 <!-- Filter bar -->
@@ -132,7 +186,7 @@ require('navbar.html');
             <div class="list-group">
                 <a href="#" class="list-group-item active">Opties</a>
 
-                <form method="get" action="resultaten.php">
+                <form method="get" action="resultaten.php" id="sorteerForm">
                     <a href="#" class="list-group-item">
                         <div class="input-group" style="display:table;">
                             <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
@@ -168,7 +222,7 @@ require('navbar.html');
                         <div list-group-item>
                         <input id="pslider" type="text" name="prijs"
                                class="span2" value=""
-                               data-slider-min="10"
+                               data-slider-min="0"
                                data-slider-max="5000"
                                data-slider-step="5"
                         <?php
@@ -176,25 +230,6 @@ require('navbar.html');
                             echo('data-slider-value="[' . $prijs['min'] . "," . $prijs['max'] . ']"/>');
                         } else {
                             echo('data-slider-value="[150,450]"/>');
-                        }
-                        ?>
-                        </div>
-                    </a>
-
-                    <a href="#" class="list-group-item">Rating:
-                        <b><?php echo('€' . $rating['min'] . '- €' . $rating['max']); ?></b>
-
-                        <div list-group-item>
-                        <input id="rslider" type="text" name="rating"
-                               class="span2" value=""
-                               data-slider-min="10"
-                               data-slider-max="100"
-                               data-slider-step="5"
-                        <?php
-                        if (isset($rating)) {
-                            echo('data-slider-value="[' . $rating['min'] . "," . $rating['max'] . ']"/>');
-                        } else {
-                            echo('data-slider-value="[10,100]"/>');
                         }
                         ?>
                         </div>
@@ -293,22 +328,7 @@ require('navbar.html');
 
         <!-- pagina nummering -->
         <?php
-        //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
-        if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
-            $pagenum = 1;
-        } else {
-            $pagenum = $_GET['pagenum'];
-        }
-        //results per page
-        $ResultsPerPage = 10;
-        $Offset = $ResultsPerPage * $pagenum;
-        $GetResultatenPagina = <<<EOT
-SELECT * FROM Voorwerp
-ORDER BY VW_voorwerpnummer
-OFFSET $Offset ROWS
-FETCH NEXT $ResultsPerPage ROWS ONLY
-EOT;
-        $result = SendToDatabase($GetResultatenPagina);
+
         // First we check if we are on page one. If we are then we don't need a link to the previous page or the first page so we do nothing. If we aren't then we generate links to the first page, and to the previous page.
         if ($pagenum == 1) {
         } else {
