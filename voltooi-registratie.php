@@ -63,7 +63,7 @@ require('navbar.html');
         <div class="panel-body">
             <?php
                     doRegistratie();
-                      ?>
+             ?>
         </div>
     </div>
 </div>
