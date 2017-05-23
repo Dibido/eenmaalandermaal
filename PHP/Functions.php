@@ -535,11 +535,11 @@ function createTimer($tijd, $VW_Titel, $pagina)
 
 // functie die email adres invult bij laden registreer1.php indien al ingevuld.
 
-function getEmail()
+function getEmailReg1()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['email'])) {
-            $email = $_POST['email'];
+            $email = cleanInput($_POST['email']);
             echo $email;
         }
     }
@@ -554,7 +554,7 @@ function checkEmailSent()
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['email'])) {
-            $email = $_POST['email'];
+            $email = cleanInput($_POST['email']);
             $code = md5($email . date("Y/m/d"));
             $code = substr($code, 0, 16);
             global $SetRegistratie;
@@ -606,7 +606,7 @@ function checkUserLinked()
                 echo '  <div class="alert alert-danger" >
                                     <strong > Fout!</strong > Er is geen gebruiker gekoppeld aan deze code </div > ';
             } else {
-                $_SESSION["emailadres"] = $getUser[0]['REG_email'];
+                $_SESSION["emailadres"] = cleanInput($getUser[0]['REG_email']);
                 header('Location: registreer2.php');
             }
 
@@ -617,7 +617,7 @@ function checkUserLinked()
 function validateHash()
 {
     if (isset($_SESSION['emailadres']) && !empty($_SESSION['emailadres'])) {
-        $emailadres = $_SESSION["emailadres"];
+        $emailadres = cleanInput($_SESSION["emailadres"]);
     } else {
         header('Location: registreer1.php');
     }

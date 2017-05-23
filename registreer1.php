@@ -80,8 +80,8 @@ require('navbar.html');
                         <div class="form-group">
                             <label for="email">E-mailadres*</label>
                             <input name="email" id="email" type="email" placeholder="E-mailadres"
-                                   value="<?php getEmail(); ?>" size="255"
-                                   class="form-control" required="true">
+                                   value="<?php getEmailReg1(); ?>" size="255"
+                                   class="form-control" required="true" maxlength="255">
                         </div>
 
                         <div class="form-group">
