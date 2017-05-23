@@ -60,7 +60,7 @@ SELECT * FROM Voorwerp
 
 EOT;
 
-Return SendToDatabase($Query);
+    Return SendToDatabase($Query);
 
 }
 
@@ -276,7 +276,7 @@ function outputRows($result, $zoekterm)
  */
 
 
-/*Function to load the header letters for the categories*/
+/Function to load the header letters for the categories/
 function laadLetters()
 {
     //load the groups
@@ -454,7 +454,7 @@ function printCategoriën($zoekterm, $rubriekNummer)
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
+                        WHERE H.RB_Parent = -1  /and VW_titel like '%$zoekterm%'/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
                         GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
@@ -689,4 +689,3 @@ function checkRegistratie()
 
 
 ?>
-
