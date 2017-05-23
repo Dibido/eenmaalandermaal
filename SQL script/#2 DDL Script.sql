@@ -61,7 +61,6 @@ CREATE TABLE Gebruiker (
   CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen (LAN_landcode),
   CONSTRAINT CHK_LegitiemeMailbox CHECK (GEB_mailbox LIKE '%_@__%.__%'), --Checken of het een e-mail is.
   CONSTRAINT CHK_LegitiemeGeboortedag CHECK (GEB_geboortedag <= getdate()),
-  CONSTRAINT CHK_WachtwoordLengte CHECK (LEN(GEB_wachtwoord) >= 8) --Wachtwoord minimaal 8 karakters.
 );
 
 CREATE TABLE Gebruikerstelefoon (
