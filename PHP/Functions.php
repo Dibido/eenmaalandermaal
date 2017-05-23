@@ -642,6 +642,8 @@ function checkRegistratie()
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['voornaam']) && ($_POST['achternaam']) && ($_POST['email']) && ($_POST['adres1']) && ($_POST['adres2']) && ($_POST['postcode']) && ($_POST['woonplaats']) && ($_POST['land']) && ($_POST['geboortedatum']) && ($_POST['gebruikersnaam']) && ($_POST['wachtwoord']) && ($_POST['wachtwoord2']) && ($_POST['geheimevraag']) && ($_POST['antwoord'])) {
+
+
             $voornaam = cleanInput($_POST['voornaam']);
             $achternaam = cleanInput($_POST['achternaam']);
             $email = cleanInput($_POST['email']);
@@ -696,6 +698,8 @@ function checkRegistratie()
                 echo '  <div class="alert alert-danger" >
                         <strong >Fout!</br></strong > Niet alle velden zijn ingevuld! </div > ';
             }
+        } else {
+
         }
     } else {
         $emailadres = validateHash();
