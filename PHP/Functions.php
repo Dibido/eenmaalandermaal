@@ -14,7 +14,8 @@
  *
  */
 
-function GetItemDetails($ItemID){
+function GetItemDetails($ItemID)
+{
 
     $Query = <<<EOT
 
@@ -81,7 +82,8 @@ EOT;
  *
  */
 
-function GetItemImages($ItemID){
+function GetItemImages($ItemID)
+{
 
     $Query = <<< EOT
 
@@ -92,8 +94,6 @@ WHERE Bestand.BES_voorwerpnummer = $ItemID
 EOT;
     return SendToDatabase($Query);
 }
-
-
 
 
 /*function for cleaning user input in order to attempt to prevent cross-site scripting/Html injection/sql injection */
@@ -203,7 +203,7 @@ function DrawAuction($auction)
                         <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . $pagina . '"></p>' . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
-                        <a href=\"voorwerp.php?ItemID="  . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
+                        <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
                         <a class=\"btn text-center btn-info bied\">Bied Nu!</a>
                     </div>
                 </div>
@@ -232,7 +232,7 @@ function DrawSearchResults($auction)
                     <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<div class="bottom-align-text" id="timer' . $auction["VW_titel"] . $pagina. '"></div>' . " </div>
+                        <div class=\"tijd label label-default\">" . '<div class="bottom-align-text" id="timer' . $auction["VW_titel"] . $pagina . '"></div>' . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -242,7 +242,7 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"],$pagina);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $pagina);
 
 }
 
@@ -425,7 +425,7 @@ function printVragen($Vragen)
 function printCategoriën($zoekterm, $rubriekNummer)
 {
     global $connection;
-    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek
+    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Naam as SubSubRubriekNummer
                         FROM Rubriek H
                         OUTER APPLY
                         (
@@ -451,18 +451,18 @@ function printCategoriën($zoekterm, $rubriekNummer)
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like'%$zoekterm%'*/  AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
-                        GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam
+                        WHERE H.RB_Parent = -1  /and VW_titel like '%$zoekterm%'/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
+                        GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
     echo '<ul class="nav">';
 //Goes through the first dimensional of the array
     for ($i = 0; $i < sizeof($rubrieken); $i++) {
         //Goes through the second dimensional of the array
-        for ($j = 0; $j < (sizeof($rubrieken[$i])/2); $j++) {
+        for ($j = 0; $j < (sizeof($rubrieken[$i]) / 2); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
             if (!isset($rubrieken[$i][$j + 1]) OR ($j == sizeof($rubrieken[$i]) - 1) AND isset($rubrieken[$i][$j])) {
-                echo '<li><a class="testen" href="&categorie='.$rubrieken[$i][$j+4].'">' . $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
+                echo '<li><a class="testen" href="&categorie=' . $rubrieken[$i][$j + 4] . '">' . $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
@@ -471,7 +471,7 @@ function printCategoriën($zoekterm, $rubriekNummer)
             }
         }
         //For loop to close the list items and unorderd lists it "closes" backwards
-        for ($k = (sizeof($rubrieken[$i])/2) - 1; $k >= 0; $k--) {
+        for ($k = (sizeof($rubrieken[$i]) / 2) - 1; $k >= 0; $k--) {
             //If the last rubric is set and the Last Rubric is not the same as the next Rubric
             if ($i + 1 >= sizeof($rubrieken)) {
                 echo '</ul></li>';
@@ -479,7 +479,7 @@ function printCategoriën($zoekterm, $rubriekNummer)
                 echo '</ul></li>';
             }
         }
-        echo'<hr size="6">';
+        echo '<hr size="6">';
     }
     echo '</ul>';
 }
@@ -488,7 +488,7 @@ function createTimer($tijd, $VW_Titel, $pagina)
 {
     echo '<script>
     // Set the date we\'re counting down to
-    var ' . $VW_Titel . $pagina .  ' = new Date("' . $tijd . '").getTime();
+    var ' . $VW_Titel . $pagina . ' = new Date("' . $tijd . '").getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function() {
@@ -508,25 +508,24 @@ function createTimer($tijd, $VW_Titel, $pagina)
         // Display the result in the element with id="demo"
         
         if(days >= 3){
-        document.getElementById("timer' . $VW_Titel . $pagina. '").innerHTML = days + "d " + hours + "h "
+        document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
         }else if(days < 3 && seconds < 10){
-        document.getElementById("timer' . $VW_Titel . $pagina.  '").innerHTML = hours + "h "
+        document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("timer' . $VW_Titel . $pagina.  '").innerHTML = hours + "h "
+        document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("timer' . $VW_Titel . $pagina.  '").innerHTML = "Veiling gesloten";
+            document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = "Veiling gesloten";
         }
     }, 1000)
 </script>
 ';
 }
-
 
 
 // functie die email adres invult bij laden registreer1.php indien al ingevuld.
@@ -657,26 +656,40 @@ function checkRegistratie()
             $geheimevraag = cleanInput($_POST['geheimevraag']);
             $antwoord = cleanInput($_POST['antwoord']);
 
-            if ($wachtwoord == $wachtwoord2) {
 
-                $_SESSION["voornaam"] = $voornaam;
-                $_SESSION["achternaam"] = $achternaam;
-                $_SESSION["email"] = $email;
-                $_SESSION["adres1"] = $adres1;
-                $_SESSION["adres2"] = $adres2;
-                $_SESSION["postcode"] = $postcode;
-                $_SESSION["woonplaats"] = $woonplaats;
-                $_SESSION["land"] = $land;
-                $_SESSION["geboortedatum"] = $geboortedatum;
-                $_SESSION["gebruikersnaam"] = $gebruikersnaam;
-                $_SESSION["wachtwoord"] = password_hash($wachtwoord, PASSWORD_DEFAULT);
-                $_SESSION["geheimevraag"] = $geheimevraag;
-                $_SESSION["antwoord"] = password_hash($antwoord, PASSWORD_DEFAULT);
+            if (!empty($voornaam && $achternaam && $email && $adres1 && $adres2 && $postcode && $woonplaats && $land && $geboortedatum && $gebruikersnaam && $wachtwoord && $wachtwoord2 && $geheimevraag && $antwoord)) {
 
-                header('Location: voltooi-registratie.php');
+                $today_start = strtotime('today');
+                $date_timestamp = strtotime($geboortedatum);
+
+                if ($date_timestamp > $today_start) {
+                    echo '  <div class="alert alert-danger" >
+                        <strong >Fout!</br></strong > UW geboortedatum moet in het verleden liggen! </div > ';
+
+                } else if ($wachtwoord == $wachtwoord2) {
+
+                    $_SESSION["voornaam"] = $voornaam;
+                    $_SESSION["achternaam"] = $achternaam;
+                    $_SESSION["email"] = $email;
+                    $_SESSION["adres1"] = $adres1;
+                    $_SESSION["adres2"] = $adres2;
+                    $_SESSION["postcode"] = $postcode;
+                    $_SESSION["woonplaats"] = $woonplaats;
+                    $_SESSION["land"] = $land;
+                    $_SESSION["geboortedatum"] = $geboortedatum;
+                    $_SESSION["gebruikersnaam"] = $gebruikersnaam;
+                    $_SESSION["wachtwoord"] = password_hash($wachtwoord, PASSWORD_DEFAULT);
+                    $_SESSION["geheimevraag"] = $geheimevraag;
+                    $_SESSION["antwoord"] = password_hash($antwoord, PASSWORD_DEFAULT);
+
+                    header('Location: voltooi-registratie.php');
+                } else {
+                    echo '  <div class="alert alert-danger" >
+                        <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
+                }
             } else {
                 echo '  <div class="alert alert-danger" >
-                        <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
+                        <strong >Fout!</br></strong > Niet alle velden zijn ingevuld! </div > ';
             }
         }
     } else {
@@ -703,7 +716,6 @@ function doRegistratie()
         $wachtwoord = $_SESSION['wachtwoord'];
         $geheimevraag = $_SESSION['geheimevraag'];
         $antwoord = $_SESSION['antwoord'];
-
 
 
         // Insert new user into Gebruiker Table
