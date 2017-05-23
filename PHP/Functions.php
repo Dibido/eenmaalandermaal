@@ -10,7 +10,7 @@
 
 /* output:
  * the result from the database (array)
- *
+ * or an list with false, and the database error
  *
  */
 
@@ -61,6 +61,37 @@ SELECT * FROM Voorwerp
 EOT;
 
 Return SendToDatabase($Query);
+
+}
+
+/* function for getting the images for an product */
+
+
+/* input:
+ * item id
+ *
+ *
+ */
+
+
+/* output:
+ * array results from the database
+ * or a list with false and a database error
+ *
+ *
+ */
+
+function GetItemImages($ItemID){
+
+    $Query = <<<EOT
+
+SELECT BES_filenaam
+FROM Bestand, Voorwerp
+WHERE Bestand.BES_voorwerpnummer = $ItemID
+
+EOT;
+
+    return SendToDatabase($Query);
 
 
 }

@@ -298,22 +298,6 @@ SELECT
                            ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
   DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
-  (SELECT TOP 1 BES_filenaam
-   FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BES_voorwerpnummer) AS ImagePath0,
-   
-   (SELECT TOP 1 BES_filenaam
-   FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BES_voorwerpnummer
-   OFFSET 1 ROWS) AS ImagePath1,
-   
-   (SELECT TOP 1 BES_filenaam
-   FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BES_voorwerpnummer
-   OFFSET 2 ROWS) AS ImagePath2,
   VW_looptijdStart,
   VW_looptijdEinde,
   VW_betalingswijze,
@@ -338,6 +322,16 @@ FROM Voorwerp
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
 WHERE VW_voorwerpnummer = $voorwerpnummer
 
+
+EOT;
+
+/* query for getting the images from an item*/
+
+$QueryImagesFromItem = <<<EOT
+
+SELECT BES_filenaam
+FROM Bestand, Voorwerp
+WHERE Bestand.BES_voorwerpnummer = $voorwerpnummer
 
 EOT;
 
