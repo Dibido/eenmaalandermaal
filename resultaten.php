@@ -127,7 +127,7 @@ require('navbar.html');
 <!-- Filter bar -->
 
 <div class="container-fluid">
-    <div class="col-md-3 col-sm-6 col-xs-12">
+    <div class="col-lg-3 col-md-3 col-sm-8 col-xs-12">
         <div class="visible-lg visible-md visible-sm visible-xs">
             <div class="list-group">
                 <a href="#" class="list-group-item active">Opties</a>
@@ -207,18 +207,21 @@ require('navbar.html');
                     </a>
                     <ul class="list-group-item">
                         <div class="row">
-                            <div class="col-sm-6 left">
+                            <div class="col-xs-6 col-sm-6 col-md-5 col-lg-6">
                                 <a href="resultaten.php?zoekterm=<?php echo $zoekterm ?>">
-                                    <input class="btn btn-warning center-block" data-inline="true" value="Reset"
-                                           type="button">
+                                    <button class="btn btn-warning"
+                                            type="button">
+                                            <span
+                                                class="glyphicon glyphicon-repeat"></span> Reset</button>
                                 </a>
 
                             </div>
-                            <div class="col-sm-6 right">
+                            <div class="col-xs-6 col-sm-6s col-md-5 col-lg-6">
 
                                 <a href="#">
-                                    <input class="btn btn-primary center-block" type="submit" data-inline="true"
-                                           value="Aanpassen">
+                                    <button class="btn btn-primary"
+                                            type="submit"><span
+                                                class="glyphicon glyphicon-wrench"></span>Aanpassen</button>
                                 </a>
                             </div>
 
