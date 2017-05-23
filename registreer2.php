@@ -24,6 +24,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $wachtwoord2 = $_POST['wachtwoord2'];
         $geheimevraag = $_POST['geheimevraag'];
         $antwoord = $_POST['antwoord'];
+
+        if ($wachtwoord == $wachtwoord2) {
+
+            $_SESSION["voornaam"] = $voornaam;
+            $_SESSION["achternaam"] = $achternaam;
+            $_SESSION["email"] = $email;
+            $_SESSION["adres1"] = $adres1;
+            $_SESSION["adres2"] = $adres2;
+            $_SESSION["postcode"] = $postcode;
+            $_SESSION["woonplaats"] = $woonplaats;
+            $_SESSION["land"] = $land;
+            $_SESSION["geboortedatum"] = $geboortedatum;
+            $_SESSION["gebruikersnaam"] = $gebruikersnaam;
+            $_SESSION["wachtwoord"] = $wachtwoord;
+            $_SESSION["geheimevraag"] = $geheimevraag;
+            $_SESSION["antwoord"] = $antwoord;
+
+            header('Location: voltooi-registratie.php');
+        } else {
+            echo 'wachtwoorden niet identiek';
+        }
+
     }
 } else {
     $emailadres = validateHash();
@@ -152,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <div class="form-group">
                                 <label for="adres2">Adresregel 2</label>
                                 <input name="adres2" id="adres2" type="text" placeholder="Adresregel 2"
-                                       class="form-control" required="true" maxlength="255"
+                                       class="form-control" maxlength="255"
                                        value="<?php if (!empty($adres2)) {
                                            echo $adres2;
                                        } ?>">
@@ -258,5 +280,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     </body>
     </html>
-
-<?php session_destroy(); ?>
