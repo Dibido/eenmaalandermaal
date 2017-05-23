@@ -1,6 +1,6 @@
 <?php
 session_start();
-ob_start();
+//ob_start();
 
 require('PHP/connection.php');
 require('PHP/Functions.php');
@@ -61,7 +61,9 @@ require('navbar.html');
 <div class="container">
     <div class="panel panel-default col-md-6 col-md-push-3">
         <div class="panel-body">
-            <?php doRegistratie(); ?>
+            <?php
+                    doRegistratie();
+                      ?>
         </div>
     </div>
 </div>

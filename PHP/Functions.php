@@ -18,6 +18,7 @@ function GetItemDetails($ItemID)
 {
 
     $Query = <<<EOT
+
 SELECT
   DISTINCT VW_voorwerpnummer,
   VW_titel,
@@ -322,9 +323,6 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
-    $ResultsPerPage = $SearchOptions['ResultsPerPage'];
-    $Offset = $SearchOptions['Offset'];
-
 
     //clean the input
 
@@ -336,40 +334,36 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = cleanInput($SearchMinRemainingTime);
     $SearchMinPrice = cleanInput($SearchMinPrice);
     $SearchMaxPrice = cleanInput($SearchMaxPrice);
-    $ResultsPerPage = cleanInput($ResultsPerPage);
-    $Offset = cleanInput($Offset);
-    
+
 //Prepare the query
     $QuerySearchProducts = <<< EOT
-SELECT DISTINCT
-  VW_voorwerpnummer,
-  VW_titel,
-  (COALESCE((SELECT TOP 1 BOD_Bodbedrag
-             FROM Bod
-             WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
-                                     FROM Bod
-                                     WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                     ORDER BY BOD_Bodbedrag DESC) AND
-                   BOD_voorwerpnummer = VW_voorwerpnummer
-             ORDER BY BOD_Bodbedrag DESC), (SELECT DISTINCT VW_startprijs
-                                            FROM Voorwerp
-                                            WHERE VW_voorwerpnummer = VW_voorwerpnummer))) AS prijs,
-  DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
-  (SELECT TOP 1 BES_filenaam
-   FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer)       AS ImagePath,
-  VW_looptijdStart,
-  VW_looptijdEinde,
-  Voorwerp.VW_betalingswijze
-FROM Voorwerp
+
+SELECT
+   DISTINCT VW_voorwerpnummer,
+   VW_titel,
+   (SELECT TOP 1 BOD_Bodbedrag
+    FROM Bod
+    WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
+                                FROM Bod
+                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+    ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
+    DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
+    (SELECT TOP 1 BES_filenaam
+    FROM Bestand
+    WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
+    VW_looptijdStart, 
+    VW_looptijdEinde,
+   Voorwerp.VW_betalingswijze
+ FROM Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-  LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+ LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
   LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
   LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
-WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
+	WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
 	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
 	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
 	AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
@@ -387,13 +381,12 @@ WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) <= $SearchMaxPrice)
 		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
-		AND ('$SearchPaymentMethod' IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
+		AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
    Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde
 ORDER BY $SearchFilter , VW_voorwerpnummer
-OFFSET $Offset ROWS
-FETCH NEXT $ResultsPerPage ROWS ONLY
+
     
 EOT;
     print_r($QuerySearchProducts);
@@ -458,7 +451,7 @@ function printCategoriën($zoekterm, $rubriekNummer)
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
+                        WHERE H.RB_Parent = -1  /and VW_titel like '%$zoekterm%'/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
                         GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
@@ -536,7 +529,6 @@ function createTimer($tijd, $VW_Titel, $pagina)
 
 
 // functie die email adres invult bij laden registreer1.php indien al ingevuld.
-
 function getEmailReg1()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -759,12 +751,15 @@ EOT;
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 
-        session_destroy();
+        //    session_destroy();
 
     } else {
+        echo 'somethings wrong';
         header('Location: registreer1.php');
     }
+
+    echo 'U bent geregistreerd';
+
 }
 
 ?>
-
