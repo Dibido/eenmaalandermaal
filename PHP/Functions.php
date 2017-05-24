@@ -29,10 +29,8 @@ SELECT
                            WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                            ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
-  DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
-  (SELECT TOP 1 BES_filenaam
-   FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
+  Voorwerp.VW_looptijdEinde AS tijd,
+  VW_thumbnail,
   VW_looptijdStart,
   VW_looptijdEinde,
   VW_betalingswijze,

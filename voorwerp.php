@@ -17,14 +17,15 @@ $ItemImages = GetItemImages($ItemID);
 if (!isset($ItemInfo["VW_thumbnail"]) OR empty($ItemInfo["VW_thumbnail"])){
     $ItemInfo["VW_thumbnail"] = "images/no-image-available.jpg";
 }
-foreach ($ItemImages as $ItemImage) {
-    if(!isset($ItemImage["BES_filenaam"]) OR empty("BES_filenaam")){
-        $ItemImage["BES_filenaam"] = "images/no-image-available.jpg";
+for ($i = 0; $i < 3; $i++) {
+    if (!isset($ItemImages[$i]["BES_filenaam"]) OR empty($ItemImages[$i]["BES_filenaam"])) {
+        $ItemImages[$i]["BES_filenaam"] = "images/no-image-available.jpg";
+    } else {
+        $ItemImages[$i]["BES_filenaam"] = "http://iproject3.icasites.nl/pics/" . $ItemImages[$i]["BES_filenaam"];
     }
 }
 
 print_r($ItemInfo);
-print_r($ItemImages);
 
 ?>
 
@@ -106,19 +107,19 @@ require('navbar.html');
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemInfo["VW_thumbnail"] ?>);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[0]["BES_filenaam"]; ?>)"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[0]["BES_filenaam"] ?>);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[1]["BES_filenaam"]; ?>)"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[1]["BES_filenaam"] ?>);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[2]["BES_filenaam"]; ?>)"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[2]["BES_filenaam"] ?>);"></div>
+                    <div class="AuctionImage" style="background-image: url(<?php echo "http://iproject3.icasites.nl/thumbnails/" . $ItemInfo["VW_thumbnail"]; ?>)"></div>
                 </div>
             </div>
 
@@ -141,9 +142,9 @@ require('navbar.html');
         <div class="panel panel-default Details-wrapper">
             <div class="panel-heading text-center">Kenmerken</div>
             <div class="Details">
-                <div class="Detail"><b>Categorie:</b> voorbeeld categorie</div>
-                <div class="Detail"><b>Locatie:</b> voorbeeld locatie</div>
-                <div class="Detail"><b>geplaatst:</b> 22 mei 2017</div>
+                <div class="Detail"><b>Categorie:</b> <?php echo 'categorie query is dood :(' ?></div>
+                <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"]?></div>
+                <div class="Detail"><b>geplaatst:</b>  <?php echo $ItemInfo["VW_looptijdStart"]?></div>
                 <div class="Detail"><b>conditie:</b> goed als nieuw</div>
             </div>
         </div>
