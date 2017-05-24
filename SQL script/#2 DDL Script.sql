@@ -65,6 +65,14 @@ CREATE TABLE Gebruiker (
                                              getdate()), --Geboortedag mag alleen in het verleden zijn.
 );
 
+--TODO: Aanmaken admin tabel met gebruikersnaam;admin
+/*CREATE TABLE Administrator (
+  ADM_gebruikersnaam VARCHAR(64)   NOT NULL, --Gebruikersnaam uit de gebruikerstabel
+  ADM_admin          BIT DEFAULT 0 NOT NULL, --Of de gebruiker admin is
+  CONSTRAINT FK_AdminFOREIGN KEY
+)*/
+
+
 CREATE TABLE Gebruikerstelefoon (
   TEL_volgnr    INT IDENTITY NOT NULL, --Wordt verhoogd als er een nieuw nummer toegevoegd word
   TEL_gebruiker VARCHAR(64)  NOT NULL, --gebruiker uit de gebruiker tabel
