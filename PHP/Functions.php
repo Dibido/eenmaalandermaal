@@ -227,10 +227,10 @@ function DrawSearchResults($auction)
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
                     </div>"
-                    . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/'. $auction["ImagePath"] . ")\"></div></a>
+        . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . "<p id=" .'timer'. $auction["VW_voorwerpnummer"] . $pagina . "></p>" . " </div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . 'timer' . $auction["VW_voorwerpnummer"] . $pagina . "></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -639,12 +639,13 @@ function checkRegistratie()
                 }
             }
 
-            if ($error == false) {
+            $waardes = $_POST;
+            foreach ($waardes as $waarde) {
+                $waarde = cleanInput($waarde);
+            }
 
-                $waardes = $_POST;
-                foreach ($waardes as $waarde) {
-                    $waarde = cleanInput($waarde);
-                }
+
+            if ($error == false) {
 
                 $waardes['antwoord'] = strtolower($waardes['antwoord']); // Lower case maken
 
