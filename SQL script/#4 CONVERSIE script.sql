@@ -32,6 +32,7 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
      ORDER BY Rating DESC)   AS GEB_Rating
   FROM Users
 GO
+--TODO: Verkoper ook aan gebruikerstabel toevoegen.
 
 --Conversiescript Items
 SET IDENTITY_INSERT voorwerp ON
