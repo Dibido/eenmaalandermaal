@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 
 
+
     //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
     if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
         $pagenum = 1;

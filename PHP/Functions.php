@@ -628,6 +628,7 @@ function validateHash()
 }
 
 
+
 function checkRegistratie()
 {
 
