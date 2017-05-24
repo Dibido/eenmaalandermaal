@@ -31,20 +31,20 @@ SELECT
    ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
   Voorwerp.VW_looptijdEinde AS tijd,
   VW_thumbnail,
-  VW_looptijdStart,
+  CAST(VW_looptijdStart AS DATE) as VW_looptijdStart,
   VW_looptijdEinde,
   VW_betalingswijze,
   VW_beschrijving,
   VW_plaatsnaam,
   VW_land,
-  VW_looptijdStart,
   VW_verkoper,
   VW_thumbnail,
   VW_veilinggesloten,
   VW_koper,
   VW_verkoopprijs,
   VW_verzendinstructies,
-  VW_verzendkosten
+  VW_verzendkosten,
+  VW_conditie
 FROM Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer

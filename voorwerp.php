@@ -142,10 +142,10 @@ require('navbar.html');
         <div class="panel panel-default Details-wrapper">
             <div class="panel-heading text-center">Kenmerken</div>
             <div class="Details">
-                <div class="Detail"><b>Categorie:</b> <?php echo 'categorie query is dood :(' ?></div>
-                <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"]?></div>
-                <div class="Detail"><b>geplaatst:</b>  <?php echo $ItemInfo["VW_looptijdStart"]?></div>
-                <div class="Detail"><b>conditie:</b> goed als nieuw</div>
+                <div class="Detail"><b>Categorie:</b> <?php echo 'categorie query is dood :('; ?></div>
+                <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"];?></div>
+                <div class="Detail"><b>geplaatst:</b>  <?php echo $ItemInfo["VW_looptijdStart"];?></div>
+                <div class="Detail"><b>conditie:</b> <?php $ItemInfo["VW_conditie"]; ?></div>
             </div>
         </div>
 
@@ -180,7 +180,7 @@ require('navbar.html');
             <div class="panel-heading text-center">Overgebleven Tijd</div>
             <div class="panel-body">
                 <div class="TimeLeft">
-                    <span class="Time">7D 23:59:59</span>
+                    <span class="Time"> <?php echo $ItemInfo["tijd"]?></span>
                     <div id="Clock" style="background-image:url(images/Clock.png)"></div>
                 </div>
             </div>
