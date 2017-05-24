@@ -63,11 +63,11 @@ EOT;
 
 }
 
-function  GetLastOffers(){
+function  GetLastOffers($voorwerpnummer){
 
     $QueryGetLastOffers = <<<EOT
     
-    select top 10 * from Bod where BOD_voorwerpnummer = 5614509880 ORDER BY BOD_bodTijdEnDag DESC
+    select top 10 * from Bod where BOD_voorwerpnummer = $voorwerpnummer ORDER BY BOD_bodTijdEnDag DESC
 
 EOT;
 
