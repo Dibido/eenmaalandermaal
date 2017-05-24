@@ -124,7 +124,7 @@ CREATE TABLE Bestand (
   CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (BES_voorwerpnummer) REFERENCES Voorwerp (VW_voorwerpnummer)
     ON UPDATE CASCADE --Wanneer het voorwerp wordt aangepast, overnemen
     ON DELETE CASCADE, --Wanneer het voorwerp delete wordt, overnemen
-  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 3)
+  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
 );
 
 

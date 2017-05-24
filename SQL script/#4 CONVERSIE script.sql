@@ -86,7 +86,7 @@ INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
              ORDER BY IllustratieFile DESC ) AS Rank
          FROM Illustraties
        ) rs
-  WHERE Rank <= 3 --Selecteerd de top 3
+  WHERE Rank <= 4 --Selecteerd de top 3
         AND EXISTS(SELECT * --Als het voorwerp bestaat.
                    FROM Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)
