@@ -673,7 +673,8 @@ function checkRegistratie()
                     $waardes['wachtwoord'] = password_hash($waardes['wachtwoord'], PASSWORD_DEFAULT);
                     $waardes['antwoord'] = password_hash($waardes['antwoord'], PASSWORD_DEFAULT);
                     $_SESSION = $waardes;
-                    header('Location: voltooi-registratie.php');
+                    echo count($_SESSION);
+                    //header('Location: voltooi-registratie.php');
                 } else {
                     echo '  <div class="alert alert-danger" >
                             <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
@@ -694,8 +695,11 @@ function checkRegistratie()
 
 function doRegistratie()
 {
-    if (count($_SESSION) == 13) {
+    $error = false; // Dibran stelde voor dit op een andere plek neer te zetten, But I'm a Rebbbbeelllllll
+
+    if (count($_SESSION) == 14) {
         foreach ($_SESSION as $veld => $value) {
+            $veld = cleanInput($veld);
             if (empty($value)) {
                 $error = true;
                 echo '  <div class="alert alert-danger" >
