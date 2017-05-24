@@ -20,37 +20,13 @@
 $QueryTopCategories = <<<EOT
 
 
-    SELECT
-      --Selecteer de top hoeveelheid categoriën die moet worden laten zien
-      TOP 10
-      RB_Naam,
-      SUM(tweede.aantal) AS AantalBiedingenPerCategorie,
-      RB_Nummer
-    FROM Rubriek
-      --Lees de de Innerjoins van achter naar voren(onder naar boven). Begin bij STAP 1 op regel 23.
-      --STAP 4: De overgebleven Rubrieken worden nog een keer gekoppeld aan hun parent zodat de Hoogste parent verkregen is.
-      INNER JOIN
-      (SELECT
-         Rubriek.RB_Parent,
-         SUM(eerste.aantal) AS aantal
-       FROM Rubriek
-         --STAP 3: De geselecteerde rubrieken met daarbij de aantallen per rubriek worden gekoppeld aan de eerste parent
-         INNER JOIN (SELECT
-                       RB_Parent,
-                       COUNT(BOD_voorwerpnummer) AS aantal
-                     FROM Voorwerp_Rubriek
-                       --STAP 2: Het Rubriek nummer wordt gekoppeld aan zijn rij in de tabel Rubriek
-                       INNER JOIN Rubriek
-                         ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                       --STAP 1: Biedingen worden gekoppeld aan een RubriekNummer
-                       INNER JOIN Bod
-                         ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
-                     GROUP BY RB_Parent)
-                    eerste ON Rubriek.RB_Volgnummer = eerste.RB_Parent
-       GROUP BY Rubriek.RB_Parent, aantal) tweede ON Rubriek.RB_Volgnummer = tweede.RB_Parent
-    WHERE Rubriek.RB_Parent = -1
-    GROUP BY Rubriek.RB_Naam, Rubriek.RB_Nummer
-    ORDER BY MAX(aantal) DESC
+select top 10 Rubriek.RB_Naam, COUNT(BOD_voorwerpnummer) as aantal1, COUNT(VW_voorwerpnummer) as aantal2 from Voorwerp
+  LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+GROUP BY Rubriek.RB_Naam
+ORDER BY COUNT(BOD_voorwerpnummer)DESC , COUNT(VW_voorwerpnummer) DESC
+
 
 EOT;
 
@@ -129,12 +105,12 @@ SELECT
   VW_voorwerpnummer,
   VW_titel,
   (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
-   FROM Bod
-   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
-                               FROM Bod
-                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
+              FROM Bod
+              WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                                       FROM Bod
+                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+              ORDER BY BOD_Bodbedrag DESC), VW_startprijs ))  as prijs,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   COUNT(*)                                       AS Biedingen,
   VW_looptijdEinde,
@@ -154,43 +130,18 @@ WHERE VW_voorwerpnummer IN (
       ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
     INNER JOIN Rubriek
       ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-    INNER JOIN Rubriek r1
-      ON r1.RB_Nummer = Rubriek.RB_Parent
-    INNER JOIN Rubriek r2
-      ON r2.RB_Nummer = r1.RB_Parent
-  WHERE r2.RB_Naam != 'root' AND r2.RB_Naam IN (
-    --Lees de de Innerjoins van achter naar voren(onder naar boven). Begin bij STAP 1 op regel 157.
-    --STAP 5: Selecteerd de parent met het hoogste aantal.
-    SELECT
-      TOP 1 RB_Naam
-    FROM Rubriek
-      --STAP 4: De overgebleven Rubrieken worden nog een keer gekoppeld aan hun parent zodat de Hoogste parent verkregen is.
-      INNER JOIN
-      (SELECT
-         Rubriek.RB_Parent,
-         aantal
-       FROM Rubriek
-         INNER JOIN
-         --STAP 3: De geselecteerde rubrieken met daarbij de aantallen per rubriek worden gekoppeld aan de eerste parent
-         (SELECT
-            RB_Parent,
-            COUNT(BOD_voorwerpnummer) AS aantal
-          FROM Voorwerp_Rubriek
-            --STAP 2: Het Rubriek nummer wordt gekoppeld aan zijn rij in de tabel Rubriek
-            INNER JOIN Rubriek
-              ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-            --STAP 1: Voorwerpnummers worden gekoppeld aan de biedingen in de tabel Bod
-            INNER JOIN Bod
-              ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
-          GROUP BY RB_Parent)
-         eerste ON Rubriek.RB_Volgnummer = eerste.RB_Parent
-       GROUP BY Rubriek.RB_Parent, aantal) tweede ON Rubriek.RB_Volgnummer = tweede.RB_Parent
-    WHERE Rubriek.RB_Parent = -1 --AND DATEDIFF(DAY,BOD_bodTijdEnDag, GETDATE())< 1000
+  WHERE RB_Naam != 'root' AND RB_Naam IN (
+    select top 1 Rubriek.RB_Naam from Voorwerp
+      LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+      LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+      LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
     GROUP BY Rubriek.RB_Naam
-    ORDER BY MAX(aantal) DESC)
+    ORDER BY COUNT(BOD_voorwerpnummer)DESC , COUNT(VW_voorwerpnummer) DESC
+  )
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
-GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde
+GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs
 ORDER BY Biedingen DESC
+
 
 
 EOT;
