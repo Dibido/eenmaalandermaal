@@ -119,13 +119,14 @@ require('navbar.html');
                     //testing if the server returned an error
                     if ($BestFromCategories[0]) {
                         //Searching for missing images and replacing with the backup image
-                        foreach ($BestFromCategories as $auction) {
-                            if (empty($auction["ImagePath"])) {
-                                $auction["ImagePath"] = "images/no-image-available.jpg";
+                        for ($i = 0; $i < 3; $i++){
+                            if (empty($BestFromCategories[$i]["ImagePath"])) {
+                                $BestFromCategories[$i]["ImagePath"] = "images/no-image-available.jpg";
+                            } else {
+                                $BestFromCategories[$i]["ImagePath"] = "http://iproject3.icasites.nl/pics/" . $BestFromCategories[$i]["ImagePath"];
                             }
                         }
-
-                        echo "
+                            echo "
                         
                         <div class=\"carousel-inner\">
                         <div class=\"item active\">
@@ -179,6 +180,8 @@ require('navbar.html');
                         </div>
                         
                         ";
+
+
                     } else {
                         echo "<b>Error on loading best auctions: </b>" . "<br><br>" . $BestFromCategories[1];
                     }
@@ -220,10 +223,15 @@ require('navbar.html');
 
             $TopClosed = SendToDatabase($QueryTop2);
             $pagina = 'BijnaGesloten';
+
+
             //If the query was succesfull, build the adverts
             if ($TopClosed[0]) {
-
                 foreach ($TopClosed as $veiling) {
+
+                    //preparing the image paths
+                    $veiling["ImagePath"] = "http://iproject3.icasites.nl/thumbnails/" .  $veiling["ImagePath"];
+
                     echo "<div class=\"veiling-rand col-md-12 col-sm-6 col-xs-6\">
                     <div class=\"veiling\">
                         <div class=\"veiling-titel label label-default\">"
