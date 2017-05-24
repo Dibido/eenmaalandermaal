@@ -798,10 +798,10 @@ EOT;
 function getCodeFromMail()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        echo $_GET['code'];
+        IF(!empty($_GET['code'])){
+            echo $_GET['code'];
+        }
     }
-
-
 }
 
 ?>
