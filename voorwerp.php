@@ -142,7 +142,21 @@ require('navbar.html');
         <div class="panel panel-default Details-wrapper">
             <div class="panel-heading text-center">Kenmerken</div>
             <div class="Details">
-                <div class="Detail"><b>Categorie:</b> <?php echo 'categorie query is dood :('; ?></div>
+                <?php
+                $query = <<<EOT
+
+SELECT 
+
+
+
+EOT;
+
+
+
+                $category = GetCategoryPerAuction($ItemInfo["VW_voorwerpnummer"]);
+                $category = $category[0];
+                ?>
+                <div class="Detail"><b>Categorie:</b> <?php echo $category["Name"]; ?></div>
                 <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"];?></div>
                 <div class="Detail"><b>geplaatst:</b>  <?php echo $ItemInfo["VW_looptijdStart"];?></div>
                 <div class="Detail"><b>conditie:</b> <?php echo $ItemInfo["VW_conditie"]; ?></div>
@@ -252,6 +266,9 @@ require('navbar.html');
 
                         $Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
 
+                        print_r($Userinfo);
+
+                        //%10 * 5;
 
                         ?>
                         <i class="glyphicon glyphicon-star"></i>

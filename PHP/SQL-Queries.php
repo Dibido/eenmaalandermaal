@@ -20,11 +20,12 @@
 $QueryTopCategories = <<<EOT
 
 
-select top 10 Rubriek.RB_Naam, COUNT(BOD_voorwerpnummer) as aantal1, COUNT(VW_voorwerpnummer) as aantal2 from Voorwerp
+select top 10 Rubriek.RB_Naam, COUNT(BOD_voorwerpnummer) as aantal1, COUNT(VW_voorwerpnummer) as aantal2, RB_Nummer
+ from Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-GROUP BY Rubriek.RB_Naam
+GROUP BY Rubriek.RB_Naam, RB_Nummer
 ORDER BY COUNT(BOD_voorwerpnummer)DESC , COUNT(VW_voorwerpnummer) DESC
 
 

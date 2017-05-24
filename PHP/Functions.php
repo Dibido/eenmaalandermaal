@@ -83,12 +83,31 @@ function  GetUserInfoPerAuction($username){
     
     SELECT * 
     FROM Users
-    WHERE Username = $username
+    WHERE Username = '$username'
+  
+
+EOT;
+
+    RETURN $QueryGetUserInfo;
+   // RETURN SendToDatabase($QueryGetUserInfo);
+}
+
+function  GetCategoryPerAuction($ItemID){
+
+    $QueryGetUserInfo= <<<EOT
+    
+    SELECT Name
+FROM Categorieen
+INNER JOIN Voorwerp_Rubriek
+ON VR_Rubriek_Nummer = ID
+WHERE VR_Voorwerp_Nummer = $ItemID
+  
 
 EOT;
 
     RETURN SendToDatabase($QueryGetUserInfo);
 }
+
 
 /* function for getting the images for an product */
 
@@ -403,7 +422,7 @@ WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
-		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
+		AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
 		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
