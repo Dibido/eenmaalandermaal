@@ -107,7 +107,7 @@ require('navbar.html');
                         <div class="form-group">
                             <label for="code">Verificatiecode*</label>
                             <input name="code" id="code" type="text" placeholder="Verificatiecode"
-                                   class="form-control" required="true" value="<?php ?>">
+                                   class="form-control" required="true" value="<?php getCodeFromMail(); ?>">
                         </div>
 
                         <div class="form-group">

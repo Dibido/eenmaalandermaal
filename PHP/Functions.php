@@ -546,6 +546,7 @@ function checkEmailSent()
             $email = cleanInput($_POST['email']);
             $code = md5($email . date("Y/m/d"));
             $code = substr($code, 0, 16);
+            $urlCode = urlencode('http://iproject3.icasites.nl/registreer1.php?code='.$code);
             global $SetRegistratie;
 
             $subject = 'Uw EenmaalAndermaal registratie';
@@ -557,7 +558,7 @@ u heeft aangegeven zich aan te willen melden op onze website.
 Dit is uw persoonlijke code: ' . $code . '
 Vul deze in op de website om de registratieprocedure af te ronden of klik op onderstaande link.
 
-<a href="url">Link</a>
+<a href="' . $urlCode .'">Link</a>
 
 Met vriendelijke groet,
 
@@ -751,6 +752,10 @@ EOT;
 }
 
 function getCodeFromMail(){
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        echo $_GET['code'];
+    }
+
 
 }
 ?>
