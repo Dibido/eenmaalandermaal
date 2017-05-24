@@ -201,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             $filterNamen = array("Tijd: nieuw aangeboden", "Tijd: eerst afgelopen", "Prijs: laagste bovenaan", "Prijs: hoogste bovenaan");
                             if (isset($sorteerfilter)) {
                                 global $sorteerfilter;
-                                /*echo "<option value=\"" . ($_GET['sorteerfilter']) . "\" selected>" . $filterNamen[($_GET['$sorteerfilter'])] . "</option>"; */
+                                //echo "<option value=\"" . ($_GET['sorteerfilter']) . "\" selected>" . $filterNamen[($_GET['$sorteerfilter'])] . "</option>"; */
 
                                 $query_age = (isset($_GET['query_age']) ? $_GET['query_age'] : null);
                             }
@@ -294,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     echo($categorie); ?>">
                     <input type="hidden" name="pagenum" value="<?php global $pagenum;
                     echo($pagenum); ?>">
-                </form>
+
             </div>
             <a href="#" class="list-group-item active" id="Header-Categories">
                 <i class="text-right glyphicon glyphicon-th-list"></i>
@@ -314,6 +314,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
         </div>
     </div>
+    </form>
 
     <!-- Trending items -->
 
@@ -358,13 +359,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <html>
         <nav aria-label="...">
             <ul class="pagination">
-                <li class="page-item">
-                    <?php echo  "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=".'1'."><< Eerste</a> ";?>
-                </li>
-                <li class="page-item">
-                    <?php echo  "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $previous . "> <- Vorige</a> ";?>
-                </li>
-                <?php
+                <?php if($pagenum != 1){
+                echo '<li class="page-item">';
+                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=".'1'."><< Eerste</a> ";
+                echo '</li><li class="page-item">';
+                echo  "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $previous . "> <- Vorige</a> ";
+                echo '</li>';
+                }
                 $lastPageNum = $pagenum + 5;
                 $startPage = $pagenum;
                 if($pagenum != 1) {
