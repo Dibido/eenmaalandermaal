@@ -560,7 +560,6 @@ function checkEmailSent()
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
             $headers .= 'From: info@iproject3.icasites.nl' . "\r\n";
             $subject = 'Uw EenmaalAndermaal registratie';
-            echo $headers;
             $message = '
 
 <html>
