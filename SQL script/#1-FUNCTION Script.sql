@@ -124,3 +124,19 @@ CREATE FUNCTION [dbo].[FN_StripHTML](@HTMLText VARCHAR(MAX))
     RETURN LTRIM(RTRIM(@HTMLText))
   END
 GO
+
+
+-- Trigger die registratiecodes die ouder dan 24 uur zijn verwijderd.
+IF OBJECT_ID('TR_ActivatieVerlopen') IS NOT NULL
+  DROP TRIGGER [dbo].[TR_ActivatieVerlopen]
+GO
+
+CREATE TRIGGER TR_ActivatieVerlopen
+  ON dbo.Registreer
+FOR INSERT, UPDATE
+AS
+  BEGIN
+    DELETE FROM Registreer
+   WHERE  REG_tijd < DATEADD(day, -1, GETDATE())
+  END
+GO

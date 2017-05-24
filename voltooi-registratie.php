@@ -62,8 +62,8 @@ require('navbar.html');
     <div class="panel panel-default col-md-6 col-md-push-3">
         <div class="panel-body">
             <?php
-                    doRegistratie();
-             ?>
+            doRegistratie();
+            ?>
         </div>
     </div>
 </div>

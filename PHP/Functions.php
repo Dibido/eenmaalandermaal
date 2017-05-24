@@ -29,24 +29,22 @@ SELECT
                            WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                            ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
-  DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
-  (SELECT TOP 1 BES_filenaam
-   FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
-  VW_looptijdStart,
+  Voorwerp.VW_looptijdEinde AS tijd,
+  VW_thumbnail,
+  CAST(VW_looptijdStart AS DATE) as VW_looptijdStart,
   VW_looptijdEinde,
   VW_betalingswijze,
   VW_beschrijving,
   VW_plaatsnaam,
   VW_land,
-  VW_looptijdStart,
   VW_verkoper,
   VW_thumbnail,
   VW_veilinggesloten,
   VW_koper,
   VW_verkoopprijs,
   VW_verzendinstructies,
-  VW_verzendkosten
+  VW_verzendkosten,
+  VW_conditie
 FROM Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
@@ -228,11 +226,11 @@ function DrawSearchResults($auction)
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
-                    </div>
-                    <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
+                    </div>"
+        . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<div class="bottom-align-text" id="timer' . $auction["VW_titel"] . $pagina . '"></div>' . " </div>
+                        <div class=\"tijd label label-default\">" . "<p id=". $auction["VW_voorwerpnummer"] ."></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -242,7 +240,7 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $pagina);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"],$auction["VW_voorwerpnummer"]);
 
 }
 
@@ -313,8 +311,6 @@ function laadLetters()
 function SearchFunction($SearchOptions)
 {
     //preparing for query
-
-
     $SearchKeyword = $SearchOptions['SearchKeyword'];
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchFilter = $SearchOptions['SearchFilter'];
@@ -323,9 +319,9 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
-
+    $ResultsPerPage = $SearchOptions['ResultsPerPage'];
+    $Offset = $SearchOptions['Offset'];
     //clean the input
-
     $SearchKeyword = cleanInput($SearchKeyword);
     $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
     $SearchFilter = cleanInput($SearchFilter);
@@ -334,36 +330,36 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = cleanInput($SearchMinRemainingTime);
     $SearchMinPrice = cleanInput($SearchMinPrice);
     $SearchMaxPrice = cleanInput($SearchMaxPrice);
+    $ResultsPerPage = cleanInput($ResultsPerPage);
+    $Offset = cleanInput($Offset);
 
 //Prepare the query
     $QuerySearchProducts = <<< EOT
-
-SELECT
-   DISTINCT VW_voorwerpnummer,
-   VW_titel,
-   (SELECT TOP 1 BOD_Bodbedrag
-    FROM Bod
-    WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
-                                FROM Bod
-                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-    ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
-    DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
-    (SELECT TOP 1 BES_filenaam
-    FROM Bestand
-    WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
-    VW_looptijdStart, 
-    VW_looptijdEinde,
-   Voorwerp.VW_betalingswijze
- FROM Voorwerp
+SELECT DISTINCT
+  VW_voorwerpnummer,
+  VW_titel,
+  (COALESCE((SELECT TOP 1 BOD_Bodbedrag
+             FROM Bod
+             WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
+                                     FROM Bod
+                                     WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                     ORDER BY BOD_Bodbedrag DESC) AND
+                   BOD_voorwerpnummer = VW_voorwerpnummer
+             ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) AS prijs,
+  DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
+  VW_thumbnail       AS ImagePath,
+  VW_looptijdStart,
+  VW_looptijdEinde,
+  Voorwerp.VW_betalingswijze
+FROM Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
- LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
   LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
   LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
-	WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
+WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
 	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
 	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
 	AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
@@ -372,23 +368,26 @@ SELECT
                                FROM Bod
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) >= $SearchMinPrice)
+   ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) >= $SearchMinPrice)
 	AND ($SearchMaxPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
    FROM Bod
    WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
                                FROM Bod
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) <= $SearchMaxPrice)
+   ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
 		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
-		AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
+		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
-   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde
+   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail
 ORDER BY $SearchFilter , VW_voorwerpnummer
+OFFSET $Offset ROWS
+FETCH NEXT $ResultsPerPage ROWS ONLY
 
     
 EOT;
+
     print_r($QuerySearchProducts);
     //executing the query
     return SendToDatabase($QuerySearchProducts);
@@ -422,7 +421,7 @@ function printVragen($Vragen)
 }
 
 
-function printCategoriën($zoekterm, $rubriekNummer)
+function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betalingsmethode)
 {
     global $connection;
     $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Naam as SubSubRubriekNummer
@@ -451,7 +450,7 @@ function printCategoriën($zoekterm, $rubriekNummer)
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /and VW_titel like '%$zoekterm%'/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
+                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
                         GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
@@ -461,8 +460,11 @@ function printCategoriën($zoekterm, $rubriekNummer)
         //Goes through the second dimensional of the array
         for ($j = 0; $j < (sizeof($rubrieken[$i]) / 2); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
-            if (!isset($rubrieken[$i][$j + 1]) OR ($j == sizeof($rubrieken[$i]) - 1) AND isset($rubrieken[$i][$j])) {
-                echo '<li><a class="testen" href="&categorie=' . $rubrieken[$i][$j + 4] . '">' . $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
+            if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i])/2)-1) AND isset($rubrieken[$i][$j])) {
+
+                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($rubrieken[$i][$j+4]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=".'1'.">";
+
+                echo $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
@@ -484,11 +486,12 @@ function printCategoriën($zoekterm, $rubriekNummer)
     echo '</ul>';
 }
 
-function createTimer($tijd, $VW_Titel, $pagina)
+function createTimer($tijd, $VW_Titel, $VW_Nummer)
 {
+    //Onzin
     echo '<script>
     // Set the date we\'re counting down to
-    var ' . $VW_Titel . $pagina . ' = new Date("' . $tijd . '").getTime();
+    var countDownDate = new Date("' . $tijd . '").getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function() {
@@ -497,7 +500,7 @@ function createTimer($tijd, $VW_Titel, $pagina)
         var now = new Date().getTime();
 
         // Find the distance between now an the count down date
-        var distance = ' . $VW_Titel . $pagina . ' - now;
+        var distance = countDownDate - now;
 
         // Time calculations for days, hours, minutes and seconds
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -508,19 +511,19 @@ function createTimer($tijd, $VW_Titel, $pagina)
         // Display the result in the element with id="demo"
         
         if(days >= 3){
-        document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = days + "d " + hours + "h "
+        document.getElementById("'. $VW_Nummer .'").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
         }else if(days < 3 && seconds < 10){
-        document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = hours + "h "
+        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = hours + "h "
+        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = "Veiling gesloten";
+            document.getElementById("'. $VW_Nummer .'").innerHTML = "Veiling gesloten";
         }
     }, 1000)
 </script>
@@ -544,27 +547,53 @@ function getEmailReg1()
 // Vervolgens wordt er een email verstuurd en een message weergegeven.
 function checkEmailSent()
 {
-
-
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['email'])) {
+        if ((isset($_POST['email'])) && (!empty($_POST['email'])) && (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) == true)) {
             $email = cleanInput($_POST['email']);
             $code = md5($email . date("Y/m/d"));
             $code = substr($code, 0, 16);
+            $urlCode = urlencode($code);
             global $SetRegistratie;
 
+            // Mail Headers
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers .= 'From: info@iproject3.icasites.nl' . "\r\n";
             $subject = 'Uw EenmaalAndermaal registratie';
+            $message = '
 
-            $message = 'Beste gebruiker,
+<html>
+<head>
+<title>EenmaalAndermaal Registratie</title>
+</head>
+<body>
 
-u heeft aangegeven zich aan te willen melden op onze website.
-
-Dit is uw persoonlijke code: ' . $code . '
-Vul deze in op de website om de registratieprocedure af te ronden.
-
-Met vriendelijke groet,
-
-Het EenmaalAndermaal Team';
+<table>
+<tr>
+<td>Beste gebruiker,</td>
+</tr><td>&nbsp;</td></tr>
+<tr>
+<td>U heeft aangegeven zich aan te willen melden op onze website.</td>
+</tr>
+</tr><td>&nbsp;</td></tr>
+<tr>
+<td>Dit is uw persoonlijke code: '.$code. '</td>
+</tr>
+<tr>
+<td>Vul deze in op de website om de registratieprocedure af te ronden of klik op deze <a href="http://iproject3.icasites.nl/registreer1.php?code=' . $urlCode . '">link.</a></td>
+</tr>
+</tr><td>&nbsp;</td></tr>
+<tr>
+<td>Met vriendelijke groet,</td>
+</tr>
+</tr><td>&nbsp;</td></tr>
+<tr>
+<td>Het EenmaalAndermaal Team</td>
+</tr>
+</table>
+</body>
+</html>
+';
 
 
 // If already in DB
@@ -579,10 +608,14 @@ Het EenmaalAndermaal Team';
             } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
                 // Send to DB
                 InsertIntoDatabase($SetRegistratie, $email, $code);
-                mail($email, $subject, $message, 'From: info@iproject3.icasites.nl');
+                mail($email, $subject, $message, $headers);
                 echo '  <div class="alert alert-success">
                             <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
             }
+        } else {
+            echo '  <div class="alert alert-danger" >
+                        <strong > Fout!</br></strong > Vul A.U.B. een geldig E-mailadres in.
+                        </div > ';
         }
     }
 }
@@ -592,7 +625,7 @@ function checkUserLinked()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['code'])) {
-            $code = $_POST['code'];
+            $code = cleanInput($_POST['code']);
             $sql = "SELECT * FROM Registreer WHERE REG_code = '$code'";
             $getUser = SendToDatabase($sql);
 
@@ -623,83 +656,68 @@ function validateHash()
 
 function checkRegistratie()
 {
-    global $voornaam;
-    global $achternaam;
-    global $email;
-    global $adres1;
-    global $adres2;
-    global $postcode;
-    global $woonplaats;
-    global $land;
-    global $geboortedatum;
-    global $gebruikersnaam;
-    global $wachtwoord;
-    global $wachtwoord2;
-    global $geheimevraag;
-    global $antwoord;
 
-    global $emailadres;
+
+    global $waardes;
+    global $emailadres; // Komt uit functie validateHash. Haalt email op indien gebruiker van pagina registreer1 af komt en vult deze dan in.
+
+    $error = false;
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_POST['voornaam']) && ($_POST['achternaam']) && ($_POST['email']) && ($_POST['adres1']) && ($_POST['adres2']) && ($_POST['postcode']) && ($_POST['woonplaats']) && ($_POST['land']) && ($_POST['geboortedatum']) && ($_POST['gebruikersnaam']) && ($_POST['wachtwoord']) && ($_POST['wachtwoord2']) && ($_POST['geheimevraag']) && ($_POST['antwoord'])) {
+        if (count($_POST) == 14) {
+            foreach ($_POST as $veld => $value) {
+                if (empty($value)) {
+                    If ($veld != 'adres2') {
+                        $error = true;
+                        echo '  <div class="alert alert-danger" >
+                            <strong >Fout!</br></strong >' . $veld . ' niet ingevuld. </div > ';
+                    }
+                }
+            }
+
+            $waardes = $_POST;
+            foreach ($waardes as $waarde) {
+                $waarde = cleanInput($waarde);
+            }
 
 
-            $voornaam = cleanInput($_POST['voornaam']);
-            $achternaam = cleanInput($_POST['achternaam']);
-            $email = cleanInput($_POST['email']);
-            $adres1 = cleanInput($_POST['adres1']);
-            $adres2 = cleanInput($_POST['adres2']);
-            $postcode = cleanInput($_POST['postcode']);
-            $woonplaats = cleanInput($_POST['woonplaats']);
-            $land = cleanInput($_POST['land']);
-            $geboortedatum = cleanInput($_POST['geboortedatum']);
-            $gebruikersnaam = cleanInput($_POST['gebruikersnaam']);
-            $wachtwoord = cleanInput($_POST['wachtwoord']);
-            $wachtwoord2 = cleanInput($_POST['wachtwoord2']);
-            $geheimevraag = cleanInput($_POST['geheimevraag']);
-            $antwoord = cleanInput($_POST['antwoord']);
+            if ($error == false) {
 
-
-            if (!empty($voornaam && $achternaam && $email && $adres1 && $adres2 && $postcode && $woonplaats && $land && $geboortedatum && $gebruikersnaam && $wachtwoord && $wachtwoord2 && $geheimevraag && $antwoord)) {
+                $waardes['antwoord'] = strtolower($waardes['antwoord']); // Lower case maken
 
                 $today_start = strtotime('today');
-                $date_timestamp = strtotime($geboortedatum);
+                $date_timestamp = strtotime($waardes['geboortedatum']);
 
-                if ($date_timestamp > $today_start) {
+                $gebruikersnaam = $waardes['gebruikersnaam']; // Kan $waardes['gebruikersnaam'] niet IN de Querie gebruiken.
+                $sql = "SELECT * FROM Gebruiker WHERE GEB_gebruikersnaam LIKE '$gebruikersnaam'";
+                $getUser = SendToDatabase($sql);
+
+                if ($getUser) {
                     echo '  <div class="alert alert-danger" >
-                        <strong >Fout!</br></strong > Uw geboortedatum moet in het verleden liggen! </div > ';
+                                    <strong > Fout!</strong > Er is al een gebruiker met deze gebruikersnaam! </div > ';
 
-                } else if (strlen($wachtwoord) < 8) {
+                } else if ($date_timestamp > $today_start) {
                     echo '  <div class="alert alert-danger" >
-                        <strong >Fout!</br></strong > Het opgegeven wachtwoord moet minimaal 8 tekens lang zijn! </div > ';
+                            <strong >Fout!</br></strong > Uw geboortedatum moet in het verleden liggen! </div > ';
 
-                } else if ($wachtwoord == $wachtwoord2) {
+                } else if (strlen($waardes['wachtwoord']) < 8) {
+                    echo '  <div class="alert alert-danger" >
+                            <strong >Fout!</br></strong > Het opgegeven wachtwoord moet minimaal 8 tekens lang zijn! </div > ';
 
-                    $_SESSION["voornaam"] = $voornaam;
-                    $_SESSION["achternaam"] = $achternaam;
-                    $_SESSION["email"] = $email;
-                    $_SESSION["adres1"] = $adres1;
-                    $_SESSION["adres2"] = $adres2;
-                    $_SESSION["postcode"] = $postcode;
-                    $_SESSION["woonplaats"] = $woonplaats;
-                    $_SESSION["land"] = $land;
-                    $_SESSION["geboortedatum"] = $geboortedatum;
-                    $_SESSION["gebruikersnaam"] = $gebruikersnaam;
-                    $_SESSION["wachtwoord"] = password_hash($wachtwoord, PASSWORD_DEFAULT);
-                    $_SESSION["geheimevraag"] = $geheimevraag;
-                    $_SESSION["antwoord"] = password_hash($antwoord, PASSWORD_DEFAULT);
+                } else if ($waardes['wachtwoord'] == ($waardes['wachtwoord2'])) {
 
+                    $waardes['wachtwoord'] = password_hash($waardes['wachtwoord'], PASSWORD_DEFAULT);
+                    $waardes['antwoord'] = password_hash($waardes['antwoord'], PASSWORD_DEFAULT);
+                    $_SESSION = $waardes;
                     header('Location: voltooi-registratie.php');
                 } else {
                     echo '  <div class="alert alert-danger" >
-                        <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
+                            <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
                 }
             } else {
                 echo '  <div class="alert alert-danger" >
-                        <strong >Fout!</br></strong > Niet alle velden zijn ingevuld! </div > ';
+                            <strong >Fout!</br></strong > Niet alle velden zijn ingevuld! </div > ';
             }
-        } else {
-
         }
     } else {
         $emailadres = validateHash();
@@ -709,76 +727,69 @@ function checkRegistratie()
 
 function doRegistratie()
 {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        if (isset($_SESSION['gebruikersnaam'])) {
+    $error = false; // Dibran stelde voor dit op een andere plek neer te zetten, But I'm a Rebbbbeelllllll
 
-            $gebruikersnaam = $_SESSION['gebruikersnaam'];
-            $voornaam = $_SESSION['voornaam'];
-            $achternaam = $_SESSION['achternaam'];
-            $adres1 = $_SESSION['adres1'];
-            $adres2 = $_SESSION['adres2'];
-            $postcode = $_SESSION['postcode'];
-            $woonplaats = $_SESSION['woonplaats'];
-            $land = $_SESSION['land'];
-            $geboortedatum = $_SESSION['geboortedatum'];
-            $email = $_SESSION['email'];
-            $wachtwoord = $_SESSION['wachtwoord'];
-            $geheimevraag = $_SESSION['geheimevraag'];
-            $antwoord = $_SESSION['antwoord'];
+    if (count($_SESSION) == 14) {
+        foreach ($_SESSION as $veld => $value) {
+            $veld = cleanInput($veld);
+        }
 
-            if (!empty($voornaam && $achternaam && $email && $adres1 && $adres2 && $postcode && $woonplaats && $land && $geboortedatum && $gebruikersnaam && $wachtwoord && $wachtwoord2 && $geheimevraag && $antwoord)) {
 
-                // Insert new user into Gebruiker Table
-                $sqlInsertUser = <<<EOT
+        if ($error == false) {
+
+
+            // Insert new user into Gebruiker Table
+            $sqlInsertUser = <<<EOT
         INSERT INTO Gebruiker ( GEB_gebruikersnaam,  GEB_voornaam,   GEB_achternaam,   GEB_adresregel_1, GEB_adresregel_2,   GEB_postcode,   GEB_plaatsnaam,   GEB_Land,   GEB_geboortedag,    GEB_mailbox,  GEB_wachtwoord,   GEB_vraag,      GEB_antwoordtekst,  GEB_verkoper)
         VALUES        ( :gebruikersnaam,     :voornaam,      :achternaam,      :adres1,          :adres2,            :postcode,      :woonplaats,      :land   ,   :geboortedatum ,    :email,       :wachtwoord,      :geheimevraag,  :antwoord,          '0')
 EOT;
 
-                GLOBAL $connection;
-                $stmt = $connection->prepare($sqlInsertUser);
-                $stmt->bindParam(':gebruikersnaam', $gebruikersnaam);
-                $stmt->bindParam(':voornaam', $voornaam);
-                $stmt->bindParam(':achternaam', $achternaam);
-                $stmt->bindParam(':adres1', $adres1);
-                $stmt->bindParam(':adres2', $adres2);
-                $stmt->bindParam(':postcode', $postcode);
-                $stmt->bindParam(':woonplaats', $woonplaats);
-                $stmt->bindParam(':land', $land);
-                $stmt->bindParam(':geboortedatum', $geboortedatum);
-                $stmt->bindParam(':email', $email);
-                $stmt->bindParam(':wachtwoord', $wachtwoord);
-                $stmt->bindParam(':geheimevraag', $geheimevraag);
-                $stmt->bindParam(':antwoord', $antwoord);
-                $stmt->execute();
+            GLOBAL $connection;
+            $stmt = $connection->prepare($sqlInsertUser);
+            $stmt->bindParam(':gebruikersnaam', $_SESSION['gebruikersnaam']);
+            $stmt->bindParam(':voornaam', $_SESSION['voornaam']);
+            $stmt->bindParam(':achternaam', $_SESSION['achternaam']);
+            $stmt->bindParam(':adres1', $_SESSION['adres1']);
+            $stmt->bindParam(':adres2', $_SESSION['adres2']);
+            $stmt->bindParam(':postcode', $_SESSION['postcode']);
+            $stmt->bindParam(':woonplaats', $_SESSION['woonplaats']);
+            $stmt->bindParam(':land', $_SESSION['land']);
+            $stmt->bindParam(':geboortedatum', $_SESSION['geboortedatum']);
+            $stmt->bindParam(':email', $_SESSION['email']);
+            $stmt->bindParam(':wachtwoord', $_SESSION['wachtwoord']);
+            $stmt->bindParam(':geheimevraag', $_SESSION['geheimevraag']);
+            $stmt->bindParam(':antwoord', $_SESSION['antwoord']);
+            $stmt->execute();
 
-                // Delete user from Registratie Table
-                $sqlDeleteUser = <<<EOT
+            // Delete user from Registratie Table
+            $sqlDeleteUser = <<<EOT
         DELETE FROM Registreer WHERE REG_email = :email
 EOT;
 
-                GLOBAL $connection;
-                $stmt = $connection->prepare($sqlDeleteUser);
-                $stmt->bindParam(':email', $email);
-                $stmt->execute();
+            GLOBAL $connection;
+            $stmt = $connection->prepare($sqlDeleteUser);
+            $stmt->bindParam(':email', $_SESSION['email']);
+            $stmt->execute();
 
-                session_destroy();
+            session_destroy();
 
-                echo '  <div class="alert alert-success">
+            echo '  <div class="alert alert-success">
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>';
-
-            } else {
-                echo '  <div class="alert alert-danger" >
-                        <strong >Fout!</br></strong > Niet alle velden waren ingevuld! </div > ';
-            }
-        } else {
-            echo '  <div class="alert alert-danger" >
-                        <strong >Fout!</br></strong > Sessie leeg! </div > ';
 
         }
     } else {
         session_destroy();
         header('Location: registreer1.php');
     }
+
+}
+
+function getCodeFromMail()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        echo $_GET['code'];
+    }
+
 
 }
 

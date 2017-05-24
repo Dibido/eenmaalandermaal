@@ -5,7 +5,7 @@ use master
 WHILE EXISTS(select NULL from sys.databases where name='eenmaalandermaal')
 BEGIN
     DECLARE @SQL varchar(max)
-    SELECT @SQL = COALESCE(@SQL,'') + 'Kill ' + Convert(varchar, SPId) + ';'
+    SELECT @SQL = COALESCE(@SQL,'') + ''Kill ' + Convert(varchar, SPId) + ';'
     FROM MASTER..SysProcesses
     WHERE DBId = DB_ID(N'eenmaalandermaal') AND SPId <> @@SPId
     EXEC(@SQL)

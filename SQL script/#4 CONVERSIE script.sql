@@ -1,5 +1,4 @@
 --Conversiescript rubrieken
-BEGIN TRANSACTION
 INSERT INTO Rubriek
   SELECT
     ID     AS RB_Nummer,
@@ -7,11 +6,9 @@ INSERT INTO Rubriek
     parent AS RB_parent,
     ID     AS RB_volgnummer
   FROM Categorieen
-COMMIT
+GO
 
-/* Dit conversiescript converteert de gegevens van de user tabel naar de Gebruiker tabel.
-Om dit te kunnen runnen moeten eerst het DDL script en de van de product owner gekregen database succesvol gerund zijn.*/
-BEGIN TRANSACTION
+--Conversiescript Users
 INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord,
                                             GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
   SELECT DISTINCT
@@ -34,44 +31,40 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
      WHERE u.Username = Username
      ORDER BY Rating DESC)   AS GEB_Rating
   FROM Users
-COMMIT
+GO
 
-/* Conversie script om de tabel items om te zetten naar de tabel voorwerp.
-Kan alleen gerund worden wanneer benodigde tabellen succesvol aangemaakt en gevuld zijn.*/
-BEGIN TRANSACTION
-SET IDENTITY_INSERT voorwerp ON --Zodat sql server niet klaagt over de indentitiy die in de voorwerp tabel op VW_voorwerpnummer staat.
+--Conversiescript Items
+SET IDENTITY_INSERT voorwerp ON
 INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
     ID                                                                                         AS VW_voorwerpnummer,
     (SELECT CASE
             WHEN len(titel) >= 56
               THEN left(titel, 56) + '...'
-            ELSE titel END titel)                                                              AS VW_titel,-- De subselect is zodat te lange titels afgelort worden en in de Item tabel passen.
+            ELSE titel END titel)                                                              AS VW_titel,
     Beschrijving                                                                               AS VW_beschrijving,
     Land                                                                                       AS VW_land,
     Verkoper                                                                                   AS VW_verkoper,
     Conditie                                                                                   AS VW_conditie,
     Thumbnail                                                                                  AS VW_thumbnail,
-    dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs))                                   AS VW_startprijs, --Deze functie zorgt dat dollars en ponden omgezet worden naar euros.
-    '2017-05-24'                                                                               AS VW_looptijdstart, --is een starttijd in de toekomst, omdat er anders errors komen door een check constraint.
-    7                                                                                          AS VW_looptijd, --is default looptijd
-    'Bank / giro'                                                                              AS VW_betalingswijze, --bank/giro is de door ons gebruikte default
+    dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
+    '2017-05-24'                                                                               AS VW_looptijdstart,
+    7                                                                                          AS VW_looptijd,
+    'Bank / giro'                                                                              AS VW_betalingswijze,
     CASE WHEN CHARINDEX(',', [locatie]) > 0
       THEN REPLACE(LEFT([locatie], CHARINDEX(',', [locatie])), ',', '')
     ELSE 'Geen plaatsnaam bekend'
-    END                                                                                        AS VW_plaatsnaam, -- Deze case when zorgt ervoor dat als er een plaatnaam in de locatie staat dat die eruit gehaald word.
+    END                                                                                        AS VW_plaatsnaam,
     0                                                                                          AS VW_veilinggesloten
   FROM Items
-SET IDENTITY_INSERT voorwerp OFF --Zet de identity weer terug.
+SET IDENTITY_INSERT voorwerp OFF
 GO
 
-BEGIN TRANSACTION
 INSERT INTO Voorwerp_Rubriek
   SELECT
     ID        AS VR_Voorwerp_Nummer,
     Categorie AS VR_Rubriek_Nummer
   FROM Items
-COMMIT
 GO
 
 
@@ -80,8 +73,6 @@ Conversie script voor de illustraties naar de bestand tabel.
 Voor dat dit runbaar is moeten er eerst voorwerpen zijn met hetzelfde VW_voorwerpnummer als het BES_voorwerpnummer.
 Deze query zorgt ervoor dat van ieder voorwerp uit de verkregen database 3 afbeeldingen krijgt wanneer er 3 afbeeldingen beschikbaar zijn.
 */
-
-BEGIN TRANSACTION
 INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
   SELECT
     IllustratieFile AS BES_filenaam,
@@ -95,8 +86,8 @@ INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
              ORDER BY IllustratieFile DESC ) AS Rank
          FROM Illustraties
        ) rs
-  WHERE Rank <= 3 --Selecteerd de top 3
+  WHERE Rank <= 4 --Selecteerd de top 3
         AND EXISTS(SELECT * --Als het voorwerp bestaat.
                    FROM Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)
-COMMIT
+GO

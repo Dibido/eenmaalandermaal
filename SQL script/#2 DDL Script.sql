@@ -51,16 +51,18 @@ CREATE TABLE Gebruiker (
   GEB_Land           CHAR(2) DEFAULT 'NL'   NOT NULL, --Landcode uit de landen tabel
   GEB_geboortedag    DATE                   NOT NULL,
   GEB_mailbox        VARCHAR(256)           NOT NULL, --Mailadres lengte volgens RFC 5321
-  GEB_wachtwoord     VARCHAR(255)               NOT NULL, --BCRYPT dmv password_hash()
+  GEB_wachtwoord     VARCHAR(255)           NOT NULL, --BCRYPT dmv password_hash()
   GEB_vraag          TINYINT                NOT NULL, --Nummer uit de Vraag tabel
-  GEB_antwoordtekst  VARCHAR(255)            NOT NULL, --Antwoord op de vraag, gehashed en case insensative
+  GEB_antwoordtekst  VARCHAR(255)           NOT NULL, --Antwoord op de vraag, gehashed en case insensative
   GEB_verkoper       BIT DEFAULT 0          NOT NULL, --Of de gebruiker een verkoper is of niet, standaard is de gebruiker geen verkoper
   GEB_rating         NUMERIC(4, 1)          NULL, --Rating van de gebruiker 0.0 - 100.0
+  GEB_actief         BIT                    NOT NULL DEFAULT 1, --Of de gebruiker actief is
   CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
   CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
   CONSTRAINT FK_LandenLandcode FOREIGN KEY (GEB_Land) REFERENCES Landen (LAN_landcode),
   CONSTRAINT CHK_LegitiemeMailbox CHECK (GEB_mailbox LIKE '%_@__%.__%'), --Checken of het een e-mail is.
-  CONSTRAINT CHK_LegitiemeGeboortedag CHECK (GEB_geboortedag <= getdate()), --Geboortedag mag alleen in het verleden zijn.
+  CONSTRAINT CHK_LegitiemeGeboortedag CHECK (GEB_geboortedag <=
+                                             getdate()), --Geboortedag mag alleen in het verleden zijn.
 );
 
 CREATE TABLE Gebruikerstelefoon (
@@ -122,7 +124,7 @@ CREATE TABLE Bestand (
   CONSTRAINT FK_Voorwerpnummer FOREIGN KEY (BES_voorwerpnummer) REFERENCES Voorwerp (VW_voorwerpnummer)
     ON UPDATE CASCADE --Wanneer het voorwerp wordt aangepast, overnemen
     ON DELETE CASCADE, --Wanneer het voorwerp delete wordt, overnemen
-  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 3)
+  CONSTRAINT CHK_AantalBestanden CHECK (dbo.aantalBestandenPerVoorwerpnummer(BES_voorwerpnummer) <= 4)
 );
 
 
@@ -168,9 +170,9 @@ CREATE TABLE Bod (
 
 
 CREATE TABLE Registreer (
-  REG_email       VARCHAR(255) NOT NULL,
-  REG_code        VARCHAR(16) NOT NULL,
-  REG_tijd        DATETIME     NOT NULL DEFAULT GETDATE(),
+  REG_email VARCHAR(255) NOT NULL,
+  REG_code  VARCHAR(16)  NOT NULL,
+  REG_tijd  DATETIME     NOT NULL DEFAULT GETDATE(),
   CONSTRAINT PK_Registreer PRIMARY KEY (REG_email)
 )
 
