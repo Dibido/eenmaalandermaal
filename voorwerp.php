@@ -180,7 +180,10 @@ require('navbar.html');
             <div class="panel-heading text-center">Overgebleven Tijd</div>
             <div class="panel-body">
                 <div class="TimeLeft">
-                    <span class="Time"> <?php echo $ItemInfo["tijd"]?></span>
+                    <span class="Time" id="timer<?php  echo $ItemInfo["VW_titel"] ?>2"></span>
+                    <?php
+                    createTimer($ItemInfo["tijd"], $ItemInfo["VW_titel"], 2);
+                    ?>
                     <div id="Clock" style="background-image:url(images/Clock.png)"></div>
                 </div>
             </div>
