@@ -63,6 +63,8 @@ EOT;
 
 }
 
+
+/* function for getting the last offers of an auction */
 function  GetLastOffers($voorwerpnummer){
 
     $QueryGetLastOffers = <<<EOT
@@ -72,6 +74,20 @@ function  GetLastOffers($voorwerpnummer){
 EOT;
 
     RETURN SendToDatabase($QueryGetLastOffers);
+}
+
+
+function  GetUserInfoPerAuction($username){
+
+    $QueryGetUserInfo= <<<EOT
+    
+    SELECT * 
+    FROM Users
+    WHERE Username = $username
+
+EOT;
+
+    RETURN SendToDatabase($QueryGetUserInfo);
 }
 
 /* function for getting the images for an product */

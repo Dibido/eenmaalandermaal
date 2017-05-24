@@ -189,7 +189,7 @@ require('navbar.html');
             </div>
             <div class="panel-heading text-center">Prijs</div>
             <div class="panel-body">
-                <span id="Price" class="text-center"><i class="glyphicon glyphicon-euro"></i> 20000.00</span>
+                <span id="Price" class="text-center"><i class="glyphicon glyphicon-euro"></i> <?php  echo $ItemInfo["prijs"];?></span>
             </div>
 
             <!-- Recent offers -->
@@ -213,7 +213,9 @@ require('navbar.html');
                             echo "<div id=\"MoreOffers\" class=\"collapse\">";
                         }
                     }
+
                     echo "</div>";
+                    echo "<button data-toggle=\"collapse\" data-target=\"#MoreOffers\" class=\"btn btn-default MoreOffers collapsed\" value=\"Meer boden\"></button>";
                 }
 
 
@@ -221,7 +223,7 @@ require('navbar.html');
 
                 ?>
 
-                <button data-toggle="collapse" data-target="#MoreOffers" class="btn btn-default MoreOffers collapsed" value="Meer boden"></button>
+
 
 
             </div>
@@ -233,7 +235,7 @@ require('navbar.html');
                 <form class="form-inline">
                     <div class="input-group InputBod">
                         <div class="input-group-addon">&euro;</div>
-                        <input type="text" class="form-control"  placeholder="voer hier uw bod in">
+                        <input type="text" class="form-control"  placeholder="voer hier uw bod in" value="<?php echo""; ?>">
                     </div>
                     <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
                 </form>
@@ -246,6 +248,12 @@ require('navbar.html');
                 </div>
                 <div id="UserRating" class="text-center">
                     <div>
+                        <?php
+
+                        $Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
+
+
+                        ?>
                         <i class="glyphicon glyphicon-star"></i>
                         <i class="glyphicon glyphicon-star"></i>
                         <i class="glyphicon glyphicon-star"></i>
