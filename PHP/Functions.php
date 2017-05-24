@@ -552,23 +552,49 @@ function checkEmailSent()
             $email = cleanInput($_POST['email']);
             $code = md5($email . date("Y/m/d"));
             $code = substr($code, 0, 16);
-            $urlCode = urlencode('http://iproject3.icasites.nl/registreer1.php?code=' . $code);
+            $urlCode = urlencode($code);
             global $SetRegistratie;
 
+            // Mail Headers
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers .= 'From: info@iproject3.icasites.nl' . "\r\n";
             $subject = 'Uw EenmaalAndermaal registratie';
+            echo $headers;
+            $message = '
 
-            $message = 'Beste gebruiker,
+<html>
+<head>
+<title>EenmaalAndermaal Registratie</title>
+</head>
+<body>
 
-u heeft aangegeven zich aan te willen melden op onze website.
-
-Dit is uw persoonlijke code: ' . $code . '
-Vul deze in op de website om de registratieprocedure af te ronden of klik op onderstaande link.
-
-<a href="' . $urlCode . '">Link</a>
-
-Met vriendelijke groet,
-
-Het EenmaalAndermaal Team';
+<table>
+<tr>
+<td>Beste gebruiker,</td>
+</tr><td>&nbsp;</td></tr>
+<tr>
+<td>u heeft aangegeven zich aan te willen melden op onze website.</td>
+</tr>
+</tr><td>&nbsp;</td></tr>
+<tr>
+<td>Dit is uw persoonlijke code: '.$code. '</td>
+</tr>
+<tr>
+<td>Vul deze in op de website om de registratieprocedure af te ronden of klik op deze <a href="http://iproject3.icasites.nl/registreer1.php?code=' . $urlCode . '">link</a></td>
+</tr>
+</tr><td>&nbsp;</td></tr>
+<tr>
+<td>Met vriendelijke groet,</td>
+</tr>
+</tr><td>&nbsp;</td></tr>
+<tr>
+<td>Het EenmaalAndermaal Team</td>
+</tr>
+</table>
+</body>
+</html>
+';
 
 
 // If already in DB
@@ -583,7 +609,7 @@ Het EenmaalAndermaal Team';
             } else { // indien WEL leeg is er dus geen bestaande user met dit e-mailadres gevonden, en kan de gebruiker worden geregistreerd.
                 // Send to DB
                 InsertIntoDatabase($SetRegistratie, $email, $code);
-                mail($email, $subject, $message, 'From: info@iproject3.icasites.nl');
+                mail($email, $subject, $message, $headers);
                 echo '  <div class="alert alert-success">
                             <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
             }
@@ -627,7 +653,6 @@ function validateHash()
     }
     return $emailadres;
 }
-
 
 
 function checkRegistratie()
