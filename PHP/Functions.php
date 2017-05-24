@@ -551,7 +551,7 @@ function checkEmailSent()
             $email = cleanInput($_POST['email']);
             $code = md5($email . date("Y/m/d"));
             $code = substr($code, 0, 16);
-            $urlCode = urlencode('http://iproject3.icasites.nl/registreer1.php?code='.$code);
+            $urlCode = urlencode('http://iproject3.icasites.nl/registreer1.php?code=' . $code);
             global $SetRegistratie;
 
             $subject = 'Uw EenmaalAndermaal registratie';
@@ -563,7 +563,7 @@ u heeft aangegeven zich aan te willen melden op onze website.
 Dit is uw persoonlijke code: ' . $code . '
 Vul deze in op de website om de registratieprocedure af te ronden of klik op onderstaande link.
 
-<a href="' . $urlCode .'">Link</a>
+<a href="' . $urlCode . '">Link</a>
 
 Met vriendelijke groet,
 
@@ -707,60 +707,64 @@ function doRegistratie()
         foreach ($_SESSION as $veld => $value) {
             $veld = cleanInput($veld);
         }
-    }
-
-    if ($error == false) {
 
 
-        // Insert new user into Gebruiker Table
-        $sqlInsertUser = <<<EOT
+        if ($error == false) {
+
+
+            // Insert new user into Gebruiker Table
+            $sqlInsertUser = <<<EOT
         INSERT INTO Gebruiker ( GEB_gebruikersnaam,  GEB_voornaam,   GEB_achternaam,   GEB_adresregel_1, GEB_adresregel_2,   GEB_postcode,   GEB_plaatsnaam,   GEB_Land,   GEB_geboortedag,    GEB_mailbox,  GEB_wachtwoord,   GEB_vraag,      GEB_antwoordtekst,  GEB_verkoper)
         VALUES        ( :gebruikersnaam,     :voornaam,      :achternaam,      :adres1,          :adres2,            :postcode,      :woonplaats,      :land   ,   :geboortedatum ,    :email,       :wachtwoord,      :geheimevraag,  :antwoord,          '0')
 EOT;
 
-        GLOBAL $connection;
-        $stmt = $connection->prepare($sqlInsertUser);
-        $stmt->bindParam(':gebruikersnaam', $_SESSION['gebruikersnaam']);
-        $stmt->bindParam(':voornaam', $_SESSION['voornaam']);
-        $stmt->bindParam(':achternaam', $_SESSION['achternaam']);
-        $stmt->bindParam(':adres1', $_SESSION['adres1']);
-        $stmt->bindParam(':adres2', $_SESSION['adres2']);
-        $stmt->bindParam(':postcode', $_SESSION['postcode']);
-        $stmt->bindParam(':woonplaats', $_SESSION['woonplaats']);
-        $stmt->bindParam(':land', $_SESSION['land']);
-        $stmt->bindParam(':geboortedatum', $_SESSION['geboortedatum']);
-        $stmt->bindParam(':email', $_SESSION['email']);
-        $stmt->bindParam(':wachtwoord', $_SESSION['wachtwoord']);
-        $stmt->bindParam(':geheimevraag', $_SESSION['geheimevraag']);
-        $stmt->bindParam(':antwoord', $_SESSION['antwoord']);
-        $stmt->execute();
+            GLOBAL $connection;
+            $stmt = $connection->prepare($sqlInsertUser);
+            $stmt->bindParam(':gebruikersnaam', $_SESSION['gebruikersnaam']);
+            $stmt->bindParam(':voornaam', $_SESSION['voornaam']);
+            $stmt->bindParam(':achternaam', $_SESSION['achternaam']);
+            $stmt->bindParam(':adres1', $_SESSION['adres1']);
+            $stmt->bindParam(':adres2', $_SESSION['adres2']);
+            $stmt->bindParam(':postcode', $_SESSION['postcode']);
+            $stmt->bindParam(':woonplaats', $_SESSION['woonplaats']);
+            $stmt->bindParam(':land', $_SESSION['land']);
+            $stmt->bindParam(':geboortedatum', $_SESSION['geboortedatum']);
+            $stmt->bindParam(':email', $_SESSION['email']);
+            $stmt->bindParam(':wachtwoord', $_SESSION['wachtwoord']);
+            $stmt->bindParam(':geheimevraag', $_SESSION['geheimevraag']);
+            $stmt->bindParam(':antwoord', $_SESSION['antwoord']);
+            $stmt->execute();
 
-        // Delete user from Registratie Table
-        $sqlDeleteUser = <<<EOT
+            // Delete user from Registratie Table
+            $sqlDeleteUser = <<<EOT
         DELETE FROM Registreer WHERE REG_email = :email
 EOT;
 
-        GLOBAL $connection;
-        $stmt = $connection->prepare($sqlDeleteUser);
-        $stmt->bindParam(':email', $_SESSION['email']);
-        $stmt->execute();
+            GLOBAL $connection;
+            $stmt = $connection->prepare($sqlDeleteUser);
+            $stmt->bindParam(':email', $_SESSION['email']);
+            $stmt->execute();
 
-        session_destroy();
+            session_destroy();
 
-        echo '  <div class="alert alert-success">
+            echo '  <div class="alert alert-success">
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>';
 
+        }
     } else {
         session_destroy();
         header('Location: registreer1.php');
     }
+
 }
 
-function getCodeFromMail(){
+function getCodeFromMail()
+{
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         echo $_GET['code'];
     }
 
 
 }
+
 ?>
