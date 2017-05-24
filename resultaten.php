@@ -26,9 +26,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     if (!isset($_GET['sorteerfilter'])) {
         $_GET['sorteerfilter'] = 0;
+        $sorteerfilter = $_GET['sorteerfilter'];
     }
     if (!isset($_GET['betalingsmethode'])) {
         $_GET['betalingsmethode'] = 'NULL';
+        $betalingsmethode = 0;
     }
     if (!isset($_GET['categorie'])) {
         $_GET['categorie'] = "NULL";
@@ -302,7 +304,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             </a>
             <div class="list-group-item">
                 <ul class="nav nav-list">
-                    <?php printCategoriën($zoekterm, $categorie);
+                    <?php printCategoriën($zoekterm, $categorie,$sorteerfilter,$prijs,$betalingsmethode);
                     ?>
                 </ul>
             </div>
