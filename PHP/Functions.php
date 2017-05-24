@@ -63,7 +63,8 @@ EOT;
 
 }
 
-function  GetLastOffers(){
+function GetLastOffers()
+{
 
     $QueryGetLastOffers = <<<EOT
     
@@ -241,7 +242,7 @@ function DrawSearchResults($auction)
         . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . "<p id=". $auction["VW_voorwerpnummer"] ."></p>" . " </div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -251,7 +252,7 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"],$auction["VW_voorwerpnummer"]);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
 
 }
 
@@ -387,7 +388,7 @@ WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
-		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
+		AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
 		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
@@ -432,10 +433,10 @@ function printVragen($Vragen)
 }
 
 
-function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betalingsmethode)
+function printCategoriën($zoekterm, $rubriekNummer, $sorteerfilter, $prijs, $betalingsmethode)
 {
     global $connection;
-    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Naam as SubSubRubriekNummer
+    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Nummer as SubSubRubriekNummer
                         FROM Rubriek H
                         OUTER APPLY
                         (
@@ -461,7 +462,7 @@ function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betal
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
+                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/
                         GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
@@ -471,15 +472,13 @@ function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betal
         //Goes through the second dimensional of the array
         for ($j = 0; $j < (sizeof($rubrieken[$i]) / 2); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
-            if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i])/2)-1) AND isset($rubrieken[$i][$j])) {
-
-                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($rubrieken[$i][$j+4]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=".'1'.">";
-
+            if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i]) / 2) - 1) AND isset($rubrieken[$i][$j])) {
+                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($rubrieken[$i][$j + 4]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . ">";
                 echo $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
-                echo '<li><label class="tree-toggle nav-header">' . $rubrieken[$i][$j] . '</label>
+                    echo '<li><label class="tree-toggle nav-header">' . $rubrieken[$i][$j] . '</label>
                         <ul class="nav nav-list tree" style="display: none;">';
             }
         }
@@ -522,19 +521,19 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
         // Display the result in the element with id="demo"
         
         if(days >= 3){
-        document.getElementById("'. $VW_Nummer .'").innerHTML = days + "d " + hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
         }else if(days < 3 && seconds < 10){
-        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("'. $VW_Nummer .'").innerHTML = "Veiling gesloten";
+            document.getElementById("' . $VW_Nummer . '").innerHTML = "Veiling gesloten";
         }
     }, 1000)
 </script>
@@ -588,7 +587,7 @@ function checkEmailSent()
 </tr>
 </tr><td>&nbsp;</td></tr>
 <tr>
-<td>Dit is uw persoonlijke code: '.$code. '</td>
+<td>Dit is uw persoonlijke code: ' . $code . '</td>
 </tr>
 <tr>
 <td>Vul deze in op de website om de registratieprocedure af te ronden of klik op deze <a href="http://iproject3.icasites.nl/registreer1.php?code=' . $urlCode . '">link.</a></td>
