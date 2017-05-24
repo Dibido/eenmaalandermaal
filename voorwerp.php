@@ -145,7 +145,7 @@ require('navbar.html');
                 <div class="Detail"><b>Categorie:</b> <?php echo 'categorie query is dood :('; ?></div>
                 <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"];?></div>
                 <div class="Detail"><b>geplaatst:</b>  <?php echo $ItemInfo["VW_looptijdStart"];?></div>
-                <div class="Detail"><b>conditie:</b> <?php $ItemInfo["VW_conditie"]; ?></div>
+                <div class="Detail"><b>conditie:</b> <?php echo $ItemInfo["VW_conditie"]; ?></div>
             </div>
         </div>
 
@@ -157,7 +157,7 @@ require('navbar.html');
             <div class="panel-heading text-center">Kenmerken</div>
                 <div class="panel-body">
                     <div>
-
+                        <?php echo $ItemInfo["VW_beschrijving"]?>
 
                     </div>
                 </div>
@@ -196,6 +196,14 @@ require('navbar.html');
 
             <div class="panel-heading text-center">Recente boden</div>
             <div class="panel-body">
+
+                <?php
+
+                $LastOffers = GetLastOffers();
+
+
+                ?>
+
                 <div class="OldOffer"><div class="OldOfferUserName">1. Athan88</div><div class="OldOfferPrice">10 minuten</div><div class="OldOfferPrice">&euro; 20000</div></div>
                 <div class="OldOffer"><div class="OldOfferUserName">2. Leroy Jenkings</div><div class="OldOfferPrice">2 uur</div><div class="OldOfferPrice">&euro; 15</div></div>
                 <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">3 weken</div><div class="OldOfferPrice">&euro; 10</div></div>
@@ -233,7 +241,7 @@ require('navbar.html');
             <div class="panel-body">
                 <div class="UserContainer">
                     <div id="User" style="background-image:url(images/User.png)"></div>
-                    <div class="UserInfo">Gebruiker 20016</div>
+                    <div class="UserInfo"><?php echo $ItemInfo["VW_verkoper"]?></div>
                 </div>
                 <div id="UserRating" class="text-center">
                     <div>
