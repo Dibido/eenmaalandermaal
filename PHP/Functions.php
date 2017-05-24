@@ -555,7 +555,9 @@ function checkEmailSent()
 u heeft aangegeven zich aan te willen melden op onze website.
 
 Dit is uw persoonlijke code: ' . $code . '
-Vul deze in op de website om de registratieprocedure af te ronden.
+Vul deze in op de website om de registratieprocedure af te ronden of klik op onderstaande link.
+
+<a href="url">Link</a>
 
 Met vriendelijke groet,
 
@@ -591,7 +593,7 @@ function checkUserLinked()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['code'])) {
-            $code = $_POST['code'];
+            $code = cleanInput($_POST['code']);
             $sql = "SELECT * FROM Registreer WHERE REG_code = '$code'";
             $getUser = SendToDatabase($sql);
 
@@ -633,9 +635,11 @@ function checkRegistratie()
         if (count($_POST) == 14) {
             foreach ($_POST as $veld => $value) {
                 if (empty($value)) {
-                    $error = true;
-                    echo '  <div class="alert alert-danger" >
+                    If ($veld != 'adres2') {
+                        $error = true;
+                        echo '  <div class="alert alert-danger" >
                             <strong >Fout!</br></strong >' . $veld . ' niet ingevuld. </div > ';
+                    }
                 }
             }
 
@@ -673,8 +677,7 @@ function checkRegistratie()
                     $waardes['wachtwoord'] = password_hash($waardes['wachtwoord'], PASSWORD_DEFAULT);
                     $waardes['antwoord'] = password_hash($waardes['antwoord'], PASSWORD_DEFAULT);
                     $_SESSION = $waardes;
-                    echo count($_SESSION);
-                    //header('Location: voltooi-registratie.php');
+                    header('Location: voltooi-registratie.php');
                 } else {
                     echo '  <div class="alert alert-danger" >
                             <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
@@ -683,9 +686,6 @@ function checkRegistratie()
                 echo '  <div class="alert alert-danger" >
                             <strong >Fout!</br></strong > Niet alle velden zijn ingevuld! </div > ';
             }
-        } else {
-            echo '  <div class="alert alert-danger" >
-                            <strong >Fout!</br></strong > Niet alle velden zijn ingevuld! </div > ';
         }
     } else {
         $emailadres = validateHash();
@@ -700,61 +700,57 @@ function doRegistratie()
     if (count($_SESSION) == 14) {
         foreach ($_SESSION as $veld => $value) {
             $veld = cleanInput($veld);
-            if (empty($value)) {
-                $error = true;
-                echo '  <div class="alert alert-danger" >
-                            <strong >Fout!</br></strong >' . $veld . ' leeg </div > ';
-            }
         }
+    }
 
-        if ($error == false) {
+    if ($error == false) {
 
 
-            // Insert new user into Gebruiker Table
-            $sqlInsertUser = <<<EOT
+        // Insert new user into Gebruiker Table
+        $sqlInsertUser = <<<EOT
         INSERT INTO Gebruiker ( GEB_gebruikersnaam,  GEB_voornaam,   GEB_achternaam,   GEB_adresregel_1, GEB_adresregel_2,   GEB_postcode,   GEB_plaatsnaam,   GEB_Land,   GEB_geboortedag,    GEB_mailbox,  GEB_wachtwoord,   GEB_vraag,      GEB_antwoordtekst,  GEB_verkoper)
         VALUES        ( :gebruikersnaam,     :voornaam,      :achternaam,      :adres1,          :adres2,            :postcode,      :woonplaats,      :land   ,   :geboortedatum ,    :email,       :wachtwoord,      :geheimevraag,  :antwoord,          '0')
 EOT;
 
-            GLOBAL $connection;
-            $stmt = $connection->prepare($sqlInsertUser);
-            $stmt->bindParam(':gebruikersnaam', $_SESSION['gebruikersnaam']);
-            $stmt->bindParam(':voornaam', $_SESSION['voornaam']);
-            $stmt->bindParam(':achternaam', $_SESSION['achternaam']);
-            $stmt->bindParam(':adres1', $_SESSION['adres1']);
-            $stmt->bindParam(':adres2', $_SESSION['adres2']);
-            $stmt->bindParam(':postcode', $_SESSION['postcode']);
-            $stmt->bindParam(':woonplaats', $_SESSION['woonplaats']);
-            $stmt->bindParam(':land', $_SESSION['land']);
-            $stmt->bindParam(':geboortedatum', $_SESSION['geboortedatum']);
-            $stmt->bindParam(':email', $_SESSION['email']);
-            $stmt->bindParam(':wachtwoord', $_SESSION['wachtwoord']);
-            $stmt->bindParam(':geheimevraag', $_SESSION['geheimevraag']);
-            $stmt->bindParam(':antwoord', $_SESSION['antwoord']);
-            $stmt->execute();
+        GLOBAL $connection;
+        $stmt = $connection->prepare($sqlInsertUser);
+        $stmt->bindParam(':gebruikersnaam', $_SESSION['gebruikersnaam']);
+        $stmt->bindParam(':voornaam', $_SESSION['voornaam']);
+        $stmt->bindParam(':achternaam', $_SESSION['achternaam']);
+        $stmt->bindParam(':adres1', $_SESSION['adres1']);
+        $stmt->bindParam(':adres2', $_SESSION['adres2']);
+        $stmt->bindParam(':postcode', $_SESSION['postcode']);
+        $stmt->bindParam(':woonplaats', $_SESSION['woonplaats']);
+        $stmt->bindParam(':land', $_SESSION['land']);
+        $stmt->bindParam(':geboortedatum', $_SESSION['geboortedatum']);
+        $stmt->bindParam(':email', $_SESSION['email']);
+        $stmt->bindParam(':wachtwoord', $_SESSION['wachtwoord']);
+        $stmt->bindParam(':geheimevraag', $_SESSION['geheimevraag']);
+        $stmt->bindParam(':antwoord', $_SESSION['antwoord']);
+        $stmt->execute();
 
-            // Delete user from Registratie Table
-            $sqlDeleteUser = <<<EOT
+        // Delete user from Registratie Table
+        $sqlDeleteUser = <<<EOT
         DELETE FROM Registreer WHERE REG_email = :email
 EOT;
 
-            GLOBAL $connection;
-            $stmt = $connection->prepare($sqlDeleteUser);
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
+        GLOBAL $connection;
+        $stmt = $connection->prepare($sqlDeleteUser);
+        $stmt->bindParam(':email', $_SESSION['email']);
+        $stmt->execute();
 
-            session_destroy();
+        session_destroy();
 
-            echo '  <div class="alert alert - success">
+        echo '  <div class="alert alert-success">
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>';
 
-        }
     } else {
-        echo '  <div class="alert alert-danger" >
-                            <strong >Fout!</br></strong > Er is iets mis gegaan! (velden niet goed doorgegeven) </div > ';
         session_destroy();
         header('Location: registreer1.php');
     }
 }
 
+function getCodeFromMail(){
+
+}
 ?>
