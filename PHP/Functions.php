@@ -228,8 +228,8 @@ function DrawSearchResults($auction)
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
-                    </div>
-                    <div class=\"veiling-image\" style=\"background-image:url(". 'http://iproject3.icasites.nl/thumbnails/'. $auction["ImagePath"] . ")\"></div>
+                    </div>"
+                    . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/'. $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
                         <div class=\"tijd label label-default\">" . "<p id=" .'timer'. $auction["VW_voorwerpnummer"] . $pagina . "></p>" . " </div>
