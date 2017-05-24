@@ -230,7 +230,7 @@ function DrawSearchResults($auction)
         . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . "<p id=" . 'timer' . $auction["VW_voorwerpnummer"] . $pagina . "></p>" . " </div>
+                        <div class=\"tijd label label-default\">" . "<p id=". $auction["VW_voorwerpnummer"] ."></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -240,7 +240,7 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_voorwerpnummer"], $pagina);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"],$auction["VW_voorwerpnummer"]);
 
 }
 
@@ -387,6 +387,8 @@ FETCH NEXT $ResultsPerPage ROWS ONLY
 
     
 EOT;
+
+    print_r($QuerySearchProducts);
     //executing the query
     return SendToDatabase($QuerySearchProducts);
 
@@ -419,7 +421,7 @@ function printVragen($Vragen)
 }
 
 
-function printCategoriën($zoekterm, $rubriekNummer)
+function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betalingsmethode)
 {
     global $connection;
     $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Naam as SubSubRubriekNummer
@@ -458,8 +460,11 @@ function printCategoriën($zoekterm, $rubriekNummer)
         //Goes through the second dimensional of the array
         for ($j = 0; $j < (sizeof($rubrieken[$i]) / 2); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
-            if (!isset($rubrieken[$i][$j + 1]) OR ($j == sizeof($rubrieken[$i]) - 1) AND isset($rubrieken[$i][$j])) {
-                echo '<li><a class="testen" href="&categorie=' . $rubrieken[$i][$j + 4] . '">' . $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
+            if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i])/2)-1) AND isset($rubrieken[$i][$j])) {
+
+                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($rubrieken[$i][$j+4]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=".'1'.">";
+
+                echo $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
@@ -481,11 +486,11 @@ function printCategoriën($zoekterm, $rubriekNummer)
     echo '</ul>';
 }
 
-function createTimer($tijd, $VW_Titel, $pagina)
+function createTimer($tijd, $VW_Titel, $VW_Nummer)
 {
     echo '<script>
     // Set the date we\'re counting down to
-    var ' . $VW_Titel . $pagina . ' = new Date("' . $tijd . '").getTime();
+    var countDownDate = new Date("' . $tijd . '").getTime();
 
     // Update the count down every 1 second
     var x = setInterval(function() {
@@ -494,7 +499,7 @@ function createTimer($tijd, $VW_Titel, $pagina)
         var now = new Date().getTime();
 
         // Find the distance between now an the count down date
-        var distance = ' . $VW_Titel . $pagina . ' - now;
+        var distance = countDownDate - now;
 
         // Time calculations for days, hours, minutes and seconds
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
@@ -505,19 +510,19 @@ function createTimer($tijd, $VW_Titel, $pagina)
         // Display the result in the element with id="demo"
         
         if(days >= 3){
-        document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = days + "d " + hours + "h "
+        document.getElementById("'. $VW_Nummer .'").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
         }else if(days < 3 && seconds < 10){
-        document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = hours + "h "
+        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = hours + "h "
+        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("timer' . $VW_Titel . $pagina . '").innerHTML = "Veiling gesloten";
+            document.getElementById("'. $VW_Nummer .'").innerHTML = "Veiling gesloten";
         }
     }, 1000)
 </script>
@@ -546,6 +551,7 @@ function checkEmailSent()
             $email = cleanInput($_POST['email']);
             $code = md5($email . date("Y/m/d"));
             $code = substr($code, 0, 16);
+            $urlCode = urlencode('http://iproject3.icasites.nl/registreer1.php?code=' . $code);
             global $SetRegistratie;
 
             $subject = 'Uw EenmaalAndermaal registratie';
@@ -555,7 +561,9 @@ function checkEmailSent()
 u heeft aangegeven zich aan te willen melden op onze website.
 
 Dit is uw persoonlijke code: ' . $code . '
-Vul deze in op de website om de registratieprocedure af te ronden.
+Vul deze in op de website om de registratieprocedure af te ronden of klik op onderstaande link.
+
+<a href="' . $urlCode . '">Link</a>
 
 Met vriendelijke groet,
 
@@ -591,7 +599,7 @@ function checkUserLinked()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($_POST['code'])) {
-            $code = $_POST['code'];
+            $code = cleanInput($_POST['code']);
             $sql = "SELECT * FROM Registreer WHERE REG_code = '$code'";
             $getUser = SendToDatabase($sql);
 
@@ -633,9 +641,11 @@ function checkRegistratie()
         if (count($_POST) == 14) {
             foreach ($_POST as $veld => $value) {
                 if (empty($value)) {
-                    $error = true;
-                    echo '  <div class="alert alert-danger" >
+                    If ($veld != 'adres2') {
+                        $error = true;
+                        echo '  <div class="alert alert-danger" >
                             <strong >Fout!</br></strong >' . $veld . ' niet ingevuld. </div > ';
+                    }
                 }
             }
 
@@ -673,8 +683,7 @@ function checkRegistratie()
                     $waardes['wachtwoord'] = password_hash($waardes['wachtwoord'], PASSWORD_DEFAULT);
                     $waardes['antwoord'] = password_hash($waardes['antwoord'], PASSWORD_DEFAULT);
                     $_SESSION = $waardes;
-                    echo count($_SESSION);
-                    //header('Location: voltooi-registratie.php');
+                    header('Location: voltooi-registratie.php');
                 } else {
                     echo '  <div class="alert alert-danger" >
                             <strong >Fout!</br></strong > De ingevoerde wachtwoorden zijn niet identiek! </div > ';
@@ -683,9 +692,6 @@ function checkRegistratie()
                 echo '  <div class="alert alert-danger" >
                             <strong >Fout!</br></strong > Niet alle velden zijn ingevuld! </div > ';
             }
-        } else {
-            echo '  <div class="alert alert-danger" >
-                            <strong >Fout!</br></strong > Niet alle velden zijn ingevuld! </div > ';
         }
     } else {
         $emailadres = validateHash();
@@ -700,12 +706,8 @@ function doRegistratie()
     if (count($_SESSION) == 14) {
         foreach ($_SESSION as $veld => $value) {
             $veld = cleanInput($veld);
-            if (empty($value)) {
-                $error = true;
-                echo '  <div class="alert alert-danger" >
-                            <strong >Fout!</br></strong >' . $veld . ' leeg </div > ';
-            }
         }
+
 
         if ($error == false) {
 
@@ -740,21 +742,29 @@ EOT;
 
             GLOBAL $connection;
             $stmt = $connection->prepare($sqlDeleteUser);
-            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':email', $_SESSION['email']);
             $stmt->execute();
 
             session_destroy();
 
-            echo '  <div class="alert alert - success">
+            echo '  <div class="alert alert-success">
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>';
 
         }
     } else {
-        echo '  <div class="alert alert-danger" >
-                            <strong >Fout!</br></strong > Er is iets mis gegaan! (velden niet goed doorgegeven) </div > ';
         session_destroy();
         header('Location: registreer1.php');
     }
+
+}
+
+function getCodeFromMail()
+{
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        echo $_GET['code'];
+    }
+
+
 }
 
 ?>
