@@ -189,7 +189,7 @@ require('navbar.html');
             </div>
             <div class="panel-heading text-center">Prijs</div>
             <div class="panel-body">
-                <span id="Price" class="text-center"><i class="glyphicon glyphicon-euro"></i> 20000.00</span>
+                <span id="Price" class="text-center"><i class="glyphicon glyphicon-euro"></i> <?php  echo $ItemInfo["prijs"];?></span>
             </div>
 
             <!-- Recent offers -->
@@ -199,28 +199,31 @@ require('navbar.html');
 
                 <?php
 
-                $LastOffers = GetLastOffers();
+
+                $LastOffers = GetLastOffers($ItemInfo["VW_voorwerpnummer"]);
+
+                if (!isset($LastOffers[0]) or empty($LastOffers[0])){
+                    echo "<div class=\"OldOffer\">Er zijn nog geen boden</div>";
+                } else{                    $Bod = 0;
+                    foreach($LastOffers as $lastOffer){
+                        $Bod++;
+                        echo "<div class=\"OldOffer\"><div class=\"OldOfferUserName\">" . $Bod .'.'. $lastOffer["BOD_gebruiker"] . "</div><div class=\"OldOfferPrice\">". $lastOffer["BOD_bodTijdEnDag"] ."</div><div class=\"OldOfferPrice\">&euro;". $lastOffer["BOD_bodbedrag"]  ."</div></div>";
+
+                        if($Bod = 4){
+                            echo "<div id=\"MoreOffers\" class=\"collapse\">";
+                        }
+                    }
+
+                    echo "</div>";
+                    echo "<button data-toggle=\"collapse\" data-target=\"#MoreOffers\" class=\"btn btn-default MoreOffers collapsed\" value=\"Meer boden\"></button>";
+                }
+
+
 
 
                 ?>
 
-                <div class="OldOffer"><div class="OldOfferUserName">1. Athan88</div><div class="OldOfferPrice">10 minuten</div><div class="OldOfferPrice">&euro; 20000</div></div>
-                <div class="OldOffer"><div class="OldOfferUserName">2. Leroy Jenkings</div><div class="OldOfferPrice">2 uur</div><div class="OldOfferPrice">&euro; 15</div></div>
-                <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">3 weken</div><div class="OldOfferPrice">&euro; 10</div></div>
 
-
-                <!-- Extra offers -->
-
-                <div id="MoreOffers" class="collapse">
-                    <div class="OldOffer"><div class="OldOfferUserName">1. Athan88</div><div class="OldOfferPrice">10 minuten</div><div class="OldOfferPrice">&euro; 20000</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">2. Leroy Jenkings</div><div class="OldOfferPrice">2 uur</div><div class="OldOfferPrice">&euro; 15</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">3 weken</div><div class="OldOfferPrice">&euro; 10</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">1. Athan88</div><div class="OldOfferPrice">10 minuten</div><div class="OldOfferPrice">&euro; 20000</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">2. Leroy Jenkings</div><div class="OldOfferPrice">2 uur</div><div class="OldOfferPrice">&euro; 15</div></div>
-                    <div class="OldOffer"><div class="OldOfferUserName">3. User120009128</div><div class="OldOfferPrice">3 weken</div><div class="OldOfferPrice">&euro; 10</div></div>
-                </div>
-
-                <button data-toggle="collapse" data-target="#MoreOffers" class="btn btn-default MoreOffers collapsed" value="Meer boden"></button>
 
 
             </div>
@@ -232,7 +235,7 @@ require('navbar.html');
                 <form class="form-inline">
                     <div class="input-group InputBod">
                         <div class="input-group-addon">&euro;</div>
-                        <input type="text" class="form-control"  placeholder="voer hier uw bod in">
+                        <input type="text" class="form-control"  placeholder="voer hier uw bod in" value="<?php echo""; ?>">
                     </div>
                     <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
                 </form>
@@ -245,6 +248,12 @@ require('navbar.html');
                 </div>
                 <div id="UserRating" class="text-center">
                     <div>
+                        <?php
+
+                        $Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
+
+
+                        ?>
                         <i class="glyphicon glyphicon-star"></i>
                         <i class="glyphicon glyphicon-star"></i>
                         <i class="glyphicon glyphicon-star"></i>
