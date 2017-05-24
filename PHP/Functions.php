@@ -229,10 +229,10 @@ function DrawSearchResults($auction)
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
                     </div>
-                    <div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div>
+                    <div class=\"veiling-image\" style=\"background-image:url(". 'http://iproject3.icasites.nl/thumbnails/'. $auction["ImagePath"] . ")\"></div>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<div class="bottom-align-text" id="timer' . $auction["VW_titel"] . $pagina . '"></div>' . " </div>
+                        <div class=\"tijd label label-default\">" . "<p id=" .'timer'. $auction["VW_voorwerpnummer"] . $pagina . "></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -242,7 +242,7 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $pagina);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_voorwerpnummer"], $pagina);
 
 }
 
@@ -313,8 +313,6 @@ function laadLetters()
 function SearchFunction($SearchOptions)
 {
     //preparing for query
-
-
     $SearchKeyword = $SearchOptions['SearchKeyword'];
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchFilter = $SearchOptions['SearchFilter'];
@@ -323,9 +321,9 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
-
+    $ResultsPerPage = $SearchOptions['ResultsPerPage'];
+    $Offset = $SearchOptions['Offset'];
     //clean the input
-
     $SearchKeyword = cleanInput($SearchKeyword);
     $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
     $SearchFilter = cleanInput($SearchFilter);
@@ -334,36 +332,36 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = cleanInput($SearchMinRemainingTime);
     $SearchMinPrice = cleanInput($SearchMinPrice);
     $SearchMaxPrice = cleanInput($SearchMaxPrice);
+    $ResultsPerPage = cleanInput($ResultsPerPage);
+    $Offset = cleanInput($Offset);
 
 //Prepare the query
     $QuerySearchProducts = <<< EOT
-
-SELECT
-   DISTINCT VW_voorwerpnummer,
-   VW_titel,
-   (SELECT TOP 1 BOD_Bodbedrag
-    FROM Bod
-    WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
-                                FROM Bod
-                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-    ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
-    DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
-    (SELECT TOP 1 BES_filenaam
-    FROM Bestand
-    WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
-    VW_looptijdStart, 
-    VW_looptijdEinde,
-   Voorwerp.VW_betalingswijze
- FROM Voorwerp
+SELECT DISTINCT
+  VW_voorwerpnummer,
+  VW_titel,
+  (COALESCE((SELECT TOP 1 BOD_Bodbedrag
+             FROM Bod
+             WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
+                                     FROM Bod
+                                     WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                     ORDER BY BOD_Bodbedrag DESC) AND
+                   BOD_voorwerpnummer = VW_voorwerpnummer
+             ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) AS prijs,
+  DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
+  VW_thumbnail       AS ImagePath,
+  VW_looptijdStart,
+  VW_looptijdEinde,
+  Voorwerp.VW_betalingswijze
+FROM Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
- LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
   LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
   LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
-	WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
+WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
 	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
 	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
 	AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
@@ -372,24 +370,25 @@ SELECT
                                FROM Bod
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) >= $SearchMinPrice)
+   ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) >= $SearchMinPrice)
 	AND ($SearchMaxPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
    FROM Bod
    WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
                                FROM Bod
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC), (select DISTINCT VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer))) <= $SearchMaxPrice)
+   ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
 		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
-		AND ($SearchPaymentMethod IS NULL OR Voorwerp.VW_betalingswijze = '$SearchPaymentMethod')
+		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
-   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde
+   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail
 ORDER BY $SearchFilter , VW_voorwerpnummer
+OFFSET $Offset ROWS
+FETCH NEXT $ResultsPerPage ROWS ONLY
 
     
 EOT;
-    print_r($QuerySearchProducts);
     //executing the query
     return SendToDatabase($QuerySearchProducts);
 
@@ -451,7 +450,7 @@ function printCategoriën($zoekterm, $rubriekNummer)
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /and VW_titel like '%$zoekterm%'/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
+                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
                         GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);

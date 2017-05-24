@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $_GET['sorteerfilter'] = 0;
     }
     if (!isset($_GET['betalingsmethode'])) {
-        $_GET['betalingsmethode'] = "NULL";
+        $_GET['betalingsmethode'] = 'NULL';
     }
     if (!isset($_GET['categorie'])) {
         $_GET['categorie'] = "NULL";
@@ -41,22 +41,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $prijs['min'] = 0;
     }
     if (!isset($prijs['max'])) {
-        $prijs['max'] = 5000;
-    }
-     if (!isset($_GET['pagenum'])) {
-        $_GET['pagenum'] = 1;
+        $prijs['max'] = 50000;
     }
 
-        //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
-        if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
-            $pagenum = 1;
-        } else {
-            $pagenum = $_GET['pagenum'];
-        }
-        //results per page
-        $ResultsPerPage = 10;
-        $Offset = $ResultsPerPage * ($pagenum-1);
-        echo $pagenum;
+
+    //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
+    if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
+        $pagenum = 1;
+    } else {
+        $pagenum = $_GET['pagenum'];
+    }
+    //results per page
+    $ResultsPerPage = 12;
+    $Offset = $ResultsPerPage * ($pagenum - 1);
+    echo $pagenum;
     $_GET['maxremainingtime'] = "NULL";
     $_GET['minremainingtime'] = "NULL";
     $Dictionary = array(
@@ -70,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         'SearchMaxPrice' => $prijs['max'],
         'ResultsPerPage' => $ResultsPerPage,
         'Offset' => $Offset
-        );
+    );
 }
 ?>
 
@@ -165,7 +163,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <div class="form-group" style="display:inline;">
                 <div class="input-group" style="display:table;">
                     <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
-                           autofocus="autofocus" type="text" form="sorteerForm"">
+                           autofocus="autofocus" type="text"">
                     <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
                                                                                                type="submit"
                                                                                                style="background-color: #ffffff; border-color: #f2f2f2;"><span
@@ -175,7 +173,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         </form>
     </div>
 </nav>
-
 
 
 <!-- Filter bar -->
@@ -189,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 <form method="get" action="resultaten.php" id="sorteerForm">
                     <a href="#" class="list-group-item">
                         <div class="input-group" style="display:table;">
-                            <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                            <input class="form-control" name="zoekterm" id="zoekterm1" placeholder="Search Here" autocomplete="off"
                                    autofocus="autofocus" type="text" value='<?php $zoekterm ?>'>
                             <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
                                         class="btn btn-secondary" type="submit"
@@ -220,18 +217,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                         <b><?php echo('€' . $prijs['min'] . '- €' . $prijs['max']); ?></b>
 
                         <div list-group-item>
-                        <input id="pslider" type="text" name="prijs"
-                               class="span2" value=""
-                               data-slider-min="0"
-                               data-slider-max="5000"
-                               data-slider-step="5"
-                        <?php
-                        if (isset($prijs)) {
-                            echo('data-slider-value="[' . $prijs['min'] . "," . $prijs['max'] . ']"/>');
-                        } else {
-                            echo('data-slider-value="[150,450]"/>');
-                        }
-                        ?>
+                            <input id="pslider" type="text" name="prijs"
+                                   class="span2" value=""
+                                   data-slider-min="0"
+                                   data-slider-max="5000"
+                                   data-slider-step="5"
+                            <?php
+                            if (isset($prijs)) {
+                                echo('data-slider-value="[' . $prijs['min'] . "," . $prijs['max'] . ']"/>');
+                            } else {
+                                echo('data-slider-value="[150,450]"/>');
+                            }
+                            ?>
                         </div>
                     </a>
 
@@ -266,12 +263,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             <div class="col-xs-6 col-sm-6 col-md-5 col-lg-6">
                                 <a href="resultaten.php?zoekterm=<?php echo "<a href=" . "
 
-                                    ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urldecode($sorteerfilter) . "&prijs=" . urldecode($prijs) . "&pagenum=". $pagenum. ">Volgende ></a> ";
-                                    ?>">
+                                    ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urldecode($sorteerfilter) . "&prijs=" . urldecode($prijs) . "&pagenum=" . $pagenum . ">Volgende ></a> ";
+                                ?>">
                                     <button class="btn btn-warning"
                                             type="button">
                                             <span
-                                                class="glyphicon glyphicon-repeat"></span> Reset</button>
+                                                    class="glyphicon glyphicon-repeat"></span> Reset
+                                    </button>
                                 </a>
 
                             </div>
@@ -280,7 +278,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <a href="#">
                                     <button class="btn btn-primary"
                                             type="submit"><span
-                                                class="glyphicon glyphicon-wrench"></span>Aanpassen</button>
+                                                class="glyphicon glyphicon-wrench"></span>Aanpassen
+                                    </button>
                                 </a>
                             </div>
 
@@ -333,13 +332,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         if ($pagenum == 1) {
         } else {
             //eerste pagina
-            echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . "> <<-Eerste pagina</a>";
+            echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . "> <<-Eerste pagina</a>";
 
 
             echo " ";
             $previous = $pagenum - 1;
             //vorige pagina
-            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $previous . "> <-Vorige</a>";
+            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $previous . "> <-Vorige</a>";
         }
         //just a spacer
         echo " ---- ";
@@ -347,11 +346,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         if ($pagenum == $last) {
         } else {
             $next = $pagenum + 1;
-            echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $next. ">Volgende ></a> ";
+            echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $next . ">Volgende ></a> ";
             echo " ";
-            echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] .  "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $last. ">Laatste pagina ->></a> ";
+            echo " <a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $last . ">Laatste pagina ->></a> ";
             //"<a href='?pagenum=$last'>Laatste pagina ->></a> ";
-            print_r ($prijs);
+            print_r($prijs);
         }
         ?>
 
@@ -359,22 +358,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <html>
         <nav aria-label="...">
             <ul class="pagination">
-                <li class="page-item disabled">
-                    <span class="page-link">Vorige</span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item active">
-      <span class="page-link">
-        2
-        <span class="sr-only">(current)</span>
-      </span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item">
-                    <a class="page-link" href="#">Volgende</a>
+                    <?php echo  "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=".'1'."><< Eerste</a> ";?>
+                </li>
+                <li class="page-item">
+                    <?php echo  "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $previous . "> <- Vorige</a> ";?>
+                </li>
+                <?php
+                $lastPageNum = $pagenum + 5;
+                $startPage = $pagenum;
+                if($pagenum != 1) {
+                    $startPage--;
+                    $lastPageNum--;
+                }
+
+                for($i = $startPage; $i<$lastPageNum; $i++){
+                    if($i == $pagenum){
+                        echo'<li class="page-item active"><span class="page-link">';
+                        echo $i;
+                        echo'<span class="sr-only">(current)</span></span></li>';
+                    }else{
+                        echo '<li class="page-item"><a class="page-link" href="#">';
+                        echo $i;
+                        echo '</a></li>';
+                    }
+                }
+                ?>
+
+                <li class="page-item">
+                   <?php echo  "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $next . ">Volgende -></a> ";?>
                 </li>
             </ul>
         </nav>
+
         </html>
 
         <!-- Einde Paginanummering-->
