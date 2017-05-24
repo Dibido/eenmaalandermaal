@@ -488,6 +488,7 @@ function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betal
 
 function createTimer($tijd, $VW_Titel, $VW_Nummer)
 {
+    //Onzin
     echo '<script>
     // Set the date we\'re counting down to
     var countDownDate = new Date("' . $tijd . '").getTime();
