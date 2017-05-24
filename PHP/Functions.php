@@ -63,6 +63,17 @@ EOT;
 
 }
 
+function  GetLastOffers(){
+
+    $QueryGetLastOffers = <<<EOT
+    
+    select top 10 * from Bod where BOD_voorwerpnummer = 5614509880 ORDER BY BOD_bodTijdEnDag DESC
+
+EOT;
+
+    RETURN SendToDatabase($QueryGetLastOffers);
+}
+
 /* function for getting the images for an product */
 
 
