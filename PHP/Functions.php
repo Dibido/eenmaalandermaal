@@ -572,22 +572,27 @@ function checkEmailSent()
 <table>
 <tr>
 <td>Beste gebruiker,</td>
-</tr>
+</tr><<td></td></tr>
 <tr>
 <td>u heeft aangegeven zich aan te willen melden op onze website.</td>
 </tr>
+</tr><<td></td></tr>
 <tr>
 <td>Dit is uw persoonlijke code: '.$code. '</td>
 </tr>
+</tr><<td></td></tr>
 <tr>
 <td>Vul deze in op de website om de registratieprocedure af te ronden of klik op onderstaande link.</td>
 </tr>
+</tr><<td></td></tr>
 <tr>
 <td><a href="http://iproject3.icasites.nl/registreer1.php?code=' . $urlCode . '">Link</a></td>
 </tr>
+</tr><<td></td></tr>
 <tr>
 <td>Met vriendelijke groet,</td>
 </tr>
+</tr><<td></td></tr>
 <tr>
 <td>Het EenmaalAndermaal Team</td>
 </tr>
@@ -794,4 +799,4 @@ function getCodeFromMail()
 
 }
 
-?>	
+?>
