@@ -268,7 +268,7 @@ function DrawSearchResults($auction)
     $pagina = 'Zoekpagina';
     echo "
     <!-- Veiling template -->
-            <div class=\"veiling-rand col-md-4 col-sm-6 col-xs-6\">
+            <div class=\"veiling-rand col-md-4 col-sm-6 col-xs-12\">
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
@@ -433,12 +433,81 @@ FETCH NEXT $ResultsPerPage ROWS ONLY
 
     
 EOT;
-
-    print_r($QuerySearchProducts);
     //executing the query
     return SendToDatabase($QuerySearchProducts);
 
 
+}
+
+function amountOfResultsLeft($SearchOptions)
+{
+    //preparing for query
+    $SearchKeyword = $SearchOptions['SearchKeyword'];
+    $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
+    $SearchCategory = $SearchOptions['SearchCategory'];
+    $SearchMaxRemainingTime = $SearchOptions['SearchMaxRemainingTime'];
+    $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
+    $SearchMinPrice = $SearchOptions['SearchMinPrice'];
+    $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
+    $ResultsPerPage = $SearchOptions['ResultsPerPage'];
+    $Offset = $SearchOptions['Offset'];
+    //clean the input
+    $SearchKeyword = cleanInput($SearchKeyword);
+    $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
+    $SearchCategory = cleanInput($SearchCategory);
+    $SearchMaxRemainingTime = cleanInput($SearchMaxRemainingTime);
+    $SearchMinRemainingTime = cleanInput($SearchMinRemainingTime);
+    $SearchMinPrice = cleanInput($SearchMinPrice);
+    $SearchMaxPrice = cleanInput($SearchMaxPrice);
+    $ResultsPerPage = cleanInput($ResultsPerPage);
+    $Offset = cleanInput($Offset);
+
+//Prepare the query
+    $QuerySearchProducts = <<< EOT
+    
+select SUM(getal) as totaal
+FROM (
+SELECT DISTINCT
+  VW_voorwerpnummer,
+  count(VW_voorwerpnummer) as getal
+FROM Voorwerp
+  LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+  LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
+  LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
+  LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
+  LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
+WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
+	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
+	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
+	AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) >= $SearchMinPrice)
+	AND ($SearchMaxPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
+		AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
+		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
+	AND (VW_veilinggesloten != 1)
+GROUP BY VW_voorwerpnummer
+ORDER BY  VW_voorwerpnummer
+OFFSET $Offset+$ResultsPerPage ROWS
+FETCH NEXT $ResultsPerPage*4 ROWS ONLY
+) as test
+
+    
+EOT;
+    //executing the query
+    return SendToDatabase($QuerySearchProducts);
 }
 
 
@@ -470,7 +539,7 @@ function printVragen($Vragen)
 function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betalingsmethode)
 {
     global $connection;
-    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Naam as SubSubRubriekNummer
+    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Nummer as SubSubRubriekNummer
                         FROM Rubriek H
                         OUTER APPLY
                         (
@@ -496,20 +565,18 @@ function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betal
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
+                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/
                         GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
                         ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
-    echo '<ul class="nav">';
+    echo '<ul id="Rubrieken" class="nav panel-collapse collapse in">';
 //Goes through the first dimensional of the array
     for ($i = 0; $i < sizeof($rubrieken); $i++) {
         //Goes through the second dimensional of the array
         for ($j = 0; $j < (sizeof($rubrieken[$i]) / 2); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
-            if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i])/2)-1) AND isset($rubrieken[$i][$j])) {
-
-                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($rubrieken[$i][$j+4]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=".'1'.">";
-
+            if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i]) / 2) - 1) AND isset($rubrieken[$i][$j])) {
+                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($rubrieken[$i][$j + 4]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . ">";
                 echo $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
