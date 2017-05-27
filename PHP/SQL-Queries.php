@@ -287,5 +287,12 @@ WHERE Bestand.BES_voorwerpnummer =
 
 EOT;
 
+/* query voor het zoeken van een user */
+$QueryCheckCredentials = <<<EOT
+
+SELECT GEB_gebruikersnaam, GEB_wachtwoord
+FROM Gebruiker
+WHERE GEB_gebruikersnaam = ? AND GEB_wachtwoord = ?
+EOT;
 
 ?>

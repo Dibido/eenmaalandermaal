@@ -1,4 +1,21 @@
 <?php
+/* function for finding admin users */
+function CheckCredentials($username, $password)
+{
+    $username =cleanInput($username);
+    $password = cleanInput($password);
+
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
+    GLOBAL $connection;
+    $stmt = $connection->prepare($QueryCheckCredentials);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':password', $password);
+    $stmt->execute();
+}
+
+
+
 /* function for getting the results for the product page */
 
 /* intake:

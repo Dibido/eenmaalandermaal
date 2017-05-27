@@ -1,0 +1,19 @@
+#loginWrapper{
+    position: fixed;
+    height:100%;
+    display:flex;
+    justify-content: center;
+    justify-items: center;
+    flex-direction: column;
+    margin-top: -80px;
+}
+#loginPanel{
+    width: 100%;
+    font-size: 2REM;
+}
+#loginButton{
+    width: 100%;
+}
+.alert{
+    margin-top: 15px;
+}
