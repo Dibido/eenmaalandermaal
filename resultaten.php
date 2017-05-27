@@ -2,74 +2,73 @@
 require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 require 'PHP/SQL-Queries.php';
-$waardes = array("0" => "VW_looptijdStart DESC", "1" => "VW_looptijdEinde ASC", "2" => "prijs ASC", "3" => "prijs DESC");
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['zoekterm'])) {
         $zoekterm = ($_GET['zoekterm']);
+    } else {
+        $zoekterm = $_GET['zoekterm'] = "";
     }
     if (isset($_GET['sorteerfilter'])) {
         $sorteerfilter = ($_GET['sorteerfilter']);
-    }
-    if (isset($_GET['betalingsmethode'])) {
-        $betalingsmethode = $_GET['betalingsmethode'];
-    }
-    if (isset($_GET['prijs'])) {
-        $tmp = explode(',', $_GET['prijs']);
-        $prijs = array('min' => $tmp[0], 'max' => $tmp[1]);
-        unset($tmp);
-    }
-    if (isset($_GET['categorie'])) {
-        $categorie = ($_GET['categorie']);
-    }
-    if (!isset($_GET['zoekterm'])) {
-        $zoekterm = $_GET['zoekterm'] = "";
-    }
-    if (!isset($_GET['sorteerfilter'])) {
+    } else {
         $_GET['sorteerfilter'] = 0;
         $sorteerfilter = $_GET['sorteerfilter'];
     }
-    if (!isset($_GET['betalingsmethode'])) {
+    if (isset($_GET['betalingsmethode'])) {
+        $betalingsmethode = $_GET['betalingsmethode'];
+    } else {
         $_GET['betalingsmethode'] = 'NULL';
         $betalingsmethode = 0;
     }
-    if (!isset($_GET['categorie'])) {
-        $_GET['categorie'] = "NULL";
-        $categorie = "NULL";
+    if (isset($_GET['prijs'])) {
+        $tmp = explode(',', $_GET['prijs']);
+        $prijs = array('min' => round($tmp[0]), 'max' => round($tmp[1]));
+        unset($tmp);
     }
-    if (!isset($_GET['min'])) {
-        $_GET['min'] = "NULL";
+    if (isset($_GET['rubriek'])) {
+        $rubriek = ($_GET['rubriek']);
+    } else {
+        $_GET['rubriek'] = "NULL";
+        $rubriek = "NULL";
     }
+    if (isset($_GET['user'])) {
+        $user = ($_GET['user']);
+    } else {
+        $user = "NULL";
+    }
+
     if (!isset($prijs['min'])) {
         $prijs['min'] = 0;
     }
     if (!isset($prijs['max'])) {
-        $prijs['max'] = 50000;
+        $prijs['max'] = 1000;
     }
-
-
-
     //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
     if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
         $pagenum = 1;
     } else {
-        $pagenum = $_GET['pagenum'];
+        $pagenum = round($_GET['pagenum']);
     }
     //results per page
     $ResultsPerPage = 12;
     $Offset = $ResultsPerPage * ($pagenum - 1);
     $_GET['maxremainingtime'] = "NULL";
     $_GET['minremainingtime'] = "NULL";
+    //Waardes is an array that contains the right term to for the query. the form outputs 0-3 each number has their own value in the array
+    $waardes = array("VW_looptijdStart DESC", "VW_looptijdEinde ASC", "prijs ASC", "prijs DESC");
+    //Create dictionary with all variables from the GET request. Dictionary is used to give all values to the query
     $Dictionary = array(
         'SearchKeyword' => $_GET['zoekterm'],
         'SearchFilter' => $waardes[($_GET['sorteerfilter'])],
         'SearchPaymentMethod' => $_GET['betalingsmethode'],
-        'SearchCategory' => $_GET['categorie'],
+        'SearchCategory' => $_GET['rubriek'],
         'SearchMinRemainingTime' => $_GET['minremainingtime'],
         'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
         'SearchMinPrice' => $prijs['min'],
         'SearchMaxPrice' => $prijs['max'],
         'ResultsPerPage' => $ResultsPerPage,
-        'Offset' => $Offset
+        'Offset' => $Offset,
+        'SearchUser' => $user
     );
 }
 ?>
@@ -136,128 +135,81 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 <body>
 
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
-        <a href="index.php" class="navbar-brand">
-            <img src="images/testlogo.png" alt="EenmaalAndermaal Logo">
-        </a>
-
-        <div class="navbar-right">
-            <ul class="nav navbar-nav collapse navbar-collapse">
-                <li>
-                    <button class="btn btn-default navbar-btn hidden-md hidden-lg MobileButtonToggle"
-                            data-toggle="collapse"
-                            data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
-                </li>
-                <li>
-                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton">Plaats veiling
-                    </button>
-                </li>
-                <li>
-                    <button class="btn btn-default navbar-btn hidden-sm hidden-xsv NavRightButton">
-                        <i class="glyphicon glyphicon-user"></i>
-                    </button>
-                </li>
-
-            </ul>
-        </div>
-
-        <form class="navbar-form" action="resultaten.php" method="GET">
-            <div class="form-group" style="display:inline;">
-                <div class="input-group" style="display:table;">
-                    <input class="form-control" name="zoekterm" value="<?php echo $zoekterm?>" placeholder="Search Here" autocomplete="off"
-                           autofocus="autofocus" type="text"">
-                    <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
-                                                                                               type="submit"
-                                                                                               style="background-color: #ffffff; border-color: #f2f2f2;"><span
-                                    class="glyphicon glyphicon-search"></span></button></span>
-                </div>
-            </div>
-        </form>
-    </div>
-</nav>
-
+<?php
+require('navbar.html');
+?>
 
 <!-- Filter bar -->
-
 <div class="container-fluid">
     <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-        <div class="visible-lg visible-md visible-sm visible-xs">
-            <div class="list-group">
-                <a href="#" class="list-group-item active">Opties</a>
-
-                <form method="get" action="resultaten.php" id="sorteerForm">
-                    <a href="#" class="list-group-item">
-                        <div class="input-group" style="display:table;">
-                            <input class="form-control" name="zoekterm" placeholder="Search Here"
-                                    type="text" value='<?php echo $zoekterm; ?>'>
-                            <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
-                                        class="btn btn-secondary" type="submit"
-                                        style="background-color: #ffffff; border-color: #f2f2f2;"><span
-                                            class="glyphicon glyphicon-search"></span></button></span>
-                        </div>
-                    </a>
-
-                    <a href="#" class="list-group-item"> Sorteer op:
-                        <select class="form-control" name="sorteerfilter">
-                            <?php
-                            $filterNamen = array("Tijd: nieuw aangeboden", "Tijd: eerst afgelopen", "Prijs: laagste bovenaan", "Prijs: hoogste bovenaan");
-                            if (isset($sorteerfilter)) {
-                                echo "<option value=" . ($_GET['sorteerfilter']) . " selected>" . $filterNamen[$sorteerfilter] . "</option>";
-                                echo $filterNamen[$sorteerfilter];
-                                $query_age = (isset($_GET['query_age']) ? $_GET['query_age'] : null);
+        <div class="list-group">
+            <div class="list-group-item active">Sorteer Opties</div>
+            <form method="get" action="resultaten.php" id="sorteerForm">
+                <!-- Search on keyword -->
+                <div class="list-group-item">
+                    <div class="input-group" style="display:table;">
+                        <input class="form-control" name="zoekterm" placeholder="Search Here"
+                               type="text" value='<?php echo $zoekterm; ?>'>
+                        <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
+                                    class="btn btn-secondary" type="submit"
+                                    style="background-color: #ffffff; border-color: #f2f2f2;"><span
+                                        class="glyphicon glyphicon-search"></span></button></span>
+                    </div>
+                </div>
+                <!-- Sort by select form -->
+                <div class="list-group-item"> Sorteer op:
+                    <select class="form-control" name="sorteerfilter">
+                        <?php
+                        //Array to be able to create a for loop. When adding a new one nothing has to be changed this way.
+                        $filterNamen = array("Tijd: nieuw aangeboden", "Tijd: eerst afgelopen", "Prijs: laagste bovenaan", "Prijs: hoogste bovenaan");
+                        if (isset($sorteerfilter)) {
+                            echo "<option value=" . ($_GET['sorteerfilter']) . " selected>" . $filterNamen[$sorteerfilter] . "</option>";
+                            echo $filterNamen[$sorteerfilter];
+                        }
+                        //Creates all options in the array $filterNamen
+                        for ($i = 0; $i < sizeof($filterNamen); $i++) {
+                            if ($_GET['sorteerfilter'] != $i) {
+                                echo "<option value=" . $i . ">" . $filterNamen[$i] . "</option>";
                             }
-                            if($_GET['sorteerfilter']!= 0){
-                                echo '<option value="0">Tijd: nieuw aangeboden</option>';
-                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <!-- Price slider -->
+                <div class="list-group-item">Prijs:
+                    <b><?php echo('€' . $prijs['min'] . '- €' . $prijs['max']); ?></b>
+                    <div list-group-item>
+                        <input id="pslider" type="text" name="prijs"
+                               class="span2" value=""
+                               data-slider-min="0"
+                               data-slider-max="1000"
+                               data-slider-step="1"
+                        <?php
+                        if (isset($prijs)) {
+                            echo('data-slider-value="[' . $prijs['min'] . "," . $prijs['max'] . ']"/>');
+                        } else {
+                            echo('data-slider-value="[150,450]"/>');
+                        }
+                        ?>
+                    </div>
+                </div>
 
-                            if($_GET['sorteerfilter']!= 1){
-                                echo '<option value="1">Tijd: eerst afgelopen</option>';
-                            }
+                <!-- Payment method select form -->
 
-                            if($_GET['sorteerfilter']!= 2){
-                                echo '<option value="2">Prijs: laagste bovenaan</option>';
-                            }
-                            if($_GET['sorteerfilter']!= 3){
-                                echo '<option value="3">Prijs: hoogste bovenaan</option>';
-                            }
-                            ?>
-                        </select>
-                    </a>
-
-                    <a href="#" class="list-group-item">Prijs:
-                        <b><?php echo('€' . $prijs['min'] . '- €' . $prijs['max']); ?></b>
-
-                        <div list-group-item>
-                            <input id="pslider" type="text" name="prijs"
-                                   class="span2" value=""
-                                   data-slider-min="0"
-                                   data-slider-max="5000"
-                                   data-slider-step="5"
-                            <?php
-                            if (isset($prijs)) {
-                                echo('data-slider-value="[' . $prijs['min'] . "," . $prijs['max'] . ']"/>');
-                            } else {
-                                echo('data-slider-value="[150,450]"/>');
-                            }
-                            ?>
-                        </div>
-                    </a>
-
-                    <a href="#" class="list-group-item">Betalingsmethode:
-                        <select class="form-control" name="betalingsmethode">
-                            <?php
-                            if (isset($betalingsmethode)) {
-                                global $betalingsmethode;
-                                echo('<option value="' . $_GET['betalingsmethode'] . '" selected> ' . $_GET['betalingsmethode'] . '</option>');
-                            }
-                            ?>
-                            <option value="Bank / Giro">Bank / Giro</option>
-                            <option value="Contant">Contant</option>
-                            <option value="Anders">Anders</option>
-                            <option value="Prijs: hoogste bovenaan">Prijs: hoogste bovenaan</option>
-                        </select>
-                        <!--<select class="form-control" id="betalingsmethode" name="betalingsmethode">
+                <div class="list-group-item">Betalingsmethode:
+                    <select class="form-control" name="betalingsmethode">
+                        <?php
+                        if (isset($betalingsmethode)) {
+                            global $betalingsmethode;
+                            echo('<option value="' . $_GET['betalingsmethode'] . '" selected> ' . $_GET['betalingsmethode'] . '</option>');
+                        }
+                        ?>
+                        <option value="Bank / Giro">Bank / Giro</option>
+                        <option value="Contant">Contant</option>
+                        <option value="Anders">Anders</option>
+                        <option value="Prijs: hoogste bovenaan">Prijs: hoogste bovenaan</option>
+                    </select>
+                    <!--<select class="form-control" id="betalingsmethode" name="betalingsmethode">
                             <? /*php
                             if (!isset($betalingsmethode)) {
                                 global $betalingsmethode;
@@ -267,133 +219,191 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             foreach ($betalingswijzenresult as $betalingswijze) {
                                 echo('<option> ' . $betalingswijze[Betalingswijze] . '</option>');
                             }*/
-                        ?>
+                    ?>
                         </select>-->
-                    </a>
-                    <ul class="list-group-item">
-                        <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-5 col-lg-6">
-                                    <button class="btn btn-warning center-block btn-lg "type="button">
-                                        <a style="color: #ffffff" href="resultaten.php?zoekterm=<?php echo urldecode($zoekterm)?> ">
-                                            <span class="glyphicon glyphicon-repeat"></span>   Reset
-                                        </a>
-                                    </button>
-                            </div>
-                            <div class="col-xs-6 col-sm-6 col-md-5 col-lg-6">
-                                    <button class="btn btn-primary center-block btn-lg" type="submit">
-                                        <span class="glyphicon glyphicon-wrench"></span>Aanpassen
-                                    </button>
-                            </div>
+                </div>
 
+                <!-- Search ads by certain user -->
 
+                <div class="list-group-item">
+                    <div class="input-group">
+                        <input class="form-control" name="user" placeholder="Search Here" value="<?php echo $user; ?> "autocomplete="off"
+                               type="text">
+                        <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
+                                    class="btn btn-secondary" type="submit"
+                                    style="background-color: #ffffff; border-color: #f2f2f2;"><span
+                                        class="glyphicon glyphicon-user"></span></button></span>
+                    </div>
+                </div>
+
+                <!-- Reset and Adjust buttons -->
+
+                <ul class="list-group-item">
+                    <div class="row">
+
+                        <!-- Reset all searchterms only thing kept is the seachkeyword-->
+
+                        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-6">
+                            <button class="btn btn-warning center-block btn-lg " type="reset">
+                                <a style="color: #ffffff"
+                                   href="resultaten.php?zoekterm=<?php echo urldecode($zoekterm) ?> ">
+                                    <span class="glyphicon glyphicon-repeat"></span> Reset
+                                </a>
+                            </button>
                         </div>
-                    </ul>
-                    <script>
-                        var slider = new Slider('#pslider', {});
-                        var slider = new Slider('#rslider', {});
-                    </script>
-                    <input type="hidden" name="categorie" value="<?php global $categorie;
-                    echo($categorie); ?>">
-                    <input type="hidden" name="pagenum" value="<?php global $pagenum;
-                    echo($pagenum); ?>">
 
-            </div>
-            <a href="#" class="list-group-item active" data-toggle="collapse" data-target="#Rubrieken" data-parent="#Rubrieken"id="Header-Categories">
-                <i class="text-right glyphicon glyphicon-th-list"></i>
-                Categorieën
-            </a>
-            <div  class="list-group-item panel-collapse collapse in">
-                    <?php printCategoriën($zoekterm, $categorie,$sorteerfilter,$prijs,$betalingsmethode);?>
-            </div>
+                        <!-- Adjust button -->
+
+                        <div class="col-xs-6 col-sm-6 col-md-5 col-lg-6">
+                            <button class="btn btn-primary center-block btn-lg" type="submit">
+                                <span class="glyphicon glyphicon-wrench"></span>Aanpassen
+                            </button>
+                        </div>
+
+
+                    </div>
+                </ul>
+
+                <!-- Invisible input fields to submit values not set in the form -->
+
+                <input type="hidden" name="rubriek" value="<?php echo($rubriek); ?>">
+                <input type="hidden" name="pagenum" value="<?php echo($pagenum); ?>">
+
         </div>
+
+
+        <!-- Categories -->
+
+        <li class="list-group-item active" id="Header-Categories">
+            <i class="text-right glyphicon glyphicon-th-list"></i>
+            Rubrieken
+        </li>
+        <div class="list-group-item panel-collapse collapse in">
+            <?php
+            printCategoriën($zoekterm, $rubriek, $sorteerfilter, $prijs, $betalingsmethode);
+            ?>
+        </div>
+
+        <!-- Open and close alle Categories -->
+        <!-- Opened on entry on Desktop and Closed at entry on mobile-->
+
+        <a href="#" class="seeMore list-group-item active" data-toggle="collapse" data-target="#Rubrieken"
+           data-parent="#Rubrieken" id="Header-Categories">
+            <i class="text-right glyphicon glyphicon-th-list"></i>
+            Sluit rubrieken
+        </a>
+
     </div>
     </form>
 
-    <!-- Trending items -->
+    <!-- Results -->
 
     <div class="col-md-9 col-sm-12 col-xs-12 pull-left">
-        <h2 class="text-center">Resultaten</h2>
         <?php
         global $Dictionary;
         $result = SearchFunction($Dictionary);
         outputRows($result, $Dictionary["SearchKeyword"]);
         ?>
 
+        <div class="col-md-9 col-sm-12 col-xs-12 col-md-push-3 col-sm-push-4 col-xs-push-4">
+            <ul class="pagination">
 
+                <?php
+                if (!empty($result)) {
+                    //Returns the amount of results on the next 4 pages.
+                    $amountOfResults = amountOfResultsLeft($Dictionary);
+                    //Calculate the amount of pages by deviding the count with the amount of results per page.
+                    $amountOfFuturePages = ceil($amountOfResults[0]['totaal'] / $ResultsPerPage);
+                    $previousPage = $pagenum - 1;
+                    $lastPageNum = $pagenum + $amountOfFuturePages + 2;
+                    $startPage = $pagenum - 4 + $amountOfFuturePages;
+                    $nextPage = $pagenum + 1;
 
-        <!-- HTML -->
-        <?php
-        if(!empty($result)) {
-            echo'<nav aria-label="...">
-            <ul class="pagination">';
-                $amountOfResults =  amountOfResultsLeft($Dictionary);
-                $amountOfFuturePages = ceil($amountOfResults[0]['totaal'] / $ResultsPerPage);
-                $previousPage = $pagenum -1;
-                $lastPageNum = $pagenum + $amountOfFuturePages+2;
-                $startPage = $pagenum -4 + $amountOfFuturePages;
-                $nextPage = $pagenum + 1;
-                if($pagenum != 1) {
-                    $startPage--;
-                    $lastPageNum--;
-                }
+                    // If the current page is not the first one. The first pagenumber created has to be the one before the current page.
                     if ($pagenum != 1) {
-                       echo '<li class="page-item">';
-                        echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $previousPage . "> <- Vorige</a> ";
+                        $startPage--;
+                        $lastPageNum--;
+                        echo '<li class="page-item">';
+                        echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $previousPage . "> <- Vorige</a> ";
                         echo '</li>';
                     }
-
+                    //Loop creates all buttons to the next or pages before the current one.
                     for ($i = $startPage; $i < $lastPageNum; $i++) {
                         if ($i == $pagenum) {
                             echo '<li class="page-item active text-center">';
-                            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $i . ">" . $i . "</a> ";
+                            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $i . ">" . $i . "</a> ";
                             echo '</li>';
                         } else {
                             echo '<li class="page-item">';
-                            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $i . ">" . $i . "</a> ";
+                            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $i . ">" . $i . "</a> ";
                             echo '</li>';
                         }
                     }
-                    if($amountOfFuturePages > 0){
-                    echo '<li class="page-item">';
-                    echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($categorie) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $nextPage . ">Volgende -></a> ";
-                    echo '</li></ul></nav>';}
-                    } elseif($pagenum != 1){
-                    echo'<h1> Page '. $pagenum .' does not exist</h1>';
-                }?>
+                    //Only when the amount of future pages is 1 or higher the next button will be created. This since there is no next page when there are no future pages.
+                    if ($amountOfFuturePages > 0) {
+                        echo '<li class="page-item">';
+                        echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . $nextPage . ">Volgende -></a> ";
+                        echo '</li></ul>';
+                    }
+                }
+                //If the page does not exist since there aren't enough results an error message will be shown. If the current page is one there won't be shown an error message
+                //this since there are no results at all and not that there aren't enough results.
+                elseif ($pagenum != 1) {
+                    echo '<h1> Page ' . $pagenum . ' does not exist</h1>';
+                }
+                echo '</div>' ?>
 
 
+                <!-- Einde Paginanummering-->
 
-        <!-- Einde Paginanummering-->
-
+        </div>
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#list').click(function (event) {
-            event.preventDefault();
-            $('#products .item').addClass('list-group-item');
+    <script>
+        $(document).ready(function () {
+            $('#list').click(function (event) {
+                event.preventDefault();
+                $('#products .item').addClass('list-group-item');
+            });
+            $('#grid').click(function (event) {
+                event.preventDefault();
+                $('#products .item').removeClass('list-group-item');
+                $('#products .item').addClass('grid-group-item');
+            });
         });
-        $('#grid').click(function (event) {
-            event.preventDefault();
-            $('#products .item').removeClass('list-group-item');
-            $('#products .item').addClass('grid-group-item');
+        $(document).ready(function () {
+            $('.tree-toggle').click(function () {
+                $(this).parent().children('ul.tree').toggle(200);
+            });
         });
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.tree-toggle').click(function () {
-            $(this).parent().children('ul.tree').toggle(200);
+
+        //If the screen width < 1200 the Categories will be closed on entry by removing the class in. This means that close categories also has to be changed to Open Categories.
+        $(document).ready(function () {
+            if ($(window).width() <= 1200) {
+                $(".seeMore").text('Open Rubrieken');
+                $("#Rubrieken").removeClass("in");
+            }
         });
-    });
-</script>
-<script>
-    $(document).ready(function(){
-        if ($(window).width() <= 1200) {
-            $("#Rubrieken").removeClass("in");
-        }
-    });
-</script>
-</body>
-</html>
+        //Changes the open/closed categories when opened or closed.
+        $('.seeMore').click(function () {
+            var $this = $(this);
+            $this.toggleClass('seeMore');
+            if ($(window).width() <= 1200) {
+                if ($this.hasClass('seeMore')) {
+                    $this.text('Open Rubrieken');
+                } else {
+                    $this.text('Sluit Rubrieken');
+                }
+            } else {
+                if ($this.hasClass('seeMore')) {
+                    $this.text('Sluit Rubrieken');
+                } else {
+                    $this.text('Open Rubrieken');
+                }
+            }
+        });
+        var slider = new Slider('#pslider', {});
+    </script>
+    </body >
+    </html >

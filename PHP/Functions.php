@@ -365,8 +365,10 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
+    $SearchUser = $SearchOptions['SearchUser'];
     $ResultsPerPage = $SearchOptions['ResultsPerPage'];
     $Offset = $SearchOptions['Offset'];
+
     //clean the input
     $SearchKeyword = cleanInput($SearchKeyword);
     $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
@@ -377,6 +379,7 @@ function SearchFunction($SearchOptions)
     $SearchMinPrice = cleanInput($SearchMinPrice);
     $SearchMaxPrice = cleanInput($SearchMaxPrice);
     $ResultsPerPage = cleanInput($ResultsPerPage);
+    $SearchUser = cleanInput($SearchUser);
     $Offset = cleanInput($Offset);
 
 //Prepare the query
@@ -396,7 +399,8 @@ SELECT DISTINCT
   VW_thumbnail       AS ImagePath,
   VW_looptijdStart,
   VW_looptijdEinde,
-  Voorwerp.VW_betalingswijze
+  VW_betalingswijze,
+  VW_verkoper
 FROM Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
@@ -424,16 +428,19 @@ WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
    ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
 		AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
 		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
+		AND('$SearchUser' IS NULL OR VW_verkoper LIKE '%$SearchUser%')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
-   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail
+   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail,VW_verkoper
 ORDER BY $SearchFilter , VW_voorwerpnummer
 OFFSET $Offset ROWS
 FETCH NEXT $ResultsPerPage ROWS ONLY
 
+
     
 EOT;
     //executing the query
+    print_r($QuerySearchProducts);
     return SendToDatabase($QuerySearchProducts);
 
 
@@ -449,6 +456,7 @@ function amountOfResultsLeft($SearchOptions)
     $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
+    $SearchUser = $SearchOptions['SearchUser'];
     $ResultsPerPage = $SearchOptions['ResultsPerPage'];
     $Offset = $SearchOptions['Offset'];
     //clean the input
@@ -460,6 +468,7 @@ function amountOfResultsLeft($SearchOptions)
     $SearchMinPrice = cleanInput($SearchMinPrice);
     $SearchMaxPrice = cleanInput($SearchMaxPrice);
     $ResultsPerPage = cleanInput($ResultsPerPage);
+    $SearchUser = cleanInput($SearchUser);
     $Offset = cleanInput($Offset);
 
 //Prepare the query
@@ -497,6 +506,7 @@ WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
    ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
 		AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
 		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
+				AND('$SearchUser' IS NULL OR VW_verkoper LIKE '%$SearchUser%')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer
 ORDER BY  VW_voorwerpnummer
@@ -539,23 +549,36 @@ function printVragen($Vragen)
 function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betalingsmethode)
 {
     global $connection;
-    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Nummer as SubSubRubriekNummer
-                        FROM Rubriek H
+    $rubriekQuery = "
+SELECT A.RB_Naam AS HoofdRubriek, B.RB_Naam AS Rubriek, C.RB_Naam AS SubRubriek, D.RB_Naam as SubSubRubriek, E.RB_Naam as SubSubSubRubriek, F.RB_Naam as SubSubSubSubRubriek, A.RB_Nummer as HoofdRubriekNummer, B.RB_Nummer as RubriekNummer, C.RB_Nummer AS SubRubriekNummer, D.RB_Nummer as SubSubRubriekNummer, E.RB_Nummer as SubSubSubRubriekNummer,F.RB_Nummer as SubSubSubSubRubriekNummer
+                        FROM Rubriek A
                         OUTER APPLY
                         (
-                          SELECT * FROM Rubriek S
-                          WHERE S.RB_Parent = H.RB_Nummer
-                        ) X
+                          SELECT * FROM Rubriek Z
+                          WHERE Z.RB_Parent = A.RB_Nummer
+                        ) B
                         OUTER APPLY
                         (
-                          SELECT * FROM Rubriek T
-                          WHERE T.RB_Parent = X.RB_Nummer
-                        ) Y
+                          SELECT * FROM Rubriek Z
+                          WHERE Z.RB_Parent = B.RB_Nummer
+                        ) C
                         OUTER APPLY
                         (
-                          SELECT * FROM Rubriek U
-                          WHERE U.RB_Parent = Y.RB_Nummer
-                        ) Z
+                          SELECT * FROM Rubriek Z
+                          WHERE Z.RB_Parent = C.RB_Nummer
+                        ) D
+						OUTER APPLY
+						(
+						SELECT * FROM Rubriek Z
+						WHERE Z.RB_Parent = D.RB_NUMMER
+						)
+                        E 
+						OUTER APPLY
+						(
+						SELECT * FROM Rubriek Z
+						WHERE Z.RB_Parent = E.RB_NUMMER
+						)
+                        F 
                        /*
                         cross APPLY
                         (
@@ -565,9 +588,9 @@ function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betal
                             WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
                             )E
                         */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/
-                        GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
-                        ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
+                        WHERE A.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/
+                        GROUP BY F.RB_Naam,E.RB_Naam,D.RB_Naam, C.RB_Naam,B.RB_Naam,A.RB_Naam, F.RB_Nummer, E.RB_Nummer,D.RB_Nummer,C.RB_Nummer,B.RB_Nummer,A.RB_Nummer
+                        ORDER BY A.RB_Naam, B.RB_Naam, C.RB_Naam,D.RB_Naam,E.RB_Naam, F.RB_Nummer";
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
     echo '<ul id="Rubrieken" class="nav panel-collapse collapse in">';
 //Goes through the first dimensional of the array
