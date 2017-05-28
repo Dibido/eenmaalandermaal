@@ -4,31 +4,53 @@ require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
+//echo password_hash('QNxaK62B', PASSWORD_DEFAULT);
 
-/* form validation for when a user tries to login */
+/* Backend for logging in an admin user */
 
 $errorMessage = [False];
+$successMessage = [False];
 
-
-if($_POST["formSend"] == 'True'){
+//testing if the user tried to login, or only accessed the page
+if ($_POST["formSend"] == 'True') {
 
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    if(isset($username) AND !empty($username)){
-        if(isset($password) AND !empty($password)){
-            print_r(checkCredentials($username, $password));
-        }else{
+    //form validation
+    if (isset($username) AND !empty($username)) {
+        if (isset($password) AND !empty($password)) {
+            //finding a user with the given username
+            $foundUser = FindAdminUsers($username)[0];
+
+            if (isset($foundUser) AND !empty($foundUser)) {
+                //if found, checking the password
+                $foundPassword = CheckCredentials($username, $password);
+                if($foundPassword){
+                    session_start();
+                    $_SESSION["adminUsername"] = $foundUser;
+                    header('Location: Beheer.php');
+                } else {
+                    $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser];
+                }
+            } else{
+                $errorMessage = [True, 'Onbekende gebruiker: ' . $username];
+            }
+        } else {
             $errorMessage = [True, 'Geef alstublieft een wachtwoord op.'];
         }
-    }else{
+    } else {
         $errorMessage = [True, 'Geef alstublieft een gebruikersnaam op.'];
     }
 }
 
-
-
-
+/* checking if the user just came back from Beheer.php or logged out*/
+if ($_GET["noLogin"] == 'True'){
+    $errorMessage = [True, 'Inloggen is vereist voor het bezoeken van de beheerpagina.'];
+} else if ($_GET["loggedOut"] == 'True'){
+    session_destroy();
+    $successMessage = [True, 'Successvol uitgelogged.'];
+}
 
 
 
@@ -84,7 +106,7 @@ include "navbar.html";
 
 
 <!-- Login form -->
-<div class="col-md-4 col-md-push-4 center-block" id="loginWrapper">
+<div class="col-xs-10 col-xs-push-1 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4 center-block" id="loginWrapper">
     <div class="panel panel-default" id="loginPanel">
         <div class="panel-heading">
             EeemaalAndermaal beheerders login
@@ -121,18 +143,22 @@ include "navbar.html";
 
                 <?php
 
-                if($errorMessage[0]){
+                /* checking if any alerts of success messages need to be displayed */
+                if ($errorMessage[0]){
 
-                    echo "<div class=\"alert alert-danger alert-dismissable\">
+                echo "<div class=\"alert alert-danger alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
                              <strong>Error!</strong> " . $errorMessage[1] . "
                           </div>";
 
+                } else if($successMessage[0]){
+                    echo "<div class=\"alert alert-success alert-dismissable\">
+                             <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
+                             <strong>Success!</strong> " . $successMessage[1] . "
+                          </div>";
                 }
 
                 ?>
-
-
             </form>
         </div>
     </div>

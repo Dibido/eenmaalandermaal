@@ -26,21 +26,33 @@ function ConvertTime($time){
 }
 
 
-/* function for finding admin users */
+/* function for finding admin users and checking their credentials*/
 function CheckCredentials($username, $password)
 {
     $username = cleanInput($username);
     $password = cleanInput($password);
 
-    $password = password_hash($password, PASSWORD_DEFAULT);
-
     GLOBAL $connection;
     GLOBAL $QueryCheckCredentials;
 
     $stmt = $connection->prepare($QueryCheckCredentials);
-    $stmt->execute(array('0781dieter','P@ssw0rd'));
-    return $stmt->fetch();
+    $stmt->execute(array($username));
+    $userInfo = $stmt->fetch();
 
+    return password_verify($password, $userInfo["GEB_wachtwoord"]);
+}
+
+/* function for finding admin users */
+function FindAdminUsers($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryFindUser;
+
+    $username = cleanInput($username);
+
+    $stmt = $connection->prepare($QueryFindUser);
+    $stmt->execute(array($username));
+    return $stmt->fetch();
 }
 
 
