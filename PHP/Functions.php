@@ -2,16 +2,18 @@
 /* function for finding admin users */
 function CheckCredentials($username, $password)
 {
-    $username =cleanInput($username);
+    $username = cleanInput($username);
     $password = cleanInput($password);
 
     $password = password_hash($password, PASSWORD_DEFAULT);
 
     GLOBAL $connection;
+    GLOBAL $QueryCheckCredentials;
+
     $stmt = $connection->prepare($QueryCheckCredentials);
-    $stmt->bindParam(':username', $username);
-    $stmt->bindParam(':password', $password);
-    $stmt->execute();
+    $stmt->execute(array('0781dieter','P@ssw0rd'));
+    return $stmt->fetch();
+
 }
 
 

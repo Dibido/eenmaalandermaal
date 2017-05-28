@@ -17,7 +17,7 @@ if($_POST["formSend"] == 'True'){
 
     if(isset($username) AND !empty($username)){
         if(isset($password) AND !empty($password)){
-            checkCredentials($username, $password);
+            print_r(checkCredentials($username, $password));
         }else{
             $errorMessage = [True, 'Geef alstublieft een wachtwoord op.'];
         }
