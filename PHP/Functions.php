@@ -1,4 +1,31 @@
 <?php
+
+/*change time formatting based on remaining time.
+> 2 days = date
+> 2 hours = hours + minutes
+> 2 minutes minutes + seconds
+< 2 minutes minutes + seconds
+*/
+
+function ConvertTime($time){
+    $datetime = date_create($time);
+    $currenttime = date_create(date("Ymd"));
+    $interval = date_diff($datetime, $currenttime);
+    if($interval->days > 2){
+        //Datum weergeven.
+        echo(date_format($datetime, 'Y-m-d'));
+    }
+    elseif($interval->h > 2){
+        //Uren en minuten.
+        echo(date_format($datetime, 'H:i'));
+    }
+    else{
+        //in minuten en seconden.
+        echo(date_format($datetime,'i:s'));
+    }
+}
+
+
 /* function for finding admin users */
 function CheckCredentials($username, $password)
 {
