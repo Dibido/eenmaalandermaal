@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $foundPassword = CheckCredentials($username, $password);
                     if ($foundPassword) {
                         session_start();
-                        $_SESSION["adminUsername"] = $foundUser;
+                        $_SESSION["Username"] = $foundUser;
                         echo 'U bent ingelogd';
                     } else {
                         $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser];
