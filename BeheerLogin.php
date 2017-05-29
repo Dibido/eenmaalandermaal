@@ -4,7 +4,6 @@ require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
-//echo password_hash('QNxaK62B', PASSWORD_DEFAULT);
 
 /* Backend for logging in an admin user */
 
@@ -12,7 +11,7 @@ $errorMessage = [False];
 $successMessage = [False];
 
 //testing if the user tried to login, or only accessed the page
-if ($_POST["formSend"] == 'True') {
+if ($_POST["formSend"] == 'True' AND isset($_POST["formSend"])) {
 
     $username = $_POST["username"];
     $password = $_POST["password"];
@@ -29,7 +28,7 @@ if ($_POST["formSend"] == 'True') {
                 if($foundPassword){
                     session_start();
                     $_SESSION["adminUsername"] = $foundUser;
-                    header('Location: Beheer.php');
+                    header('Location: /Beheer/');
                 } else {
                     $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser];
                 }
@@ -44,11 +43,23 @@ if ($_POST["formSend"] == 'True') {
     }
 }
 
-/* checking if the user just came back from Beheer.php or logged out*/
-if ($_GET["noLogin"] == 'True'){
+/* checking if the user just came back from beheer/index.php or logged out*/
+if ($_GET["noLogin"] == 'True' AND isset($_GET["noLogin"])){
     $errorMessage = [True, 'Inloggen is vereist voor het bezoeken van de beheerpagina.'];
-} else if ($_GET["loggedOut"] == 'True'){
+} else if ($_GET["loggedOut"] == 'True' AND isset($_GET["loggedOut"])){
+
+    //delete the session
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+
+    unset($_SESSION['adminUsername']);
     session_destroy();
+    session_commit();
     $successMessage = [True, 'Successvol uitgelogged.'];
 }
 
