@@ -124,7 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 <!-- Navigation -->
 <?php
-require('navbar.html');
+require('navbar.php');
 ?>
 
 <!-- Filter bar -->

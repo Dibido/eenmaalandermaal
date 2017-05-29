@@ -46,7 +46,7 @@ require('PHP/SQL-Queries.php');
 
 <!-- Navigation -->
 <?php
-require('navbar.html');
+require('navbar.php');
 ?>
 
 <!-- Breadcrumb -->

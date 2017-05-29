@@ -79,7 +79,7 @@ print_r($ItemInfo);
 <!-- Navigation -->
 
 <?php
-require('navbar.html');
+require('navbar.php');
 ?>
 
 <div class="container">

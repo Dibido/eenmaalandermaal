@@ -71,7 +71,7 @@ try {
 <!-- Navigation -->
 
 <?php
-require('navbar.html');
+require('navbar.php');
 ?>
 
 <!-- Mobile Buttons -->
