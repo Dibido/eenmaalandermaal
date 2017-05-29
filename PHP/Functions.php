@@ -300,7 +300,7 @@ function DrawAuction($auction)
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" . $auction["VW_titel"] . "
                     </div>
-                    <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div></a>
+                    <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
                         <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . $pagina . '"></p>' . "</div>
@@ -707,10 +707,10 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
 
         // Display the result in the element with id="demo"
         
-        if(days >= 3){
+        if(days >= 1){
         document.getElementById("' . $VW_Nummer . '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
-        }else if(days < 3 && seconds < 10){
+        }else if(days < 1 && seconds < 10){
         document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{

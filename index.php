@@ -65,7 +65,6 @@ require('navbar.html');
 <div class="container-fluid">
     <div class="row">
 
-
         <!-- Categoriën -->
 
         <div class="col-md-3 visible-lg Categoriën" id="Categoriën">
@@ -244,22 +243,22 @@ require('navbar.html');
                         echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div>
                             <div class=\"veiling-prijs-tijd\">
                                 <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] .$pagina.'"></p>' . "</div>
+                                <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . "></p>" . "</div>
                             </div>
                          </div>
                      </div>";
-                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$pagina);
+                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$veiling["VW_voorwerpnummer"]);
 
                     } else {
                         echo ">
                             </div>
                                 <div class=\"veiling-prijs-tijd\">
                                     <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                    <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] .$pagina.'"></p>' . " </div>
+                                    <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . "></p>" . " </div>
                                 </div>
                             </div>
                         </div>";
-                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$pagina);
+                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$veiling["VW_voorwerpnummer"]);
                     }
                 }
 
