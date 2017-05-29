@@ -67,7 +67,7 @@ CREATE TABLE Gebruiker (
 );
 
 CREATE TABLE Administrator (
-  ADM_gebruikersnaam VARCHAR(64)   NOT NULL, --Gebruikersnaam uit de gebruikerstabel
+  ADM_gebruikersnaam VARCHAR(64) NOT NULL, --Gebruikersnaam uit de gebruikerstabel
   CONSTRAINT FK_AdministratorGebruikersnaam FOREIGN KEY (ADM_gebruikersnaam) REFERENCES Gebruiker (GEB_gebruikersnaam)
 )
 
@@ -136,11 +136,11 @@ CREATE TABLE Bestand (
 
 
 CREATE TABLE Rubriek (
-  RB_Nummer     INT          NOT NULL, -- MOET MAX 3 worden
-  RB_Naam       VARCHAR(100) NOT NULL,
-  RB_Parent     INT          NULL,
-  RB_volgnummer INT          NOT NULL, -- MOET MAX 2 worden
-  RB_voorwerpcount INT NOT NULL, --Aantal voorwerpen in de rubiek
+  RB_Nummer        INT          NOT NULL, -- MOET MAX 3 worden
+  RB_Naam          VARCHAR(100) NOT NULL,
+  RB_Parent        INT          NULL,
+  RB_volgnummer    INT          NOT NULL, -- MOET MAX 2 worden
+  RB_voorwerpcount INT          NULL, --Aantal voorwerpen in de rubiek
   CONSTRAINT PK_RB_Nummer PRIMARY KEY (RB_Nummer),
   CONSTRAINT FK_Parent FOREIGN KEY (RB_Parent) REFERENCES Rubriek (RB_Nummer)
 );

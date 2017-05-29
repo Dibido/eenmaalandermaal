@@ -1,5 +1,5 @@
 --Conversiescript rubrieken
-INSERT INTO Rubriek
+INSERT INTO Rubriek (RB_Nummer, RB_Naam, RB_Parent, RB_volgnummer)
   SELECT
     ID                 AS RB_Nummer,
     LTRIM(RTRIM(name)) AS RB_naam,
@@ -39,7 +39,7 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
 GO
 --TODO: Verkoper ook aan gebruikerstabel toevoegen.
 
---Conversiescript Items
+--Conversiescript voorwerp
 SET IDENTITY_INSERT voorwerp ON
 INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
@@ -51,7 +51,7 @@ INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_
     Conditie                                                 AS VW_conditie,
     Thumbnail                                                AS VW_thumbnail,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
-    '2017-05-24'                                             AS VW_looptijdstart,
+    '2017-05-31'                                             AS VW_looptijdstart,
     7                                                        AS VW_looptijd,
     'Bank / giro'                                            AS VW_betalingswijze,
     CASE WHEN CHARINDEX(',', [locatie]) > 0 --Als er een locatie is ingevuld, haal het land eraf.
