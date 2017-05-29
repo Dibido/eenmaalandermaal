@@ -114,7 +114,7 @@ if (isset($_GET["noLogin"]) && ($_GET["noLogin"] == 'True')) {
 <body>
 
 <?php
-include "navbar.html";
+include "navbar.php";
 ?>
 
 
