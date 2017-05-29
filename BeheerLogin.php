@@ -11,7 +11,7 @@ $errorMessage = [False];
 $successMessage = [False];
 
 //testing if the user tried to login, or only accessed the page
-if ($_POST["formSend"] == 'True') {
+if ($_POST["formSend"] == 'True' AND isset($_POST["formSend"])) {
 
     $username = $_POST["username"];
     $password = $_POST["password"];
@@ -44,9 +44,9 @@ if ($_POST["formSend"] == 'True') {
 }
 
 /* checking if the user just came back from beheer/index.php or logged out*/
-if ($_GET["noLogin"] == 'True'){
+if ($_GET["noLogin"] == 'True' AND isset($_GET["noLogin"])){
     $errorMessage = [True, 'Inloggen is vereist voor het bezoeken van de beheerpagina.'];
-} else if ($_GET["loggedOut"] == 'True'){
+} else if ($_GET["loggedOut"] == 'True' AND isset($_GET["loggedOut"])){
 
     //delete the session
     if (ini_get("session.use_cookies")) {
