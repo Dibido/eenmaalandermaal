@@ -59,7 +59,7 @@ FROM Voorwerp
     ON Voorwerp.VW_voorwerpnummer = BOD_voorwerpnummer
 --Vul hier de minimum en maximum tijd over in
 
-WHERE
+WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 2 AND
   VW_voorwerpnummer IN (SELECT VW_voorwerpnummer
                         FROM Voorwerp
                           INNER JOIN Voorwerp_Rubriek
@@ -106,7 +106,7 @@ FROM Voorwerp
   INNER JOIN Bod
     ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
 --Where statement om te kijken of het Voorwerp nummer in de belangrijkste categorie zit.
-WHERE VW_voorwerpnummer IN (
+WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
   SELECT DISTINCT BOD_voorwerpnummer
   --Selecteerd de naam van de Hoofdcategorie per voorwerpnummer
   FROM Bod
@@ -115,7 +115,7 @@ WHERE VW_voorwerpnummer IN (
     INNER JOIN Rubriek
       ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   WHERE RB_Naam != 'root' AND RB_Naam IN (
-    select top 1 Rubriek.RB_Naam from Voorwerp
+    select top 5 Rubriek.RB_Naam from Voorwerp
       LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
       LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
       LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
@@ -125,8 +125,6 @@ WHERE VW_voorwerpnummer IN (
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
 GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs
 ORDER BY Biedingen DESC
-
-
 
 EOT;
 

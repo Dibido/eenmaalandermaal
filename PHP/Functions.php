@@ -303,7 +303,7 @@ function DrawAuction($auction)
                     <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . $pagina . '"></p>' . "</div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
@@ -314,7 +314,7 @@ function DrawAuction($auction)
             <!-- End template -->
             
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $pagina);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
 
 }
 
@@ -615,7 +615,7 @@ function getParentCategories($rubriekNummer)
     GLOBAL $connection;
     $QueryParentCategories = <<<EOT
     
-with tab1(RB_Nummer,RB_Naam,RB_Parent,  RB_volgnummer) as
+with tab1(RB_Nummer,RB_Naam,RB_Parent,  RB_volgnummer,RB_voorwerpcount) as
 (select * from Rubriek where RB_Nummer = $rubriekNummer
 union all
 select t1.* from Rubriek t1,tab1 

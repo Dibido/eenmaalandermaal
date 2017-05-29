@@ -305,9 +305,7 @@ require('navbar.html');
                     $lastPageNum = $pagenum + $amountOfFuturePages + 1;
                     $startPage = $pagenum - 4 + $amountOfFuturePages;
                     //Prevent startPage to be <=0
-                    if ($startPage < 1) {
-                        $startPage = 1;
-                    }
+
                     $nextPage = $pagenum + 1;
 
                     // If the current page is not the first one. The first pagenumber created has to be the one before the current page.
@@ -318,8 +316,11 @@ require('navbar.html');
                         echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $previousPage . "> <- Vorige</a> ";
                         echo '</li>';
                     }
+                    if ($startPage < 1) {
+                        $startPage = 1;
+                    }
                     //Loop creates all buttons to the next or pages before the current one.
-                    for ($i = $startPage; $i < $lastPageNum; $i++) {
+                    for ($i = $startPage; $i < $lastPageNum+1; $i++) {
                         if ($i == $pagenum) {
                             echo '<li class="page-item active text-center">';
                             echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
