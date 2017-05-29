@@ -65,12 +65,10 @@ CREATE TABLE Gebruiker (
                                              getdate()), --Geboortedag mag alleen in het verleden zijn.
 );
 
---TODO: Aanmaken admin tabel met gebruikersnaam;admin
-/*CREATE TABLE Administrator (
+CREATE TABLE Administrator (
   ADM_gebruikersnaam VARCHAR(64)   NOT NULL, --Gebruikersnaam uit de gebruikerstabel
-  ADM_admin          BIT DEFAULT 0 NOT NULL, --Of de gebruiker admin is
-  CONSTRAINT FK_AdminFOREIGN KEY
-)*/
+  CONSTRAINT FK_AdministratorGebruikersnaam FOREIGN KEY (ADM_gebruikersnaam) REFERENCES Gebruiker (GEB_gebruikersnaam)
+)
 
 
 CREATE TABLE Gebruikerstelefoon (
@@ -141,6 +139,7 @@ CREATE TABLE Rubriek (
   RB_Naam       VARCHAR(100) NOT NULL,
   RB_Parent     INT          NULL,
   RB_volgnummer INT          NOT NULL, -- MOET MAX 2 worden
+  RB_Voorwerpcount INT NOT NULL, --Aantal voorwerpen in de rubiek
   CONSTRAINT PK_RB_Nummer PRIMARY KEY (RB_Nummer),
   CONSTRAINT FK_Parent FOREIGN KEY (RB_Parent) REFERENCES Rubriek (RB_Nummer)
 );
