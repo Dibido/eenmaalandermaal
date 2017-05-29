@@ -970,7 +970,10 @@ EOT;
             session_destroy();
 
             echo '  <div class="alert alert-success">
-                            <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>';
+                            <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>
+                            <hr>
+            <p class="text-center">Wilt u een account aanmaken? Klik dan <a href="registreer1.php">hier</a>.</p>
+            ';
 
         }
     } else {
