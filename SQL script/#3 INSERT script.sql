@@ -322,9 +322,8 @@ VALUES
 
 INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_adresregel_2, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord, GEB_vraag, GEB_antwoordtekst, GEB_verkoper, GEB_rating)
     VALUES
-      ('kees', 'kees', 'Jansen', 'hansestraat', 'hanseweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'onzin@meeronzin.dk', '$2y$10$ioA3GMCD446M0yaKgaWg1O587gnVw.RCSs3GAOG32d5b6n/snJmQG', '3', 'kees', 0, 4),
-      ('tinus', 'tinus', 'kabouter', 'ruitenberglaan', 'ruitenbergweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'tinus@meeronzin.dk', '$2y$10$bCi5SfdhPREAlzKUiiB8o.eCsjLbO1.1FrzlH805zIdpizTYSspZ2', '1', 'tinus', 0, 0)
-
+      ('kees', 'kees', 'Jansen', 'hansestraat', 'hanseweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'onzin@meeronzin.dk', '$2y$10$2JKp2XFs0ZG8lhgZ2K7TR.5S6QOs245LUU3oeH2mGq4QPIsGlp/Va', '3', 'kees', 0, 4),
+      ('tinus', 'tinus', 'kabouter', 'ruitenberglaan', 'ruitenbergweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'tinus@meeronzin.dk', '$2y$10$Q1JfvVjjX5JXnEhu/odGYeo9q6mERuyR5Qu0k9sjv1/xjSfsUZhme', '1', 'tinus', 0, 0)
 
 
 /* Toevpegen van test voorwerpen */

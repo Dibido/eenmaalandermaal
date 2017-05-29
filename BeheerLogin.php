@@ -4,7 +4,6 @@ require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
-//echo password_hash('QNxaK62B', PASSWORD_DEFAULT);
 
 /* Backend for logging in an admin user */
 
@@ -48,7 +47,19 @@ if ($_POST["formSend"] == 'True') {
 if ($_GET["noLogin"] == 'True'){
     $errorMessage = [True, 'Inloggen is vereist voor het bezoeken van de beheerpagina.'];
 } else if ($_GET["loggedOut"] == 'True'){
+
+    //delete the session
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+
+    unset($_SESSION['adminUsername']);
     session_destroy();
+    session_commit();
     $successMessage = [True, 'Successvol uitgelogged.'];
 }
 
