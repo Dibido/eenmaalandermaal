@@ -45,11 +45,11 @@ function CheckCredentials($username, $password)
 function FindAdminUsers($username)
 {
     GLOBAL $connection;
-    GLOBAL $QueryFindUser;
+    GLOBAL $QueryFindAdmin;
 
     $username = cleanInput($username);
 
-    $stmt = $connection->prepare($QueryFindUser);
+    $stmt = $connection->prepare($QueryFindAdmin);
     $stmt->execute(array($username));
     return $stmt->fetch();
 }
@@ -989,7 +989,7 @@ function getCodeFromMail()
     }
 }
 
-function FindUsers($username)
+function FindUser($username)
 {
     GLOBAL $connection;
     GLOBAL $QueryFindUser;

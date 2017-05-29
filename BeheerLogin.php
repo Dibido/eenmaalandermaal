@@ -20,7 +20,7 @@ if ($_POST["formSend"] == 'True' AND isset($_POST["formSend"])) {
     if (isset($username) AND !empty($username)) {
         if (isset($password) AND !empty($password)) {
             //finding a user with the given username
-            $foundUser = FindAdminUsers($username)[0];
+            $foundUser = FindUser($username)[0];
 
             if (isset($foundUser) AND !empty($foundUser)) {
                 //if found, checking the password

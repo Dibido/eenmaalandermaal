@@ -269,6 +269,16 @@ FROM Gebruiker
 WHERE GEB_gebruikersnaam = ?
 EOT;
 
+
+/* query voor het zoeken van een Admin*/
+$QueryFindAdmin = <<<EOT
+
+SELECT GEB_gebruikersnaam
+FROM Gebruiker
+WHERE GEB_gebruikersnaam = ?
+EOT;
+
+
 /* query voor het zoeken van een user en checken van gebruikersnaam*/
 $QueryCheckCredentials = <<<EOT
 
