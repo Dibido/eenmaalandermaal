@@ -116,12 +116,12 @@ require('navbar.html');
                 $url = urlencode($group['Hoofd_Nummer']);
                 echo('<div class="col-xs-6 col-sm-5 col-md-4 col-xs-push-1 col-sm-push-2 col-md-push-0 col-lg-push-1">');
                 echo('<section id="' . $group['Hoofd_Naam'][0] . '">');
-                echo('<a href="resultaten.php?categorie=' . $url . '"><h4>' . $group['Hoofd_Naam'] . '</h4></a>');
+                echo('<a href="resultaten.php?rubriek=' . $url . '"><h4>' . $group['Hoofd_Naam'] . '</h4></a>');
                 echo('</section>');
             }
             $eerstekeer = false;
             $url = urlencode($group['Sub_Nummer']);
-            echo('<a href="resultaten.php?categorie=' . $url . '"><h6>' . $group['Sub_Naam'] . '</h6></a>');
+            echo('<a href="resultaten.php?rubriek=' . $url . '"><h6>' . $group['Sub_Naam'] . '</h6></a>');
         }
     }
     echo('</div>');

@@ -7,21 +7,20 @@
 < 2 minutes minutes + seconds
 */
 
-function ConvertTime($time){
+function ConvertTime($time)
+{
     $datetime = date_create($time);
     $currenttime = date_create(date("Ymd"));
     $interval = date_diff($datetime, $currenttime);
-    if($interval->days > 2){
+    if ($interval->days > 2) {
         //Datum weergeven.
         echo(date_format($datetime, 'Y-m-d'));
-    }
-    elseif($interval->h > 2){
+    } elseif ($interval->h > 2) {
         //Uren en minuten.
         echo(date_format($datetime, 'H:i'));
-    }
-    else{
+    } else {
         //in minuten en seconden.
-        echo(date_format($datetime,'i:s'));
+        echo(date_format($datetime, 'i:s'));
     }
 }
 
@@ -54,7 +53,6 @@ function FindAdminUsers($username)
     $stmt->execute(array($username));
     return $stmt->fetch();
 }
-
 
 
 /* function for getting the results for the product page */
@@ -123,7 +121,8 @@ EOT;
 
 
 /* function for getting the last offers of an auction */
-function  GetLastOffers($voorwerpnummer){
+function GetLastOffers($voorwerpnummer)
+{
 
     $QueryGetLastOffers = <<<EOT
     
@@ -135,9 +134,10 @@ EOT;
 }
 
 
-function  GetUserInfoPerAuction($username){
+function GetUserInfoPerAuction($username)
+{
 
-    $QueryGetUserInfo= <<<EOT
+    $QueryGetUserInfo = <<<EOT
     
     SELECT * 
     FROM Users
@@ -147,12 +147,13 @@ function  GetUserInfoPerAuction($username){
 EOT;
 
     RETURN $QueryGetUserInfo;
-   // RETURN SendToDatabase($QueryGetUserInfo);
+    // RETURN SendToDatabase($QueryGetUserInfo);
 }
 
-function  GetCategoryPerAuction($ItemID){
+function GetCategoryPerAuction($ItemID)
+{
 
-    $QueryGetUserInfo= <<<EOT
+    $QueryGetUserInfo = <<<EOT
     
     SELECT Name
 FROM Categorieen
@@ -334,7 +335,7 @@ function DrawSearchResults($auction)
         . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . "<p id=". $auction["VW_voorwerpnummer"] ."></p>" . " </div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <button class=\"btn text-center btn-default bied\">Meer info</button>
@@ -344,7 +345,7 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"],$auction["VW_voorwerpnummer"]);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
 
 }
 
@@ -458,16 +459,19 @@ SELECT DISTINCT
   VW_looptijdStart,
   VW_looptijdEinde,
   VW_betalingswijze,
-  VW_verkoper
+  VW_verkoper,
+  count(BOD_voorwerpnummer) as aantalBiedingen,
+  GEB_rating
 FROM Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Gebruiker on Gebruiker.GEB_gebruikersnaam = Voorwerp.VW_verkoper
   LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
   LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
   LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
-WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
+WHERE (VW_titel LIKE '%$SearchKeyword%')
 	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
 	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
 	AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
@@ -486,10 +490,10 @@ WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
    ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
 		AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
 		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
-		AND('$SearchUser' IS NULL OR VW_verkoper LIKE '%$SearchUser%')
+		AND(VW_verkoper LIKE '%$SearchUser%')
 	AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
-   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail,VW_verkoper
+   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail,VW_verkoper,GEB_rating
 ORDER BY $SearchFilter , VW_voorwerpnummer
 OFFSET $Offset ROWS
 FETCH NEXT $ResultsPerPage ROWS ONLY
@@ -497,13 +501,15 @@ FETCH NEXT $ResultsPerPage ROWS ONLY
 
     
 EOT;
-    //executing the query
     print_r($QuerySearchProducts);
+    //executing the query
     return SendToDatabase($QuerySearchProducts);
 
 
 }
 
+//This function returns the amount of results left in the next 4 pages.
+//The query counts the results starting at the next page and ending at the fifth page after the current one
 function amountOfResultsLeft($SearchOptions)
 {
     //preparing for query
@@ -603,67 +609,64 @@ function printVragen($Vragen)
     }
 }
 
+//Returns the Numbers of all parent Categories from the categorie you enter
+function getParentCategories($rubriekNummer)
+{
+    GLOBAL $connection;
+    $QueryParentCategories = <<<EOT
+    
+with tab1(RB_Nummer,RB_Naam,RB_Parent,  RB_volgnummer) as
+(select * from Rubriek where RB_Nummer = $rubriekNummer
+union all
+select t1.* from Rubriek t1,tab1 
+where tab1.RB_Parent = t1.RB_Nummer)
+select RB_Nummer from tab1;
 
-function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betalingsmethode)
+
+EOT;
+    RETURN $connection->query($QueryParentCategories)->fetchAll(PDO::FETCH_COLUMN);
+}
+
+//Prints all categories in the Rubriek table in the right orer.
+function printCategories($zoekterm, $rubriekQuery, $rubriekNummer, $sorteerfilter, $prijs, $betalingsmethode)
 {
     global $connection;
-    $rubriekQuery = "
-SELECT A.RB_Naam AS HoofdRubriek, B.RB_Naam AS Rubriek, C.RB_Naam AS SubRubriek, D.RB_Naam as SubSubRubriek, E.RB_Naam as SubSubSubRubriek, F.RB_Naam as SubSubSubSubRubriek, A.RB_Nummer as HoofdRubriekNummer, B.RB_Nummer as RubriekNummer, C.RB_Nummer AS SubRubriekNummer, D.RB_Nummer as SubSubRubriekNummer, E.RB_Nummer as SubSubSubRubriekNummer,F.RB_Nummer as SubSubSubSubRubriekNummer
-                        FROM Rubriek A
-                        OUTER APPLY
-                        (
-                          SELECT * FROM Rubriek Z
-                          WHERE Z.RB_Parent = A.RB_Nummer
-                        ) B
-                        OUTER APPLY
-                        (
-                          SELECT * FROM Rubriek Z
-                          WHERE Z.RB_Parent = B.RB_Nummer
-                        ) C
-                        OUTER APPLY
-                        (
-                          SELECT * FROM Rubriek Z
-                          WHERE Z.RB_Parent = C.RB_Nummer
-                        ) D
-						OUTER APPLY
-						(
-						SELECT * FROM Rubriek Z
-						WHERE Z.RB_Parent = D.RB_NUMMER
-						)
-                        E 
-						OUTER APPLY
-						(
-						SELECT * FROM Rubriek Z
-						WHERE Z.RB_Parent = E.RB_NUMMER
-						)
-                        F 
-                       /*
-                        cross APPLY
-                        (
-                            select * FROM Voorwerp_Rubriek E
-                            INNER JOIN Voorwerp 
-                            on Voorwerp.VW_voorwerpnummer = E.VR_Voorwerp_Nummer
-                            WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
-                            )E
-                        */                           
-                        WHERE A.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/
-                        GROUP BY F.RB_Naam,E.RB_Naam,D.RB_Naam, C.RB_Naam,B.RB_Naam,A.RB_Naam, F.RB_Nummer, E.RB_Nummer,D.RB_Nummer,C.RB_Nummer,B.RB_Nummer,A.RB_Nummer
-                        ORDER BY A.RB_Naam, B.RB_Naam, C.RB_Naam,D.RB_Naam,E.RB_Naam, F.RB_Nummer";
+    //When a rubriekNummer is entered the function getParentCategories returns all Numbers of the parents
+    //These are used to open the selected categories
+    if (!empty($rubriekNummer)) {
+        $parentRubrieken = getParentCategories($rubriekNummer);
+    }
+    //Returns all Categories in the following format: Head-categorie/categorie/subcategorie/subsubcategorie and so on
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
+    //Unorderlist with all Categories in it. The class is used to be able to open and close the unorder list.
     echo '<ul id="Rubrieken" class="nav panel-collapse collapse in">';
-//Goes through the first dimensional of the array
+    //Goes through the first dimensional of the array
     for ($i = 0; $i < sizeof($rubrieken); $i++) {
         //Goes through the second dimensional of the array
         for ($j = 0; $j < (sizeof($rubrieken[$i]) / 2); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
             if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i]) / 2) - 1) AND isset($rubrieken[$i][$j])) {
-                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($rubrieken[$i][$j + 4]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . ">";
-                echo $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
+                //If a rubriekNummer was entered and the current categorie number is in the array $parentRubrieken it will have a grey background
+                if (in_array($rubrieken[$i][$j + 6], $parentRubrieken)) {
+                    echo '<label style="background-color: #eeeeee">';
+                    echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubrieken[$i][$j + 6]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . ">";
+                    echo $rubrieken[$i][$j] . '</a></label><ul> ';
+                } else {
+                    echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubrieken[$i][$j + 6]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . ">";
+                    echo $rubrieken[$i][$j] . '</a><ul> ';
+                }
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
-                echo '<li><label class="tree-toggle nav-header">' . $rubrieken[$i][$j] . '</label>
-                        <ul class="nav nav-list tree" style="display: none;">';
+                //If  a rubriekNummer was entered and the current categorie number is in the array $parentRubrieken it will be opened and it will have a grey background
+                if (in_array($rubrieken[$i][$j + 6], $parentRubrieken)) {
+                    echo '<li ><label class="tree-toggle nav-header" style="background-color: #eeeeee">' . $rubrieken[$i][$j] . '</label>
+                        <ul class="nav nav-list tree">';
+
+                } else {
+                    echo '<li><label class="tree-toggle nav-header">' . $rubrieken[$i][$j] . '</label>
+                        <ul class="nav nav-list tree" style="display: none">';
+                }
             }
         }
         //For loop to close the list items and unorderd lists it "closes" backwards
@@ -705,19 +708,19 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
         // Display the result in the element with id="demo"
         
         if(days >= 3){
-        document.getElementById("'. $VW_Nummer .'").innerHTML = days + "d " + hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
         }else if(days < 3 && seconds < 10){
-        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("'. $VW_Nummer .'").innerHTML = "Veiling gesloten";
+            document.getElementById("' . $VW_Nummer . '").innerHTML = "Veiling gesloten";
         }
     }, 1000)
 </script>
@@ -771,7 +774,7 @@ function checkEmailSent()
 </tr>
 </tr><td>&nbsp;</td></tr>
 <tr>
-<td>Dit is uw persoonlijke code: '.$code. '</td>
+<td>Dit is uw persoonlijke code: ' . $code . '</td>
 </tr>
 <tr>
 <td>Vul deze in op de website om de registratieprocedure af te ronden of klik op deze <a href="http://iproject3.icasites.nl/registreer1.php?code=' . $urlCode . '">link.</a></td>
@@ -981,7 +984,7 @@ EOT;
 function getCodeFromMail()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        IF(!empty($_GET['code'])){
+        IF (!empty($_GET['code'])) {
             echo $_GET['code'];
         }
     }
