@@ -285,14 +285,14 @@ require('navbar.html');
 
     <!-- Results -->
 
-    <div class="col-md-8 col-sm-12 col-xs-12 pull-left">
+    <div class="col-md-8 col-sm-12 col-xs-12 right">
         <?php
         global $Dictionary;
         $result = SearchFunction($Dictionary);
         outputRows($result, $Dictionary["SearchKeyword"]);
         ?>
 
-        <div class="col-md-9 col-sm-12 col-xs-12 col-md-push-6 col-sm-push-6 col-xs-push-6">
+        <div class="col-md-5 col-sm-6 col-xs-6 col-md-push-5 col-sm-push-3 col-xs-push-3">
             <ul class="pagination">
 
                 <?php
