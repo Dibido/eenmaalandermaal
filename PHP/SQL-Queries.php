@@ -128,34 +128,6 @@ ORDER BY Biedingen DESC
 
 EOT;
 
-
-/* Work in progress! */
-
-$QueryAllAuctions = <<<EOT
-SELECT
-  TOP 40
-  VW_voorwerpnummer,VW_titel,
-  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
-  (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
-              FROM Bod
-              WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
-                                       FROM Bod
-                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-              ORDER BY BOD_Bodbedrag DESC), (select TOP 1 VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
-  VW_looptijdEinde,
-  (SELECT TOP 1 BES_filenaam
-   FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
-FROM Voorwerp
-  INNER JOIN Voorwerp_Rubriek
-    ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdStart, VW_looptijdEinde
-ORDER BY VW_looptijdStart ASC
-EOT;
-
-$QuerySearchProducts;
-
 $QueryQualityNew = <<<EOT
 SELECT
   TOP 40
