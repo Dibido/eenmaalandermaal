@@ -989,4 +989,16 @@ function getCodeFromMail()
     }
 }
 
+function FindUsers($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryFindUser;
+
+    $username = cleanInput($username);
+
+    $stmt = $connection->prepare($QueryFindUser);
+    $stmt->execute(array($username));
+    return $stmt->fetch();
+}
+
 ?>
