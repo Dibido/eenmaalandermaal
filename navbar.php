@@ -33,11 +33,39 @@
                     <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
                                                                                                type="submit"
                                                                                                style="background-color: #ffffff; border-color: #f2f2f2;"><span
-                            class="glyphicon glyphicon-search"></span></button></span>
+                                    class="glyphicon glyphicon-search"></span></button></span>
                 </div>
             </div>
         </form>
     </div>
 </nav>
+
+
+<?php
+if (isset($_SESSION['adminUsername'])) {
+    echo 'ingelogd';
+    echo '<div class="collapse text-center" id="accountControls">
+    <div class="list-group">
+        <a href="#" class="list-group-item">Mijn account</a>
+        <a href="../login.php?loggedOut=True" class="list-group-item">Log out</a>
+    </div>
+</div>';
+} else {
+    echo 'niet ingelogd';
+    echo '<div class="collapse text-center" id="accountControls">
+    <div class="list-group">
+        <a href="login.php" class="list-group-item">Log In</a>
+        <a href="registreer1.php" class="list-group-item">Registreer</a>
+    </div>
+</div>';
+}
+?>
+
+
+
+
+
+
+
 
 

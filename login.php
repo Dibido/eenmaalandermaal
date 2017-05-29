@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($username) AND !empty($username)) {
             if (isset($password) AND !empty($password)) {
                 //finding a user with the given username
-                $foundUser = FindUsers($username)[0];
+                $foundUser = FindUser($username)[0];
 
                 if (isset($foundUser) AND !empty($foundUser)) {
                     //if found, checking the password
@@ -125,7 +125,7 @@ include "navbar.html";
             EeemaalAndermaal login
         </div>
         <div class="panel-body">
-            <form action="BeheerLogin.php" method="POST">
+            <form action="login.php" method="POST">
 
                 <!-- gebruikersnaam input -->
 
