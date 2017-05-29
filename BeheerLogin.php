@@ -27,8 +27,8 @@ if ($_POST["formSend"] == 'True' AND isset($_POST["formSend"])) {
                 $foundPassword = CheckCredentials($username, $password);
                 if($foundPassword){
                     session_start();
-                    $_SESSION["adminUsername"] = $foundUser;
-                    header('Location: /Beheer/');
+                    $_SESSION["Username"] = $foundUser;
+                    header('Location: index.php');
                 } else {
                     $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser];
                 }
@@ -57,7 +57,7 @@ if ($_GET["noLogin"] == 'True' AND isset($_GET["noLogin"])){
         );
     }
 
-    unset($_SESSION['adminUsername']);
+    unset($_SESSION['Username']);
     session_destroy();
     session_commit();
     $successMessage = [True, 'Successvol uitgelogged.'];

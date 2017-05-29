@@ -47,26 +47,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 /* checking if the user just came back from beheer/index.php or logged out*/
-    if (isset($_GET["noLogin"]) && ($_GET["noLogin"] == 'True')) {
-        $errorMessage = [True, 'Inloggen is vereist voor het bezoeken van de beheerpagina.'];
-    } else if (isset($_GET["loggedOut"]) &&$_GET["loggedOut"] == 'TRUE') {
+if (isset($_GET["noLogin"]) && ($_GET["noLogin"] == 'True')) {
+    $errorMessage = [True, 'Inloggen is vereist voor het bezoeken van de beheerpagina.'];
+} else if (isset($_GET["loggedOut"]) && $_GET["loggedOut"] == 'TRUE') {
 
-        //delete the session
-        if (ini_get("session.use_cookies")) {
-            $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
-                $params["path"], $params["domain"],
-                $params["secure"], $params["httponly"]
-            );
-        }
-
-        unset($_SESSION['adminUsername']);
-        session_destroy();
-        session_commit();
-        $successMessage = [True, 'Successvol uitgelogged.'];
+    //delete the session
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
     }
 
-
+    unset($_SESSION['adminUsername']);
+    session_destroy();
+    session_commit();
+    $successMessage = [True, 'Successvol uitgelogged.'];
+}
 
 
 ?>
@@ -124,7 +122,7 @@ include "navbar.html";
 <div class="col-xs-10 col-xs-push-1 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4 center-block" id="loginWrapper">
     <div class="panel panel-default" id="loginPanel">
         <div class="panel-heading">
-            EeemaalAndermaal beheerders login
+            EeemaalAndermaal login
         </div>
         <div class="panel-body">
             <form action="BeheerLogin.php" method="POST">
@@ -161,13 +159,13 @@ include "navbar.html";
                 /* checking if any alerts of success messages need to be displayed */
                 if ($errorMessage[0]) {
 
-                echo "<div class=\"alert alert-danger alert-dismissable\">
+                    echo "<div class=\"alert alert-danger alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
                              <strong>Error!</strong> " . $errorMessage[1] . "
                           </div>";
 
                 } else if ($successMessage[0]) {
-                echo "<div class=\"alert alert-success alert-dismissable\">
+                    echo "<div class=\"alert alert-success alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
                              <strong>Success!</strong> " . $successMessage[1] . "
                           </div>";
@@ -175,6 +173,8 @@ include "navbar.html";
 
                 ?>
             </form>
+            <hr>
+            <p class="text-center">Wilt u een account aanmaken? Klik dan <a href="registreer1.php">hier</a>.</p>
         </div>
     </div>
 </div>
