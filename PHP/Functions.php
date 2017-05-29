@@ -614,7 +614,7 @@ function getParentCategories($rubriekNummer)
     GLOBAL $connection;
     $QueryParentCategories = <<<EOT
     
-with tab1(RB_Nummer,RB_Naam,RB_Parent,  RB_volgnummer,RB_voorwerpcount) as
+with tab1(RB_Nummer,RB_Naam,RB_Parent,RB_volgnummer,RB_voorwerpcount) as
 (select * from Rubriek where RB_Nummer = $rubriekNummer
 union all
 select t1.* from Rubriek t1,tab1 
