@@ -139,7 +139,7 @@ CREATE TABLE Rubriek (
   RB_Naam       VARCHAR(100) NOT NULL,
   RB_Parent     INT          NULL,
   RB_volgnummer INT          NOT NULL, -- MOET MAX 2 worden
-  RB_Voorwerpcount INT NOT NULL, --Aantal voorwerpen in de rubiek
+  RB_voorwerpcount INT NOT NULL, --Aantal voorwerpen in de rubiek
   CONSTRAINT PK_RB_Nummer PRIMARY KEY (RB_Nummer),
   CONSTRAINT FK_Parent FOREIGN KEY (RB_Parent) REFERENCES Rubriek (RB_Nummer)
 );

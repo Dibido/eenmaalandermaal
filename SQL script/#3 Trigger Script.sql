@@ -9,7 +9,7 @@ AS
     --Bijwerken aantal voorwerpen per categorie
     --Alleen als er wijzigingen zijn aan VoorwerpInRubriek
     UPDATE Rubriek
-    SET VoorwerpCount =
+    SET RB_voorwerpcount =
     (
       SELECT COUNT(*) FROM Voorwerp_Rubriek
       WHERE Voorwerp_Rubriek.VR_Rubriek_Nummer=RB_Nummer
