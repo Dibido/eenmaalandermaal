@@ -3,7 +3,7 @@
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
-
+session_start();
 
 /* Backend for logging in an admin user */
 
@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     //if found, checking the password
                     $foundPassword = CheckCredentials($username, $password);
                     if ($foundPassword) {
-                        session_start();
                         $_SESSION["Username"] = $foundUser;
                         echo 'U bent ingelogd';
                     } else {
@@ -60,7 +59,7 @@ if (isset($_GET["noLogin"]) && ($_GET["noLogin"] == 'True')) {
         );
     }
 
-    unset($_SESSION['adminUsername']);
+    unset($_SESSION['Username']);
     session_destroy();
     session_commit();
     $successMessage = [True, 'Successvol uitgelogged.'];
