@@ -10,15 +10,20 @@ GO
 
 --Conversiescript Users
 INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord,
-                                            GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
+                       GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
   SELECT DISTINCT
     LTRIM(RTRIM(Username))   AS GEB_gebruikersnaam,
-    ('-')                    AS GEB_voornaam,--is niet bekend.
-    ('-')                    AS GEB_achternaam,--is niet bekend.
-    ('-')                    AS GEB_adresregel_1, -- is niet bekend.
+    ('-')                    AS GEB_voornaam,
+    --is niet bekend.
+    ('-')                    AS GEB_achternaam,
+    --is niet bekend.
+    ('-')                    AS GEB_adresregel_1,
+    -- is niet bekend.
     getdate()                AS GEB_geboortedag,
-    'Geen_mailadres@nope.nl' AS GEB_mailbox, -- is niet bekend.
-    'P@ssw0rd'               AS GEB_wachtwoord, -- is niet bekend.
+    'Geen_mailadres@nope.nl' AS GEB_mailbox,
+    -- is niet bekend.
+    'P@ssw0rd'               AS GEB_wachtwoord,
+    -- is niet bekend.
     1                        AS GEB_vraag,
     --Default vraag
     'Defaultantwoord'        AS GEB_antwoordtekst,
@@ -38,25 +43,25 @@ GO
 SET IDENTITY_INSERT voorwerp ON
 INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
-    ID                                                                                         AS VW_voorwerpnummer,
+    ID                                                       AS VW_voorwerpnummer,
     (SELECT CASE
-            WHEN len(titel) >= 56
-              THEN left(titel, 56) + '...'
-            ELSE titel END titel)                                                              AS VW_titel,
-    Beschrijving                                                                               AS VW_beschrijving,
-    Land                                                                                       AS VW_land,
-    Verkoper                                                                                   AS VW_verkoper,
-    Conditie                                                                                   AS VW_conditie,
-    Thumbnail                                                                                  AS VW_thumbnail,
+            WHEN LEN(LTRIM(RTRIM(titel))) >= 56
+              THEN LEFT(LTRIM(RTRIM(titel)), 56) + '...'
+            ELSE LTRIM(RTRIM(titel)) END titel)              AS VW_titel,
+    Beschrijving                                             AS VW_beschrijving,
+    Land                                                     AS VW_land,
+    Verkoper                                                 AS VW_verkoper,
+    Conditie                                                 AS VW_conditie,
+    Thumbnail                                                AS VW_thumbnail,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
-    '2017-05-24'                                                                               AS VW_looptijdstart,
-    7                                                                                          AS VW_looptijd,
-    'Bank / giro'                                                                              AS VW_betalingswijze,
+    '2017-05-24'                                             AS VW_looptijdstart,
+    7                                                        AS VW_looptijd,
+    'Bank / giro'                                            AS VW_betalingswijze,
     CASE WHEN CHARINDEX(',', [locatie]) > 0
       THEN REPLACE(LEFT([locatie], CHARINDEX(',', [locatie])), ',', '')
     ELSE 'Geen plaatsnaam bekend'
-    END                                                                                        AS VW_plaatsnaam,
-    0                                                                                          AS VW_veilinggesloten
+    END                                                      AS VW_plaatsnaam,
+    0                                                        AS VW_veilinggesloten
   FROM Items
 SET IDENTITY_INSERT voorwerp OFF
 GO
