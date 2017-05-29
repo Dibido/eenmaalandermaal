@@ -501,7 +501,6 @@ FETCH NEXT $ResultsPerPage ROWS ONLY
 
     
 EOT;
-    print_r($QuerySearchProducts);
     //executing the query
     return SendToDatabase($QuerySearchProducts);
 

@@ -172,7 +172,6 @@ EOT;
                 <div class="panel-body">
                     <div>
                         <?php echo $ItemInfo["VW_beschrijving"]?>
-
                     </div>
                 </div>
         </div>
