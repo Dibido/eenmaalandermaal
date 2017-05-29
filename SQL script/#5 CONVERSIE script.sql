@@ -44,10 +44,7 @@ SET IDENTITY_INSERT voorwerp ON
 INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
     ID                                                       AS VW_voorwerpnummer,
-    (SELECT CASE
-            WHEN LEN(LTRIM(RTRIM(titel))) >= 56
-              THEN LEFT(LTRIM(RTRIM(titel)), 56) + '...'
-            ELSE LTRIM(RTRIM(titel)) END titel)              AS VW_titel,
+    LTRIM(RTRIM(titel))                                      AS VW_titel,
     Beschrijving                                             AS VW_beschrijving,
     Land                                                     AS VW_land,
     Verkoper                                                 AS VW_verkoper,

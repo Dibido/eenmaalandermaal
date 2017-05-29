@@ -83,7 +83,7 @@ CREATE TABLE Gebruikerstelefoon (
 
 CREATE TABLE Voorwerp (
   VW_voorwerpnummer      BIGINT        NOT NULL IDENTITY, --Genereerd zelf nummer, zo veel mogelijk voorwerpen
-  VW_titel               VARCHAR(60)   NOT NULL, --Hetzelfde als marktplaats
+  VW_titel               VARCHAR(90)   NOT NULL, --De langste titel is 86 en om nog wat marge te hebben doen we 90
   VW_beschrijving        VARCHAR(MAX)  NOT NULL, --Geen reden tot beperken
   VW_startprijs          NUMERIC(9, 2) NOT NULL, --Bedrag in de miljoenen
   VW_betalingswijze      VARCHAR(25)   NOT NULL DEFAULT 'Bank / Giro', --Korte keuzes (d.m.v. dropdown)
