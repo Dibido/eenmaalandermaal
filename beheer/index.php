@@ -61,7 +61,7 @@ require('../PHP/SQL-Queries.php');
 <body>
 
 <?php
-include "../navbar.html";
+include "../navbar.php";
 
 ?>
 <!-- accountControls -->
