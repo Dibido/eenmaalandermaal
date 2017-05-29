@@ -1,10 +1,10 @@
 --Conversiescript rubrieken
 INSERT INTO Rubriek
   SELECT
-    ID     AS RB_Nummer,
-    name   AS RB_naam,
-    parent AS RB_parent,
-    ID     AS RB_volgnummer
+    ID                 AS RB_Nummer,
+    LTRIM(RTRIM(name)) AS RB_naam,
+    parent             AS RB_parent,
+    ID                 AS RB_volgnummer
   FROM Categorieen
 GO
 
@@ -44,20 +44,17 @@ SET IDENTITY_INSERT voorwerp ON
 INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
     ID                                                       AS VW_voorwerpnummer,
-    (SELECT CASE
-            WHEN LEN(LTRIM(RTRIM(titel))) >= 56
-              THEN LEFT(LTRIM(RTRIM(titel)), 56) + '...'
-            ELSE LTRIM(RTRIM(titel)) END titel)              AS VW_titel,
+    LTRIM(RTRIM(titel))                                      AS VW_titel,
     Beschrijving                                             AS VW_beschrijving,
     Land                                                     AS VW_land,
-    Verkoper                                                 AS VW_verkoper,
+    LTRIM(RTRIM(Verkoper))                                   AS VW_verkoper,
     Conditie                                                 AS VW_conditie,
     Thumbnail                                                AS VW_thumbnail,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
     '2017-05-24'                                             AS VW_looptijdstart,
     7                                                        AS VW_looptijd,
     'Bank / giro'                                            AS VW_betalingswijze,
-    CASE WHEN CHARINDEX(',', [locatie]) > 0
+    CASE WHEN CHARINDEX(',', [locatie]) > 0 --Als er een locatie is ingevuld, haal het land eraf.
       THEN REPLACE(LEFT([locatie], CHARINDEX(',', [locatie])), ',', '')
     ELSE 'Geen plaatsnaam bekend'
     END                                                      AS VW_plaatsnaam,
