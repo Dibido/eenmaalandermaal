@@ -278,21 +278,26 @@ require('navbar.html');
 <!-- Extra advertenties -->
 
 <div class="col-sm-12 HeaderTitle text-center">Populaire nieuwe veilingen</div>
-        <?php
+<div class="container-fluid">
+
+    <?php
 
 
-        $ExtraAuctions = SendToDatabase($QueryQualityNew);
+    $ExtraAuctions = SendToDatabase($QueryQualityNew);
 
-        if ($ExtraAuctions[0]) {
-            foreach ($ExtraAuctions as $advert) {
-                DrawAuction($advert);
-            }
-        } else {
-            echo "<b>Error on loading auctions: </b>" . "<br><br>" . $ExtraAuctions[1];
+    if ($ExtraAuctions[0]) {
+        foreach ($ExtraAuctions as $advert) {
+            DrawAuction($advert);
         }
+    } else {
+        echo "<b>Error on loading auctions: </b>" . "<br><br>" . $ExtraAuctions[1];
+    }
 
-        ?>
+    ?>
+
+
 </div>
+
 
 <?php include('footer.html') ?>
 
