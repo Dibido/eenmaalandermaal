@@ -28,7 +28,7 @@ if ($_POST["formSend"] == 'True') {
                 if($foundPassword){
                     session_start();
                     $_SESSION["adminUsername"] = $foundUser;
-                    header('Location: Beheer.php');
+                    header('Location: /Beheer/');
                 } else {
                     $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser];
                 }
@@ -43,7 +43,7 @@ if ($_POST["formSend"] == 'True') {
     }
 }
 
-/* checking if the user just came back from Beheer.php or logged out*/
+/* checking if the user just came back from beheer/index.php or logged out*/
 if ($_GET["noLogin"] == 'True'){
     $errorMessage = [True, 'Inloggen is vereist voor het bezoeken van de beheerpagina.'];
 } else if ($_GET["loggedOut"] == 'True'){
