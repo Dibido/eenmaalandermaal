@@ -304,6 +304,28 @@ FROM Gebruiker
 WHERE GEB_gebruikersnaam = ?
 EOT;
 
+$rubriekQuery = <<<EOT
+SELECT A.RB_Naam AS HoofdRubriek, B.RB_Naam AS Rubriek, C.RB_Naam AS SubRubriek, D.RB_Naam as SubSubRubriek, E.RB_Naam as SubSubSubRubriek, F.RB_Naam as SubSubSubSubRubriek, A.RB_Nummer as HoofdRubriekNummer, B.RB_Nummer as RubriekNummer, C.RB_Nummer AS SubRubriekNummer, D.RB_Nummer as SubSubRubriekNummer, E.RB_Nummer as SubSubSubRubriekNummer,F.RB_Nummer as SubSubSubSubRubriekNummer
+                        FROM Rubriek A
+						FULL OUTER JOIN Rubriek B
+						on B.RB_Parent = A.RB_Nummer
+						FULL OUTER JOIN Rubriek C
+						on C.RB_Parent = B.RB_Nummer
+						FULL OUTER JOIN Rubriek D
+						on D.RB_Parent = c.RB_Nummer
+						FULL OUTER JOIN Rubriek E
+						on E.RB_Parent = D.RB_Nummer
+						FULL OUTER JOIN Rubriek F
+						on F.RB_Parent = E.RB_Nummer          
+                        WHERE A.RB_Parent = -1
+                        GROUP BY F.RB_Naam,E.RB_Naam,D.RB_Naam, C.RB_Naam,B.RB_Naam,A.RB_Naam, F.RB_Nummer, E.RB_Nummer,D.RB_Nummer,C.RB_Nummer,B.RB_Nummer,A.RB_Nummer
+                        ORDER BY A.RB_Naam, B.RB_Naam, C.RB_Naam,D.RB_Naam,E.RB_Naam, F.RB_Nummer
+EOT;
 
+$betalingsMethodeQuery = <<<EOT
+select * 
+from Betalingswijzen 
+ORDER BY BW_betalingswijze desc
+EOT;
 
 ?>
