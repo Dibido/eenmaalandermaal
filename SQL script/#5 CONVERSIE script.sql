@@ -1,10 +1,10 @@
 --Conversiescript rubrieken
 INSERT INTO Rubriek
   SELECT
-    ID     AS RB_Nummer,
-    name   AS RB_naam,
-    parent AS RB_parent,
-    ID     AS RB_volgnummer
+    ID                 AS RB_Nummer,
+    LTRIM(RTRIM(name)) AS RB_naam,
+    parent             AS RB_parent,
+    ID                 AS RB_volgnummer
   FROM Categorieen
 GO
 
@@ -47,14 +47,14 @@ INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_
     LTRIM(RTRIM(titel))                                      AS VW_titel,
     Beschrijving                                             AS VW_beschrijving,
     Land                                                     AS VW_land,
-    Verkoper                                                 AS VW_verkoper,
+    LTRIM(RTRIM(Verkoper))                                   AS VW_verkoper,
     Conditie                                                 AS VW_conditie,
     Thumbnail                                                AS VW_thumbnail,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
     '2017-05-24'                                             AS VW_looptijdstart,
     7                                                        AS VW_looptijd,
     'Bank / giro'                                            AS VW_betalingswijze,
-    CASE WHEN CHARINDEX(',', [locatie]) > 0
+    CASE WHEN CHARINDEX(',', [locatie]) > 0 --Als er een locatie is ingevuld, haal het land eraf.
       THEN REPLACE(LEFT([locatie], CHARINDEX(',', [locatie])), ',', '')
     ELSE 'Geen plaatsnaam bekend'
     END                                                      AS VW_plaatsnaam,
