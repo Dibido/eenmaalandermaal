@@ -66,7 +66,7 @@ CREATE TABLE Gebruiker (
                                              getdate()), --Geboortedag mag alleen in het verleden zijn.
 );
 
-CREATE TABLE Administrator (
+CREATE TABLE Administratoren (
   ADM_gebruikersnaam VARCHAR(64) NOT NULL, --Gebruikersnaam uit de gebruikerstabel
   CONSTRAINT FK_AdministratorGebruikersnaam FOREIGN KEY (ADM_gebruikersnaam) REFERENCES Gebruiker (GEB_gebruikersnaam)
 )
