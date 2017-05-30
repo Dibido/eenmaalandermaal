@@ -48,7 +48,11 @@ INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_
     Beschrijving                                             AS VW_beschrijving,
     Land                                                     AS VW_land,
     LTRIM(RTRIM(Verkoper))                                   AS VW_verkoper,
-    Conditie                                                 AS VW_conditie,
+    CASE WHEN Conditie = ''
+      THEN 'Onbekende conditie'
+    ELSE LTRIM(RTRIM(Conditie))
+    END
+                                                             AS VW_conditie,
     Thumbnail                                                AS VW_thumbnail,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
     '2017-05-31'                                             AS VW_looptijdstart,
