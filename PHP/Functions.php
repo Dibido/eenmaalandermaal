@@ -53,6 +53,17 @@ function FindAdminUsers($username)
     return $stmt->fetch();
 }
 
+/*function for finding adverts per user*/
+function findAuctionsByUser($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryFindAuctionsByUser;
+
+    $stmt = $connection->prepare($QueryFindAuctionsByUser);
+    $stmt->execute(array($username));
+    return $stmt->fetch();
+
+}
 
 /* function for getting the results for the product page */
 
@@ -131,6 +142,7 @@ EOT;
 
     RETURN SendToDatabase($QueryGetLastOffers);
 }
+
 
 
 function GetUserInfoPerAuction($username)

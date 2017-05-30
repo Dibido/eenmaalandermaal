@@ -15,6 +15,15 @@
  *
  */
 
+$QueryFindAuctionsByUser = <<<EOT
+    
+    SELECT TOP 3 *
+    FROM Voorwerp
+    WHERE VW_verkoper = ?
+
+EOT;
+
+
 
 $QueryTopCategories = <<<EOT
 
