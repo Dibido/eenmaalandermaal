@@ -50,6 +50,14 @@ if (isset($_SESSION['Username'])) {
         <a href="../login.php?loggedOut=True" class="list-group-item">Log out</a>
     </div>
 </div>';
+} elseif (isset($_SESSION['adminUsername'])){
+    echo '<div class="collapse text-center" id="accountControls">
+    <div class="list-group">
+        <a href="#" class="list-group-item">Mijn account</a>
+        <a href="http://iproject3.icasites.nl/BeheerLogin.php?loggedOut=True" class="list-group-item">Log out</a>
+    </div>
+</div>';
+
 } else {
     //echo 'U bent niet ingelogd';
     echo '<div class="collapse text-center" id="accountControls">
