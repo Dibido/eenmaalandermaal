@@ -1,24 +1,29 @@
 --Conversiescript rubrieken
-INSERT INTO Rubriek
+INSERT INTO Rubriek (RB_Nummer, RB_Naam, RB_Parent, RB_volgnummer)
   SELECT
-    ID     AS RB_Nummer,
-    name   AS RB_naam,
-    parent AS RB_parent,
-    ID     AS RB_volgnummer
+    ID                 AS RB_Nummer,
+    LTRIM(RTRIM(name)) AS RB_naam,
+    parent             AS RB_parent,
+    ID                 AS RB_volgnummer
   FROM Categorieen
 GO
 
 --Conversiescript Users
 INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord,
-                                            GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
+                       GEB_vraag, GEB_antwoordtekst, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_Rating)
   SELECT DISTINCT
     LTRIM(RTRIM(Username))   AS GEB_gebruikersnaam,
-    ('-')                    AS GEB_voornaam,--is niet bekend.
-    ('-')                    AS GEB_achternaam,--is niet bekend.
-    ('-')                    AS GEB_adresregel_1, -- is niet bekend.
+    ('-')                    AS GEB_voornaam,
+    --is niet bekend.
+    ('-')                    AS GEB_achternaam,
+    --is niet bekend.
+    ('-')                    AS GEB_adresregel_1,
+    -- is niet bekend.
     getdate()                AS GEB_geboortedag,
-    'Geen_mailadres@nope.nl' AS GEB_mailbox, -- is niet bekend.
-    'P@ssw0rd'               AS GEB_wachtwoord, -- is niet bekend.
+    'Geen_mailadres@nope.nl' AS GEB_mailbox,
+    -- is niet bekend.
+    'P@ssw0rd'               AS GEB_wachtwoord,
+    -- is niet bekend.
     1                        AS GEB_vraag,
     --Default vraag
     'Defaultantwoord'        AS GEB_antwoordtekst,
@@ -32,30 +37,32 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
      ORDER BY Rating DESC)   AS GEB_Rating
   FROM Users
 GO
+--TODO: Verkoper ook aan gebruikerstabel toevoegen.
 
---Conversiescript Items
+--Conversiescript voorwerp
 SET IDENTITY_INSERT voorwerp ON
 INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
-    ID                                                                                         AS VW_voorwerpnummer,
-    (SELECT CASE
-            WHEN len(titel) >= 56
-              THEN left(titel, 56) + '...'
-            ELSE titel END titel)                                                              AS VW_titel,
-    Beschrijving                                                                               AS VW_beschrijving,
-    Land                                                                                       AS VW_land,
-    Verkoper                                                                                   AS VW_verkoper,
-    Conditie                                                                                   AS VW_conditie,
-    Thumbnail                                                                                  AS VW_thumbnail,
+    ID                                                       AS VW_voorwerpnummer,
+    LTRIM(RTRIM(titel))                                      AS VW_titel,
+    Beschrijving                                             AS VW_beschrijving,
+    Land                                                     AS VW_land,
+    LTRIM(RTRIM(Verkoper))                                   AS VW_verkoper,
+    CASE WHEN Conditie = ''
+      THEN 'Onbekende conditie'
+    ELSE LTRIM(RTRIM(Conditie))
+    END
+                                                             AS VW_conditie,
+    Thumbnail                                                AS VW_thumbnail,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
-    '2017-05-24'                                                                               AS VW_looptijdstart,
-    7                                                                                          AS VW_looptijd,
-    'Bank / giro'                                                                              AS VW_betalingswijze,
-    CASE WHEN CHARINDEX(',', [locatie]) > 0
+    '2017-05-31'                                             AS VW_looptijdstart,
+    7                                                        AS VW_looptijd,
+    'Bank / giro'                                            AS VW_betalingswijze,
+    CASE WHEN CHARINDEX(',', [locatie]) > 0 --Als er een locatie is ingevuld, haal het land eraf.
       THEN REPLACE(LEFT([locatie], CHARINDEX(',', [locatie])), ',', '')
     ELSE 'Geen plaatsnaam bekend'
-    END                                                                                        AS VW_plaatsnaam,
-    0                                                                                          AS VW_veilinggesloten
+    END                                                      AS VW_plaatsnaam,
+    0                                                        AS VW_veilinggesloten
   FROM Items
 SET IDENTITY_INSERT voorwerp OFF
 GO
@@ -86,7 +93,7 @@ INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
              ORDER BY IllustratieFile DESC ) AS Rank
          FROM Illustraties
        ) rs
-  WHERE Rank <= 4 --Selecteerd de top 3
+  WHERE Rank <= 4 --Selecteerd de top 4
         AND EXISTS(SELECT * --Als het voorwerp bestaat.
                    FROM Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)

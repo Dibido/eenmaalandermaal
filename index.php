@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
@@ -58,13 +58,12 @@ $response = NULL;
 <!-- Navigation -->
 
 <?php
-require('navbar.html');
+require('navbar.php');
 ?>
 
 
 <div class="container-fluid">
     <div class="row">
-
 
         <!-- Categoriën -->
 
@@ -79,7 +78,7 @@ require('navbar.html');
 
                 if ($TopCategories[0]) {
                     foreach ($TopCategories as $Category) {
-                        echo "<a href=\"#\" class=\"list-group-item\">" . $Category['RB_Naam'] . "</a>";
+                        echo "<a href=\"resultaten.php?categorie=". $Category["RB_Nummer"] ."\" class=\"list-group-item\">" . $Category['RB_Naam'] . "</a>";
                     }
                 } else {
                     echo "<b>Error on loading categories: </b>" . "<br><br>" . $TopCategories[1];
@@ -126,10 +125,12 @@ require('navbar.html');
                                 $BestFromCategories[$i]["ImagePath"] = "http://iproject3.icasites.nl/pics/" . $BestFromCategories[$i]["ImagePath"];
                             }
                         }
+
                             echo "
                         
                         <div class=\"carousel-inner\">
                         <div class=\"item active\">
+                        <a href=\"voorwerp.php?ItemID=" . $BestFromCategories[0]["VW_voorwerpnummer"] . "\">" . "
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[0]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[0]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
@@ -145,8 +146,10 @@ require('navbar.html');
                                 </div>
                             </div>
                         </div>
+                        </a>
 
                         <div class=\"item\">
+                        <a href=\"voorwerp.php?ItemID=" . $BestFromCategories[1]["VW_voorwerpnummer"] . "\">" . "
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[1]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[1]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
@@ -162,7 +165,11 @@ require('navbar.html');
                                 </div>
                             </div>
                         </div>
+                        </a>
+                        
+                        
                         <div class=\"item\">
+                        <a href=\"voorwerp.php?ItemID=" . $BestFromCategories[2]["VW_voorwerpnummer"] . "\">" . "
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[2]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[2]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
@@ -178,6 +185,7 @@ require('navbar.html');
                                 </div>
                             </div>
                         </div>
+                        </a>
                         
                         ";
 
@@ -237,29 +245,31 @@ require('navbar.html');
                         <div class=\"veiling-titel label label-default\">"
                         . $veiling["VW_titel"] .
                         "</div>
-                        <div class=\"veiling-image\" ";
+                         <a href=\"voorwerp.php?ItemID=" . $veiling["VW_voorwerpnummer"] . " \">
+                         <div class=\"veiling-image\" ";
+
 
                     if (!empty($veiling["ImagePath"])) {
 
-                        echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div>
+                        echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div></a>
                             <div class=\"veiling-prijs-tijd\">
                                 <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] .$pagina.'"></p>' . "</div>
+                                <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . "></p>" . "</div>
                             </div>
                          </div>
                      </div>";
-                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$pagina);
+                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$veiling["VW_voorwerpnummer"]);
 
                     } else {
                         echo ">
                             </div>
                                 <div class=\"veiling-prijs-tijd\">
                                     <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                    <div class=\"tijd label label-default\">" . '<p id="timer' . $veiling["VW_titel"] .$pagina.'"></p>' . " </div>
+                                    <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . "></p>" . " </div>
                                 </div>
                             </div>
                         </div>";
-                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$pagina);
+                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$veiling["VW_voorwerpnummer"]);
                     }
                 }
 
@@ -279,21 +289,26 @@ require('navbar.html');
 <!-- Extra advertenties -->
 
 <div class="col-sm-12 HeaderTitle text-center">Populaire nieuwe veilingen</div>
-        <?php
+<div class="container-fluid">
+
+    <?php
 
 
-        $ExtraAuctions = SendToDatabase($QueryQualityNew);
+    $ExtraAuctions = SendToDatabase($QueryQualityNew);
 
-        if ($ExtraAuctions[0]) {
-            foreach ($ExtraAuctions as $advert) {
-                DrawAuction($advert);
-            }
-        } else {
-            echo "<b>Error on loading auctions: </b>" . "<br><br>" . $ExtraAuctions[1];
+    if ($ExtraAuctions[0]) {
+        foreach ($ExtraAuctions as $advert) {
+            DrawAuction($advert);
         }
+    } else {
+        echo "<b>Error on loading auctions: </b>" . "<br><br>" . $ExtraAuctions[1];
+    }
 
-        ?>
+    ?>
+
+
 </div>
+
 
 <?php include('footer.html') ?>
 

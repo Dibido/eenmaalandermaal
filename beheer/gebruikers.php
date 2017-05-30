@@ -1,0 +1,164 @@
+<?php
+
+/*
+if (password_verify('kees', '$2y$10$7eySgdpNPdwlKlxBB6cAYuEynwP2HRMZf9hdUOEkiHZpfij8NPEMi')){
+    echo 'yes';
+}else{
+    echo 'no';
+}
+
+echo "\n";
+
+echo password_hash('kees', PASSWORD_DEFAULT);
+*/
+
+//checking if the user is logged in
+session_start();
+if(isset($_SESSION["adminUsername"]) AND !empty($_SESSION["adminUsername"])){
+    $errorMessage = [True, 'Logged in as: ' . $_SESSION["adminUsername"]];
+}else{
+    header('Location: http://iproject3.icasites.nl/BeheerLogin.php?noLogin=True');
+    die();
+}
+
+
+require('../PHP/connection.php');
+require('../PHP/Functions.php');
+require('../PHP/SQL-Queries.php');
+
+
+?>
+
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>EenmaalAndermaal - Beste veilingssite van Nederland</title>
+    <meta name="description" content="EenmaalAndermaal">
+    <meta name="author" content="Iproject - Groep 3">
+
+
+    <!-- Theme colours for mobile -->
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#F6D155">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#F6D155">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#F6D155">
+
+
+    <!-- setting the browser icon -->
+    <link rel="icon" href="../images/Site-logo.png">
+
+
+    <!-- bootstrap !-->
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../CSS/theme.css">
+    <link rel="stylesheet" href="../CSS/BootstrapXL.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../CSS/navigation.css">
+    <link rel="stylesheet" href="../CSS/gebruikers.css">
+
+
+</head>
+
+<body>
+
+<?php
+include "../navbar.php";
+
+?>
+<!-- accountControls -->
+
+<div class="collapse text-center" id="accountControls">
+    <div class="list-group">
+        <a href="#" class="list-group-item">Mijn account</a>
+        <a href="../BeheerLogin.php?loggedOut=True" class="list-group-item">Log out</a>
+    </div>
+</div>
+
+
+<!-- Mobile Buttons -->
+
+<div class="container-fluid collapse text-center" id="MobileButtons" style="font-size: 24px;">
+    <div class="row">
+        <ul class="nav nav-pills nav-stacked bg-info lead">
+            <li><a class="row-md-12" href="#">Mijn account</a></li>
+            <li><a class="row-md-12" href="http://iproject3.icasites.nl/BeheerLogin.php?loggedOut=True">Log out</a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- end navbar -->
+
+<!-- Gebruikers beheer -->
+<div class="col-md-3 text-center">
+
+
+</div>
+<div class="col-md-4 text-center">
+        <form action="gebruikers.php" method="POST">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="glyphicon glyphicon-user"></i></div>
+                    <input name="username" type="text" class="form-control" placeholder="gebruikersnaam" required>
+                    <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+                </div>
+            </div>
+        </form>
+    <ul class="list-group"><li class="list-group-item active">Gevonden gebruikers</li></ul>
+    <ul class="list-group text-left" id="users">
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+        <li class="list-group-item">Dapibus ac facilisis in<input class="userCheckbox" type="checkbox" name="vehicle" value="Bike"></li>
+    </ul>
+</div>
+<div class="col-md-5 text-center">
+    <div class="panel panel-default" id="extraInfo">
+        <div class="panel-heading">Gebruikers informatie</div>
+        <div class="panel-body">
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div>
+
+
+
+</div>
+
+
+</body>

@@ -63,7 +63,7 @@ $Vragen = SendToDatabase($GetVragenQuerie);
 <!-- Navigation -->
 
 <?php
-require('navbar.html');
+require('navbar.php');
 ?>
 
 

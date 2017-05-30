@@ -8,6 +8,8 @@ IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
   DROP TABLE dbo.Voorwerp
 IF OBJECT_ID('dbo.Gebruikerstelefoon') IS NOT NULL
   DROP TABLE dbo.Gebruikerstelefoon
+IF OBJECT_ID('dbo.Administrator') IS NOT NULL
+  DROP TABLE dbo.Administrator
 IF OBJECT_ID('dbo.Gebruiker') IS NOT NULL
   DROP TABLE dbo.Gebruiker
 IF OBJECT_ID('dbo.Landen') IS NOT NULL
@@ -20,7 +22,6 @@ IF OBJECT_ID('dbo.Vraag') IS NOT NULL
   DROP TABLE dbo.Vraag
 IF OBJECT_ID('dbo.Registreer') IS NOT NULL
   DROP TABLE dbo.Registreer
-
 
 CREATE TABLE Betalingswijzen (
   BW_betalingswijze VARCHAR(25) NOT NULL, --Keuze betalingswijzen
@@ -65,6 +66,12 @@ CREATE TABLE Gebruiker (
                                              getdate()), --Geboortedag mag alleen in het verleden zijn.
 );
 
+CREATE TABLE Administratoren (
+  ADM_gebruikersnaam VARCHAR(64) NOT NULL, --Gebruikersnaam uit de gebruikerstabel
+  CONSTRAINT FK_AdministratorGebruikersnaam FOREIGN KEY (ADM_gebruikersnaam) REFERENCES Gebruiker (GEB_gebruikersnaam)
+)
+
+
 CREATE TABLE Gebruikerstelefoon (
   TEL_volgnr    INT IDENTITY NOT NULL, --Wordt verhoogd als er een nieuw nummer toegevoegd word
   TEL_gebruiker VARCHAR(64)  NOT NULL, --gebruiker uit de gebruiker tabel
@@ -77,7 +84,7 @@ CREATE TABLE Gebruikerstelefoon (
 
 CREATE TABLE Voorwerp (
   VW_voorwerpnummer      BIGINT        NOT NULL IDENTITY, --Genereerd zelf nummer, zo veel mogelijk voorwerpen
-  VW_titel               VARCHAR(60)   NOT NULL, --Hetzelfde als marktplaats
+  VW_titel               VARCHAR(90)   NOT NULL, --De langste titel is 86 en om nog wat marge te hebben doen we 90
   VW_beschrijving        VARCHAR(MAX)  NOT NULL, --Geen reden tot beperken
   VW_startprijs          NUMERIC(9, 2) NOT NULL, --Bedrag in de miljoenen
   VW_betalingswijze      VARCHAR(25)   NOT NULL DEFAULT 'Bank / Giro', --Korte keuzes (d.m.v. dropdown)
@@ -129,10 +136,11 @@ CREATE TABLE Bestand (
 
 
 CREATE TABLE Rubriek (
-  RB_Nummer     INT          NOT NULL, -- MOET MAX 3 worden
-  RB_Naam       VARCHAR(100) NOT NULL,
-  RB_Parent     INT          NULL,
-  RB_volgnummer INT          NOT NULL, -- MOET MAX 2 worden
+  RB_Nummer        INT          NOT NULL, -- MOET MAX 3 worden
+  RB_Naam          VARCHAR(100) NOT NULL,
+  RB_Parent        INT          NULL,
+  RB_volgnummer    INT          NOT NULL, -- MOET MAX 2 worden
+  RB_voorwerpcount INT          NULL, --Aantal voorwerpen in de rubiek
   CONSTRAINT PK_RB_Nummer PRIMARY KEY (RB_Nummer),
   CONSTRAINT FK_Parent FOREIGN KEY (RB_Parent) REFERENCES Rubriek (RB_Nummer)
 );

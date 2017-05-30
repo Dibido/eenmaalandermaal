@@ -182,6 +182,14 @@
     padding-left: 15px;
 }
 
+/* description */
+#Description-Wrapper{
+    height: 600px;
+}
+#Description{
+    width: 100%;
+    height: 100%;
+}
 
 
 

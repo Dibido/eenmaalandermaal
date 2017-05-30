@@ -1,0 +1,10 @@
+#users{
+    max-height: 55vh;
+    overflow: auto;
+}
+.userCheckbox{
+    float: right;
+}
+#extraInfo{
+    height: 66vh;
+}

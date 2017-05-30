@@ -1,42 +1,5 @@
 <?php
 
-/*
-$dsn = "sqlsrv:Server=mssql.iproject.icasites.nl,1433;Database=iproject3";
-
-try
-
-{
-
-    $conn = new PDO($dsn, "iproject3", "QNxaK62B");
-
-    $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-    $sql = "SELECT * FROM Voorwerp";
-
-    foreach ($conn->query($sql) as $row)
-
-    {
-
-        print_r($row);
-
-    }
-
-    print_r('Done');
-
-}
-
-catch(PDOException $e)
-
-{
-
-    print_r($e->getMessage());
-
-}
-
-?>
-
-
-*/
 
 $hostname = "mssql.iproject.icasites.nl,1433";
 $dbname = "iproject3";

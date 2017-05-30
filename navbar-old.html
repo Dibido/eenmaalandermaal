@@ -16,19 +16,20 @@
                     </button>
                 </li>
                 <li>
-                    <button class="btn btn-default navbar-btn hidden-sm hidden-xsv NavRightButton">
+                    <button class="btn btn-default navbar-btn hidden-sm hidden-xsv NavRightButton"
+                            data-toggle="collapse" data-target="#accountControls">
                         <i class="glyphicon glyphicon-user"></i>
                     </button>
                 </li>
-
             </ul>
         </div>
+
 
         <form class="navbar-form" action="resultaten.php" method="GET">
             <div class="form-group" style="display:inline;">
                 <div class="input-group" style="display:table;">
                     <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
-                           autofocus="autofocus" type="text" >
+                           autofocus="autofocus" type="text">
                     <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
                                                                                                type="submit"
                                                                                                style="background-color: #ffffff; border-color: #f2f2f2;"><span
@@ -39,17 +40,13 @@
     </div>
 </nav>
 
-
-
-<!-- Mobile Buttons -->
-
-<div class="container-fluid collapse text-center" id="MobileButtons" style="font-size: 24px;">
-    <div class="row">
-        <ul class="nav nav-pills nav-stacked bg-info lead">
-            <li><a class="row-md-12" href="#">Plaats veiling</a></li>
-            <li><a class="row-md-12" href="categorie.php">Alle Categoriën</a></li>
-            <li><a class="row-md-12" href="#">Login</a></li>
-        </ul>
+<div class="collapse text-center" id="accountControls">
+    <div class="list-group">
+        <a href="login.php" class="list-group-item">Log In</a>
+        <a href="registreer1.php" class="list-group-item">Registreer</a>
     </div>
 </div>
+
+
+
 

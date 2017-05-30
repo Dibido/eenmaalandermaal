@@ -1,4 +1,59 @@
 <?php
+
+/*change time formatting based on remaining time.
+> 2 days = date
+> 2 hours = hours + minutes
+> 2 minutes minutes + seconds
+< 2 minutes minutes + seconds
+*/
+function ConvertTime($time)
+{
+    $datetime = date_create($time);
+    $currenttime = date_create(date("Ymd"));
+    $interval = date_diff($datetime, $currenttime);
+    if ($interval->days > 2) {
+        //Datum weergeven.
+        return (date_format($datetime, 'Y-m-d'));
+    } elseif ($interval->h > 2) {
+        //Uren en minuten.
+        return (date_format($datetime, 'H:i'));
+    } else {
+        //in minuten en seconden.
+        return(date_format($datetime, 'i:s'));
+    }
+}
+
+
+/* function for finding admin users and checking their credentials*/
+function CheckCredentials($username, $password)
+{
+    $username = cleanInput($username);
+    $password = cleanInput($password);
+
+    GLOBAL $connection;
+    GLOBAL $QueryCheckCredentials;
+
+    $stmt = $connection->prepare($QueryCheckCredentials);
+    $stmt->execute(array($username));
+    $userInfo = $stmt->fetch();
+
+    return password_verify($password, $userInfo["GEB_wachtwoord"]);
+}
+
+/* function for finding admin users */
+function FindAdminUsers($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryFindAdmin;
+
+    $username = cleanInput($username);
+
+    $stmt = $connection->prepare($QueryFindAdmin);
+    $stmt->execute(array($username));
+    return $stmt->fetch();
+}
+
+
 /* function for getting the results for the product page */
 
 /* intake:
@@ -22,13 +77,15 @@ function GetItemDetails($ItemID)
 SELECT
   DISTINCT VW_voorwerpnummer,
   VW_titel,
-  (SELECT TOP 1 BOD_Bodbedrag
-   FROM Bod
-   WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
-                           FROM Bod
-                           WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                           ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
+  (COALESCE((SELECT TOP 1 BOD_Bodbedrag
+             FROM Bod
+             WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
+                                     FROM Bod
+                                     WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                     ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+             ORDER BY BOD_Bodbedrag DESC), (SELECT DISTINCT VW_startprijs
+                                            FROM Voorwerp
+                                            WHERE VW_voorwerpnummer = VW_voorwerpnummer))) AS prijs,
   Voorwerp.VW_looptijdEinde AS tijd,
   VW_thumbnail,
   CAST(VW_looptijdStart AS DATE) as VW_looptijdStart,
@@ -63,16 +120,54 @@ EOT;
 
 }
 
-function  GetLastOffers(){
+
+/* function for getting the last offers of an auction */
+function GetLastOffers($voorwerpnummer)
+{
 
     $QueryGetLastOffers = <<<EOT
     
-    select top 10 * from Bod where BOD_voorwerpnummer = 5614509880 ORDER BY BOD_bodTijdEnDag DESC
+    select top 10 * from Bod where BOD_voorwerpnummer = $voorwerpnummer ORDER BY BOD_bodTijdEnDag DESC
 
 EOT;
 
     RETURN SendToDatabase($QueryGetLastOffers);
 }
+
+
+function GetUserInfoPerAuction($username)
+{
+
+    $QueryGetUserInfo = <<<EOT
+    
+    SELECT GEB_rating 
+    FROM Gebruiker
+    WHERE GEB_gebruikersnaam = '$username'
+  
+
+EOT;
+
+    //RETURN $QueryGetUserInfo;
+    RETURN SendToDatabase($QueryGetUserInfo);
+}
+
+function GetCategoryPerAuction($ItemID)
+{
+
+    $QueryGetUserInfo = <<<EOT
+    
+    SELECT Name
+FROM Categorieen
+INNER JOIN Voorwerp_Rubriek
+ON VR_Rubriek_Nummer = ID
+WHERE VR_Voorwerp_Nummer = $ItemID
+  
+
+EOT;
+
+    RETURN SendToDatabase($QueryGetUserInfo);
+}
+
 
 /* function for getting the images for an product */
 
@@ -206,10 +301,10 @@ function DrawAuction($auction)
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" . $auction["VW_titel"] . "
                     </div>
-                    <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . $auction["ImagePath"] . ")\"></div></a>
+                    <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . '<p id="timer' . $auction["VW_titel"] . $pagina . '"></p>' . "</div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
@@ -220,7 +315,7 @@ function DrawAuction($auction)
             <!-- End template -->
             
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $pagina);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
 
 }
 
@@ -233,7 +328,7 @@ function DrawSearchResults($auction)
     $pagina = 'Zoekpagina';
     echo "
     <!-- Veiling template -->
-            <div class=\"veiling-rand col-md-4 col-sm-6 col-xs-6\">
+            <div class=\"veiling-rand col-md-4 col-sm-6 col-xs-12\">
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
@@ -241,17 +336,17 @@ function DrawSearchResults($auction)
         . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . "<p id=". $auction["VW_voorwerpnummer"] ."></p>" . " </div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
-                        <button class=\"btn text-center btn-default bied\">Meer info</button>
+                        <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
                         <button class=\"btn text-center btn-info bied\">Bied Nu!</button>
                     </div>
                 </div>
             </div>
             <!-- End template -->
     ";
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"],$auction["VW_voorwerpnummer"]);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
 
 }
 
@@ -330,8 +425,10 @@ function SearchFunction($SearchOptions)
     $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
+    $SearchUser = $SearchOptions['SearchUser'];
     $ResultsPerPage = $SearchOptions['ResultsPerPage'];
     $Offset = $SearchOptions['Offset'];
+
     //clean the input
     $SearchKeyword = cleanInput($SearchKeyword);
     $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
@@ -342,6 +439,7 @@ function SearchFunction($SearchOptions)
     $SearchMinPrice = cleanInput($SearchMinPrice);
     $SearchMaxPrice = cleanInput($SearchMaxPrice);
     $ResultsPerPage = cleanInput($ResultsPerPage);
+    $SearchUser = cleanInput($SearchUser);
     $Offset = cleanInput($Offset);
 
 //Prepare the query
@@ -361,7 +459,90 @@ SELECT DISTINCT
   VW_thumbnail       AS ImagePath,
   VW_looptijdStart,
   VW_looptijdEinde,
-  Voorwerp.VW_betalingswijze
+  VW_betalingswijze,
+  VW_verkoper,
+  count(BOD_voorwerpnummer) as aantalBiedingen,
+  GEB_rating
+FROM Voorwerp
+  LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  LEFT OUTER JOIN Gebruiker on Gebruiker.GEB_gebruikersnaam = Voorwerp.VW_verkoper
+  LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+  LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
+  LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
+  LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
+  LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
+WHERE (VW_titel LIKE '%$SearchKeyword%')
+	AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
+	AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
+	AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) >= $SearchMinPrice)
+	AND ($SearchMaxPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+   FROM Bod
+   WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                               FROM Bod
+                               WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                               ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+   ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
+		AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
+		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
+		AND(VW_verkoper LIKE '%$SearchUser%')
+	AND (VW_veilinggesloten != 1)
+GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
+   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail,VW_verkoper,GEB_rating
+ORDER BY $SearchFilter , VW_voorwerpnummer
+OFFSET $Offset ROWS
+FETCH NEXT $ResultsPerPage ROWS ONLY
+
+
+    
+EOT;
+    //executing the query
+    return SendToDatabase($QuerySearchProducts);
+
+
+}
+
+//This function returns the amount of results left in the next 4 pages.
+//The query counts the results starting at the next page and ending at the fifth page after the current one
+function amountOfResultsLeft($SearchOptions)
+{
+    //preparing for query
+    $SearchKeyword = $SearchOptions['SearchKeyword'];
+    $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
+    $SearchCategory = $SearchOptions['SearchCategory'];
+    $SearchMaxRemainingTime = $SearchOptions['SearchMaxRemainingTime'];
+    $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
+    $SearchMinPrice = $SearchOptions['SearchMinPrice'];
+    $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
+    $SearchUser = $SearchOptions['SearchUser'];
+    $ResultsPerPage = $SearchOptions['ResultsPerPage'];
+    $Offset = $SearchOptions['Offset'];
+    //clean the input
+    $SearchKeyword = cleanInput($SearchKeyword);
+    $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
+    $SearchCategory = cleanInput($SearchCategory);
+    $SearchMaxRemainingTime = cleanInput($SearchMaxRemainingTime);
+    $SearchMinRemainingTime = cleanInput($SearchMinRemainingTime);
+    $SearchMinPrice = cleanInput($SearchMinPrice);
+    $SearchMaxPrice = cleanInput($SearchMaxPrice);
+    $ResultsPerPage = cleanInput($ResultsPerPage);
+    $SearchUser = cleanInput($SearchUser);
+    $Offset = cleanInput($Offset);
+
+//Prepare the query
+    $QuerySearchProducts = <<< EOT
+    
+select SUM(getal) as totaal
+FROM (
+SELECT DISTINCT
+  VW_voorwerpnummer,
+  count(VW_voorwerpnummer) as getal
 FROM Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
@@ -387,23 +568,20 @@ WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
                                WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
-		AND ($SearchCategory IS NULL OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
+		AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
 		AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
+				AND('$SearchUser' IS NULL OR VW_verkoper LIKE '%$SearchUser%')
 	AND (VW_veilinggesloten != 1)
-GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
-   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail
-ORDER BY $SearchFilter , VW_voorwerpnummer
-OFFSET $Offset ROWS
-FETCH NEXT $ResultsPerPage ROWS ONLY
+GROUP BY VW_voorwerpnummer
+ORDER BY  VW_voorwerpnummer
+OFFSET $Offset+$ResultsPerPage ROWS
+FETCH NEXT $ResultsPerPage*4 ROWS ONLY
+) as test
 
     
 EOT;
-
-    print_r($QuerySearchProducts);
     //executing the query
     return SendToDatabase($QuerySearchProducts);
-
-
 }
 
 
@@ -431,56 +609,64 @@ function printVragen($Vragen)
     }
 }
 
+//Returns the Numbers of all parent Categories from the categorie you enter
+function getParentCategories($rubriekNummer)
+{
+    GLOBAL $connection;
+    $QueryParentCategories = <<<EOT
+    
+with tab1(RB_Nummer,RB_Naam,RB_Parent,RB_volgnummer,RB_voorwerpcount) as
+(select * from Rubriek where RB_Nummer = $rubriekNummer
+union all
+select t1.* from Rubriek t1,tab1 
+where tab1.RB_Parent = t1.RB_Nummer)
+select RB_Nummer from tab1;
 
-function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betalingsmethode)
+
+EOT;
+    RETURN $connection->query($QueryParentCategories)->fetchAll(PDO::FETCH_COLUMN);
+}
+
+//Prints all categories in the Rubriek table in the right orer.
+function printCategories($zoekterm, $rubriekQuery, $rubriekNummer, $sorteerfilter, $prijs, $betalingsmethode)
 {
     global $connection;
-    $rubriekQuery = "SELECT H.RB_Naam AS HoofdRubriek, X.RB_Naam AS Rubriek, Y.RB_Naam AS SubRubriek, Z.RB_Naam as SubSubRubriek, H.RB_Nummer as HoofdRubriekNummer, X.RB_Nummer as RubriekNummer, Y.RB_Nummer AS SubRubriekNummer, Z.RB_Naam as SubSubRubriekNummer
-                        FROM Rubriek H
-                        OUTER APPLY
-                        (
-                          SELECT * FROM Rubriek S
-                          WHERE S.RB_Parent = H.RB_Nummer
-                        ) X
-                        OUTER APPLY
-                        (
-                          SELECT * FROM Rubriek T
-                          WHERE T.RB_Parent = X.RB_Nummer
-                        ) Y
-                        OUTER APPLY
-                        (
-                          SELECT * FROM Rubriek U
-                          WHERE U.RB_Parent = Y.RB_Nummer
-                        ) Z
-                       /*
-                        cross APPLY
-                        (
-                            select * FROM Voorwerp_Rubriek E
-                            INNER JOIN Voorwerp 
-                            on Voorwerp.VW_voorwerpnummer = E.VR_Voorwerp_Nummer
-                            WHERE E.VR_Rubriek_Nummer = Z.RB_Nummer OR E.VR_Rubriek_Nummer = Y.RB_Nummer OR e.VR_Rubriek_Nummer = X.RB_Nummer
-                            )E
-                        */                           
-                        WHERE H.RB_Parent = -1  /*and VW_titel like '%$zoekterm%'*/ AND ($rubriekNummer IS NULL OR Z.RB_Nummer = $rubriekNummer OR Y.RB_Nummer = $rubriekNummer OR X.RB_Nummer = $rubriekNummer OR H.RB_Nummer = $rubriekNummer)
-                        GROUP BY Z.RB_Naam,Y.RB_Naam,X.RB_Naam,H.RB_Naam,Z.RB_Nummer,Y.RB_Nummer,X.RB_Nummer,H.RB_Nummer
-                        ORDER BY H.RB_Naam, X.RB_Naam,Y.RB_Naam,Z.RB_Naam";
+    //When a rubriekNummer is entered the function getParentCategories returns all Numbers of the parents
+    //These are used to open the selected categories
+    if (!empty($rubriekNummer)) {
+        $parentRubrieken = getParentCategories($rubriekNummer);
+    }
+    //Returns all Categories in the following format: Head-categorie/categorie/subcategorie/subsubcategorie and so on
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
-    echo '<ul class="nav">';
-//Goes through the first dimensional of the array
+    //Unorderlist with all Categories in it. The class is used to be able to open and close the unorder list.
+    echo '<ul id="Rubrieken" class="nav panel-collapse collapse in">';
+    //Goes through the first dimensional of the array
     for ($i = 0; $i < sizeof($rubrieken); $i++) {
         //Goes through the second dimensional of the array
         for ($j = 0; $j < (sizeof($rubrieken[$i]) / 2); $j++) {
             //If the next value is not set OR the value is the last value a line is printed
-            if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i])/2)-1) AND isset($rubrieken[$i][$j])) {
-
-                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&categorie=" . urldecode($rubrieken[$i][$j+4]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=".'1'.">";
-
-                echo $rubrieken[$i][$j] . '<span class="badge pull-right">42</span></a><ul> ';
+            if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i]) / 2) - 1) AND isset($rubrieken[$i][$j])) {
+                //If a rubriekNummer was entered and the current categorie number is in the array $parentRubrieken it will have a grey background
+                if (in_array($rubrieken[$i][$j + 6], $parentRubrieken)) {
+                    echo '<label style="background-color: #eeeeee">';
+                    echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubrieken[$i][$j + 6]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . ">";
+                    echo $rubrieken[$i][$j] . '</a></label><ul> ';
+                } else {
+                    echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubrieken[$i][$j + 6]) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . $betalingsmethode . "&pagenum=" . '1' . ">";
+                    echo $rubrieken[$i][$j] . '</a><ul> ';
+                }
                 $j = sizeof($rubrieken[$i]);
             } //If the current rubric is set and is not the same as last rubric a new Unorderd list will be created
             else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
-                echo '<li><label class="tree-toggle nav-header">' . $rubrieken[$i][$j] . '</label>
-                        <ul class="nav nav-list tree" style="display: none;">';
+                //If  a rubriekNummer was entered and the current categorie number is in the array $parentRubrieken it will be opened and it will have a grey background
+                if (in_array($rubrieken[$i][$j + 6], $parentRubrieken)) {
+                    echo '<li ><label class="tree-toggle nav-header" style="background-color: #eeeeee">' . $rubrieken[$i][$j] . '</label>
+                        <ul class="nav nav-list tree">';
+
+                } else {
+                    echo '<li><label class="tree-toggle nav-header">' . $rubrieken[$i][$j] . '</label>
+                        <ul class="nav nav-list tree" style="display: none">';
+                }
             }
         }
         //For loop to close the list items and unorderd lists it "closes" backwards
@@ -499,7 +685,6 @@ function printCategoriën($zoekterm, $rubriekNummer,$sorteerfilter,$prijs,$betal
 
 function createTimer($tijd, $VW_Titel, $VW_Nummer)
 {
-    //Onzin
     echo '<script>
     // Set the date we\'re counting down to
     var countDownDate = new Date("' . $tijd . '").getTime();
@@ -521,20 +706,20 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
 
         // Display the result in the element with id="demo"
         
-        if(days >= 3){
-        document.getElementById("'. $VW_Nummer .'").innerHTML = days + "d " + hours + "h "
+        if(days >= 1){
+        document.getElementById("' . $VW_Nummer . '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
-        }else if(days < 3 && seconds < 10){
-        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
+        }else if(days < 1 && seconds < 10){
+        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("'. $VW_Nummer  .'").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
         // If the count down is finished, write some text
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("'. $VW_Nummer .'").innerHTML = "Veiling gesloten";
+            document.getElementById("' . $VW_Nummer . '").innerHTML = "Veiling gesloten";
         }
     }, 1000)
 </script>
@@ -588,7 +773,7 @@ function checkEmailSent()
 </tr>
 </tr><td>&nbsp;</td></tr>
 <tr>
-<td>Dit is uw persoonlijke code: '.$code. '</td>
+<td>Dit is uw persoonlijke code: ' . $code . '</td>
 </tr>
 <tr>
 <td>Vul deze in op de website om de registratieprocedure af te ronden of klik op deze <a href="http://iproject3.icasites.nl/registreer1.php?code=' . $urlCode . '">link.</a></td>
@@ -785,7 +970,10 @@ EOT;
             session_destroy();
 
             echo '  <div class="alert alert-success">
-                            <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>';
+                            <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>
+                            <hr>
+            <p class="text-center">Klik <a href="login.php">hier</a> om in te loggen.</p>
+            ';
 
         }
     } else {
@@ -798,10 +986,22 @@ EOT;
 function getCodeFromMail()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        echo $_GET['code'];
+        IF (!empty($_GET['code'])) {
+            echo $_GET['code'];
+        }
     }
+}
 
+function FindUser($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryFindUser;
 
+    $username = cleanInput($username);
+
+    $stmt = $connection->prepare($QueryFindUser);
+    $stmt->execute(array($username));
+    return $stmt->fetch();
 }
 
 ?>
