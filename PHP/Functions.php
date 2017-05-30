@@ -140,15 +140,15 @@ function GetUserInfoPerAuction($username)
 
     $QueryGetUserInfo = <<<EOT
     
-    SELECT * 
-    FROM Users
-    WHERE Username = '$username'
+    SELECT GEB_rating 
+    FROM Gebruiker
+    WHERE GEB_gebruikersnaam = '$username'
   
 
 EOT;
 
-    RETURN $QueryGetUserInfo;
-    // RETURN SendToDatabase($QueryGetUserInfo);
+    //RETURN $QueryGetUserInfo;
+    RETURN SendToDatabase($QueryGetUserInfo);
 }
 
 function GetCategoryPerAuction($ItemID)

@@ -25,8 +25,6 @@ for ($i = 0; $i < 3; $i++) {
     }
 }
 
-/*printing item information for debugging*/
-print_r($ItemInfo);
 
 ?>
 
@@ -45,7 +43,7 @@ print_r($ItemInfo);
 
     <!-- TODO: herlaadtijd berekenen aan de resterende looptijd van het voorwerp -->
     <!-- Om de pagina om de elke 10 seconden te herladen -->
-    <meta http-equiv="refresh" content="10">
+    <!--<meta http-equiv="refresh" content="10">-->
 
     <!-- Theme colours for mobile -->
     <!-- Chrome, Firefox OS and Opera -->
@@ -222,20 +220,20 @@ require('navbar.php');
                         $Bodtijd = ConvertTime($lastOffer["BOD_bodTijdEnDag"]);
                         echo "<div class=\"OldOffer\"><div class=\"OldOfferUserName\">" . $Bod . '. ' . $lastOffer["BOD_gebruiker"] . "</div><div class=\"OldOfferPrice\">" . $Bodtijd . "</div><div class=\"OldOfferPrice\">&euro;" . $lastOffer["BOD_bodbedrag"] . "</div></div>";
 
-                        if ($Bod = 4) {
+                        if ($Bod == 4) {
                             echo "<div id=\"MoreOffers\" class=\"collapse\">";
                         }
                     }
 
                     echo "</div>";
                     echo "<button data-toggle=\"collapse\" data-target=\"#MoreOffers\" class=\"btn btn-default MoreOffers collapsed\" value=\"Meer boden\"></button>";
+                    echo "</div>";
                 }
 
 
                 ?>
 
 
-            </div>
 
             <!-- Biedknop -->
 
@@ -262,20 +260,19 @@ require('navbar.php');
 
                         $Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
 
-                        //print_r($Userinfo);
+                        $rating = floor($Userinfo[0]["GEB_rating"]) / 10;
+
+                        for($i = 0; $i < $rating/2; $i++){
+                            echo " <i class=\"glyphicon glyphicon-star\"></i>";
+                        }
+
                         //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
                         ?>
-                        <i class="glyphicon glyphicon-star"></i>
-                        <i class="glyphicon glyphicon-star"></i>
-                        <i class="glyphicon glyphicon-star"></i>
-                        <i class="glyphicon glyphicon-star"></i>
-                        <i class="glyphicon glyphicon-star-empty"></i>
                     </div>
                 </div>
             </div>
 
         </div>
-
 
         <!-- gelijksoortige advertenties -->
 
