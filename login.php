@@ -1,9 +1,9 @@
 <?php
-
+session_start();
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
-session_start();
+
 
 /* Backend for logging in an admin user */
 
@@ -63,6 +63,7 @@ if (isset($_GET["noLogin"]) && ($_GET["noLogin"] == 'True')) {
     session_destroy();
     session_commit();
     $successMessage = [True, 'Successvol uitgelogged.'];
+    echo 'U zou uitgelogd moeten zijn...';
 }
 
 

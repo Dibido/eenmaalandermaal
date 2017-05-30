@@ -78,13 +78,15 @@ function GetItemDetails($ItemID)
 SELECT
   DISTINCT VW_voorwerpnummer,
   VW_titel,
-  (SELECT TOP 1 BOD_Bodbedrag
-   FROM Bod
-   WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
-                           FROM Bod
-                           WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                           ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-   ORDER BY BOD_Bodbedrag DESC)                        AS prijs,
+  (COALESCE((SELECT TOP 1 BOD_Bodbedrag
+             FROM Bod
+             WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
+                                     FROM Bod
+                                     WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                     ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+             ORDER BY BOD_Bodbedrag DESC), (SELECT DISTINCT VW_startprijs
+                                            FROM Voorwerp
+                                            WHERE VW_voorwerpnummer = VW_voorwerpnummer))) AS prijs,
   Voorwerp.VW_looptijdEinde AS tijd,
   VW_thumbnail,
   CAST(VW_looptijdStart AS DATE) as VW_looptijdStart,
