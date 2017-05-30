@@ -163,11 +163,12 @@ require('navbar.php');
 
         <!-- Description panel -->
 
-        <div class="panel panel-default ">
+        <div class="panel panel-default " id="Description-Wrapper">
             <div class="panel-heading text-center">Kenmerken</div>
             <div class="panel-body">
                 <div>
-                    <?php echo $ItemInfo["VW_beschrijving"]; ?>
+                    <iframe src="https://www.w3schools.com" id="Description"></iframe>
+                    <?php// echo $ItemInfo["VW_beschrijving"]; ?>
                 </div>
             </div>
         </div>
