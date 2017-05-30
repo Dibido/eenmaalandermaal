@@ -43,7 +43,7 @@
 
 <?php
 if (isset($_SESSION['Username'])) {
-    echo 'U bent ingelogd';
+    //echo 'U bent ingelogd';
     echo '<div class="collapse text-center" id="accountControls">
     <div class="list-group">
         <a href="#" class="list-group-item">Mijn account</a>
@@ -51,7 +51,7 @@ if (isset($_SESSION['Username'])) {
     </div>
 </div>';
 } else {
-    echo 'U bent niet ingelogd';
+    //echo 'U bent niet ingelogd';
     echo '<div class="collapse text-center" id="accountControls">
     <div class="list-group">
         <a href="login.php" class="list-group-item">Log In</a>

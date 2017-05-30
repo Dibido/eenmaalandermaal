@@ -129,7 +129,12 @@ include "../navbar.php";
     </ul>
 </div>
 <div class="col-md-5 text-center">
-    column 1
+    <div class="panel panel-default" id="extraInfo">
+        <div class="panel-heading">Gebruikers informatie</div>
+        <div class="panel-body">
+
+        </div>
+    </div>
 </div>
 
 
