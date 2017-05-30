@@ -185,7 +185,7 @@ include "navbar.php";
     </div>
 </div>
 
-//FOOTER toevoegen
+<!--FOOTER toevoegen-->
 
 </body>
 </html>
