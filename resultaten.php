@@ -321,7 +321,7 @@ require('navbar.php');
                         $startPage = 1;
                     }
                     //Loop creates all buttons to the next or pages before the current one.
-                    for ($i = $startPage; $i < $lastPageNum+1; $i++) {
+                    for ($i = $startPage; $i < $lastPageNum; $i++) {
                         if ($i == $pagenum) {
                             echo '<li class="page-item active text-center">';
                             echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
