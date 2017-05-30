@@ -73,10 +73,10 @@ if (isset($_GET["loggedOut"]) && $_GET["loggedOut"] == 'True') {
 
 <head>
     <meta charset="utf-8">
-
-    <title>EenmaalAndermaal - Beste veilingssite van Nederland</title>
+    <title>Login</title>
     <meta name="description" content="EenmaalAndermaal">
-    <meta name="author" content="Iproject - Groep 3">
+    <meta name="author" content="I-Project - Groep 3">
+
 
 
     <!-- Theme colours for mobile -->
@@ -116,7 +116,7 @@ include "navbar.php";
 ?>
 
 <!-- Breadcrumb -->
-<ol class="breadcrumb">
+<ol class="breadcrumb " style="position: fixed; top: 50px; display: block; width: 100%;">
     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
     <li class="breadcrumb-item active">Login</li>
 </ol>

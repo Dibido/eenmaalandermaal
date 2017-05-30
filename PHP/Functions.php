@@ -339,7 +339,7 @@ function DrawSearchResults($auction)
                         <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
-                        <button class=\"btn text-center btn-default bied\">Meer info</button>
+                        <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
                         <button class=\"btn text-center btn-info bied\">Bied Nu!</button>
                     </div>
                 </div>

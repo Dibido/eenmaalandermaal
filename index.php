@@ -125,10 +125,12 @@ require('navbar.php');
                                 $BestFromCategories[$i]["ImagePath"] = "http://iproject3.icasites.nl/pics/" . $BestFromCategories[$i]["ImagePath"];
                             }
                         }
+
                             echo "
                         
                         <div class=\"carousel-inner\">
                         <div class=\"item active\">
+                        <a href=\"voorwerp.php?ItemID=" . $BestFromCategories[0]["VW_voorwerpnummer"] . "\">" . "
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[0]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[0]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
@@ -144,8 +146,10 @@ require('navbar.php');
                                 </div>
                             </div>
                         </div>
+                        </a>
 
                         <div class=\"item\">
+                        <a href=\"voorwerp.php?ItemID=" . $BestFromCategories[1]["VW_voorwerpnummer"] . "\">" . "
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[1]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[1]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
@@ -161,7 +165,11 @@ require('navbar.php');
                                 </div>
                             </div>
                         </div>
+                        </a>
+                        
+                        
                         <div class=\"item\">
+                        <a href=\"voorwerp.php?ItemID=" . $BestFromCategories[2]["VW_voorwerpnummer"] . "\">" . "
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[2]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[2]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
@@ -177,6 +185,7 @@ require('navbar.php');
                                 </div>
                             </div>
                         </div>
+                        </a>
                         
                         ";
 
@@ -236,11 +245,13 @@ require('navbar.php');
                         <div class=\"veiling-titel label label-default\">"
                         . $veiling["VW_titel"] .
                         "</div>
-                        <div class=\"veiling-image\" ";
+                         <a href=\"voorwerp.php?ItemID=" . $veiling["VW_voorwerpnummer"] . " \">
+                         <div class=\"veiling-image\" ";
+
 
                     if (!empty($veiling["ImagePath"])) {
 
-                        echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div>
+                        echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div></a>
                             <div class=\"veiling-prijs-tijd\">
                                 <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
                                 <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . "></p>" . "</div>
