@@ -1,5 +1,17 @@
 <?php
 
+/*
+if (password_verify('kees', '$2y$10$7eySgdpNPdwlKlxBB6cAYuEynwP2HRMZf9hdUOEkiHZpfij8NPEMi')){
+    echo 'yes';
+}else{
+    echo 'no';
+}
+
+echo "\n";
+
+echo password_hash('kees', PASSWORD_DEFAULT);
+*/
+
 //checking if the user is logged in
 session_start();
 if(isset($_SESSION["adminUsername"]) AND !empty($_SESSION["adminUsername"])){
@@ -8,6 +20,7 @@ if(isset($_SESSION["adminUsername"]) AND !empty($_SESSION["adminUsername"])){
     header('Location: http://iproject3.icasites.nl/BeheerLogin.php?noLogin=True');
     die();
 }
+
 
 require('../PHP/connection.php');
 require('../PHP/Functions.php');

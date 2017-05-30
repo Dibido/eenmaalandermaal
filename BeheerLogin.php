@@ -28,7 +28,7 @@ if ($_POST["formSend"] == 'True' AND isset($_POST["formSend"])) {
                 if($foundPassword){
                     session_start();
                     $_SESSION["adminUsername"] = $foundUser;
-                    header('Location: index.php');
+                    header('Location: http://iproject3.icasites.nl/Beheer/');
                 } else {
                     $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser];
                 }
