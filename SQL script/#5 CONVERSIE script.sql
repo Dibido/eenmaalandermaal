@@ -37,34 +37,54 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
      ORDER BY Rating DESC)   AS GEB_Rating
   FROM Users
 GO
---TODO: Verkoper ook aan gebruikerstabel toevoegen.
 
 --Conversiescript voorwerp
-SET IDENTITY_INSERT voorwerp ON
-INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
-  SELECT
-    ID                                                       AS VW_voorwerpnummer,
-    LTRIM(RTRIM(titel))                                      AS VW_titel,
-    Beschrijving                                             AS VW_beschrijving,
-    Land                                                     AS VW_land,
-    LTRIM(RTRIM(Verkoper))                                   AS VW_verkoper,
-    CASE WHEN Conditie = ''
-      THEN 'Onbekende conditie'
-    ELSE LTRIM(RTRIM(Conditie))
-    END
-                                                             AS VW_conditie,
-    Thumbnail                                                AS VW_thumbnail,
-    dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
-    '2017-05-31'                                             AS VW_looptijdstart,
-    7                                                        AS VW_looptijd,
-    'Bank / giro'                                            AS VW_betalingswijze,
-    CASE WHEN CHARINDEX(',', [locatie]) > 0 --Als er een locatie is ingevuld, haal het land eraf.
-      THEN REPLACE(LEFT([locatie], CHARINDEX(',', [locatie])), ',', '')
-    ELSE 'Geen plaatsnaam bekend'
-    END                                                      AS VW_plaatsnaam,
-    0                                                        AS VW_veilinggesloten
-  FROM Items
-SET IDENTITY_INSERT voorwerp OFF
+--Range van de random datums voor de looptijdstart, moet later zijn dan getdate().
+DECLARE @FromDate DATE = '2017-04-15' --begindatum random datum.
+DECLARE @ToDate DATE = '2017-6-25' --Einddatum random datum.
+
+--Tijdelijke tabel om random looptijden te kunnen selecteren.
+CREATE TABLE TEMP_LooptijdWaardes (
+  LOP_looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
+)
+INSERT INTO TEMP_LooptijdWaardes VALUES (1), (3), (5), (7), (10);
+
+--SET IDENTITY_INSERT voorwerp ON
+--INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
+SELECT DISTINCt TOP 50
+  ID                                                       AS VW_voorwerpnummer,
+  LTRIM(RTRIM(titel))                                      AS VW_titel,
+  Beschrijving                                             AS VW_beschrijving,
+  Land                                                     AS VW_land,
+  LTRIM(RTRIM(Verkoper))                                   AS VW_verkoper,
+  CASE WHEN Conditie = ''
+    THEN 'Onbekende conditie'
+  ELSE LTRIM(RTRIM(Conditie))
+  END
+                                                           AS VW_conditie,
+  ('/thumb/' + Thumbnail)                                  AS VW_thumbnail,
+  dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
+  (SELECT DATEADD(
+      MINUTE,
+      ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, @FromDate, @ToDate) + DATEDIFF(MINUTE, 0, @FromDate),
+      0
+  ))                                                       AS VW_looptijdstart,
+  --Random in de toekomst tussen de FromDate en ToDate.
+  (SELECT TOP 1 *
+   FROM TEMP_LooptijdWaardes
+   ORDER BY NEWID())                                       AS VW_looptijd,
+  --TODO Random uit de TEMP_LooptijdWaardes tabel per record.
+  'Bank / giro'                                            AS VW_betalingswijze,
+  CASE WHEN CHARINDEX(',', [locatie]) > 0 --Als er een locatie is ingevuld, haal het land eraf.
+    THEN REPLACE(LEFT([locatie], CHARINDEX(',', [locatie])), ',', '')
+  ELSE 'Geen plaatsnaam bekend'
+  END                                                      AS VW_plaatsnaam,
+  0                                                        AS VW_veilinggesloten
+FROM Items
+--SET IDENTITY_INSERT voorwerp OFF
+--Tijdelijke tabel opruimen.
+IF OBJECT_ID('dbo.TEMP_LooptijdWaardes') IS NOT NULL
+  DROP TABLE dbo.TEMP_LooptijdWaardes
 GO
 
 INSERT INTO Voorwerp_Rubriek
@@ -82,8 +102,8 @@ Deze query zorgt ervoor dat van ieder voorwerp uit de verkregen database 3 afbee
 */
 INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
   SELECT
-    IllustratieFile AS BES_filenaam,
-    ItemID          AS BES_voorwerpnummer
+    ('/pics/' + IllustratieFile) AS BES_filenaam,
+    ItemID                       AS BES_voorwerpnummer
   FROM (
          SELECT
            ItemID,
