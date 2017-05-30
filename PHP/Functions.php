@@ -965,12 +965,15 @@ EOT;
             $stmt->bindParam(':email', $_SESSION['email']);
             $stmt->execute();
 
+
             session_destroy();
+            session_start();
+            $_SESSION["Username"] = $_SESSION['gebruikersnaam'];
 
             echo '  <div class="alert alert-success">
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>
                             <hr>
-            <p class="text-center">Klik <a href="login.php">hier</a> om in te loggen.</p>
+            <p class="text-center">U bent tevens ingelogd.</p>
             ';
 
         }
