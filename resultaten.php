@@ -303,7 +303,7 @@ require('navbar.php');
                     //Calculate the amount of pages by deviding the count with the amount of results per page.
                     $amountOfFuturePages = ceil($amountOfResults[0]['totaal'] / $ResultsPerPage);
                     $previousPage = $pagenum - 1;
-                    $lastPageNum = $pagenum + $amountOfFuturePages + 1;
+                    $lastPageNum = $pagenum + $amountOfFuturePages + 2;
                     $startPage = $pagenum - 4 + $amountOfFuturePages;
                     //Prevent startPage to be <=0
 

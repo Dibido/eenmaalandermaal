@@ -227,7 +227,11 @@ require('navbar.php');
 
                     echo "</div>";
                     echo "<button data-toggle=\"collapse\" data-target=\"#MoreOffers\" class=\"btn btn-default MoreOffers collapsed\" value=\"Meer boden\"></button>";
-                    echo "</div>";
+
+                    if($Bod >= 4){
+                        echo "</div>";
+                    }
+
                 }
 
 
