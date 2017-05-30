@@ -3,6 +3,10 @@
 --Alle Betalingswijzen
 INSERT INTO Betalingswijzen (BW_betalingswijze) VALUES ('Bank / Giro'), ('Contant'), ('Anders');
 
+--Alle valide looptijdwaardes
+INSERT INTO LooptijdWaardes (LOP_looptijd)
+VALUES (1), (3), (5), (7), (10);
+
 --Alle landnamen met 2 letterige LAN_landcode  volgens ISO 3166-1 alpha-2
 --Insert statesments voor de Landen aangezien de producten in de nieuwe data 2 letterige landcodes gebruiken
 INSERT INTO Landen VALUES ('AD', 'Andorra');
@@ -248,19 +252,21 @@ INSERT INTO Landen VALUES ('ZW', 'Zimbabwe');
 /*Toevoegen van vragen */
 
 INSERT INTO Vraag (VR_tekstvraag)
-    VALUES
-      ('In welke straat ben je geboren?'),
-      ('Wat is de meisjesnaam van je moeder?'),
-      ('Wat is je lievelingsgerecht?'),
-      ('Hoe heet je oudste zusje?'),
-      ('Hoe heet je huisdier?')
+VALUES
+  ('In welke straat ben je geboren?'),
+  ('Wat is de meisjesnaam van je moeder?'),
+  ('Wat is je lievelingsgerecht?'),
+  ('Hoe heet je oudste zusje?'),
+  ('Hoe heet je huisdier?')
 
 /*toevoegen van gebruikers */
 
 INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_adresregel_2, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord, GEB_vraag, GEB_antwoordtekst, GEB_verkoper, GEB_rating)
 VALUES
-  ('kees', 'kees', 'Jansen', 'hansestraat', 'hanseweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'onzin@meeronzin.dk', '$2y$10$ioA3GMCD446M0yaKgaWg1O587gnVw.RCSs3GAOG32d5b6n/snJmQG', '3', 'kees', 0, 4),
-  ('tinus', 'tinus', 'kabouter', 'ruitenberglaan', 'ruitenbergweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'tinus@meeronzin.dk', '$2y$10$Q1JfvVjjX5JXnEhu/odGYeo9q6mERuyR5Qu0k9sjv1/xjSfsUZhme', '1', 'tinus', 0, 0)
+  ('kees', 'kees', 'Jansen', 'hansestraat', 'hanseweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'onzin@meeronzin.dk',
+           '$2y$10$ioA3GMCD446M0yaKgaWg1O587gnVw.RCSs3GAOG32d5b6n/snJmQG', '3', 'kees', 0, 4),
+  ('tinus', 'tinus', 'kabouter', 'ruitenberglaan', 'ruitenbergweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12',
+            'tinus@meeronzin.dk', '$2y$10$Q1JfvVjjX5JXnEhu/odGYeo9q6mERuyR5Qu0k9sjv1/xjSfsUZhme', '1', 'tinus', 0, 0)
 
 
 
