@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $foundPassword = CheckCredentials($username, $password);
                     if ($foundPassword) {
                         $_SESSION["Username"] = $foundUser;
-                        echo 'U bent ingelogd';
+                        header('Location: index.php');
                     } else {
                         $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser];
                     }
@@ -46,9 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 /* checking if the user just came back from beheer/index.php or logged out*/
-if (isset($_GET["noLogin"]) && ($_GET["noLogin"] == 'True')) {
-    $errorMessage = [True, 'Inloggen is vereist voor het bezoeken van de beheerpagina.'];
-} else if (isset($_GET["loggedOut"]) && $_GET["loggedOut"] == 'TRUE') {
+if (isset($_GET["loggedOut"]) && $_GET["loggedOut"] == 'True') {
 
     //delete the session
     if (ini_get("session.use_cookies")) {
@@ -117,6 +115,11 @@ if (isset($_GET["noLogin"]) && ($_GET["noLogin"] == 'True')) {
 include "navbar.php";
 ?>
 
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+    <li class="breadcrumb-item active">Login</li>
+</ol>
 
 <!-- Login form -->
 <div class="col-xs-10 col-xs-push-1 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4 center-block" id="loginWrapper">
