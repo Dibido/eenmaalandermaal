@@ -19,7 +19,7 @@ function ConvertTime($time)
         return (date_format($datetime, 'H:i'));
     } else {
         //in minuten en seconden.
-        return(date_format($datetime, 'i:s'));
+        return (date_format($datetime, 'i:s'));
     }
 }
 
@@ -976,12 +976,10 @@ EOT;
             $stmt = $connection->prepare($sqlDeleteUser);
             $stmt->bindParam(':email', $_SESSION['email']);
             $stmt->execute();
+            $geregistreerdeGebruiker = $_SESSION['gebruikersnaam'];
+            session_unset();
 
-
-            session_destroy();
-            session_start();
-            $_SESSION["Username"] = $_SESSION['gebruikersnaam'];
-
+            $_SESSION["Username"] = $geregistreerdeGebruiker;
             echo '  <div class="alert alert-success">
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>
                             <hr>

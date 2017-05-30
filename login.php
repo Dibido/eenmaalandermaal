@@ -56,12 +56,10 @@ if (isset($_GET["loggedOut"]) && $_GET["loggedOut"] == 'True') {
             $params["secure"], $params["httponly"]
         );
     }
-
     unset($_SESSION['Username']);
     session_destroy();
     session_commit();
     $successMessage = [True, 'Successvol uitgelogged.'];
-    echo 'U zou uitgelogd moeten zijn...';
 }
 
 
