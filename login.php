@@ -78,7 +78,6 @@ if (isset($_GET["loggedOut"]) && $_GET["loggedOut"] == 'True') {
     <meta name="author" content="I-Project - Groep 3">
 
 
-
     <!-- Theme colours for mobile -->
 
     <!-- Chrome, Firefox OS and Opera -->
@@ -122,65 +121,71 @@ include "navbar.php";
 </ol>
 
 <!-- Login form -->
-<div class="col-xs-10 col-xs-push-1 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4 center-block" id="loginWrapper">
-    <div class="panel panel-default" id="loginPanel">
-        <div class="panel-heading">
-            EeemaalAndermaal login
-        </div>
-        <div class="panel-body">
-            <form action="login.php" method="POST">
+<div class="container-fluid">
+    <div class="col-xs-10 col-xs-push-1 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4 center-block" id="loginWrapper">
+        <div class="panel panel-default" id="loginPanel">
+            <div class="panel-heading">
+                EeemaalAndermaal login
+            </div>
+            <div class="panel-body">
+                <form action="login.php" method="POST">
 
-                <!-- gebruikersnaam input -->
+                    <!-- gebruikersnaam input -->
 
-                <div class="form-group">
-                    <div class="input-group">
-                        <input name="username" type="text" class="form-control" placeholder="gebruikersnaam" required>
-                        <div class="input-group-addon"><i class="glyphicon glyphicon-user"></i></div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input name="username" type="text" class="form-control" placeholder="gebruikersnaam"
+                                   required>
+                            <div class="input-group-addon"><i class="glyphicon glyphicon-user"></i></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Wachtwoord input -->
+                    <!-- Wachtwoord input -->
 
-                <div class="form-group">
-                    <div class="input-group">
-                        <input name="password" type="password" class="form-control" placeholder="wachtwoord" required>
-                        <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input name="password" type="password" class="form-control" placeholder="wachtwoord"
+                                   required>
+                            <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- hidden input so no allerts are send when the page is first loaded -->
-                <input type="hidden" name="formSend" value="True">
+                    <!-- hidden input so no allerts are send when the page is first loaded -->
+                    <input type="hidden" name="formSend" value="True">
 
-                <!-- login button -->
+                    <!-- login button -->
 
-                <button type="submit" class="btn btn-primary" id="loginButton">Log in</button>
+                    <button type="submit" class="btn btn-primary" id="loginButton">Log in</button>
 
-                <!-- Alerts -->
+                    <!-- Alerts -->
 
-                <?php
+                    <?php
 
-                /* checking if any alerts of success messages need to be displayed */
-                if ($errorMessage[0]) {
+                    /* checking if any alerts of success messages need to be displayed */
+                    if ($errorMessage[0]) {
 
-                    echo "<div class=\"alert alert-danger alert-dismissable\">
+                        echo "<div class=\"alert alert-danger alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
                              <strong>Error!</strong> " . $errorMessage[1] . "
                           </div>";
 
-                } else if ($successMessage[0]) {
-                    echo "<div class=\"alert alert-success alert-dismissable\">
+                    } else if ($successMessage[0]) {
+                        echo "<div class=\"alert alert-success alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
                              <strong>Success!</strong> " . $successMessage[1] . "
                           </div>";
-                }
+                    }
 
-                ?>
-            </form>
-            <hr>
-            <p class="text-center">Wilt u een account aanmaken? Klik dan <a href="registreer1.php">hier</a>.</p>
+                    ?>
+                </form>
+                <hr>
+                <p class="text-center">Wilt u een account aanmaken? Klik dan <a href="registreer1.php">hier</a>.</p>
+            </div>
         </div>
     </div>
 </div>
 
+<!--FOOTER toevoegen-->
 
 </body>
+</html>
