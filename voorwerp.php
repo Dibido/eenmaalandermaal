@@ -43,6 +43,8 @@ print_r($ItemInfo);
     <meta name="description" content="EenmaalAndermaal">
     <meta name="author" content="Iproject - Groep 3">
 
+    <!-- Om de pagina om de elke 10 seconden te herladen -->
+    <meta http-equiv="refresh" content="10">
 
     <!-- Theme colours for mobile -->
     <!-- Chrome, Firefox OS and Opera -->
