@@ -43,6 +43,7 @@ print_r($ItemInfo);
     <meta name="description" content="EenmaalAndermaal">
     <meta name="author" content="Iproject - Groep 3">
 
+    <!-- TODO: herlaadtijd berekenen aan de resterende looptijd van het voorwerp -->
     <!-- Om de pagina om de elke 10 seconden te herladen -->
     <meta http-equiv="refresh" content="10">
 
@@ -218,7 +219,8 @@ require('navbar.php');
                     $Bod = 0;
                     foreach ($LastOffers as $lastOffer) {
                         $Bod++;
-                        echo "<div class=\"OldOffer\"><div class=\"OldOfferUserName\">" . $Bod . '. ' . $lastOffer["BOD_gebruiker"] . "</div><div class=\"OldOfferPrice\">" . ConvertTime($lastOffer["BOD_bodTijdEnDag"]) . "</div><div class=\"OldOfferPrice\">&euro;" . $lastOffer["BOD_bodbedrag"] . "</div></div>";
+                        $Bodtijd = ConvertTime($lastOffer["BOD_bodTijdEnDag"]);
+                        echo "<div class=\"OldOffer\"><div class=\"OldOfferUserName\">" . $Bod . '. ' . $lastOffer["BOD_gebruiker"] . "</div><div class=\"OldOfferPrice\">" . $Bodtijd . "</div><div class=\"OldOfferPrice\">&euro;" . $lastOffer["BOD_bodbedrag"] . "</div></div>";
 
                         if ($Bod = 4) {
                             echo "<div id=\"MoreOffers\" class=\"collapse\">";

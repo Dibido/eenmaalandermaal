@@ -13,13 +13,13 @@ function ConvertTime($time)
     $interval = date_diff($datetime, $currenttime);
     if ($interval->days > 2) {
         //Datum weergeven.
-        echo(date_format($datetime, 'Y-m-d'));
+        return (date_format($datetime, 'Y-m-d'));
     } elseif ($interval->h > 2) {
         //Uren en minuten.
-        echo(date_format($datetime, 'H:i'));
+        return (date_format($datetime, 'H:i'));
     } else {
         //in minuten en seconden.
-        echo(date_format($datetime, 'i:s'));
+        return(date_format($datetime, 'i:s'));
     }
 }
 
