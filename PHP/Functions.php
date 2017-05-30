@@ -6,7 +6,6 @@
 > 2 minutes minutes + seconds
 < 2 minutes minutes + seconds
 */
-
 function ConvertTime($time)
 {
     $datetime = date_create($time);
@@ -686,7 +685,6 @@ function printCategories($zoekterm, $rubriekQuery, $rubriekNummer, $sorteerfilte
 
 function createTimer($tijd, $VW_Titel, $VW_Nummer)
 {
-    //Onzin
     echo '<script>
     // Set the date we\'re counting down to
     var countDownDate = new Date("' . $tijd . '").getTime();

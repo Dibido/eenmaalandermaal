@@ -1,6 +1,6 @@
 <?php
 session_start();
-//require('PHP/connection.php');
+
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 require('PHP/connection.php');
@@ -14,7 +14,7 @@ $ItemImages = GetItemImages($ItemID);
 
 
 /* making sure an image is available */
-if (!isset($ItemInfo["VW_thumbnail"]) OR empty($ItemInfo["VW_thumbnail"])){
+if (!isset($ItemInfo["VW_thumbnail"]) OR empty($ItemInfo["VW_thumbnail"])) {
     $ItemInfo["VW_thumbnail"] = "images/no-image-available.jpg";
 }
 for ($i = 0; $i < 3; $i++) {
@@ -25,6 +25,7 @@ for ($i = 0; $i < 3; $i++) {
     }
 }
 
+/*printing item information for debugging*/
 print_r($ItemInfo);
 
 ?>
@@ -107,19 +108,23 @@ require('navbar.php');
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
                 <div class="item active">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[0]["BES_filenaam"]; ?>)"></div>
+                    <div class="AuctionImage"
+                         style="background-image: url(<?php echo $ItemImages[0]["BES_filenaam"]; ?>)"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[1]["BES_filenaam"]; ?>)"></div>
+                    <div class="AuctionImage"
+                         style="background-image: url(<?php echo $ItemImages[1]["BES_filenaam"]; ?>)"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(<?php echo $ItemImages[2]["BES_filenaam"]; ?>)"></div>
+                    <div class="AuctionImage"
+                         style="background-image: url(<?php echo $ItemImages[2]["BES_filenaam"]; ?>)"></div>
                 </div>
 
                 <div class="item">
-                    <div class="AuctionImage" style="background-image: url(<?php echo "http://iproject3.icasites.nl/thumbnails/" . $ItemInfo["VW_thumbnail"]; ?>)"></div>
+                    <div class="AuctionImage"
+                         style="background-image: url(<?php echo "http://iproject3.icasites.nl/thumbnails/" . $ItemInfo["VW_thumbnail"]; ?>)"></div>
                 </div>
             </div>
 
@@ -143,22 +148,12 @@ require('navbar.php');
             <div class="panel-heading text-center">Kenmerken</div>
             <div class="Details">
                 <?php
-                $query = <<<EOT
-
-SELECT 
-
-
-
-EOT;
-
-
-
                 $category = GetCategoryPerAuction($ItemInfo["VW_voorwerpnummer"]);
                 $category = $category[0];
                 ?>
                 <div class="Detail"><b>Categorie:</b> <?php echo $category["Name"]; ?></div>
-                <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"];?></div>
-                <div class="Detail"><b>geplaatst:</b>  <?php echo $ItemInfo["VW_looptijdStart"];?></div>
+                <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"]; ?></div>
+                <div class="Detail"><b>geplaatst:</b> <?php echo $ItemInfo["VW_looptijdStart"]; ?></div>
                 <div class="Detail"><b>conditie:</b> <?php echo $ItemInfo["VW_conditie"]; ?></div>
             </div>
         </div>
@@ -169,11 +164,11 @@ EOT;
 
         <div class="panel panel-default ">
             <div class="panel-heading text-center">Kenmerken</div>
-                <div class="panel-body">
-                    <div>
-                        <?php echo $ItemInfo["VW_beschrijving"]?>
-                    </div>
+            <div class="panel-body">
+                <div>
+                    <?php echo $ItemInfo["VW_beschrijving"]; ?>
                 </div>
+            </div>
         </div>
 
         <!-- Description end -->
@@ -193,7 +188,7 @@ EOT;
             <div class="panel-heading text-center">Overgebleven Tijd</div>
             <div class="panel-body">
                 <div class="TimeLeft">
-                    <p class="Time" id="<?php  echo $ItemInfo["VW_voorwerpnummer"];?>"></p>
+                    <p class="Time" id="<?php echo $ItemInfo["VW_voorwerpnummer"]; ?>"></p>
                     <?php
                     createTimer($ItemInfo["tijd"], $ItemInfo["VW_titel"], $ItemInfo["VW_voorwerpnummer"]);
                     ?>
@@ -202,7 +197,8 @@ EOT;
             </div>
             <div class="panel-heading text-center">Prijs</div>
             <div class="panel-body">
-                <span id="Price" class="text-center"><i class="glyphicon glyphicon-euro"></i> <?php  echo $ItemInfo["prijs"];?></span>
+                <span id="Price" class="text-center"><i
+                            class="glyphicon glyphicon-euro"></i> <?php echo $ItemInfo["prijs"]; ?></span>
             </div>
 
             <!-- Recent offers -->
@@ -212,17 +208,17 @@ EOT;
 
                 <?php
 
-
                 $LastOffers = GetLastOffers($ItemInfo["VW_voorwerpnummer"]);
 
-                if (!isset($LastOffers[0]) or empty($LastOffers[0])){
+                if (!isset($LastOffers[0]) or empty($LastOffers[0])) {
                     echo "<div class=\"OldOffer\">Er zijn nog geen boden</div>";
-                } else{                    $Bod = 0;
-                    foreach($LastOffers as $lastOffer){
+                } else {
+                    $Bod = 0;
+                    foreach ($LastOffers as $lastOffer) {
                         $Bod++;
-                        echo "<div class=\"OldOffer\"><div class=\"OldOfferUserName\">" . $Bod .'.'. $lastOffer["BOD_gebruiker"] . "</div><div class=\"OldOfferPrice\">". $lastOffer["BOD_bodTijdEnDag"] ."</div><div class=\"OldOfferPrice\">&euro;". $lastOffer["BOD_bodbedrag"]  ."</div></div>";
+                        echo "<div class=\"OldOffer\"><div class=\"OldOfferUserName\">" . $Bod . '. ' . $lastOffer["BOD_gebruiker"] . "</div><div class=\"OldOfferPrice\">" . ConvertTime($lastOffer["BOD_bodTijdEnDag"]) . "</div><div class=\"OldOfferPrice\">&euro;" . $lastOffer["BOD_bodbedrag"] . "</div></div>";
 
-                        if($Bod = 4){
+                        if ($Bod = 4) {
                             echo "<div id=\"MoreOffers\" class=\"collapse\">";
                         }
                     }
@@ -232,11 +228,7 @@ EOT;
                 }
 
 
-
-
                 ?>
-
-
 
 
             </div>
@@ -248,7 +240,8 @@ EOT;
                 <form class="form-inline">
                     <div class="input-group InputBod">
                         <div class="input-group-addon">&euro;</div>
-                        <input type="text" class="form-control"  placeholder="voer hier uw bod in" value="<?php echo""; ?>">
+                        <input type="text" class="form-control" placeholder="voer hier uw bod in"
+                               value="<?php echo ""; ?>">
                     </div>
                     <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
                 </form>
@@ -257,7 +250,7 @@ EOT;
             <div class="panel-body">
                 <div class="UserContainer">
                     <div id="User" style="background-image:url(images/User.png)"></div>
-                    <div class="UserInfo"><?php echo $ItemInfo["VW_verkoper"]?></div>
+                    <div class="UserInfo"><?php echo $ItemInfo["VW_verkoper"] ?></div>
                 </div>
                 <div id="UserRating" class="text-center">
                     <div>
@@ -265,10 +258,8 @@ EOT;
 
                         $Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
 
-                        print_r($Userinfo);
-
-                        //%10 * 5;
-
+                        //print_r($Userinfo);
+                        //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
                         ?>
                         <i class="glyphicon glyphicon-star"></i>
                         <i class="glyphicon glyphicon-star"></i>
@@ -306,6 +297,6 @@ EOT;
 
 </div>
 
-<?php include('footer.html') ?>
+<?php include('footer.html'); ?>
 
 </body>
