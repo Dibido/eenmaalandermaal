@@ -245,11 +245,13 @@ require('navbar.php');
                         <div class=\"veiling-titel label label-default\">"
                         . $veiling["VW_titel"] .
                         "</div>
-                        <div class=\"veiling-image\" ";
+                         <a href=\"voorwerp.php?ItemID=" . $veiling["VW_voorwerpnummer"] . " \">
+                         <div class=\"veiling-image\" ";
+
 
                     if (!empty($veiling["ImagePath"])) {
 
-                        echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div>
+                        echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div></a>
                             <div class=\"veiling-prijs-tijd\">
                                 <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
                                 <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . "></p>" . "</div>
