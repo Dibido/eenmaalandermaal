@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 require 'PHP/SQL-Queries.php';
