@@ -19,7 +19,7 @@ function ConvertTime($time)
         return (date_format($datetime, 'H:i'));
     } else {
         //in minuten en seconden.
-        return(date_format($datetime, 'i:s'));
+        return (date_format($datetime, 'i:s'));
     }
 }
 
@@ -83,7 +83,7 @@ SELECT
                                      FROM Bod
                                      WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                      ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-             ORDER BY BOD_Bodbedrag DESC), (SELECT DISTINCT VW_startprijs
+             ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs
                                             FROM Voorwerp
                                             WHERE VW_voorwerpnummer = VW_voorwerpnummer))) AS prijs,
   Voorwerp.VW_looptijdEinde AS tijd,
@@ -103,7 +103,7 @@ SELECT
   VW_verzendkosten,
   VW_conditie
 FROM Voorwerp
-  LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+  FULL OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   LEFT OUTER JOIN Rubriek r1 ON r1.RB_Nummer = Rubriek.RB_Parent
@@ -111,8 +111,6 @@ FROM Voorwerp
   LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
 WHERE VW_voorwerpnummer = $ItemID
-
-SELECT * FROM Voorwerp
 
 EOT;
 
@@ -966,13 +964,14 @@ EOT;
             $stmt = $connection->prepare($sqlDeleteUser);
             $stmt->bindParam(':email', $_SESSION['email']);
             $stmt->execute();
+            $geregistreerdeGebruiker = $_SESSION['gebruikersnaam'];
+            session_unset();
 
-            session_destroy();
-
+            $_SESSION["Username"] = $geregistreerdeGebruiker;
             echo '  <div class="alert alert-success">
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>
                             <hr>
-            <p class="text-center">Klik <a href="login.php">hier</a> om in te loggen.</p>
+            <p class="text-center">U bent tevens ingelogd.</p>
             ';
 
         }

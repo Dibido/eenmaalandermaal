@@ -185,10 +185,12 @@
 /* description */
 #Description-Wrapper{
     height: 600px;
+    overflow-y: hidden;
 }
 #Description{
     width: 100%;
     height: 100%;
+    border: none;
 }
 
 

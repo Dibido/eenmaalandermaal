@@ -165,10 +165,9 @@ require('navbar.php');
 
         <div class="panel panel-default " id="Description-Wrapper">
             <div class="panel-heading text-center">Kenmerken</div>
-            <div class="panel-body">
-                <div>
-                    <iframe src="https://www.w3schools.com" id="Description"></iframe>
-                    <?php// echo $ItemInfo["VW_beschrijving"]; ?>
+            <div class="panel-body" style="height:100%;">
+                <div style="height:100%;">
+                    <iframe src="http://iproject3.icasites.nl/voorwerpDescription.php?ItemID=<?php echo $ItemID?>" id="Description"></iframe>
                 </div>
             </div>
         </div>
@@ -214,6 +213,7 @@ require('navbar.php');
 
                 if (!isset($LastOffers[0]) or empty($LastOffers[0])) {
                     echo "<div class=\"OldOffer\">Er zijn nog geen boden</div>";
+                    echo "</div>";
                 } else {
                     $Bod = 0;
                     foreach ($LastOffers as $lastOffer) {
@@ -282,8 +282,14 @@ require('navbar.php');
         <!-- gelijksoortige advertenties -->
 
         <div class="panel panel-default">
-            <div class="panel-heading text-center">Gelijksoortige advertenties</div>
+            <div class="panel-heading text-center">Andere advertenties van deze gebruiker</div>
             <div class="panel-body">
+                <?php
+
+                DrawAuction()
+
+
+                ?>
 
             </div>
         </div>
