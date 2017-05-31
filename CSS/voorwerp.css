@@ -84,13 +84,14 @@
 }
 .MoreOffers{
     width: 100%;
+    border: #e5e5e5 solid 2px;
 }
 
 .MoreOffers.collapsed:after {
-    content: "Meer boden +";
+    content: "Meer biedingen +";
 }
 .MoreOffers:after {
-    content: "Minder boden -";
+    content: "Minder biedingen -";
 }
 
 

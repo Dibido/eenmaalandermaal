@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
@@ -25,6 +24,7 @@ $ItemInfo = $ItemInfo[0];
     <title>EenmaalAndermaal - Beste veilingssite van Nederland</title>
     <meta name="description" content="EenmaalAndermaal">
     <meta name="author" content="Iproject - Groep 3">
+
 
 
 

@@ -196,63 +196,23 @@ require('navbar.php');
                     <div id="Clock" style="background-image:url(images/Clock.png)"></div>
                 </div>
             </div>
+
+            <!-- dynamically loading the price -->
+
             <div class="panel-heading text-center">Prijs</div>
-            <div class="panel-body">
-                <span id="Price" class="text-center"><i
-                            class="glyphicon glyphicon-euro"></i> <?php echo $ItemInfo["prijs"]; ?></span>
+            <div class="panel-body" id="dynamicPrice">
+
+
             </div>
 
-            <!-- Recent offers -->
+            <!-- dynamically loading the offers -->
 
             <div class="panel-heading text-center">Recente biedingen</div>
-            <div class="panel-body">
-
-                <?php
-
-                $LastOffers = GetLastOffers($ItemInfo["VW_voorwerpnummer"]);
-
-                if (!isset($LastOffers[0]) or empty($LastOffers[0])) {
-                    echo "<div class=\"OldOffer\">Er zijn nog geen biedingen, wees de eerste om een bod uit te brengen!</div>";
-                    echo "</div>";
-                } else {
-                    $Bod = 0;
-                    foreach ($LastOffers as $lastOffer) {
-                        $Bod++;
-                        $Bodtijd = ConvertTime($lastOffer["BOD_bodTijdEnDag"]);
-                        echo "<div class=\"OldOffer\"><div class=\"OldOfferUserName\">" . $Bod . '. ' . $lastOffer["BOD_gebruiker"] . "</div><div class=\"OldOfferPrice\">" . $Bodtijd . "</div><div class=\"OldOfferPrice\">&euro;" . $lastOffer["BOD_bodbedrag"] . "</div></div>";
-
-                        if ($Bod == 4) {
-                            echo "<div id=\"MoreOffers\" class=\"collapse\">";
-                        }
-                    }
-
-                    echo "</div>";
-                    echo "<button data-toggle=\"collapse\" data-target=\"#MoreOffers\" class=\"btn btn-default MoreOffers collapsed\" value=\"Meer boden\"></button>";
-
-                    if($Bod >= 4){
-                        echo "</div>";
-                    }
-
-                }
+            <div class="panel-body" id="dynamicOffers">
 
 
-                ?>
-
-
-
-            <!-- Biedknop -->
-
-            <div class="panel-heading text-center">Bieden</div>
-            <div class="panel-body">
-                <form class="form-inline">
-                    <div class="input-group InputBod">
-                        <div class="input-group-addon">&euro;</div>
-                        <input type="text" class="form-control" placeholder="voer hier uw bod in"
-                               value="<?php echo ""; ?>">
-                    </div>
-                    <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
-                </form>
             </div>
+
             <div class="panel-heading text-center">Gebruikers informatie</div>
             <div class="panel-body">
                 <div class="UserContainer">
@@ -307,10 +267,15 @@ require('navbar.php');
 
 </div>
 
+<script type="text/javascript">
+    $.get( "voorwerpPrice.php?ItemID=<?php echo $ItemID;?>", function( data ) {
+        $( "#dynamicPrice" ).html( data );
+        alert( "Load was performed." );
+    });
 
-<script>
-    $(".Categoriën").css({'height': ($(".BijnaGesloten").height() + 'px')});
-    $(".VeilingShowcase").css({'height': ($(".BijnaGesloten").height() + 'px')});
+    $.get( "voorwerpBiedingen.php?ItemID=<?php echo $ItemID;?>", function( data ) {
+        $( "#dynamicOffers" ).html( data );
+    });
 </script>
 
 
