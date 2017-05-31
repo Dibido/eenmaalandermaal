@@ -102,6 +102,7 @@ if (isset($_GET["loggedOut"]) && $_GET["loggedOut"] == 'True') {
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/navigation.css">
     <link rel="stylesheet" href="CSS/BeheerLogin.css">
+    <link rel="stylesheet" href="CSS/footer.css">
 
 
 </head>
@@ -183,7 +184,7 @@ include "navbar.php";
     </div>
 </div>
 
-<!--FOOTER toevoegen-->
+<?php include('footer.html') ?>
 
 </body>
 </html>
