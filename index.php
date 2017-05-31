@@ -5,12 +5,9 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
 $response = NULL;
-
 ?>
 
 <!doctype html>
-
-<!-- onzin comment voor pushes nr2 -->
 
 <html lang="en">
 
@@ -70,7 +67,7 @@ require('navbar.php');
         <div class="col-md-3 visible-lg Categoriën" id="Categoriën">
             <div class="list-group">
                 <a href="#" class="list-group-item active" id="Header-Categories">
-                    Top 10 categorieën
+                    Top 10 rubrieken
                 </a>
                 <?php
 
@@ -86,7 +83,7 @@ require('navbar.php');
 
 
                 ?>
-                <a href="categorie.php" class="list-group-item active text-center">Meer categorieën <i
+                <a href="categorie.php" class="list-group-item active text-center">Meer rubrieken <i
                             class="text-right glyphicon glyphicon-plus-sign"></i></a>
             </div>
         </div>
