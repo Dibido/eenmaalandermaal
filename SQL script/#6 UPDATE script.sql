@@ -53,7 +53,7 @@ CREATE FUNCTION TEMP_FN_Randomgebruiker
 AS
   BEGIN
     --Selecteer een random gebruiker aan de hand van de random identifier en het regelnummer.
-    DECLARE @Gebruiker VARCHAR(64) = (SELECT GEB_gebruikersnaam
+    RETURN (SELECT TOP 1 GEB_gebruikersnaam
                                       FROM (SELECT
                                               GEB_gebruikersnaam,
                                               ROW_NUMBER()
@@ -62,14 +62,16 @@ AS
                                             FROM Gebruiker
                                            ) AS regels
                                       WHERE regels.regel = (SELECT ((ABS(CHECKSUM(@Identifier))) % (SELECT count(*) + 1
-                                                                                                    FROM Gebruiker) +
-                                                                    1)))
+                                                                                                    FROM Gebruiker )) + 1))
     --Als de gebruiker hetzelfde is als de verkoper, genereer een nieuwe gebruiker. (mag niet op eigen producten bieden)
-    IF @Gebruiker = @Verkoper
-      TEMP_FN_Randomgebruiker(@Identifier, @Verkoper)
-    ELSE
-      RETURN @Gebruiker
+    --IF @Gebruiker != @Verkoper
+     -- RETURN @Gebruiker
+    /*ELSE
+      RETURN dbo.TEMP_FN_Randomgebruiker(@Identifier, @Verkoper)
+    RETURN
+    */
   END
+GO
 
 CREATE PROCEDURE SP_UpdateBiedingen
     @Daterange INT = 14
@@ -79,7 +81,7 @@ AS
     v.VW_voorwerpnummer                                      AS BOD_voorwerpnummer,
     v.VW_startprijs + 50 + (ABS(Checksum(NewID()) % 10) + 1) AS BOD_bodbedrag,
     --De huidige waarde plus 50 (het hoogste minimale bod) en een random waarde van 1 tot 10
-    (dbo.TEMP_FN_Randomgebruiker(newID(), v.VW_verkoper))    AS BOD_gebruiker,
+    (dbo.TEMP_FN_Randomgebruiker(newID(), v.VW_verkoper))   AS BOD_gebruiker,
     (SELECT DATEADD(
         MINUTE,
         ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, v.VW_looptijdStart, DATEADD(DAY, 14, v.VW_looptijdStart)) +
@@ -87,8 +89,20 @@ AS
         0
     ))                                                       AS BOD_bodTijdEnDag -- Tijd binnen een bepaalde range.
   FROM Voorwerp v
+  ORDER BY BOD_gebruiker ASC
+GO
 
   --Hulpfunctie opruimen
   IF OBJECT_ID('TEMP_FN_Randomgebruiker') IS NOT NULL
     DROP FUNCTION TEMP_FN_Randomgebruiker
 GO
+
+select * from Voorwerp where VW_verkoper is null
+
+
+
+select count(*) from Bod
+
+EXEC SP_UpdateBiedingen
+
+DROP PROCEDURE SP_UpdateBiedingen
