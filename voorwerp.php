@@ -208,13 +208,25 @@ require('navbar.php');
 
 <script type="text/javascript">
 
-
-
     (function(){
+        var open = $("#MoreOffers").hasClass("collapse in");
+        var hasFocus = ($("#bodInput").is(":focus"));
+        var text = $('#bodInput').val();
+
         $.get( "voorwerpPanel.php?ItemID=<?php echo $ItemID;?>", function( data ) {
             $( "#dynamicPanel" ).html( data );
+            if (open)
+            {
+                $("#MoreOffers").addClass( "collapse in");
+            } else $("#MoreOffers").addClass("collapse");
+
+            if (hasFocus){
+                $("#bodInput").focus();
+            }
+            $('#bodInput').val(text);
+
         });
-        setTimeout(arguments.callee, 1000);
+        setTimeout(arguments.callee, 5000);
     })();
 
 
