@@ -43,13 +43,16 @@ GO
 
 --Tijdelijke functie om een random gebruiker te vinden
 --Variabelen:
---
+--@Identifier, een unieke identity in de tabel.
+--@Verkoper, De verkoper van het product.
+
 CREATE FUNCTION TEMP_FN_Randomgebruiker
   (@Identifier UNIQUEIDENTIFIER,
    @Verkoper   VARCHAR(64))
   RETURNS VARCHAR(64)
 AS
   BEGIN
+    --Selecteer een random gebruiker aan de hand van de random identifier en het regelnummer.
     DECLARE @Gebruiker VARCHAR(64) = (SELECT GEB_gebruikersnaam
                                       FROM (SELECT
                                               GEB_gebruikersnaam,
@@ -61,6 +64,7 @@ AS
                                       WHERE regels.regel = (SELECT ((ABS(CHECKSUM(@Identifier))) % (SELECT count(*) + 1
                                                                                                     FROM Gebruiker) +
                                                                     1)))
+    --Als de gebruiker hetzelfde is als de verkoper, genereer een nieuwe gebruiker. (mag niet op eigen producten bieden)
     IF @Gebruiker = @Verkoper
       TEMP_FN_Randomgebruiker(@Identifier, @Verkoper)
     ELSE
@@ -72,16 +76,16 @@ CREATE PROCEDURE SP_UpdateBiedingen
 AS
 --INSERT INTO Bod (BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker, BOD_bodTijdEnDag)
   SELECT
-    v.VW_voorwerpnummer                                   AS BOD_voorwerpnummer,
-    v.VW_startprijs + 50 + (ABS(Checksum(NewID()) % 10) + 1)   AS BOD_bodbedrag,
+    v.VW_voorwerpnummer                                      AS BOD_voorwerpnummer,
+    v.VW_startprijs + 50 + (ABS(Checksum(NewID()) % 10) + 1) AS BOD_bodbedrag,
     --De huidige waarde plus 50 (het hoogste minimale bod) en een random waarde van 1 tot 10
-    (dbo.TEMP_FN_Randomgebruiker(newID(), v.VW_verkoper)) AS BOD_gebruiker,
+    (dbo.TEMP_FN_Randomgebruiker(newID(), v.VW_verkoper))    AS BOD_gebruiker,
     (SELECT DATEADD(
         MINUTE,
         ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, v.VW_looptijdStart, DATEADD(DAY, 14, v.VW_looptijdStart)) +
         DATEDIFF(MINUTE, 0, v.VW_looptijdStart),
         0
-    ))                                                    AS BOD_bodTijdEnDag -- Tijd binnen een bepaalde range.
+    ))                                                       AS BOD_bodTijdEnDag -- Tijd binnen een bepaalde range.
   FROM Voorwerp v
 
   --Hulpfunctie opruimen
