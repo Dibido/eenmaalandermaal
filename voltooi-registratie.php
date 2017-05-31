@@ -39,6 +39,7 @@ require('PHP/SQL-Queries.php');
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
+    <link rel="stylesheet" href="CSS/footer.css">
 
 </head>
 
@@ -68,6 +69,7 @@ require('navbar.php');
     </div>
 </div>
 
+<?php include('footer.html') ?>
 
 </body>
 </html>

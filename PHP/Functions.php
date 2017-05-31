@@ -818,7 +818,7 @@ function checkEmailSent()
                 echo '  <div class="alert alert-success">
                             <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
             }
-        } else {
+        } else if(!isset($_POST['code'])) {{
             echo '  <div class="alert alert-danger" >
                         <strong > Fout!</br></strong > Vul A.U.B. een geldig E-mailadres in.
                         </div > ';
