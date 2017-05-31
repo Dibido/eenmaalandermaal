@@ -5,12 +5,9 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
 $response = NULL;
-
 ?>
 
 <!doctype html>
-
-<!-- onzin comment voor pushes nr2 -->
 
 <html lang="en">
 
