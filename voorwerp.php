@@ -196,86 +196,28 @@ require('navbar.php');
                     <div id="Clock" style="background-image:url(images/Clock.png)"></div>
                 </div>
             </div>
-
-            <!-- dynamically loading the price -->
-
-            <div class="panel-heading text-center">Prijs</div>
-            <div class="panel-body" id="dynamicPrice">
-
-
-            </div>
-
-            <!-- dynamically loading the offers -->
-
-            <div class="panel-heading text-center">Recente biedingen</div>
-            <div class="panel-body" id="dynamicOffers">
-
-
-            </div>
-
-            <div class="panel-heading text-center">Gebruikers informatie</div>
-            <div class="panel-body">
-                <div class="UserContainer">
-                    <div id="User" style="background-image:url(images/User.png)"></div>
-                    <div class="UserInfo"><?php echo $ItemInfo["VW_verkoper"] ?></div>
-                </div>
-                <div id="UserRating" class="text-center">
-                    <div>
-                        <?php
-
-                        $Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
-
-                        $rating = floor($Userinfo[0]["GEB_rating"]) / 10;
-
-                        for($i = 0; $i < $rating/2; $i++){
-                            echo " <i class=\"glyphicon glyphicon-star\"></i>";
-                        }
-
-                        //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
-                        ?>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <!-- gelijksoortige advertenties -->
 
-        <div class="panel panel-default">
-            <div class="panel-heading text-center">Andere advertenties van deze gebruiker</div>
-            <div class="panel-body">
-                <?php
+        <div id="dynamicPanel"></div>
 
-                $auctions = findAuctionsByUser($ItemInfo["VW_verkoper"]);
-
-                print_r($auctions);
-
-                /*
-                foreach ($auctions as $auction){
-                    DrawAuction($auction);
-                }
-                */
-
-                ?>
-
-            </div>
-        </div>
-
-        <!-- einde gelijksoortige advertenties -->
 
     </div>
 
 </div>
 
 <script type="text/javascript">
-    $.get( "voorwerpPrice.php?ItemID=<?php echo $ItemID;?>", function( data ) {
-        $( "#dynamicPrice" ).html( data );
-        alert( "Load was performed." );
-    });
 
-    $.get( "voorwerpBiedingen.php?ItemID=<?php echo $ItemID;?>", function( data ) {
-        $( "#dynamicOffers" ).html( data );
-    });
+
+
+    (function(){
+        $.get( "voorwerpPanel.php?ItemID=<?php echo $ItemID;?>", function( data ) {
+            $( "#dynamicPanel" ).html( data );
+        });
+        setTimeout(arguments.callee, 1000);
+    })();
+
+
 </script>
 
 
