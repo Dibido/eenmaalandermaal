@@ -61,7 +61,11 @@ function findAuctionsByUser($username)
 
     $stmt = $connection->prepare($QueryFindAuctionsByUser);
     $stmt->execute(array($username));
+    echo $username;
+    print_r($stmt);
+/*
     return $stmt->fetch();
+*/
 
 }
 

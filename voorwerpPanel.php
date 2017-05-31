@@ -133,11 +133,11 @@ $ItemInfo = $ItemInfo[0];
 
                 print_r($auctions);
 
-                /*
+
                 foreach ($auctions as $auction){
                     DrawAuction($auction);
                 }
-                */
+
 
                 ?>
 
