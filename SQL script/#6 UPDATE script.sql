@@ -9,8 +9,8 @@ GO
 --Parameters:
 --Range van de random datums voor de looptijdstart, moet later of gelijk zijn aan getdate().
 CREATE PROCEDURE SP_UpdateLooptijd
-  @FromDate DATE = getdate(), --begindatum random datum.
-  @ToDate DATE = dateADD(DAY, getdate(), 14) --Einddatum random datum.
+  @FromDate DATE = getdate(), --default begindatum random datum.
+  @ToDate DATE = dateADD(DAY, getdate(), 14) -- default einddatum random datum.
   AS
 --Tijdelijke tabel om random looptijden te kunnen selecteren.
   CREATE TABLE TEMP_LooptijdWaardes (
@@ -26,9 +26,11 @@ CREATE PROCEDURE SP_UpdateLooptijd
       ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, @FromDate, @ToDate) + DATEDIFF(MINUTE, 0, @FromDate),
       0
   )),
+    --Doet een random waarde modulo het verschil tussen de min en max waarde van de range en voegt dan de begintijd toe.
     VW_looptijd        = (SELECT Looptijd
                           FROM TEMP_LooptijdWaardes
                           WHERE ID = ((Items.ID % 5) + 1))
+  --Pakt het ID en doet modulo 5 wat een range van 0 - 4 geeft. We tellen er een bij op om de 1 - 5 van de identity te krijgen.
 
   --Tijdelijke tabel opruimen.
   IF OBJECT_ID('dbo.TEMP_LooptijdWaardes') IS NOT NULL
