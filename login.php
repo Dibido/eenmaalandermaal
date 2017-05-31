@@ -131,6 +131,27 @@ include "navbar.php";
 
                 <div class="panel-body">
 
+                    <!-- Alerts -->
+
+                    <?php
+
+                    /* checking if any alerts of success messages need to be displayed */
+                    if ($errorMessage[0]) {
+
+                        echo "<div class=\"alert alert-danger alert-dismissable\">
+                             <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
+                             <strong>Fout!</br></strong> " . $errorMessage[1] . "
+                          </div>";
+                    } else if ($successMessage[0]) {
+                        echo "<div class=\"alert alert-success alert-dismissable\">
+                             <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
+                             <strong>Success!</br></strong> " . $successMessage[1] . "
+                          </div>";
+                    }
+
+
+                    ?>
+
                     <form action="login.php" method="POST">
 
                         <!-- gebruikersnaam input -->
@@ -163,27 +184,6 @@ include "navbar.php";
                             </div>
                         </div>
 
-
-                        <!-- Alerts -->
-
-                        <?php
-
-                        /* checking if any alerts of success messages need to be displayed */
-                        if ($errorMessage[0]) {
-
-                            echo "<div class=\"alert alert-danger alert-dismissable\">
-                             <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
-                             <strong>Error!</strong> " . $errorMessage[1] . "
-                          </div>";
-
-                        } else if ($successMessage[0]) {
-                            echo "<div class=\"alert alert-success alert-dismissable\">
-                             <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
-                             <strong>Success!</strong> " . $successMessage[1] . "
-                          </div>";
-                        }
-
-                        ?>
                     </form>
                 </div>
 

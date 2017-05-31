@@ -1,4 +1,7 @@
---Alle insert scripts voor de tabellen
+--Insert scripts voor de tabellen
+
+
+--TODO: insert script voor biedingen.
 
 --Alle Betalingswijzen
 INSERT INTO Betalingswijzen (BW_betalingswijze) VALUES ('Bank / Giro'), ('Contant'), ('Anders');
@@ -259,8 +262,12 @@ VALUES
   ('Hoe heet je oudste zusje?'),
   ('Hoe heet je huisdier?')
 
+
+
+/* Insertscripts voor testdata */
 /*toevoegen van gebruikers */
 
+/*
 INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adresregel_1, GEB_adresregel_2, GEB_postcode, GEB_plaatsnaam, GEB_Land, GEB_geboortedag, GEB_mailbox, GEB_wachtwoord, GEB_vraag, GEB_antwoordtekst, GEB_verkoper, GEB_rating)
 VALUES
   ('kees', 'kees', 'Jansen', 'hansestraat', 'hanseweg', '2133YG', 'Amsterdam', 'NL', '1997-10-12', 'onzin@meeronzin.dk',
@@ -830,4 +837,5 @@ VALUES ('images/testImg1.jpg', 1),
   ('images/ModelS.jpeg', 22),
   ('images/ModelX.jpeg', 23),
   ('images/Roadster.jpg', 24)
+*/
 */
