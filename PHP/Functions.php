@@ -920,7 +920,6 @@ function checkEmailSent()
   </body>
 </html>
 
-
 ';
 
 
