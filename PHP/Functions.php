@@ -916,7 +916,6 @@ function checkEmailSent()
   </body>
 </html>
 
-
 ';
 
 
