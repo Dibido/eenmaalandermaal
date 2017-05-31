@@ -1,8 +1,5 @@
 --Insert scripts voor de tabellen
 
-
---TODO: insert script voor biedingen.
-
 --Alle Betalingswijzen
 INSERT INTO Betalingswijzen (BW_betalingswijze) VALUES ('Bank / Giro'), ('Contant'), ('Anders');
 
