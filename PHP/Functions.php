@@ -858,7 +858,7 @@ function checkEmailSent()
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
                   <tr>
                     <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Beste gebruiker,</p>
-                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft aangegeven zich aan te willen melden op onze website. Dit is uw persoonlijke code: <b> ' . $code . ' </b> </p>
+                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft aangegeven zich aan te willen melden op EenmaalAndermaal. Dit is uw persoonlijke code: <b> ' . $code . ' </b> </p>
                   </tr>
                 </table>
                 <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Vul deze in op de website om de registratieprocedure af te ronden of klik op de activeer knop.</p>
@@ -892,7 +892,7 @@ function checkEmailSent()
               <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
                 <tr>
                   <td class="content-block" style="font-family:sans-serif;font-size:14px;vertical-align:top;color:#fff;font-size:12px;text-align:center; margin-bottom:10px color: #f0f0f0;">
-                    <span class="apple-link" style="color:#fff;font-size:12px;text-align:center;"><a href="http://iproject3.icasites.nl/" style="color:#413b88;text-decoration:underline;color:#fff;font-size:12px;text-align:center;">EenmaalAndermaal B.V.</a></span>
+                    <span class="apple-link" style="color:#fff;font-size:12px;text-align:center;"><p><a href="http://iproject3.icasites.nl/" style="color:#413b88;text-decoration:underline;color:#fff;font-size:12px;text-align:center;">EenmaalAndermaal B.V.</a></p></span>
                     <br>
                     <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;color:#fff;font-size:12px;text-align:center;">KVK-nummer: 09091785</p>
                     <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;color:#fff;font-size:12px;text-align:center;">
