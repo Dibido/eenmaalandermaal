@@ -119,13 +119,10 @@ CREATE TABLE Voorwerp (
   CONSTRAINT FK_VoorwerpGebruikerGebruikersnaam FOREIGN KEY (VW_koper) REFERENCES Gebruiker (GEB_gebruikersnaam)
     ON UPDATE CASCADE --Voor als de gebruikersnaam wordt aangepast
     ON DELETE NO ACTION,
+  CONSTRAINT FK_VoorwerpLooptijd FOREIGN KEY (VW_looptijd) REFERENCES LooptijdWaardes.LOP_looptijd, --De looptijd mag enkel 1,3,5,7,10 zijn zoals aangegeven in Appendix B
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2), --Kan niet leeg zijn
-  CONSTRAINT CHK_LooptijdEenGegevenTijd CHECK (VW_looptijd IN
-                                               (SELECT *
-                                                FROM
-                                                  LooptijdWaardes)), --De looptijd mag enkel 1,3,5,7,10 zijn zoals aangegeven in Appendix B
   CONSTRAINT CHK_LooptijdBegindagInHetVerleden CHECK (VW_looptijdStart >=
                                                       GETDATE()), --De begin datum van een veiling mag niet voor de huidige datum liggen.
   CONSTRAINT CHK_StartprijsHogerDan1 CHECK (VW_startprijs >= 1.00), --Appendix B, Mindstends een euro
