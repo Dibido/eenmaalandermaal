@@ -42,6 +42,8 @@ AS
 GO
 
 --Tijdelijke functie om een random gebruiker te vinden
+--Variabelen:
+--
 CREATE FUNCTION TEMP_FN_Randomgebruiker
   (@Identifier UNIQUEIDENTIFIER,
    @Verkoper   VARCHAR(64))
