@@ -22,6 +22,9 @@ IF OBJECT_ID('dbo.Vraag') IS NOT NULL
   DROP TABLE dbo.Vraag
 IF OBJECT_ID('dbo.Registreer') IS NOT NULL
   DROP TABLE dbo.Registreer
+IF OBJECT_ID('dbo.LooptijdWaardes') IS NOT NULL
+  DROP TABLE dbo.LooptijdWaardes
+
 
 CREATE TABLE Betalingswijzen (
   BW_betalingswijze VARCHAR(25) NOT NULL, --Keuze betalingswijzen
@@ -82,6 +85,11 @@ CREATE TABLE Gebruikerstelefoon (
     ON DELETE NO ACTION,
 );
 
+--Tabel om de valide looptijden in op te slaan.
+CREATE TABLE LooptijdWaardes (
+  LOP_looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
+)
+
 CREATE TABLE Voorwerp (
   VW_voorwerpnummer      BIGINT        NOT NULL IDENTITY, --Genereerd zelf nummer, zo veel mogelijk voorwerpen
   VW_titel               VARCHAR(90)   NOT NULL, --De langste titel is 86 en om nog wat marge te hebben doen we 90
@@ -115,7 +123,9 @@ CREATE TABLE Voorwerp (
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_LooptijdEenGegevenTijd CHECK (VW_looptijd IN
-                                               (1, 3, 5, 7, 10)), --De looptijd mag enkel 1,3,5,7,10 zijn zoals aangegeven in Appendix B
+                                               (SELECT *
+                                                FROM
+                                                  LooptijdWaardes)), --De looptijd mag enkel 1,3,5,7,10 zijn zoals aangegeven in Appendix B
   CONSTRAINT CHK_LooptijdBegindagInHetVerleden CHECK (VW_looptijdStart >=
                                                       GETDATE()), --De begin datum van een veiling mag niet voor de huidige datum liggen.
   CONSTRAINT CHK_StartprijsHogerDan1 CHECK (VW_startprijs >= 1.00), --Appendix B, Mindstends een euro
@@ -175,7 +185,6 @@ CREATE TABLE Bod (
   --CONSTRAINT CHK_BodBedrag CHECK (dbo.bodHoogGenoeg(voorwerpnummer, bodbedrag) = 1),
   CONSTRAINT CHK_NietEigenVoorwerp CHECK (dbo.nietEigenVoorwerp(BOD_voorwerpnummer, BOD_gebruiker) = 1)
 );
-
 
 CREATE TABLE Registreer (
   REG_email VARCHAR(255) NOT NULL,

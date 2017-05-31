@@ -204,7 +204,7 @@ require('navbar.php');
 
             <!-- Recent offers -->
 
-            <div class="panel-heading text-center">Recente boden</div>
+            <div class="panel-heading text-center">Recente biedingen</div>
             <div class="panel-body">
 
                 <?php
@@ -212,7 +212,7 @@ require('navbar.php');
                 $LastOffers = GetLastOffers($ItemInfo["VW_voorwerpnummer"]);
 
                 if (!isset($LastOffers[0]) or empty($LastOffers[0])) {
-                    echo "<div class=\"OldOffer\">Er zijn nog geen boden</div>";
+                    echo "<div class=\"OldOffer\">Er zijn nog geen biedingen, wees de eerste om een bod uit te brengen!</div>";
                     echo "</div>";
                 } else {
                     $Bod = 0;
@@ -286,8 +286,15 @@ require('navbar.php');
             <div class="panel-body">
                 <?php
 
-                DrawAuction()
+                $auctions = findAuctionsByUser($ItemInfo["VW_verkoper"]);
 
+                print_r($auctions);
+
+                /*
+                foreach ($auctions as $auction){
+                    DrawAuction($auction);
+                }
+                */
 
                 ?>
 

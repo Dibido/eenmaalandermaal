@@ -53,6 +53,17 @@ function FindAdminUsers($username)
     return $stmt->fetch();
 }
 
+/*function for finding adverts per user*/
+function findAuctionsByUser($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryFindAuctionsByUser;
+
+    $stmt = $connection->prepare($QueryFindAuctionsByUser);
+    $stmt->execute(array($username));
+    return $stmt->fetch();
+
+}
 
 /* function for getting the results for the product page */
 
@@ -81,11 +92,11 @@ SELECT
              FROM Bod
              WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
                                      FROM Bod
-                                     WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                     ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+                                     WHERE BOD_voorwerpnummer = $ItemID
+                                     ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = $ItemID
              ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs
                                             FROM Voorwerp
-                                            WHERE VW_voorwerpnummer = VW_voorwerpnummer))) AS prijs,
+                                            WHERE VW_voorwerpnummer = $ItemID))) AS prijs,
   Voorwerp.VW_looptijdEinde AS tijd,
   VW_thumbnail,
   CAST(VW_looptijdStart AS DATE) as VW_looptijdStart,
@@ -131,6 +142,7 @@ EOT;
 
     RETURN SendToDatabase($QueryGetLastOffers);
 }
+
 
 
 function GetUserInfoPerAuction($username)
