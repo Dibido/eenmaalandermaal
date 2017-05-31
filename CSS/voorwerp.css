@@ -87,12 +87,6 @@
     border: #e5e5e5 solid 2px;
 }
 
-.MoreOffers.collapsed:after {
-    content: "Meer biedingen +";
-}
-.MoreOffers:after {
-    content: "Minder biedingen -";
-}
 
 
 .InputBod{

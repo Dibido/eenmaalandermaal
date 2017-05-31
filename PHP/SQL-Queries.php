@@ -18,7 +18,7 @@
 $QueryFindAuctionsByUser = <<<EOT
     
     SELECT
-  TOP 3
+  TOP 2
   VW_voorwerpnummer,
   VW_titel,
   (COALESCE((SELECT TOP 1 BOD_Bodbedrag
@@ -27,7 +27,7 @@ $QueryFindAuctionsByUser = <<<EOT
                                      FROM Bod
                                      WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                      ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-             ORDER BY BOD_Bodbedrag DESC), (SELECT DISTINCT VW_startprijs
+             ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs
                                             FROM Voorwerp
                                             WHERE VW_voorwerpnummer = VW_voorwerpnummer))) AS prijs,
   VW_looptijdEinde                                                                         AS tijd,
@@ -36,7 +36,8 @@ $QueryFindAuctionsByUser = <<<EOT
   COUNT(*)                                                                                 AS Biedingen
 
 FROM Voorwerp
-where VW_verkoper = ?
+where VW_verkoper = ? 
+AND VW_voorwerpnummer != ?
 GROUP BY VW_voorwerpnummer,vw_titel,VW_looptijdEinde,VW_thumbnail
 
 EOT;

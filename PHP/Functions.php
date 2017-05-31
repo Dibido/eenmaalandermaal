@@ -54,13 +54,13 @@ function FindAdminUsers($username)
 }
 
 /*function for finding adverts per user*/
-function findAuctionsByUser($username)
+function findAuctionsByUser($username, $auction)
 {
     GLOBAL $connection;
     GLOBAL $QueryFindAuctionsByUser;
 
     $stmt = $connection->prepare($QueryFindAuctionsByUser);
-    $stmt->execute(array($username));
+    $stmt->execute(array($username, $auction));
     return $stmt->fetchAll();
 
 
@@ -309,6 +309,36 @@ function DrawAuction($auction)
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-3\">
+                <div class=\"veiling\">
+                    <div class=\"veiling-titel label label-default\">" . $auction["VW_titel"] . "
+                    </div>
+                    <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
+                    <div class=\"veiling-prijs-tijd\">
+                        <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . "</div>
+                    </div>
+                    <div class=\"veiling-rating-bied label label-default\">
+                        <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
+                        <a class=\"btn text-center btn-info bied\">Bied Nu!</a>
+                    </div>
+                </div>
+            </div>
+            <!-- End template -->
+            
+    ";
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
+
+}
+function DrawItemAuction($auction)
+{
+    //testing for missing images and replacing with backup image
+    if (empty($auction["ImagePath"])) {
+        $auction["ImagePath"] = "images/no-image-available.jpg";
+    }
+    $pagina = 'Voorpagina';
+    echo "
+    <!-- Veiling template -->
+            <div class=\"veiling-rand col-xs-12\">
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" . $auction["VW_titel"] . "
                     </div>

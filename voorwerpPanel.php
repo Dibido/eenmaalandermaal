@@ -70,7 +70,7 @@ $ItemInfo = $ItemInfo[0];
                 echo "</div>";
 
                 if($Bod >= 4){
-                    echo "<button data-toggle=\"collapse\" data-target=\"#MoreOffers\" class=\"btn btn-default MoreOffers collapsed\" value=\"Meer biedingen\"></button>";
+                    echo "<button data-toggle=\"collapse\" data-target=\"#MoreOffers\" class=\"btn btn-default MoreOffers collapsed\" value=\"Meer biedingen / Minder biedingen\">Meer / Minder biedingen</button>";
                     echo "</div>";
                 }
             }
@@ -86,8 +86,8 @@ $ItemInfo = $ItemInfo[0];
             <form class="form-inline">
                 <div class="input-group InputBod">
                     <div class="input-group-addon">&euro;</div>
-                    <input type="text" class="form-control" placeholder="voer hier uw bod in"
-                           value="<?php echo ""; ?>">
+                    <input type="text" class="form-control" id="bodInput" placeholder="voer hier uw bod in"
+                           value="<?php echo ""; ?>" autofocus>
                 </div>
                 <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
             </form>
@@ -129,15 +129,11 @@ $ItemInfo = $ItemInfo[0];
             <div class="panel-body">
                 <?php
 
-                $auctions = findAuctionsByUser($ItemInfo["VW_verkoper"]);
-
-                print_r($auctions);
-
+                $auctions = findAuctionsByUser($ItemInfo["VW_verkoper"], $ItemID);
 
                 foreach ($auctions as $auction){
-                    DrawAuction($auction);
+                    DrawItemAuction($auction);
                 }
-
 
                 ?>
 
