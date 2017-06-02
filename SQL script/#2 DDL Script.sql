@@ -110,6 +110,7 @@ CREATE TABLE Voorwerp (
   VW_looptijdEinde                              AS DATEADD(DAY, VW_looptijd, VW_looptijdStart), --Bereken de einddatum
   VW_veilinggesloten     BIT           NOT NULL DEFAULT 0, --Veiling gesloten of open
   VW_verkoopprijs        NUMERIC(9, 2) NULL, --Prijs waarvoor het voorwerp verkocht is
+  --TODO: berekende kolom met hoogste bod.
 
   CONSTRAINT PK_Voorwerp PRIMARY KEY (VW_voorwerpnummer),
   CONSTRAINT FK_Betaalwijze FOREIGN KEY (VW_betalingsWijze) REFERENCES Betalingswijzen (BW_betalingswijze),
@@ -189,6 +190,8 @@ CREATE TABLE Registreer (
   REG_tijd  DATETIME     NOT NULL DEFAULT GETDATE(),
   CONSTRAINT PK_Registreer PRIMARY KEY (REG_email)
 )
+
+--TODO: Verkoper tabel toevoegen
 
 --TODO: Valt buiten de eerste sprint en wordt verder aan gewerkt in een latere sprint
 /*GO
