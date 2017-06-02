@@ -28,7 +28,7 @@
         <form class="navbar-form" action="resultaten.php" method="GET">
             <div class="form-group" style="display:inline;">
                 <div class="input-group" style="display:table;">
-                    <input class="form-control" name="zoekterm" placeholder="Search Here" autocomplete="off"
+                    <input class="form-control" name="zoekterm" placeholder="Zoek hier" autocomplete="off"
                            autofocus="autofocus" type="text">
                     <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button class="btn btn-secondary"
                                                                                                type="submit"
@@ -42,6 +42,7 @@
 
 
 <?php
+session_start();
 if (isset($_SESSION['Username'])) {
     //echo 'U bent ingelogd';
     echo '<div class="collapse text-center" id="accountControls">

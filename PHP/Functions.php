@@ -144,6 +144,27 @@ EOT;
     RETURN SendToDatabase($QueryGetLastOffers);
 }
 
+/* Function for the voowerperp page, helps build the breadcrums */
+function GetAboveCategories($ItemID)
+{
+    GLOBAL $connection;
+    $query = <<<EOT
+
+with tab1(RB_Nummer,RB_Naam,RB_Parent,RB_volgnummer,RB_voorwerpcount) as
+(select * from Rubriek where RB_Nummer = ?
+ union all
+select t1.* from Rubriek t1,tab1
+where tab1.RB_Parent = t1.RB_Nummer)
+select top 5 RB_Nummer from tab1;
+
+
+EOT;
+
+    $stmt = $connection->prepare($query);
+    $stmt->execute(array($ItemID));
+    return $stmt->fetch();
+
+}
 
 
 function GetUserInfoPerAuction($username)

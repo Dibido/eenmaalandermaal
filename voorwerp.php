@@ -85,6 +85,20 @@ for ($i = 0; $i < 3; $i++) {
 require('navbar.php');
 ?>
 
+<ol class="breadcrumb">
+    <li><a href="#" onclick="history.go(-1)"><span id="lastPage">Vorige pagina</span>
+        <script type="text/javascript">
+
+            var elem = window.history.previous.href;
+            $("#lastPage").append(elem);
+
+        </script>
+        </a></li>
+
+    <li><a href="#"><?php echo $ItemInfo["VW_titel"] ?></a></li>
+</ol>
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -153,7 +167,18 @@ require('navbar.php');
                 $category = GetCategoryPerAuction($ItemInfo["VW_voorwerpnummer"]);
                 $category = $category[0];
                 ?>
-                <div class="Detail"><b>Categorie:</b> <?php echo $category["Name"]; ?></div>
+                <div class="rubrieken"><b>Rubriek:</b>
+
+                    <ol class="breadcrumb">
+                    <?php
+
+                    foreach(GetAboveCategories($ItemID) as $category){
+                       echo "<li><a href=\"#\">$category</a></li>";
+
+                    }?>
+
+                    </ol></div>
+
                 <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"]; ?></div>
                 <div class="Detail"><b>geplaatst:</b> <?php echo $ItemInfo["VW_looptijdStart"]; ?></div>
                 <div class="Detail"><b>conditie:</b> <?php echo $ItemInfo["VW_conditie"]; ?></div>
