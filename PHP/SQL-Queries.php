@@ -72,39 +72,37 @@ SELECT
                                      FROM Bod
                                      WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                      ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-             ORDER BY BOD_Bodbedrag DESC), (SELECT DISTINCT VW_startprijs
-                                            FROM Voorwerp
-                                            WHERE VW_voorwerpnummer = VW_voorwerpnummer))) AS prijs,
+             ORDER BY BOD_Bodbedrag DESC), (VW_startprijs))) AS prijs,
   --Tijdsverschil tussen nu en het einde van de veiling
   VW_looptijdEinde                                                                         AS tijd,
   VW_looptijdEinde,
-    VW_thumbnail       AS ImagePath,
-  COUNT(*)                                                                                 AS Biedingen
+  VW_thumbnail       AS ImagePath,
+  COUNT(BOD_voorwerpnummer)                                                                                 AS Biedingen
 --Selecteerd het eerste filepath die hij vind voor het voorwerpnummer
 
 FROM Voorwerp
-  INNER JOIN BOD
+  LEFT OUTER JOIN BOD
     ON Voorwerp.VW_voorwerpnummer = BOD_voorwerpnummer
 --Vul hier de minimum en maximum tijd over in
 
-WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 2 AND
-  VW_voorwerpnummer IN (SELECT VW_voorwerpnummer
-                        FROM Voorwerp
-                          INNER JOIN Voorwerp_Rubriek
-                            ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                        WHERE VR_Rubriek_Nummer IN (
-                          SELECT TOP 30 Rubriek.RB_Nummer
-                          FROM Voorwerp
-                            LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-                            LEFT OUTER JOIN Voorwerp_Rubriek
-                              ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                            LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                          GROUP BY Rubriek.RB_Nummer, VW_voorwerpnummer
-                          ORDER BY COUNT(BOD_voorwerpnummer) DESC
-                        )
-  )
-GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel,VW_thumbnail
-ORDER BY tijd ASC, Biedingen DESC
+WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 1 AND
+      VW_voorwerpnummer IN (SELECT VW_voorwerpnummer
+                            FROM Voorwerp
+                              INNER JOIN Voorwerp_Rubriek
+                                ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                            WHERE VR_Rubriek_Nummer IN (
+                              SELECT TOP 30 Rubriek.RB_Nummer
+                              FROM Voorwerp
+                                LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+                                LEFT OUTER JOIN Voorwerp_Rubriek
+                                  ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                                LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                              GROUP BY Rubriek.RB_Nummer, VW_voorwerpnummer
+                              ORDER BY COUNT(BOD_voorwerpnummer) DESC
+                            )
+      )
+GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel,VW_thumbnail,VW_startprijs
+ORDER BY tijd ASC, Biedingen DESC, VW_titel ASC
 
 EOT;
 
@@ -123,35 +121,35 @@ SELECT
                                      ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
              ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) AS prijs,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)              AS tijd,
-  COUNT(*)                                                 AS Biedingen,
+  COUNT(BOD_voorwerpnummer)                                                 AS Biedingen,
   VW_looptijdEinde,
   (SELECT TOP 1 BES_filenaam
    FROM Bestand
    WHERE BES_voorwerpnummer = VW_voorwerpnummer)           AS ImagePath
 FROM Voorwerp
   --Inner join naar Bod zodat per Voorwerp het aantal biedingen bekeken kan worden.
-  INNER JOIN Bod
+  LEFT OUTER JOIN Bod
     ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
 --Where statement om te kijken of het Voorwerp nummer in de belangrijkste categorie zit.
 WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
-  SELECT DISTINCT BOD_voorwerpnummer
+  SELECT DISTINCT VW_voorwerpnummer
   --Selecteerd de naam van de Hoofdcategorie per voorwerpnummer
-  FROM Bod
-    INNER JOIN Voorwerp_Rubriek
-      ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
-    INNER JOIN Rubriek
+  FROM Voorwerp
+    FULL OUTER JOIN Voorwerp_Rubriek
+      ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = VW_voorwerpnummer
+    FULL OUTER JOIN Rubriek
       ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   WHERE RB_Naam IN (
-SELECT TOP 5 Rubriek.RB_Naam FROM Voorwerp
-LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-GROUP BY Rubriek.RB_Naam
-ORDER BY COUNT (BOD_voorwerpnummer) DESC, COUNT (VW_voorwerpnummer) DESC
-)
+    SELECT TOP 5 Rubriek.RB_Naam FROM Voorwerp
+      RIGHT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+      RIGHT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+      RIGHT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+    GROUP BY Rubriek.RB_Naam
+    ORDER BY COUNT (BOD_voorwerpnummer) DESC, RB_Naam ASC
+  )
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
 GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs
-ORDER BY Biedingen DESC
+ORDER BY Biedingen DESC, VW_titel ASC
 
 EOT;
 
