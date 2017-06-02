@@ -131,7 +131,7 @@ require('navbar.php');
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[0]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[0]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
-                                <div class=\"veiling-rating-bied label label-default\">
+                                <div class=\"veiling-rating-bied label label-default\" style=\"height: 100%;\">
                                     <div class=\"rating text-center\">
                                         <i class=\"glyphicon glyphicon-star\"></i>
                                         <i class=\"glyphicon glyphicon-star\"></i>
@@ -150,7 +150,7 @@ require('navbar.php');
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[1]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[1]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
-                                <div class=\"veiling-rating-bied label label-default\">
+                                <div class=\"veiling-rating-bied label label-default\" style=\"height: 100%;\">
                                     <div class=\"rating text-center\">
                                         <i class=\"glyphicon glyphicon-star\"></i>
                                         <i class=\"glyphicon glyphicon-star\"></i>
@@ -170,7 +170,7 @@ require('navbar.php');
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[2]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[2]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
-                                <div class=\"veiling-rating-bied label label-default\">
+                                <div class=\"veiling-rating-bied label label-default\" style=\"height: 100%;\">
                                     <div class=\"rating text-center\">
                                         <i class=\"glyphicon glyphicon-star\"></i>
                                         <i class=\"glyphicon glyphicon-star\"></i>
