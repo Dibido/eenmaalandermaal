@@ -83,7 +83,7 @@ $ItemInfo = $ItemInfo[0];
 
         <div class="panel-heading text-center">Bieden</div>
         <div class="panel-body">
-            <form class="form-inline">
+            <form class="form-inline" method="POST" action="voorwerp.php?ItemID=<?php echo $ItemID; ?>">
                 <div class="input-group InputBod">
                     <div class="input-group-addon">&euro;</div>
                     <input type="text" class="form-control" id="bodInput" placeholder="voer hier uw bod in"
