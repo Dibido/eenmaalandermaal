@@ -46,63 +46,87 @@ GO
 --@Identifier, een unieke identity in de tabel.
 --@Verkoper, De verkoper van het product.
 
-CREATE FUNCTION TEMP_FN_Randomgebruiker
-  (@Identifier UNIQUEIDENTIFIER,
-   @Verkoper   VARCHAR(64))
+CREATE FUNCTION FN_GenereerRandomgebruiker
+  (@Identifier UNIQUEIDENTIFIER)
   RETURNS VARCHAR(64)
 AS
   BEGIN
     --Selecteer een random gebruiker aan de hand van de random identifier en het regelnummer.
     RETURN (SELECT TOP 1 GEB_gebruikersnaam
-                                      FROM (SELECT
-                                              GEB_gebruikersnaam,
-                                              ROW_NUMBER()
-                                              OVER (
-                                                ORDER BY GEB_gebruikersnaam ) AS regel
-                                            FROM Gebruiker
-                                           ) AS regels
-                                      WHERE regels.regel = (SELECT ((ABS(CHECKSUM(@Identifier))) % (SELECT count(*) + 1
-                                                                                                    FROM Gebruiker )) + 1))
-    --Als de gebruiker hetzelfde is als de verkoper, genereer een nieuwe gebruiker. (mag niet op eigen producten bieden)
-    --IF @Gebruiker != @Verkoper
-     -- RETURN @Gebruiker
-    /*ELSE
-      RETURN dbo.TEMP_FN_Randomgebruiker(@Identifier, @Verkoper)
-    RETURN
-    */
+            FROM (SELECT
+                    GEB_gebruikersnaam,
+                    ROW_NUMBER()
+                    OVER (
+                      ORDER BY GEB_gebruikersnaam ) AS regel
+                  FROM Gebruiker
+                 ) AS regels
+            WHERE regels.regel = (SELECT ((ABS(CHECKSUM(@Identifier))) % (SELECT count(*) + 1
+                                                                          FROM Gebruiker)) + 1))
   END
 GO
 
-CREATE PROCEDURE SP_UpdateBiedingen
-    @Daterange INT = 14
+CREATE PROCEDURE [dbo].[SP_UpdateBiedingen]
+    @Daterange INT = 14,
+    @NrTimes   TINYINT = 3
 AS
---INSERT INTO Bod (BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker, BOD_bodTijdEnDag)
-  SELECT
-    v.VW_voorwerpnummer                                      AS BOD_voorwerpnummer,
-    v.VW_startprijs + 50 + (ABS(Checksum(NewID()) % 10) + 1) AS BOD_bodbedrag,
-    --De huidige waarde plus 50 (het hoogste minimale bod) en een random waarde van 1 tot 10
-    (dbo.TEMP_FN_Randomgebruiker(newID(), v.VW_verkoper))   AS BOD_gebruiker,
-    (SELECT DATEADD(
-        MINUTE,
-        ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, v.VW_looptijdStart, DATEADD(DAY, 14, v.VW_looptijdStart)) +
-        DATEDIFF(MINUTE, 0, v.VW_looptijdStart),
-        0
-    ))                                                       AS BOD_bodTijdEnDag -- Tijd binnen een bepaalde range.
-  FROM Voorwerp v
-  ORDER BY BOD_gebruiker ASC
+  DECLARE @LoopCount INT = 0
+  WHILE (@LoopCount < @NrTimes)
+    BEGIN
+      PRINT 'looping again' + CAST(@LoopCount AS VARCHAR)
+      INSERT INTO Bod (BOD_voorwerpnummer, BOD_bodbedrag, BOD_gebruiker, BOD_bodTijdEnDag)
+        SELECT
+          BOD_voorwerpnummer,
+          BOD_bodbedrag,
+          BOD_gebruiker,
+          BOD_bodTijdEnDag
+        FROM
+          (
+            SELECT
+              --Random nummer om random op random voorwerpen boden te plaatsen.
+                RandNr = ROW_NUMBER()
+              OVER (
+                ORDER BY newID() ),
+              v.VW_verkoper,
+                v.VW_voorwerpnummer                                   AS BOD_voorwerpnummer,
+              v.VW_startprijs,
+                ISNULL((SELECT TOP 1 b.BOD_bodbedrag
+                        FROM Bod b
+                        WHERE b.BOD_voorwerpnummer = v.VW_voorwerpnummer
+                        ORDER BY b.BOD_bodbedrag DESC)
+                , v.VW_startprijs)
+                + 50.0 + (ABS(Checksum(NewID()) % 10) + 1)            AS BOD_bodbedrag,
+              --De huidige waarde plus 50 (het hoogste minimale bod) en een random waarde van 1 tot 10
+                (dbo.FN_GenereerRandomgebruiker(newID(), v.VW_verkoper)) AS BOD_gebruiker,
+                (SELECT DATEADD(
+                    MINUTE,
+                    ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, ISNULL((SELECT TOP 1 b.BOD_bodTijdEnDag
+                                                                      FROM Bod b
+                                                                      WHERE b.BOD_voorwerpnummer = v.VW_voorwerpnummer
+                                                                      ORDER BY b.BOD_bodTijdEnDag DESC),
+                                                                     v.VW_looptijdStart),
+                                                      DATEADD(DAY, @Daterange, ISNULL((SELECT TOP 1 b.BOD_bodTijdEnDag
+                                                                                       FROM Bod b
+                                                                                       WHERE b.BOD_voorwerpnummer =
+                                                                                             v.VW_voorwerpnummer
+                                                                                       ORDER BY
+                                                                                         b.BOD_bodTijdEnDag DESC),
+                                                                                      v.VW_looptijdStart))) +
+                    DATEDIFF(MINUTE, 0, ISNULL((SELECT TOP 1 b.BOD_bodTijdEnDag
+                                                FROM Bod b
+                                                WHERE b.BOD_voorwerpnummer = v.VW_voorwerpnummer
+                                                ORDER BY b.BOD_bodTijdEnDag DESC), v.VW_looptijdStart)),
+                    0
+                ))                                                    AS BOD_bodTijdEnDag -- Tijd binnen een bepaalde range.
+            FROM Voorwerp v
+          ) Biedingen
+          --De gebruiker mag niet op zijn eigen voorwerpen bieden.
+        WHERE VW_verkoper <> BOD_gebruiker
+              AND ISNULL((SELECT TOP 1 b.BOD_bodbedrag
+                          FROM Bod b
+                          WHERE b.BOD_voorwerpnummer = Biedingen.BOD_voorwerpnummer
+                          ORDER BY b.BOD_bodbedrag DESC), Biedingen.VW_startprijs) < 9999960 /*Prevent overflow*/
+          --Alleen random voorwerpen.
+              AND Biedingen.RandNr % 3 = 0
+      SET @LoopCount += 1
+    END
 GO
-
-  --Hulpfunctie opruimen
-  IF OBJECT_ID('TEMP_FN_Randomgebruiker') IS NOT NULL
-    DROP FUNCTION TEMP_FN_Randomgebruiker
-GO
-
-select * from Voorwerp where VW_verkoper is null
-
-
-
-select count(*) from Bod
-
-EXEC SP_UpdateBiedingen
-
-DROP PROCEDURE SP_UpdateBiedingen
