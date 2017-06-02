@@ -94,7 +94,7 @@ require('navbar.php');
         <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12">
 
             <div class="list-group">
-                <a href="#" class="list-group-item active text-center">Veilingen uit populaire categorie</a>
+                <a href="#" class="list-group-item active text-center" id="middleHeader">Veilingen uit populaire categorie</a>
             </div>
 
 
@@ -131,7 +131,7 @@ require('navbar.php');
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[0]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[0]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
-                                <div class=\"veiling-rating-bied label label-default\">
+                                <div class=\"veiling-rating-bied label label-default\" style=\"height: 100%;\">
                                     <div class=\"rating text-center\">
                                         <i class=\"glyphicon glyphicon-star\"></i>
                                         <i class=\"glyphicon glyphicon-star\"></i>
@@ -150,7 +150,7 @@ require('navbar.php');
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[1]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[1]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
-                                <div class=\"veiling-rating-bied label label-default\">
+                                <div class=\"veiling-rating-bied label label-default\" style=\"height: 100%;\">
                                     <div class=\"rating text-center\">
                                         <i class=\"glyphicon glyphicon-star\"></i>
                                         <i class=\"glyphicon glyphicon-star\"></i>
@@ -170,7 +170,7 @@ require('navbar.php');
                             <div class=\"veiling-titel-carousel text-center\"><p>" . $BestFromCategories[2]["VW_titel"] . "</p></div>
                             <div class=\"veiling-image-carousel\"" . " style=\"background-image:url(" . $BestFromCategories[2]["ImagePath"] . ")\"></div>
                             <div class=\"veiling-titel-carousel-bottom text-center\">
-                                <div class=\"veiling-rating-bied label label-default\">
+                                <div class=\"veiling-rating-bied label label-default\" style=\"height: 100%;\">
                                     <div class=\"rating text-center\">
                                         <i class=\"glyphicon glyphicon-star\"></i>
                                         <i class=\"glyphicon glyphicon-star\"></i>

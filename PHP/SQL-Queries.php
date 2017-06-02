@@ -27,7 +27,7 @@ $QueryFindAuctionsByUser = <<<EOT
                                      FROM Bod
                                      WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                      ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-             ORDER BY BOD_Bodbedrag DESC), (SELECT DISTINCT VW_startprijs
+             ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs
                                             FROM Voorwerp
                                             WHERE VW_voorwerpnummer = VW_voorwerpnummer))) AS prijs,
   VW_looptijdEinde                                                                         AS tijd,

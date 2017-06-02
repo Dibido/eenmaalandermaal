@@ -66,6 +66,7 @@ for ($i = 0; $i < 3; $i++) {
     <link rel="stylesheet" href="CSS/BootstrapXL.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/veiling.css">
@@ -200,6 +201,33 @@ require('navbar.php');
 
 
         <div id="dynamicPanel"></div>
+
+
+        <!-- gelijksoortige advertenties -->
+
+        <div class="panel panel-default">
+            <div class="panel-heading text-center">Andere advertenties van deze gebruiker</div>
+            <div class="panel-body">
+                <?php
+
+
+                $auctions = findAuctionsByUser($ItemInfo["VW_verkoper"], $ItemID);
+
+                if(isset($auctions[0]) AND !empty($auctions)){
+                    foreach ($auctions as $auction){
+                        DrawItemAuction($auction);
+                    }
+                }else{
+                    echo "Deze gebruiker heeft geen andere advertenties.";
+                }
+
+
+                ?>
+
+            </div>
+        </div>
+
+        <!-- einde gelijksoortige advertenties -->
 
 
     </div>

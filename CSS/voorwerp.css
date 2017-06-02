@@ -87,8 +87,6 @@
     border: #e5e5e5 solid 2px;
 }
 
-
-
 .InputBod{
     width: 49%;
     float: left;
@@ -179,7 +177,7 @@
 
 /* description */
 #Description-Wrapper{
-    height: 600px;
+    height: 935px;
     overflow-y: hidden;
 }
 #Description{
