@@ -7,6 +7,10 @@ INSERT INTO Betalingswijzen (BW_betalingswijze) VALUES ('Bank / Giro'), ('Contan
 INSERT INTO LooptijdWaardes (LOP_looptijd)
 VALUES (1), (3), (5), (7), (10);
 
+--
+INSERT INTO Controleopties (CON_controleoptie)
+VALUES ('Creditcard'), ('Post');
+
 --Alle landnamen met 2 letterige LAN_landcode  volgens ISO 3166-1 alpha-2
 --Insert statesments voor de Landen aangezien de producten in de nieuwe data 2 letterige landcodes gebruiken
 INSERT INTO Landen VALUES ('AD', 'Andorra');
