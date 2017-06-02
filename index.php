@@ -1,5 +1,7 @@
 <?php
 session_start();
+$_SESSION[""];
+
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
@@ -94,7 +96,7 @@ require('navbar.php');
         <div class="col-lg-6 col-md-9 col-sm-12 col-xs-12">
 
             <div class="list-group">
-                <a href="#" class="list-group-item active text-center" id="middleHeader">Veilingen uit populaire categorie</a>
+                <a href="#" class="list-group-item active text-center" id="middleHeader">Veilingen uit populaire rubrieken</a>
             </div>
 
 
