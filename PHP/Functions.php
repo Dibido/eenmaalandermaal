@@ -125,7 +125,7 @@ FROM Voorwerp
 WHERE VW_voorwerpnummer = $ItemID
 
 EOT;
-
+    print_r($Query);
     Return SendToDatabase($Query);
 
 }
@@ -579,7 +579,7 @@ function amountOfResultsLeft($SearchOptions)
 //Prepare the query
     $QuerySearchProducts = <<< EOT
     
-select SUM(getal) as totaal
+select COUNT(getal) as totaal
 FROM (
 SELECT DISTINCT
   VW_voorwerpnummer,

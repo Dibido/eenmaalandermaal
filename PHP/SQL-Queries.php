@@ -111,24 +111,23 @@ EOT;
 
 $QueryFromBestCategory = <<< EOT
 
-
 SELECT
   TOP 3
   VW_voorwerpnummer,
   VW_titel,
-  (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
-              FROM Bod
-              WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
-                                       FROM Bod
-                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-              ORDER BY BOD_Bodbedrag DESC), VW_startprijs ))  as prijs,
-  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
-  COUNT(*)                                       AS Biedingen,
+  (COALESCE((SELECT TOP 1 BOD_Bodbedrag
+             FROM Bod
+             WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
+                                     FROM Bod
+                                     WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                     ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+             ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) AS prijs,
+  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)              AS tijd,
+  COUNT(*)                                                 AS Biedingen,
   VW_looptijdEinde,
   (SELECT TOP 1 BES_filenaam
    FROM Bestand
-   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer)           AS ImagePath
 FROM Voorwerp
   --Inner join naar Bod zodat per Voorwerp het aantal biedingen bekeken kan worden.
   INNER JOIN Bod
@@ -142,14 +141,14 @@ WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
       ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Bod.BOD_voorwerpnummer
     INNER JOIN Rubriek
       ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-  WHERE RB_Naam != 'root' AND RB_Naam IN (
-    select top 5 Rubriek.RB_Naam from Voorwerp
-      LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-      LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-      LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-    GROUP BY Rubriek.RB_Naam
-    ORDER BY COUNT(BOD_voorwerpnummer)DESC , COUNT(VW_voorwerpnummer) DESC
-  )
+  WHERE RB_Naam IN (
+SELECT TOP 5 Rubriek.RB_Naam FROM Voorwerp
+LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
+LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+GROUP BY Rubriek.RB_Naam
+ORDER BY COUNT (BOD_voorwerpnummer) DESC, COUNT (VW_voorwerpnummer) DESC
+)
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
 GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs
 ORDER BY Biedingen DESC
