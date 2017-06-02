@@ -102,7 +102,7 @@ WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETD
                             )
       )
 GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel,VW_thumbnail,VW_startprijs
-ORDER BY tijd ASC, Biedingen DESC
+ORDER BY tijd ASC, Biedingen DESC, VW_titel ASC
 
 EOT;
 
@@ -149,7 +149,7 @@ WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
   )
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
 GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs
-ORDER BY Biedingen DESC
+ORDER BY Biedingen DESC, VW_titel ASC
 
 EOT;
 
