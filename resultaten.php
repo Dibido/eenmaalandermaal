@@ -135,10 +135,10 @@ require('navbar.php');
             <div class="list-group-item active">Sorteer Opties</div>
             <form method="get" action="resultaten.php" id="sorteerForm">
                 <!-- Search on keyword -->
-                <div class="list-group-item">
+                <div class="list-group-item"> Zoekterm:
                     <div class="input-group" style="display:table;">
-                        <input class="form-control" name="zoekterm" placeholder="Search Here"
-                               type="text" value='<?php echo urlencode($zoekterm); ?>'>
+                        <input class="form-control" name="zoekterm" placeholder="Zoek hier"
+                               type="text" value='<?php echo $zoekterm; ?>'>
                         <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
                                     class="btn btn-secondary" type="submit"
                                     style="background-color: #ffffff; border-color: #f2f2f2;"><span
@@ -211,9 +211,9 @@ require('navbar.php');
 
                 <!-- Search ads by certain user -->
 
-                <div class="list-group-item">
+                <div class="list-group-item"> Gebruiker:
                     <div class="input-group">
-                        <input class="form-control" name="user" placeholder="Search Here" value="<?php echo $user; ?>"
+                        <input class="form-control" name="user" placeholder="Zoek op gebruikers" value="<?php echo $user; ?>"
                                autocomplete="off"
                                type="text">
                         <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
@@ -297,57 +297,8 @@ require('navbar.php');
             <ul class="pagination">
 
                 <?php
-                if (!empty($result)) {
-                    //Returns the amount of results on the next 4 pages.
-                    $amountOfResults = amountOfResultsLeft($Dictionary);
-                    //Calculate the amount of pages by deviding the count with the amount of results per page.
-                    $amountOfFuturePages = ceil($amountOfResults[0]['totaal'] / $ResultsPerPage);
-                    $previousPage = $pagenum - 1;
-                    $lastPageNum = $pagenum + $amountOfFuturePages + 2;
-                    $startPage = $pagenum - 4 + $amountOfFuturePages;
-                    //Prevent startPage to be <=0
-
-                    $nextPage = $pagenum + 1;
-
-                    // If the current page is not the first one. The first pagenumber created has to be the one before the current page.
-                    if ($pagenum != 1) {
-                        $startPage--;
-                        $lastPageNum--;
-                        echo '<li class="page-item">';
-                        echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $previousPage . "> <- Vorige</a> ";
-                        echo '</li>';
-                    }
-                    if ($startPage < 1) {
-                        $startPage = 1;
-                    }
-                    //Loop creates all buttons to the next or pages before the current one.
-                    for ($i = $startPage; $i < $lastPageNum; $i++) {
-                        if ($i == $pagenum) {
-                            echo '<li class="page-item active text-center">';
-                            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
-                            echo '</li>';
-                        } else {
-                            echo '<li class="page-item">';
-                            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
-                            echo '</li>';
-                        }
-                    }
-                    //Only when the amount of future pages is 1 or higher the next button will be created. This since there is no next page when there are no future pages.
-                    if ($amountOfFuturePages > 0) {
-                        echo '<li class="page-item">';
-                        echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $nextPage . ">Volgende -></a> ";
-                        echo '</li></ul>';
-                    }
-                }
-                //If the page does not exist since there aren't enough results an error message will be shown. If the current page is one there won't be shown an error message
-                //this since there are no results at all and not that there aren't enough results.
-                elseif ($pagenum != 1) {
-                    echo '<h1> Page ' . $pagenum . ' does not exist</h1>';
-                }
-                echo '</div>' ?>
-
-
-                <!-- Einde Paginanummering-->
+                drawPageNumbers($pagenum,$Dictionary,$result,$ResultsPerPage,$zoekterm,$rubriek,$sorteerfilter,$prijs,$betalingsmethode,$user);
+                ?>
 
         </div>
     </div>
@@ -397,5 +348,6 @@ require('navbar.php');
         }
     });
 </script>
+<?php include('footer.html');?>
 </body>
 </html>

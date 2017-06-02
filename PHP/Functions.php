@@ -6,21 +6,12 @@
 > 2 minutes minutes + seconds
 < 2 minutes minutes + seconds
 */
+
+/* Format date to Year-month-day Hour:minutes */
 function ConvertTime($time)
 {
-    $datetime = date_create($time);
-    $currenttime = date_create(date("Ymd"));
-    $interval = date_diff($datetime, $currenttime);
-    if ($interval->days > 1) {
-        //Datum weergeven.
-        return (date_format($datetime, 'Y-m-d'));
-    } elseif ($interval->h > 2) {
-        //Uren en minuten.
-        return (date_format($datetime, 'H:i'));
-    } else {
-        //in minuten en seconden.
-        return (date_format($datetime, 'i:s'));
-    }
+    $datetime = new DateTime($time);
+    return $datetime->format('Y-m-d H:i');
 }
 
 
@@ -125,7 +116,7 @@ FROM Voorwerp
 WHERE VW_voorwerpnummer = $ItemID
 
 EOT;
-
+    print_r($Query);
     Return SendToDatabase($Query);
 
 }
@@ -579,7 +570,7 @@ function amountOfResultsLeft($SearchOptions)
 //Prepare the query
     $QuerySearchProducts = <<< EOT
     
-select SUM(getal) as totaal
+select COUNT(getal) as totaal
 FROM (
 SELECT DISTINCT
   VW_voorwerpnummer,
@@ -722,6 +713,62 @@ function printCategories($zoekterm, $rubriekQuery, $rubriekNummer, $sorteerfilte
         echo '<hr size="6">';
     }
     echo '</ul>';
+}
+
+function drawPagenumbers($pagenum,$Dictionary,$result,$ResultsPerPage,$zoekterm,$rubriek,$sorteerfilter,$prijs,$betalingsmethode,$user){
+    if (!empty($result)) {
+        //Returns the amount of results on the next 4 pages.
+        $amountOfResults = amountOfResultsLeft($Dictionary);
+        //Calculate the amount of pages by deviding the count with the amount of results per page.
+        $amountOfFuturePages = ceil($amountOfResults[0]['totaal'] / $ResultsPerPage);
+        $previousPage = $pagenum - 1;
+        $lastPageNum = $pagenum + $amountOfFuturePages;
+        $startPage = $pagenum - 4 + $amountOfFuturePages;
+
+        //Prevent startPage to be <=0
+
+        $nextPage = $pagenum + 1;
+        // If the current page is not the first one. The first pagenumber created has to be the one before the current page.
+        if ($pagenum != 1) {
+            $startPage--;
+            echo '<li class="page-item">';
+            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $previousPage . "> <- Vorige</a> ";
+            echo '</li>';
+        }
+        if ($startPage < 1) {
+            $startPage = 1;
+        }
+        if($lastPageNum >= $pagenum + 4){
+            $lastPageNum --;
+        }
+        //Loop creates all buttons to the next or pages before the current one.
+        for ($i = $startPage; $i <= $lastPageNum; $i++) {
+            if ($i == $pagenum) {
+                echo '<li class="page-item active text-center">';
+                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
+                echo '</li>';
+            } else {
+                echo '<li class="page-item">';
+                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
+                echo '</li>';
+            }
+        }
+        //Only when the amount of future pages is 1 or higher the next button will be created. This since there is no next page when there are no future pages.
+        if ($amountOfFuturePages > 0) {
+            echo '<li class="page-item">';
+            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $nextPage . ">Volgende -></a> ";
+            echo '</li></ul>';
+        }
+    }
+    //If the page does not exist since there aren't enough results an error message will be shown. If the current page is one there won't be shown an error message
+    //this since there are no results at all and not that there aren't enough results.
+    elseif ($pagenum != 1) {
+        echo '<h1> Page ' . $pagenum . ' does not exist</h1>';
+    }
+                echo '</div>';
+
+
+//Einde Paginanummering
 }
 
 function createTimer($tijd, $VW_Titel, $VW_Nummer)
