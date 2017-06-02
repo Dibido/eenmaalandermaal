@@ -6,21 +6,12 @@
 > 2 minutes minutes + seconds
 < 2 minutes minutes + seconds
 */
+
+/* Format date to Year-month-day Hour:minutes */
 function ConvertTime($time)
 {
-    $datetime = date_create($time);
-    $currenttime = date_create(date("Ymd"));
-    $interval = date_diff($datetime, $currenttime);
-    if ($interval->days > 1) {
-        //Datum weergeven.
-        return (date_format($datetime, 'Y-m-d'));
-    } elseif ($interval->h > 2) {
-        //Uren en minuten.
-        return (date_format($datetime, 'H:i'));
-    } else {
-        //in minuten en seconden.
-        return (date_format($datetime, 'i:s'));
-    }
+    $datetime = new DateTime($time);
+    return $datetime->format('Y-m-d H:i');
 }
 
 

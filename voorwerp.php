@@ -30,8 +30,6 @@ for ($i = 0; $i < 3; $i++) {
 
 <!doctype html>
 
-<!-- onzin comment voor pushes nr2 -->
-
 <html lang="en">
 
 <head>
@@ -40,10 +38,6 @@ for ($i = 0; $i < 3; $i++) {
     <title>EenmaalAndermaal - Beste veilingssite van Nederland</title>
     <meta name="description" content="EenmaalAndermaal">
     <meta name="author" content="Iproject - Groep 3">
-
-    <!-- TODO: herlaadtijd berekenen aan de resterende looptijd van het voorwerp -->
-    <!-- Om de pagina om de elke 10 seconden te herladen -->
-    <!--<meta http-equiv="refresh" content="10">-->
 
     <!-- Theme colours for mobile -->
     <!-- Chrome, Firefox OS and Opera -->
@@ -59,8 +53,6 @@ for ($i = 0; $i < 3; $i++) {
 
 
     <!-- bootstrap !-->
-
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="CSS/theme.css">
     <link rel="stylesheet" href="CSS/BootstrapXL.css">
