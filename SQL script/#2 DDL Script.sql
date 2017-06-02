@@ -88,6 +88,19 @@ CREATE TABLE Gebruikerstelefoon (
 --Tabel om de valide looptijden in op te slaan.
 CREATE TABLE LooptijdWaardes (
   LOP_looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
+);
+
+CREATE TABLE Controleopties (
+  CON_controleoptie VARCHAR(24) --Redelijke lengte
+)
+
+CREATE TABLE Verkoper (
+  VER_gebruiker     VARCHAR(64),
+  VER_bank          VARCHAR(24),
+  VER_bankrekening  VARCHAR(31), --Langste is 31 : zie https://en.wikipedia.org/wiki/International_Bank_Account_Number
+  VER_controleoptie VARCHAR(24),
+  VER_creditcard    VARCHAR(19) --Langste nummer : zie https://en.wikipedia.org/wiki/Payment_card_number
+    CONSTRAINT FK_verkopercontroleopties FOREIGN KEY (VER_controleoptie) REFERENCES Controleopties (CON_controleoptie)
 )
 
 CREATE TABLE Voorwerp (
@@ -110,7 +123,7 @@ CREATE TABLE Voorwerp (
   VW_looptijdEinde                              AS DATEADD(DAY, VW_looptijd, VW_looptijdStart), --Bereken de einddatum
   VW_veilinggesloten     BIT           NOT NULL DEFAULT 0, --Veiling gesloten of open
   VW_verkoopprijs        NUMERIC(9, 2) NULL, --Prijs waarvoor het voorwerp verkocht is
-  --TODO: berekende kolom met hoogste bod.
+  VW_hoogstebod          NUMERIC(9, 2)          DEFAULT VW_startprijs, --Berekende kolom door middel van een trigger.
 
   CONSTRAINT PK_Voorwerp PRIMARY KEY (VW_voorwerpnummer),
   CONSTRAINT FK_Betaalwijze FOREIGN KEY (VW_betalingsWijze) REFERENCES Betalingswijzen (BW_betalingswijze),
@@ -121,6 +134,7 @@ CREATE TABLE Voorwerp (
     ON UPDATE CASCADE --Voor als de gebruikersnaam wordt aangepast
     ON DELETE NO ACTION,
   CONSTRAINT FK_VoorwerpLooptijd FOREIGN KEY (VW_looptijd) REFERENCES LooptijdWaardes.LOP_looptijd, --De looptijd mag enkel 1,3,5,7,10 zijn zoals aangegeven in Appendix B
+  CONSTRAINT FK_VoorwerpVerkoper FOREIGN KEY (VW_verkoper) REFERENCES Verkoper.VER_gebruiker, --De verkoper moet een verkoper zijn.
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2), --Kan niet leeg zijn
@@ -129,7 +143,6 @@ CREATE TABLE Voorwerp (
   CONSTRAINT CHK_StartprijsHogerDan1 CHECK (VW_startprijs >= 1.00), --Appendix B, Mindstends een euro
   CONSTRAINT CHK_VerkoopprijsGroterOfGelijk CHECK (VW_verkoopprijs >=
                                                    VW_startprijs), --Kijkt of de verkoop prijs wel groter is dan de start prijs
-  --TODO: CONSTRAINT FK_verkoper naar verkopers tabel
 )
 
 CREATE TABLE Bestand (
