@@ -3,6 +3,11 @@
 --@Identifier, een unieke identity in de tabel.
 --Return:
 --Een random gebruikersnaam
+IF OBJECT_ID('dbo.FN_GenereerRandomgebruiker') IS NOT NULL
+  IF OBJECT_ID('dbo.Bod') IS NOT NULL
+    DROP TABLE [dbo].[Bod]
+DROP FUNCTION [dbo].[FN_GenereerRandomgebruiker]
+GO
 
 CREATE FUNCTION FN_GenereerRandomgebruiker
   (@Identifier UNIQUEIDENTIFIER)
