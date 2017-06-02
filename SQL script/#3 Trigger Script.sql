@@ -9,15 +9,45 @@ AS
   BEGIN
     --Bijwerken hoogste bodprijs voorwerp.
     UPDATE Voorwerp
-    SET VW_hoogstebod = (COALESCE((SELECT TOP 1 BOD_Bodbedrag
-                                   FROM Bod
-                                   WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
-                                                           FROM Bod
-                                                           WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                                           ORDER BY BOD_Bodbedrag DESC) AND
-                                         BOD_voorwerpnummer = VW_voorwerpnummer
-                                   ORDER BY BOD_Bodbedrag DESC), VW_startprijs
+    SET VW_hoogstebod =
+    (COALESCE((SELECT TOP 1 BOD_Bodbedrag
+               FROM Bod
+               WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
+                                       FROM Bod
+                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                       ORDER BY BOD_Bodbedrag DESC) AND
+                     BOD_voorwerpnummer = VW_voorwerpnummer
+               ORDER BY BOD_Bodbedrag DESC), VW_startprijs
     ))
+  END
+
+--Trigger om het minimale nieuwe bod te berekenen
+IF OBJECT_ID('TR_minimalenieuwebod') IS NOT NULL
+  DROP TRIGGER [dbo].[TR_minimalenieuwebod]
+GO
+CREATE TRIGGER TR_minimalenieuwebod
+  ON Bod
+FOR INSERT, UPDATE, DELETE
+AS
+  BEGIN
+    DECLARE @huidigebod NUMERIC(9, 2)
+    SET @huidigebod = VW_hoogstebod
+    UPDATE Voorwerp
+    SET Voorwerp.VW_minimalenieuwebod =
+    (
+      CASE
+      WHEN @huidigebod BETWEEN 1 AND 49.99
+        THEN (VW_hoogstebod + 0.50)
+      WHEN @huidigebod BETWEEN 50 AND 499.99
+        THEN (VW_hoogstebod + 1.00)
+      WHEN @huidigebod BETWEEN 500 AND 999.99
+        THEN (VW_hoogstebod + 5.00)
+      WHEN @huidigebod BETWEEN 1000 AND 4999.99
+        THEN (VW_hoogstebod + 10.00)
+      WHEN @huidigebod > 5000
+        THEN (VW_hoogstebod + 50.00)
+      END
+    )
   END
 
 --Trigger om het aantal voorwerpen per rubriek te berekenen.
