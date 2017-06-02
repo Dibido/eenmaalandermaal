@@ -11,7 +11,7 @@ function ConvertTime($time)
     $datetime = date_create($time);
     $currenttime = date_create(date("Ymd"));
     $interval = date_diff($datetime, $currenttime);
-    if ($interval->days > 2) {
+    if ($interval->days > 1) {
         //Datum weergeven.
         return (date_format($datetime, 'Y-m-d'));
     } elseif ($interval->h > 2) {
