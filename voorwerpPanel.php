@@ -53,7 +53,7 @@ $ItemInfo = $ItemInfo[0];
             $LastOffers = GetLastOffers($ItemInfo["VW_voorwerpnummer"]);
 
             if (!isset($LastOffers[0]) or empty($LastOffers[0])) {
-                echo "<div class=\"OldOffer\">Er zijn nog geen biedingen, wees de eerste om een bod uit te brengen!</div>";
+                echo "<div class=\"OldOffer\">Wees de eerste om een bod uit te brengen</div>";
                 echo "</div>";
             } else {
                 $Bod = 0;
@@ -122,25 +122,6 @@ $ItemInfo = $ItemInfo[0];
 
     </div>
 
-        <!-- gelijksoortige advertenties -->
-
-        <div class="panel panel-default">
-            <div class="panel-heading text-center">Andere advertenties van deze gebruiker</div>
-            <div class="panel-body">
-                <?php
-
-                $auctions = findAuctionsByUser($ItemInfo["VW_verkoper"], $ItemID);
-
-                foreach ($auctions as $auction){
-                    DrawItemAuction($auction);
-                }
-
-                ?>
-
-            </div>
-        </div>
-
-        <!-- einde gelijksoortige advertenties -->
 
 
 

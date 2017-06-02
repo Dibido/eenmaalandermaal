@@ -135,10 +135,10 @@ require('navbar.php');
             <div class="list-group-item active">Sorteer Opties</div>
             <form method="get" action="resultaten.php" id="sorteerForm">
                 <!-- Search on keyword -->
-                <div class="list-group-item">
+                <div class="list-group-item"> Zoekterm:
                     <div class="input-group" style="display:table;">
-                        <input class="form-control" name="zoekterm" placeholder="Search Here"
-                               type="text" value='<?php echo urlencode($zoekterm); ?>'>
+                        <input class="form-control" name="zoekterm" placeholder="Zoek hier"
+                               type="text" value='<?php echo $zoekterm; ?>'>
                         <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
                                     class="btn btn-secondary" type="submit"
                                     style="background-color: #ffffff; border-color: #f2f2f2;"><span
@@ -211,9 +211,9 @@ require('navbar.php');
 
                 <!-- Search ads by certain user -->
 
-                <div class="list-group-item">
+                <div class="list-group-item"> Gebruiker:
                     <div class="input-group">
-                        <input class="form-control" name="user" placeholder="Search Here" value="<?php echo $user; ?>"
+                        <input class="form-control" name="user" placeholder="Zoek op gebruikers" value="<?php echo $user; ?>"
                                autocomplete="off"
                                type="text">
                         <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
@@ -303,16 +303,15 @@ require('navbar.php');
                     //Calculate the amount of pages by deviding the count with the amount of results per page.
                     $amountOfFuturePages = ceil($amountOfResults[0]['totaal'] / $ResultsPerPage);
                     $previousPage = $pagenum - 1;
-                    $lastPageNum = $pagenum + $amountOfFuturePages + 2;
+                    $lastPageNum = $pagenum + $amountOfFuturePages;
                     $startPage = $pagenum - 4 + $amountOfFuturePages;
+
                     //Prevent startPage to be <=0
 
                     $nextPage = $pagenum + 1;
-
                     // If the current page is not the first one. The first pagenumber created has to be the one before the current page.
                     if ($pagenum != 1) {
                         $startPage--;
-                        $lastPageNum--;
                         echo '<li class="page-item">';
                         echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $previousPage . "> <- Vorige</a> ";
                         echo '</li>';
@@ -320,8 +319,11 @@ require('navbar.php');
                     if ($startPage < 1) {
                         $startPage = 1;
                     }
+                    if($lastPageNum >= $pagenum + 4){
+                        $lastPageNum --;
+                    }
                     //Loop creates all buttons to the next or pages before the current one.
-                    for ($i = $startPage; $i < $lastPageNum; $i++) {
+                    for ($i = $startPage; $i <= $lastPageNum; $i++) {
                         if ($i == $pagenum) {
                             echo '<li class="page-item active text-center">';
                             echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
@@ -397,5 +399,6 @@ require('navbar.php');
         }
     });
 </script>
+<?php include('footer.html');?>
 </body>
 </html>
