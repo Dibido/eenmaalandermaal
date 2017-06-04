@@ -116,7 +116,6 @@ FROM Voorwerp
 WHERE VW_voorwerpnummer = $ItemID
 
 EOT;
-    print_r($Query);
     Return SendToDatabase($Query);
 
 }
@@ -153,7 +152,7 @@ EOT;
 
     $stmt = $connection->prepare($query);
     $stmt->execute(array($ItemID));
-    return $stmt->fetch();
+    return $stmt->fetchAll();
 
 }
 
