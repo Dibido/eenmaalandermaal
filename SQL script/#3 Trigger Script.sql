@@ -73,6 +73,23 @@ AS
                  WHERE Voorwerp_Rubriek.VR_Rubriek_Nummer = RB_Nummer)
   END
 
+IF OBJECT_ID('TR_BodCount') IS NOT NULL
+  DROP TRIGGER [dbo].[TR_BodCount]
+GO
+CREATE TRIGGER TR_BodCount ON Bod
+FOR INSERT,UPDATE,DELETE
+AS
+  BEGIN
+    --Bijwerken aantal biedingen per voorwerp
+    --Alleen als er wijzigingen zijn aan Bod
+    UPDATE Voorwerp
+    SET VW_BodCount =
+    (
+      select count(BOD_voorwerpnummer) from Bod group by BOD_voorwerpnummer
+
+    )
+  END
+
 -- Trigger die registratiecodes die ouder dan 24 uur zijn verwijderd.
 IF OBJECT_ID('TR_ActivatieVerlopen') IS NOT NULL
   DROP TRIGGER [dbo].[TR_ActivatieVerlopen]
@@ -87,3 +104,14 @@ AS
     WHERE REG_tijd < DATEADD(DAY, -1, GETDATE())
   END
 GO
+
+CREATE TRIGGER TR_ComputedCountParentCategories on Voorwerp_Rubriek
+  FOR INSERT,UPDATE,DELETE
+AS
+  BEGIN
+    UPDATE Rubriek
+      SET RB_voorwerpcount =
+      (
+        SELECT SUM(RB_voorwerpcount)
+      )
+  END

@@ -1,13 +1,15 @@
 .nav {
     padding-left: 20px;
 }
-label.tree-toggle.nav-header{
+.p{
+    margin: 0px;
+    padding-left: 20px;
+}
+
+.tree-toggle.nav-header{
     cursor:pointer;
 }
-.nav>li>a.testen{
-    padding:0;
-    padding-bottom: 2px;
-}
+
 hr{
     margin:0;
     margin-bottom:4px;
