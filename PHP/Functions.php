@@ -177,6 +177,7 @@ EOT;
 
 function GetCategoryPerAuction($categoryID)
 {
+    
 
     $QueryGetUserInfo = <<<EOT
     
