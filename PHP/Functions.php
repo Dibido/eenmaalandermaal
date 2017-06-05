@@ -90,6 +90,7 @@ SELECT
                                             FROM Voorwerp
                                             WHERE VW_voorwerpnummer = $ItemID))) AS prijs,
   Voorwerp.VW_looptijdEinde AS tijd,
+  VR_Rubriek_Nummer,
   VW_thumbnail,
   CAST(VW_looptijdStart AS DATE) as VW_looptijdStart,
   VW_looptijdEinde,
@@ -105,6 +106,7 @@ SELECT
   VW_verzendinstructies,
   VW_verzendkosten,
   VW_conditie
+  
 FROM Voorwerp
   FULL OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
   LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
@@ -116,7 +118,6 @@ FROM Voorwerp
 WHERE VW_voorwerpnummer = $ItemID
 
 EOT;
-    print_r($Query);
     Return SendToDatabase($Query);
 
 }
@@ -145,15 +146,15 @@ with tab1(RB_Nummer,RB_Naam,RB_Parent,RB_volgnummer,RB_voorwerpcount) as
 (select * from Rubriek where RB_Nummer = ?
  union all
 select t1.* from Rubriek t1,tab1
-where tab1.RB_Parent = t1.RB_Nummer)
-select top 5 RB_Nummer from tab1;
+where tab1.RB_Parent = t1.RB_Nummer AND tab1.RB_Parent != -1)
+select top 5 RB_Naam, RB_Nummer from tab1;
 
 
 EOT;
 
     $stmt = $connection->prepare($query);
     $stmt->execute(array($ItemID));
-    return $stmt->fetch();
+    return $stmt->fetchAll();
 
 }
 
@@ -174,7 +175,7 @@ EOT;
     RETURN SendToDatabase($QueryGetUserInfo);
 }
 
-function GetCategoryPerAuction($ItemID)
+function GetCategoryPerAuction($categoryID)
 {
 
     $QueryGetUserInfo = <<<EOT
@@ -183,7 +184,7 @@ function GetCategoryPerAuction($ItemID)
 FROM Categorieen
 INNER JOIN Voorwerp_Rubriek
 ON VR_Rubriek_Nummer = ID
-WHERE VR_Voorwerp_Nummer = $ItemID
+WHERE VR_Voorwerp_Nummer = $categoryID
   
 
 EOT;

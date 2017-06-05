@@ -159,20 +159,25 @@ require('navbar.php');
                 $category = GetCategoryPerAuction($ItemInfo["VW_voorwerpnummer"]);
                 $category = $category[0];
                 ?>
-                <div class="rubrieken"><b>Rubriek:</b>
-
+                <div class="rubrieken">
                     <ol class="breadcrumb">
                     <?php
 
-                    foreach(GetAboveCategories($ItemID) as $category){
-                       echo "<li><a href=\"#\">$category</a></li>";
+                    $categories = GetAboveCategories($ItemInfo["VR_Rubriek_Nummer"]);
+                    for ($i = count($categories)-1; $i >= 0; $i = $i-1){
+                        echo "<li><a href=\"resultaten.php?rubriek=";
+                        echo $categories[$i]["RB_Nummer"];
+                        echo "\">";
+                        echo $categories[$i][0];
+                        echo "</a>";
+                        echo "</li>";
+                    }
 
-                    }?>
-
+                    ?>
                     </ol></div>
 
                 <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"]; ?></div>
-                <div class="Detail"><b>geplaatst:</b> <?php echo $ItemInfo["VW_looptijdStart"]; ?></div>
+                <div class="Detail text-center"><b>geplaatst:</b> <?php echo $ItemInfo["VW_looptijdStart"]; ?></div>
                 <div class="Detail"><b>conditie:</b> <?php echo $ItemInfo["VW_conditie"]; ?></div>
             </div>
         </div>
