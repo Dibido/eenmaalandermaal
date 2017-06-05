@@ -1,3 +1,33 @@
+--Functie om een random gebruiker te vinden
+--Variabelen:
+--@Identifier, een unieke identity in de tabel.
+--Return:
+--Een random gebruikersnaam
+IF OBJECT_ID('dbo.FN_GenereerRandomgebruiker') IS NOT NULL
+  IF OBJECT_ID('dbo.Bod') IS NOT NULL
+    DROP TABLE [dbo].[Bod]
+DROP FUNCTION [dbo].[FN_GenereerRandomgebruiker]
+GO
+
+CREATE FUNCTION FN_GenereerRandomgebruiker
+  (@Identifier UNIQUEIDENTIFIER)
+  RETURNS VARCHAR(64)
+AS
+  BEGIN
+    --Selecteer een random gebruiker aan de hand van de random identifier en het regelnummer.
+    RETURN (SELECT TOP 1 GEB_gebruikersnaam
+            FROM (SELECT
+                    GEB_gebruikersnaam,
+                    ROW_NUMBER()
+                    OVER (
+                      ORDER BY GEB_gebruikersnaam ) AS regel
+                  FROM Gebruiker
+                 ) AS regels
+            WHERE regels.regel = (SELECT ((ABS(CHECKSUM(@Identifier))) % (SELECT count(*) + 1
+                                                                          FROM Gebruiker)) + 1))
+  END
+GO
+
 --Functie om te het aantal bestanden te returnen
 GO
 IF OBJECT_ID('dbo.aantalBestandenPervoorwerpnummer') IS NOT NULL

@@ -45,13 +45,6 @@ GO
 DECLARE @FromDate DATE = getdate() --begindatum random datum.
 DECLARE @ToDate DATE = dateADD(DAY, getdate(), 14) --Einddatum random datum.
 
---Tijdelijke tabel om random looptijden te kunnen selecteren.
-CREATE TABLE TEMP_LooptijdWaardes (
-  ID       TINYINT NOT NULL IDENTITY,
-  Looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
-)
-INSERT INTO TEMP_LooptijdWaardes VALUES (1), (3), (5), (7), (10);
-
 SET IDENTITY_INSERT voorwerp ON
 INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
@@ -74,7 +67,7 @@ INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_
     ))                                                       AS VW_looptijdstart,
     --Random in de toekomst tussen de FromDate en ToDate.
     (SELECT Looptijd
-     FROM TEMP_LooptijdWaardes
+     FROM LooptijdWaardes
      WHERE ID = ((Items.ID % 5) + 1))                        AS VW_looptijd,
     -- Random looptijd genereren aan de hand van het id.
     'Bank / giro'                                            AS VW_betalingswijze,
