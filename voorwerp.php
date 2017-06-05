@@ -161,6 +161,7 @@ require('navbar.php');
                 ?>
                 <div class="rubrieken">
                     <ol class="breadcrumb">
+                        <li><b>Rubriek: </b></li>
                     <?php
 
                     $categories = GetAboveCategories($ItemInfo["VR_Rubriek_Nummer"]);
@@ -176,9 +177,9 @@ require('navbar.php');
                     ?>
                     </ol></div>
 
-                <div class="Detail"><b>Locatie:</b> <?php echo $ItemInfo["VW_plaatsnaam"]; ?></div>
-                <div class="Detail text-center"><b>geplaatst:</b> <?php echo $ItemInfo["VW_looptijdStart"]; ?></div>
-                <div class="Detail"><b>conditie:</b> <?php echo $ItemInfo["VW_conditie"]; ?></div>
+                <div class="Detail"><b class="text-left">Locatie:</b><span class="text-left"><?php echo $ItemInfo["VW_plaatsnaam"]; ?></span></div>
+                <div class="Detail "><b class="text-center">geplaatst:</b><span class="text-center"><?php echo $ItemInfo["VW_looptijdStart"]; ?></span></div>
+                <div class="Detail"><b class="text-right">conditie:</b><span class="text-right"> <?php echo $ItemInfo["VW_conditie"]; ?></span></div>
             </div>
         </div>
 
@@ -187,7 +188,7 @@ require('navbar.php');
         <!-- Description panel -->
 
         <div class="panel panel-default " id="Description-Wrapper">
-            <div class="panel-heading text-center">Kenmerken</div>
+            <div class="panel-heading text-center">Beschrijving</div>
             <div class="panel-body" style="height:100%;">
                 <div style="height:100%;">
                     <iframe src="http://iproject3.icasites.nl/voorwerpDescription.php?ItemID=<?php echo $ItemID?>" id="Description"></iframe>
