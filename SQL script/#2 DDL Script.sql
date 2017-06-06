@@ -4,8 +4,12 @@ IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
   DROP TABLE Rubriek
 IF OBJECT_ID('dbo.Bestand') IS NOT NULL
   DROP TABLE Bestand
+IF OBJECT_ID('dbo.LooptijdWaardes') IS NOT NULL
+  DROP TABLE LooptijdWaardes
 IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
   DROP TABLE Voorwerp
+IF OBJECT_ID('dbo.Verkoper') IS NOT NULL
+  DROP TABLE Verkoper
 IF OBJECT_ID('dbo.Gebruikerstelefoon') IS NOT NULL
   DROP TABLE Gebruikerstelefoon
 IF OBJECT_ID('dbo.Administrator') IS NOT NULL
@@ -22,9 +26,7 @@ IF OBJECT_ID('dbo.Vraag') IS NOT NULL
   DROP TABLE Vraag
 IF OBJECT_ID('dbo.Registreer') IS NOT NULL
   DROP TABLE Registreer
-IF OBJECT_ID('dbo.LooptijdWaardes') IS NOT NULL
-  DROP TABLE LooptijdWaardes
-
+GO
 
 CREATE TABLE Betalingswijzen (
   BW_betalingswijze VARCHAR(25) NOT NULL, --Keuze betalingswijzen
