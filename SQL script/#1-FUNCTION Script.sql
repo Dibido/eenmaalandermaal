@@ -48,31 +48,21 @@ CREATE FUNCTION FN_aantalBestandenPerVoorwerpnummer(
   END
 GO
 
+--Functie die checkt of het bod hoog genoeg is.
 
---Functie om te kijken of het bod hoger is dan de opgegeven startprijs
-IF OBJECT_ID('dbo.FN_bodHogerDanStartprijs') IS NOT NULL
+IF OBJECT_ID('FN_BodhogerdanMinimaalBod') IS NOT NULL
   IF OBJECT_ID('dbo.Bod') IS NOT NULL
     DROP TABLE [dbo].[Bod]
-DROP FUNCTION [dbo].[FN_bodHogerDanStartprijs]
-GO
+DROP FUNCTION [dbo].[FN_BodhogerdanMinimaalBod]
 
-CREATE FUNCTION FN_bodHogerDanStartprijs(
-  @voorwerpnummer BIGINT,
-  @Bodbedrag      NUMERIC(9, 2)
-)
+CREATE FUNCTION FN_BodhogerdanMinimaalBod
+  (@Voorwerp  BIGINT,
+   @Bodbedrag NUMERIC(9, 2)
+  )
   RETURNS BIT
   BEGIN
-    RETURN (
-      CASE WHEN @Bodbedrag >= (SELECT VW_startprijs
-                               FROM Voorwerp
-                               WHERE VW_voorwerpnummer = @voorwerpnummer)
-        THEN 1
-      ELSE 0
-      END
-    )
+    RETURN @Bodbedrag >= (SELECT VW_minimaalnieuwbod FROM Voorwerp WHERE VW_voorwerpnummer = @Voorwerp)
   END
-GO
-
 
 --Functie om te kijken of je niet op je eigen voorwerp gaat bieden
 
@@ -109,8 +99,8 @@ CREATE FUNCTION FN_Maaknumeric(@Prijs NUMERIC(9, 2))
     DECLARE @PrijsNumeric NUMERIC(9, 2);
     SET @PrijsNumeric = (CAST(@Prijs AS NUMERIC(9, 2)));
     IF (@PrijsNumeric <= 1.00)
-        SET @PrijsNumeric = 1.50
-        RETURN @PrijsNumeric
+      SET @PrijsNumeric = 1.50
+    RETURN @PrijsNumeric
   END
 GO
 
@@ -154,3 +144,22 @@ CREATE FUNCTION [dbo].[FN_StripHTML](@HTMLText VARCHAR(MAX))
     RETURN LTRIM(RTRIM(@HTMLText))
   END
 GO
+
+
+--Niet meer nodig ivm VW_minimaalnieuwbod
+/*CREATE FUNCTION FN_bodHogerDanStartprijs(
+  @voorwerpnummer BIGINT,
+  @Bodbedrag      NUMERIC(9, 2)
+)
+  RETURNS BIT
+  BEGIN
+    RETURN (
+      CASE WHEN @Bodbedrag >= (SELECT VW_startprijs
+                               FROM Voorwerp
+                               WHERE VW_voorwerpnummer = @voorwerpnummer)
+        THEN 1
+      ELSE 0
+      END
+    )
+  END
+GO*/
