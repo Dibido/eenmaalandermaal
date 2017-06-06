@@ -164,6 +164,11 @@ $GetLandenQuerie = <<<EOT
 SELECT LAN_landcode, LAN_landnaam FROM Landen
 EOT;
 
+/* Query om de betaalmethode op te halen */
+
+$GetBethaalMethodesQuerie = <<<EOT
+select * from Betalingswijzen ORDER BY BW_Betalingswijze DESC
+EOT;
 
 /* Query landen ophalen registratie form */
 $GetVragenQuerie = <<<EOT

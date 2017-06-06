@@ -666,6 +666,12 @@ function printVragen($Vragen)
     }
 }
 
+function printBetalingswijzen($Betaalmethodes){
+    foreach($Betaalmethodes as $betaalmethode){
+        echo '<option value="' . $betaalmethode['BW_betalingswijze'] . '">'. $betaalmethode['BW_betalingswijze'] .'</option>';
+    }
+}
+
 //Returns the Numbers of all parent Categories from the categorie you enter
 function getParentCategories($rubriekNummer)
 {
