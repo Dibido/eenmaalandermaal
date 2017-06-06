@@ -72,7 +72,7 @@ AS
                 , v.VW_startprijs)
                 + 50.0 + (ABS(Checksum(NewID()) % 10) + 1)               AS BOD_bodbedrag,
               --De huidige waarde plus 50 (het hoogste minimale bod) en een random waarde van 1 tot 10
-                (dbo.FN_GenereerRandomgebruiker(newID(), v.VW_verkoper)) AS BOD_gebruiker,
+                (dbo.FN_GenereerRandomgebruiker(newID())) AS BOD_gebruiker,
                 (SELECT DATEADD(
                     MINUTE,
                     ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, ISNULL((SELECT TOP 1 b.BOD_bodTijdEnDag
