@@ -44,6 +44,19 @@ function FindAdminUsers($username)
     return $stmt->fetch();
 }
 
+/* function for Finding user info for profiel page*/
+function findUserInfo($username)
+{
+  GLOBAL $connection;
+  GLOBAL $QueryFindUserInfo
+
+  $stmt = $connection->prepare($QueryFindUserInfo);
+  $stmt->execute(array($username));
+  return $stmt-> fetchAll(); 
+
+}
+
+
 /*function for finding adverts per user*/
 function findAuctionsByUser($username, $auction)
 {

@@ -43,7 +43,7 @@
 
 <?php
 session_start();
-if (isset($_SESSION['Username'])) {
+if (isset($_SESSION['Username'])) { 
     //echo 'U bent ingelogd';
     echo '<div class="collapse text-center" id="accountControls">
     <div class="list-group">
