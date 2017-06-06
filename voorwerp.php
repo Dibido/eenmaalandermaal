@@ -29,18 +29,29 @@ for ($i = 0; $i < 3; $i++) {
 
 /* de functie voor het bieden */
 
+/* gewoon bieden */
 $error = [False, ''];
 $bod = $_POST["bod"];
 
+
 // testing if the input is an int or a float
-if (isset($bod) AND !empty($bod) AND isset($_SESSION["Username"])) {
+if (isset($bod) AND !empty($bod)) {
+    if(!isset($_SESSION["Username"])){
+        header('Location: login.php?bieden=True');
+    }
     if (filter_input(INPUT_POST, "bod", FILTER_VALIDATE_INT)
         OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)){
 
         //cleaning the input for html
         $bod = cleanInput($bod);
-        insertBod($ItemID, $_SESSION["Username"], $bod);
 
+        //checking if the offer is greater than the last offer
+        if($bod >= $minimumBod){
+            //inserting the offer
+            insertBod($ItemID, $_SESSION["Username"], $bod);
+        }else{
+            $error = [True, 'Vul alstublieft een geldig bod in'];
+        }
     }else{
         $error = [True, 'Vul alstublieft een getal in'];
     }
@@ -49,8 +60,21 @@ if (isset($bod) AND !empty($bod) AND isset($_SESSION["Username"])) {
     }
 }
 
-$bod = $_GET["snelbod"];
 
+/* snelbieden */
+$snelBod = $_GET["snelbod"];
+
+// testing if the input is an int or a float
+if (isset($snelBod) AND !empty($snelBod)) {
+    if (!isset($_SESSION["Username"])) {
+        header('Location: login.php?bieden=True');
+    }
+
+    //inserting the offer
+    insertBod($ItemID, $_SESSION["Username"], $minimumBod);
+
+    header('Location: voorwerp.php?ItemID='. $ItemID);
+}
 
 ?>
 
