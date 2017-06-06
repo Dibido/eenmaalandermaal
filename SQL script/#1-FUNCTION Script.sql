@@ -30,12 +30,12 @@ GO
 
 --Functie om te het aantal bestanden te returnen
 GO
-IF OBJECT_ID('dbo.aantalBestandenPervoorwerpnummer') IS NOT NULL
+IF OBJECT_ID('dbo.FN_aantalBestandenPervoorwerpnummer') IS NOT NULL
   IF OBJECT_ID('dbo.Bestand') IS NOT NULL
     DROP TABLE [dbo].[Bestand]
-DROP FUNCTION [dbo].[aantalBestandenPerVoorwerpnummer]
+DROP FUNCTION [dbo].[FN_aantalBestandenPerVoorwerpnummer]
 GO
-CREATE FUNCTION aantalBestandenPerVoorwerpnummer(
+CREATE FUNCTION FN_aantalBestandenPerVoorwerpnummer(
   @voorwerpnummer BIGINT
 )
   RETURNS INT
@@ -50,13 +50,13 @@ GO
 
 
 --Functie om te kijken of het bod hoger is dan de opgegeven startprijs
-IF OBJECT_ID('dbo.bodHogerDanStartprijs') IS NOT NULL
+IF OBJECT_ID('dbo.FN_bodHogerDanStartprijs') IS NOT NULL
   IF OBJECT_ID('dbo.Bod') IS NOT NULL
     DROP TABLE [dbo].[Bod]
-DROP FUNCTION [dbo].[bodHogerDanStartprijs]
+DROP FUNCTION [dbo].[FN_bodHogerDanStartprijs]
 GO
 
-CREATE FUNCTION bodHogerDanStartprijs(
+CREATE FUNCTION FN_bodHogerDanStartprijs(
   @voorwerpnummer BIGINT,
   @Bodbedrag      NUMERIC(9, 2)
 )
@@ -76,13 +76,13 @@ GO
 
 --Functie om te kijken of je niet op je eigen voorwerp gaat bieden
 
-IF OBJECT_ID('dbo.nietEigenVoorwerp') IS NOT NULL
+IF OBJECT_ID('dbo.FN_nietEigenVoorwerp') IS NOT NULL
   IF OBJECT_ID('dbo.Bod') IS NOT NULL
     DROP TABLE [dbo].[Bod]
-DROP FUNCTION [dbo].[nietEigenVoorwerp]
+DROP FUNCTION [dbo].[FN_nietEigenVoorwerp]
 GO
 
-CREATE FUNCTION nietEigenVoorwerp(
+CREATE FUNCTION FN_nietEigenVoorwerp(
   @voorwerpnummer BIGINT,
   @gebruiker      VARCHAR(40)
 )
