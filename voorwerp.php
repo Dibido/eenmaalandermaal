@@ -27,14 +27,10 @@ for ($i = 0; $i < 3; $i++) {
 }
 
 
-
 /* de functie voor het bieden */
 
 $error = [False, ''];
-
 $bod = $_POST["bod"];
-print_r($_POST);
-echo $bod;
 
 // testing if the input is an int or a float
 if (isset($bod) AND !empty($bod) AND isset($_SESSION["Username"])) {
@@ -52,6 +48,9 @@ if (isset($bod) AND !empty($bod) AND isset($_SESSION["Username"])) {
         echo "<script type='text/javascript'>alert('$error[1]');</script>";
     }
 }
+
+$bod = $_GET["snelbod"];
+
 
 ?>
 
@@ -288,10 +287,6 @@ require('navbar.php');
 
     (function(){
 
-        <?php
-            $ItemInfo = GetItemDetails($ItemID);
-            $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
-        ?>
 
         var open = $("#MoreOffers").hasClass("collapse in");
         var hasFocus = ($("#bodInput").is(":focus"));

@@ -151,12 +151,11 @@ select t1.* from Rubriek t1,tab1
 where tab1.RB_Parent = t1.RB_Nummer AND tab1.RB_Parent != -1)
 select top 5 RB_Naam, RB_Nummer from tab1;
 
-
 EOT;
 
     $stmt = $connection->prepare($query);
     $stmt->execute(array((int)$ItemID));
-    return $stmt->fetch();
+    return $stmt->fetchAll();
 
 }
 

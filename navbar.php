@@ -47,14 +47,14 @@ if (isset($_SESSION['Username'])) {
     //echo 'U bent ingelogd';
     echo '<div class="collapse text-center" id="accountControls">
     <div class="list-group">
-        <a href="#" class="list-group-item">Mijn account</a>
+        <a href="profiel.php" class="list-group-item">Mijn account</a>
         <a href="../login.php?loggedOut=True" class="list-group-item">Log out</a>
     </div>
 </div>';
 } elseif (isset($_SESSION['adminUsername'])){
     echo '<div class="collapse text-center" id="accountControls">
     <div class="list-group">
-        <a href="#" class="list-group-item">Mijn account</a>
+        <a href="http://iproject3.icasites.nl/profiel.php" class="list-group-item">Mijn account</a>
         <a href="http://iproject3.icasites.nl/BeheerLogin.php?loggedOut=True" class="list-group-item">Log out</a>
     </div>
 </div>';
