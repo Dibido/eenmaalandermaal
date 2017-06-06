@@ -48,7 +48,7 @@ function FindAdminUsers($username)
 function findUserInfo($username)
 {
   GLOBAL $connection;
-  GLOBAL $QueryFindUserInfo
+  GLOBAL $QueryFindUserInfo;
 
   $stmt = $connection->prepare($QueryFindUserInfo);
   $stmt->execute(array($username));
