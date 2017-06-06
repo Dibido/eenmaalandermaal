@@ -1,3 +1,13 @@
+
+--Dit stuk sql leest de triggers uit en verwijdert ze.
+DECLARE @DropTriggers nVARCHAR(MAX) = ''
+SELECT @DropTriggers += 'DROP TRIGGER ' + [so].[name] + CHAR(13)
+FROM sysobjects AS [so]
+INNER JOIN sysobjects AS so2 ON so.parent_obj = so2.Id
+WHERE [so].[type] = 'TR'
+PRINT @DropTriggers
+EXEC sp_executesql @DropTriggers
+
 --Trigger om het hoogste bod op een voorwerp bij te houden
 IF OBJECT_ID('TR_HoogsteBod') IS NOT NULL
   DROP TRIGGER [dbo].[TR_HoogsteBod]
@@ -31,7 +41,7 @@ FOR INSERT, UPDATE, DELETE
 AS
   BEGIN
     UPDATE dbo.Voorwerp
-    SET Voorwerp.VW_minimalenieuwebod =
+    SET Voorwerp.VW_minimaalnieuwbod =
     (
       CASE
       WHEN VW_hoogstebod BETWEEN 1 AND 49.99
@@ -103,13 +113,3 @@ AS
   END
 GO
 
-CREATE TRIGGER TR_ComputedCountParentCategories on Voorwerp_Rubriek
-  FOR INSERT,UPDATE,DELETE
-AS
-  BEGIN
-    UPDATE Rubriek
-      SET RB_voorwerpcount =
-      (
-        SELECT SUM(RB_voorwerpcount)
-      )
-  END
