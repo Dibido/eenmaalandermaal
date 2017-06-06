@@ -167,12 +167,12 @@ require('navbar.php');
                 <!-- Price slider -->
                 <div class="list-group-item">Prijs:
                     <b><?php echo('€' . $prijs['min'] . '- €' . $prijs['max']); ?></b>
-                    <div list-group-item>
+                    <div>
                         <input id="pslider" type="text" name="prijs"
                                class="span1" value=""  style="width: 100%;"
-                               data-slider-min="0"
+                               data-slider-min="1"
                                data-slider-max="1000"
-                               data-slider-step="1"
+                               data-slider-step="5"
                         <?php
                         if (isset($prijs)) {
                             echo('data-slider-value="[' . $prijs['min'] . "," . $prijs['max'] . ']"/>');
@@ -185,7 +185,6 @@ require('navbar.php');
                     var slider = new Slider('#pslider', {});
                 </script>
                 </div>
-
 
                 <!-- Payment method select form -->
 

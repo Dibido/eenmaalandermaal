@@ -41,30 +41,6 @@ AS
     DROP TABLE dbo.TEMP_LooptijdWaardes
 GO
 
---Tijdelijke functie om een random gebruiker te vinden
---Variabelen:
---@Identifier, een unieke identity in de tabel.
---@Verkoper, De verkoper van het product.
-
-CREATE FUNCTION FN_GenereerRandomgebruiker
-  (@Identifier UNIQUEIDENTIFIER)
-  RETURNS VARCHAR(64)
-AS
-  BEGIN
-    --Selecteer een random gebruiker aan de hand van de random identifier en het regelnummer.
-    RETURN (SELECT TOP 1 GEB_gebruikersnaam
-            FROM (SELECT
-                    GEB_gebruikersnaam,
-                    ROW_NUMBER()
-                    OVER (
-                      ORDER BY GEB_gebruikersnaam ) AS regel
-                  FROM Gebruiker
-                 ) AS regels
-            WHERE regels.regel = (SELECT ((ABS(CHECKSUM(@Identifier))) % (SELECT count(*) + 1
-                                                                          FROM Gebruiker)) + 1))
-  END
-GO
-
 CREATE PROCEDURE [dbo].[SP_UpdateBiedingen]
     @Daterange INT = 14,
     @NrTimes   TINYINT = 3

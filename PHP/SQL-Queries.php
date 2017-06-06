@@ -47,13 +47,7 @@ EOT;
 $QueryTopCategories = <<<EOT
 
 
-select top 10 Rubriek.RB_Naam, COUNT(BOD_voorwerpnummer) as aantal1, COUNT(VW_voorwerpnummer) as aantal2, RB_Nummer
- from Voorwerp
-  LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-  LEFT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-  LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-GROUP BY Rubriek.RB_Naam, RB_Nummer
-ORDER BY COUNT(BOD_voorwerpnummer)DESC , COUNT(VW_voorwerpnummer) DESC
+select TOP 10 RB_Naam,RB_Nummer, RB_voorwerpcount from Rubriek ORDER BY RB_voorwerpcount DESC
 
 
 EOT;
@@ -91,14 +85,7 @@ WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETD
                               INNER JOIN Voorwerp_Rubriek
                                 ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
                             WHERE VR_Rubriek_Nummer IN (
-                              SELECT TOP 30 Rubriek.RB_Nummer
-                              FROM Voorwerp
-                                LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-                                LEFT OUTER JOIN Voorwerp_Rubriek
-                                  ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                                LEFT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                              GROUP BY Rubriek.RB_Nummer, VW_voorwerpnummer
-                              ORDER BY COUNT(BOD_voorwerpnummer) DESC
+                              select TOP 30 RB_Nummer from Rubriek ORDER BY RB_voorwerpcount DESC
                             )
       )
 GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel,VW_thumbnail,VW_startprijs
@@ -140,12 +127,7 @@ WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
     FULL OUTER JOIN Rubriek
       ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   WHERE RB_Naam IN (
-    SELECT TOP 5 Rubriek.RB_Naam FROM Voorwerp
-      RIGHT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
-      RIGHT OUTER JOIN Voorwerp_Rubriek ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-      RIGHT OUTER JOIN Rubriek ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-    GROUP BY Rubriek.RB_Naam
-    ORDER BY COUNT (BOD_voorwerpnummer) DESC, RB_Naam ASC
+    select TOP 5 RB_Naam from Rubriek ORDER BY RB_voorwerpcount DESC
   )
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
 GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs

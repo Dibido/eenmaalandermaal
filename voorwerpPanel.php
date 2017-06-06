@@ -9,6 +9,8 @@ $ItemID = $_GET['ItemID'];
 $ItemInfo = GetItemDetails($ItemID);
 $ItemInfo = $ItemInfo[0];
 
+$minimumBod = $ItemInfo["VW_minimalenieuwebod"];
+
 
 ?>
 
@@ -39,7 +41,7 @@ $ItemInfo = $ItemInfo[0];
         <div class="panel-heading text-center">Prijs</div>
         <div class="panel-body">
             <span id="Price" class="text-center"><i
-                        class="glyphicon glyphicon-euro"></i><?php echo $ItemInfo["prijs"]; ?></span>
+                        class="glyphicon glyphicon-euro"></i><?php echo " " . $ItemInfo["prijs"]; ?></span>
         </div>
 
         <!-- dynamically loading the offers -->
@@ -86,8 +88,8 @@ $ItemInfo = $ItemInfo[0];
             <form class="form-inline" method="POST" action="voorwerp.php?ItemID=<?php echo $ItemID; ?>">
                 <div class="input-group InputBod">
                     <div class="input-group-addon">&euro;</div>
-                    <input type="text" class="form-control" id="bodInput" placeholder="voer hier uw bod in"
-                           value="<?php echo ""; ?>" autofocus>
+                    <input type="text" class="form-control" id="bodInput"
+                           value="<?php echo "$minimumBod"; ?>" min="<?php echo $minimumBod; ?>" max="999999999.99" autofocus>
                 </div>
                 <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
             </form>

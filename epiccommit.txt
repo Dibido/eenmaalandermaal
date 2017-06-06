@@ -1,0 +1,3 @@
+#!/bin/bash
+
+while true; do echo ¨getcommit¨¨ >> Commits.txt ; done¨ >> epiccommit.txt

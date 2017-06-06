@@ -88,29 +88,46 @@ CREATE TABLE Gebruikerstelefoon (
 --Tabel om de valide looptijden in op te slaan.
 CREATE TABLE LooptijdWaardes (
   LOP_looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
+);
+
+CREATE TABLE Controleopties (
+  CON_controleoptie VARCHAR(24) --Redelijke lengte
+)
+
+CREATE TABLE Verkoper (
+  VER_gebruiker     VARCHAR(64),
+  VER_bank          VARCHAR(24),
+  VER_bankrekening  VARCHAR(31), --Langste is 31 : zie https://en.wikipedia.org/wiki/International_Bank_Account_Number
+  VER_controleoptie VARCHAR(24),
+  VER_creditcard    VARCHAR(19), --Langste nummer : zie https://en.wikipedia.org/wiki/Payment_card_number
+  CONSTRAINT FK_verkopercontroleopties FOREIGN KEY (VER_controleoptie) REFERENCES Controleopties (CON_controleoptie)
 )
 
 CREATE TABLE Voorwerp (
-  VW_voorwerpnummer      BIGINT        NOT NULL IDENTITY, --Genereerd zelf nummer, zo veel mogelijk voorwerpen
-  VW_titel               VARCHAR(90)   NOT NULL, --De langste titel is 86 en om nog wat marge te hebben doen we 90
-  VW_beschrijving        VARCHAR(MAX)  NOT NULL, --Geen reden tot beperken
-  VW_startprijs          NUMERIC(9, 2) NOT NULL, --Bedrag in de miljoenen
-  VW_betalingswijze      VARCHAR(25)   NOT NULL DEFAULT 'Bank / Giro', --Korte keuzes (d.m.v. dropdown)
-  VW_betalingsinstructie VARCHAR(255)  NULL, --Korte instructie
-  VW_plaatsnaam          VARCHAR(85)   NOT NULL, --Langste plaatsnaam is 85 tekens
-  VW_land                CHAR(2)       NOT NULL DEFAULT 'NL', --Zie ISO 3166/1 alpha-2
-  VW_looptijd            TINYINT       NOT NULL DEFAULT 7, --Aantal dagen
-  VW_looptijdStart       DATETIME      NOT NULL DEFAULT GETDATE(), --Normaal de huidige datum met daarbij de tijd
-  VW_verzendkosten       NUMERIC(5, 2) NULL, --Bedrag mag 2 getallen achter de komma hebben en mag er maximaal 3 voor de komma hebben
-  VW_verzendinstructies  VARCHAR(255)  NULL, --Korte instructie
-  VW_verkoper            VARCHAR(64)   NOT NULL, --Zie RFC 5321.
-  VW_conditie            VARCHAR(255)  NULL, --Korte beschrijving.
-  VW_thumbnail           VARCHAR(260)  NOT NULL, --Bestandpadlengte hetzelfde als in Bestand
-  VW_koper               VARCHAR(64)   NULL, --Zie RFC 5321.
-  VW_looptijdEinde                              AS DATEADD(DAY, VW_looptijd, VW_looptijdStart), --Bereken de einddatum
-  VW_veilinggesloten     BIT           NOT NULL DEFAULT 0, --Veiling gesloten of open
-  VW_verkoopprijs        NUMERIC(9, 2) NULL, --Prijs waarvoor het voorwerp verkocht is
-  --TODO: berekende kolom met hoogste bod.
+  VW_voorwerpnummer      BIGINT                              NOT NULL                                                                                         IDENTITY, --Genereerd zelf nummer, zo veel mogelijk voorwerpen
+  VW_titel               VARCHAR(90)                         NOT NULL, --De langste titel is 86 en om nog wat marge te hebben doen we 90
+  VW_beschrijving        VARCHAR(MAX)                        NOT NULL, --Geen reden tot beperken
+  VW_startprijs          NUMERIC(9, 2)                       NOT NULL, --Bedrag in de miljoenen
+  VW_betalingswijze      VARCHAR(25)                         NOT NULL                                                                                         DEFAULT 'Bank / Giro', --Korte keuzes (d.m.v. dropdown)
+  VW_betalingsinstructie VARCHAR(255)                        NULL, --Korte instructie
+  VW_plaatsnaam          VARCHAR(85)                         NOT NULL, --Langste plaatsnaam is 85 tekens
+  VW_land                CHAR(2)                             NOT NULL                                                                                         DEFAULT 'NL', --Zie ISO 3166/1 alpha-2
+  VW_looptijd            TINYINT                             NOT NULL                                                                                         DEFAULT 7, --Aantal dagen
+  VW_looptijdStart       DATETIME                            NOT NULL                                                                                         DEFAULT GETDATE(), --Normaal de huidige datum met daarbij de tijd
+  VW_verzendkosten       NUMERIC(5, 2)                       NULL, --Bedrag mag 2 getallen achter de komma hebben en mag er maximaal 3 voor de komma hebben
+  VW_verzendinstructies  VARCHAR(255)                        NULL, --Korte instructie
+  VW_verkoper            VARCHAR(64)                         NOT NULL, --Zie RFC 5321.
+  VW_conditie            VARCHAR(255)                        NULL, --Korte beschrijving.
+  VW_thumbnail           VARCHAR(260)                        NOT NULL, --Bestandpadlengte hetzelfde als in Bestand
+  VW_koper               VARCHAR(64)                         NULL, --Zie RFC 5321.
+  VW_looptijdEinde                                                                                                                                            AS DATEADD(
+      DAY, VW_looptijd,
+      VW_looptijdStart), --Bereken de einddatum
+  VW_veilinggesloten     BIT                                 NOT NULL                                                                                         DEFAULT 0, --Veiling gesloten of open
+  VW_verkoopprijs        NUMERIC(9, 2)                       NULL, --Prijs waarvoor het voorwerp verkocht is
+  VW_hoogstebod          NUMERIC(9, 2) DEFAULT VW_startprijs NOT NULL, --Berekende kolom door middel van een trigger.
+  VW_minimaalnieuwbod    NUMERIC(9, 2)                       NULL,
+  VW_bodcount            NUMERIC(9) DEFAULT 0                NOT NULL,
 
   CONSTRAINT PK_Voorwerp PRIMARY KEY (VW_voorwerpnummer),
   CONSTRAINT FK_Betaalwijze FOREIGN KEY (VW_betalingsWijze) REFERENCES Betalingswijzen (BW_betalingswijze),
@@ -121,6 +138,7 @@ CREATE TABLE Voorwerp (
     ON UPDATE CASCADE --Voor als de gebruikersnaam wordt aangepast
     ON DELETE NO ACTION,
   CONSTRAINT FK_VoorwerpLooptijd FOREIGN KEY (VW_looptijd) REFERENCES LooptijdWaardes.LOP_looptijd, --De looptijd mag enkel 1,3,5,7,10 zijn zoals aangegeven in Appendix B
+  CONSTRAINT FK_VoorwerpVerkoper FOREIGN KEY (VW_verkoper) REFERENCES Verkoper.VER_gebruiker, --De verkoper moet een verkoper zijn.
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2), --Kan niet leeg zijn
@@ -129,7 +147,6 @@ CREATE TABLE Voorwerp (
   CONSTRAINT CHK_StartprijsHogerDan1 CHECK (VW_startprijs >= 1.00), --Appendix B, Mindstends een euro
   CONSTRAINT CHK_VerkoopprijsGroterOfGelijk CHECK (VW_verkoopprijs >=
                                                    VW_startprijs), --Kijkt of de verkoop prijs wel groter is dan de start prijs
-  --TODO: CONSTRAINT FK_verkoper naar verkopers tabel
 )
 
 CREATE TABLE Bestand (
