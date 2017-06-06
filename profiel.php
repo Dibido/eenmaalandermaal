@@ -3,7 +3,9 @@ session_start();
 
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
-require('PHP/connection.php');
+//require('PHP/connection.php');
+
+//$ItemInfo = GetItemDetails(fonorama);
 
 ?>
 
@@ -55,9 +57,7 @@ require('navbar.php');
 
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-
-        </div>
+        <div class="col-md-12"></div>
     </div>
 
 
@@ -65,13 +65,18 @@ require('navbar.php');
 
     <div class="col-md-8 col-sm-12">
         <div class="panel panel-default Details-wrapper">
-            <div class="list-group-item active text-center">Persoonlijke Beschrijving</div>
-            
-                    <p> HIER KOMT "EEN PERSOONlijkE BESCHRIJVING"</p>
-    
-            
+                <div class="list-group-item active text-center">Persoonlijke Beschrijving</div>
+                    <div class="panel-body">
+                        <p><span class="glyphicon glyphicon-user"></span> Naam: <b><?php //echo $ItemInfo["VW_verkoper"] ?></b></p>
+                        <p><span class="glyphicon glyphicon-gift"></span> Geboortedatum:</p>
+                        <p><span class="glyphicon glyphicon-globe"></span> Land:</p>
+                        <p><span class="glyphicon glyphicon-map-marker"></span> Plaats:</p>
+                        <p><span class="glyphicon glyphicon-shopping-cart"></span> Type account:</p>
+                    </div>
         </div>
     </div>
+
+
 
 
     <!-- START Sidebar -->
@@ -80,35 +85,91 @@ require('navbar.php');
             <div class="list-group-item active text-center">Gegevens</div>
             <div class="panel-body">
 
-               <div class="list-group-item">Naam:</div>
-               <div class="list-group-item">Geboortedatum:</div>
-               <div class="list-group-item">Land:</div>   
-               <div class="list-group-item">Plaats:</div>
-               <div class="list-group-item">Type account:</div>
+               <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Naam:</div>
+               <div class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"></span> Type account:</div>
+               <a href="#"><button class="btn btn-primary center-block btn-lg " type="button">
+                            <span class="glyphicon glyphicon-repeat"></span> UPGRADE ACCOUNT!</button></a>
+               
                 
-            <div class="panel-heading text-center">Gebruikers informatie</div>
+
+                 <!-- gebruikersinformatie -->
+
+                    <div class="panel-heading text-center">Gebruikers informatie</div>
                 <div class="panel-body">
-                <div class="UserContainer">
-                <div id="User" style="background-image:url(images/User.png)"></div>
-                <div class="UserInfo">fonorama</div>
-            </div>
-            <div id="UserRating" class="text-center">
-                <div>
-                    <i class="glyphicon glyphicon-star"></i> <i class="glyphicon glyphicon-star"></i> <i class="glyphicon glyphicon-star"></i> <i class="glyphicon glyphicon-star"></i> <i class="glyphicon glyphicon-star"></i> 
+                    <div class="UserContainer">
+                        <div id="User" style="background-image:url(images/User.png)"></div>
+                        <div class="UserInfo"><?php// echo $ItemInfo["VW_verkoper"] ?></div>
+                    </div>
+                    <div id="UserRating" class="text-center">
+                        <div>
+                            <?php
+
+                            //$Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
+
+                            //$rating = floor($Userinfo[0]["GEB_rating"]) / 10;
+
+                            //for($i = 0; $i < $rating/2; $i++){
+                                //echo " <i class=\"glyphicon glyphicon-star\"></i>";
+                            //}
+
+                            //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
+                            ?>
+                        </div>
+                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
-             
-            </div>
-        </div>
-    </div>
+            
 
+
+
+     
+
+<!-- ADS -->
+
+    <div class="col-md-12 col-sm-12">
+    
+        <div class="panel panel-default Details-wrapper">
+            <div class="list-group-item active text-center">Persoonlijke Beschrijving</div>
+ 
+  <ul class="nav nav-pills">
+    <li class="active"><a data-toggle="pill" href="#home">Home</a></li>
+    <li><a data-toggle="pill" href="#menu1">Menu 1</a></li>
+    <li><a data-toggle="pill" href="#menu2">Menu 2</a></li>
+    <li><a data-toggle="pill" href="#menu3">Menu 3</a></li>
+  </ul>
+  
+  <div class="tab-content">
+    <div id="home" class="tab-pane fade in active">
+      <h3>HOME</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+    <div id="menu1" class="tab-pane fade">
+      <h3>Menu 1</h3>
+      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    </div>
+    <div id="menu2" class="tab-pane fade">
+      <h3>Menu 2</h3>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    </div>
+    <div id="menu3" class="tab-pane fade">
+      <h3>Menu 3</h3>
+      <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+    </div>
+  </div>
 </div>
 
 
+
+        </div>
+    </div>
+
+
+
+
+    </div>
 </div>
 
 <?php include('footer.html'); ?>
