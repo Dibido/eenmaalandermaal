@@ -153,8 +153,8 @@ select top 5 RB_Naam, RB_Nummer from tab1;
 EOT;
 
     $stmt = $connection->prepare($query);
-    $stmt->execute(array($ItemID));
-    return $stmt->fetchAll();
+    $stmt->execute(array((int)$ItemID));
+    return $stmt->fetch();
 
 }
 
@@ -733,6 +733,55 @@ function printCategories($zoekterm, $rubriekQuery, $rubriekNummer, $sorteerfilte
     }
     echo '</ul>';
 }
+function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
+{
+    global $connection;
+    //When a rubriekNummer is entered the function getParentCategories returns all Numbers of the parents
+    //These are used to open the selected categories
+    if (!empty($rubriekNummer)) {
+        $parentRubrieken = getParentCategories($rubriekNummer);
+    }
+    //Returns all Categories in the following format: Head-categorie/categorie/subcategorie/subsubcategorie and so on
+    $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
+    //Unorderlist with all Categories in it. The class is used to be able to open and close the unorder list.
+    echo '<ul id="Rubrieken" class="nav panel-collapse collapse in">';
+    //Goes through the first dimensional of the array
+    for ($i = 0; $i < sizeof($rubrieken); $i++) {
+        //Goes through the second dimensional of the array
+        for ($j = 0; $j < (sizeof($rubrieken[$i]) / 2); $j++) {
+            //If the next value is not set OR the value is the last value a line is printed this line is the last line in the tree
+            if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i]) / 2) - 1) AND isset($rubrieken[$i][$j])) {
+                //If a rubriekNummer was entered and the current categorie number is in the array $parentRubrieken it will have a primrose yellow background
+                if (in_array($rubrieken[$i][$j + 6], $parentRubrieken)) {
+                    echo "<div class='label-info'><a href=?rubriek=" . urldecode($rubrieken[$i][$j + 6]) . ">" . urldecode($rubrieken[$i][$j]). "</a></div><ul>";
+                } else {
+                    echo "<a href=?rubriek=" . urldecode($rubrieken[$i][$j + 6]) . ">" . urldecode($rubrieken[$i][$j]). "</a><ul>";                }
+                //If the last object in the three was printed it will stop the second loop.
+                $j = sizeof($rubrieken[$i]);
+            } //If the current category is set and it is not the same as the category from last row a new Unordered list will be created
+            else if ($i <= 0 OR $rubrieken[$i][$j] != $rubrieken[$i - 1][$j] AND isset($rubrieken[$i][$j])) {
+                //If  a rubriekNummer was entered and the current categorie number is in the array $parentRubrieken it will be opened and it will have a primrose yellow background
+                if (in_array($rubrieken[$i][$j + 6], $parentRubrieken)) {
+                    echo '<li><div class="label-info tree-toggle nav-header">' . $rubrieken[$i][$j] . '</div><ul class="nav nav-list tree">';
+                } else {
+                    echo '<li><label class="tree-toggle nav-header">' . $rubrieken[$i][$j] . '</label>
+                        <ul class="nav nav-list tree" style="display: none">';
+                }
+            }
+        }
+        //For loop to close the list items and unorderd lists it closes "backwards"
+        for ($k = (sizeof($rubrieken[$i]) / 2) - 1; $k >= 0; $k--) {
+            //If the last rubric is set and the Last Rubric is not the same as the next Rubric
+            if ($i + 1 >= sizeof($rubrieken)) {
+                echo '</ul></li>';
+            } else if ($rubrieken[$i][$k] != $rubrieken[$i + 1][$k] AND isset($rubrieken[$i][$k])) {
+                echo '</ul></li>';
+            }
+        }
+        echo '<hr size="6">';
+    }
+    echo '</ul>';
+}
 
 function drawPagenumbers($pagenum,$Dictionary,$result,$ResultsPerPage,$zoekterm,$rubriek,$sorteerfilter,$prijs,$betalingsmethode,$user){
     if (!empty($result)) {
@@ -1010,7 +1059,6 @@ function checkEmailSent()
     </table>
   </body>
 </html>
-
 ';
 
 
