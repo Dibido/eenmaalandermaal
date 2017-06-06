@@ -55,6 +55,7 @@ IF OBJECT_ID('FN_BodhogerdanMinimaalBod') IS NOT NULL
     DROP TABLE [dbo].[Bod]
 DROP FUNCTION [dbo].[FN_BodhogerdanMinimaalBod]
 GO
+
 CREATE FUNCTION FN_BodhogerdanMinimaalBod
   (@Voorwerp  BIGINT,
    @Bodbedrag NUMERIC(9, 2)
