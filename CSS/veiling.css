@@ -62,3 +62,18 @@
     float: right;
     width: 45%;
 }
+.nopadding {
+    padding-left: 0 !important;
+    margin: 0 !important;
+}
+
+.nopadding1{
+    padding-right: 0 !important;
+    margin: 0 !important;
+}
+h1{
+    margin-left:-30px;
+}
+h4{
+    margin-left:-20px;
+}

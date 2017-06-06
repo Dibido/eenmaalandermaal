@@ -10,6 +10,7 @@ $ItemInfo = GetItemDetails($ItemID);
 $ItemInfo = $ItemInfo[0];
 
 $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
+session_start();
 
 
 ?>
@@ -62,7 +63,20 @@ $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
                 foreach ($LastOffers as $lastOffer) {
                     $Bod++;
                     $Bodtijd = ConvertTime($lastOffer["BOD_bodTijdEnDag"]);
-                    echo "<div class=\"OldOffer\"><div class=\"OldOfferUserName\">" . $Bod . '. ' . $lastOffer["BOD_gebruiker"] . "</div><div class=\"OldOfferPrice\">" . $Bodtijd . "</div><div class=\"OldOfferPrice\">&euro;" . $lastOffer["BOD_bodbedrag"] . "</div></div>";
+
+
+                    // build the surrounding div for the offers
+                    echo "<div class=\"OldOffer\"";
+
+                    //border-bottom: #e5e5e5 solid 2px;
+
+                    //checking if the offer is owned by the current user
+                    if($_SESSION["Username"] == $lastOffer["BOD_gebruiker"]) {
+                        echo "style=\"border-bottom: #524BAB solid 2px; \" ";
+                    }
+
+                    //building the inside of the offer
+                    echo "><div class=\"OldOfferUserName\">" . $Bod . '. ' . $lastOffer["BOD_gebruiker"] . "</div><div class=\"OldOfferPrice\">" . $Bodtijd . "</div><div class=\"OldOfferPrice\">&euro;" . $lastOffer["BOD_bodbedrag"] . "</div></div>";
 
                     if ($Bod == 4) {
                         echo "<div id=\"MoreOffers\" class=\"collapse\">";
@@ -85,11 +99,10 @@ $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
 
         <div class="panel-heading text-center">Bieden</div>
         <div class="panel-body">
-            <form class="form-inline" method="POST" action="voorwerp.php?ItemID=<?php echo $ItemID; ?>">
+            <form id="bodForm" class="form-inline" method="POST" action="voorwerp.php?ItemID=<?php echo $ItemID; ?>">
                 <div class="input-group InputBod">
                     <div class="input-group-addon">&euro;</div>
-                    <input type="text" class="form-control" id="bodInput"
-                           value="<?php echo "$minimumBod"; ?>" min="<?php echo $minimumBod; ?>" max="999999999.99" autofocus>
+                    <input form="bodForm" type="text" class="form-control" id="bodInput" name="bod" min="<?php echo $minimumBod; ?>" max="999999999.99" autofocus>
                 </div>
                 <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
             </form>

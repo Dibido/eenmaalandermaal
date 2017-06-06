@@ -1,10 +1,16 @@
 <?php
-session_start();
 
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
+$Betalingswijzen = SendToDatabase($GetBethaalMethodesQuerie);
+$Landen = SendToDatabase($GetLandenQuerie);
+if (isset($_GET['rubriek']) && !empty($_GET['rubriek'])) {
+    $rubriek = ($_GET['rubriek']);
+} else {
+    $rubriek = 'NULL';
+}
 ?>
 
 
@@ -60,30 +66,34 @@ require('PHP/SQL-Queries.php');
 require('navbar.php');
 ?>
 
-<input id="fileopen" type="file" value=""/>
-<button id="clear">Clear</button>
 
-<!-- Breadcrumb -->
-<ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-    <li class="breadcrumb-item active">Registreren - Stap 2</li>
-</ol>
-
+<h1 class="text-center">Plaats Advertente!</h1>
+<br>
 <div class="well container">
-    <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12">
+
+    <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12 col-xs-push-1">
+        <h2>Kies eerst uw rubriek!</h2>
+        <hr>
+        <br>
         <div class="list-group-item panel-collapse collapse in">
             <?php
-            $rubriek = 13353;
+            $rubriek = 'NULL';
             printCategoriesAdvertentiePagina($rubriekQuery, $rubriek);
             ?>
         </div>
     </div>
     <div class="col-md-5 col-sm-5 col-xs-5 col-xs-push-2 right">
         <form method="POST">
-            <h1>Voorwerp details</h1>
-            <hr size="5">
+            <?php
+            if (!isset($_GET['rubriek'])) {
+                echo "<fieldset disabled>";
+            }
+            ?>
+            <h2>Voorwerp details</h2>
+            <hr>
+            <br>
             <div class="form-group">
-                <label for="Titel"><h4>Titel Voorwerp*</h4></label>
+                <h4>Titel Voorwerp*</h4>
                 <input name="Titel" id="Titel" type="text" placeholder="Titel" maxlength="90"
                        class="form-control" required value="<?php if (!empty($waardes['Titel'])) {
                     echo $waardes['Titel'];
@@ -91,40 +101,29 @@ require('navbar.php');
             </div>
 
             <div class="form-group">
-                <label for="Beschrijving"><h4>Beschrijving*</h4></label>
-                <textarea name="Beschrijving" id="Beschrijving" placeholder="Achternaam"
-                          class="form-control" required rows="5"
-                          value="<?php if (!empty($waardes['Beschrijving'])) {
-                              echo $waardes['Beschrijving'];
-                          } ?>"></textarea>
+                <label for="Beschrijving"></label><h4>Beschrijving*</h4>
+                <textarea name="Beschrijving" id="Beschrijving"
+                          placeholder="Vul hier de beschrijving van je voorwerp in!"
+                          class="form-control" required rows="5"></textarea>
             </div>
 
             <div class="form-group" id="ThumbnailUpload">
-                <label for="Thumbnail"><h4>Thumbnail*</h4></label><br>
+                <h4>Thumbnail*</h4>
                 <label class="btn btn-warning btn-lg"> <span class="glyphicon glyphicon-cloud-upload"></span> Upload
                     hier je thumbnail!
-                    <input name="thumbnail" id="thumbnail" type="file" style="display:none"
-                           value="<?php
-                           if (empty($Thumbnail)) {
-                               echo $waardes['Thumbnail'];
-                           } ?>"
-                           class="form-control">
+                    <input name="thumbnail" id="thumbnail" type="file" style="display:none" class="form-control">
 
                 </label>
                 <p id="ThumbnailName">
-                    Please select a file.
+                    Selecteer een afbeelding!
                 </p>
 
             </div>
             <div class="form-group" id="AfbeeldingUpload">
-                <label for="Afbeelding"><h4>Extra afbeeldingen*</h4></label><br>
+                <h4>Extra afbeeldingen*</h4>
                 <label class="btn btn-warning btn-lg"> <span class="glyphicon glyphicon-cloud-upload"></span> Upload
                     hier maximaal 3 extra afbeeldingen!
                     <input name="afbeelding" id="afbeelding" type="file" style="display:none" multiple
-                           value="<?php
-                           if (empty($Thumbnail)) {
-                               echo $waardes['Thumbnail'];
-                           } ?>"
                            class="form-control">
 
                 </label>
@@ -134,128 +133,110 @@ require('navbar.php');
 
 
             </div>
-                <label for="looptijd"><h4>Looptijd veiling*</h4></label><br>
+            <label for="looptijd"></label><h4>Looptijd veiling*</h4>
 
-                <input name="looptijd" id="looptijd" type="text"
-                       style="width: 100%;"
-                       data-provide="slider"
-                       data-slider-ticks="[1,3, 5,7,9]"
-                       data-slider-ticks-labels='["1 dag", "3 dagen", "5 dagen", "7 dagen", "10 dagen"]'
-                       data-slider-min="1"
-                       data-slider-max="10"
-                       data-slider-step="2"
-                       data-slider-value="7"
-                       data-slider-tooltip="hide"/>
-
-
-            <div class="form-group">
-                <label for="adres1">Adresregel 1*</label>
-                <input name="adres1" id="adres1" type="text" placeholder="Adresregel 1"
-                       class="form-control" required="true" maxlength="255"
-                       value="<?php if (!empty($waardes['adres1'])) {
-                           echo $waardes['adres1'];
-                       } ?>">
-            </div>
-
-            <div class="form-group">
-                <label for="adres2">Adresregel 2</label>
-                <input name="adres2" id="adres2" type="text" placeholder="Adresregel 2"
-                       class="form-control" maxlength="255"
-                       value="<?php if (!empty($waardes['adres2'])) {
-                           echo $waardes['adres2'];
-                       } ?>">
-            </div>
-
-            <div class="form-group">
-                <label for="postcode">Postcode*</label>
-                <input name="postcode" id="postcode" type="text" placeholder="1234 AB"
-                       class="form-control" required="true" maxlength="12"
-                       value="<?php if (!empty($waardes['postcode'])) {
-                           echo $waardes['postcode'];
-                       } ?>">
-            </div>
-
-            <div class="form-group">
-                <label for="woonplaats">Woonplaats*</label>
-                <input name="woonplaats" id="woonplaats" type="text" placeholder="Woonplaats"
-                       class="form-control" required="true" maxlength="85"
-                       value="<?php if (!empty($waardes['woonplaats'])) {
-                           echo $waardes['woonplaats'];
-                       } ?>">
-            </div>
-
-            <div class="form-group">
-                <label for="land">Land*</label>
-                <select name="land" id="land" type="text"
-                        class="form-control" required="true">
-                    <?php
-                    printLanden($Landen);
-                    ?>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="geboortedatum">Geboortedatum*</label>
-                <input name="geboortedatum" id="geboortedatum" type="text" data-provide="datepicker"
-                       data-date-format="yyyy-mm-dd"
-                       placeholder="Geboortedatum"
-                       class="form-control" required="true" value="<?php if (!empty($waardes['geboortedatum'])) {
-                    echo $waardes['geboortedatum'];
-                } ?>">
-            </div>
-
+            <input name="looptijd" id="looptijd" type="text"
+                   style="width: 100%;"
+                   data-provide="slider"
+                   data-slider-ticks="[1,3, 5,7,9]"
+                   data-slider-ticks-labels='["1 dag", "3 dagen", "5 dagen", "7 dagen", "10 dagen"]'
+                   data-slider-min="1"
+                   data-slider-max="10"
+                   data-slider-step="2"
+                   data-slider-value="7"
+                   data-slider-tooltip="hide"/>
+            <br>
+            <br>
+            <h2>Betaling</h2>
             <hr>
+            <br>
+            <div class="col-md-6 nopadding">
+                <h4>Startprijs*</h4>
 
-            <div class="form-group">
-                <label for="gebruikersnaam">Gebruikersnaam*</label>
-                <input name="gebruikersnaam" id="gebruikersnaam" type="text"
-                       placeholder="Gebruikersnaam" maxlength="64"
-                       class="form-control" required="true" value="<?php if (!empty($waardes['gebruikersnaam'])) {
-                    echo $waardes['gebruikersnaam'];
-                } ?>">
+                <div class="input-group">
+
+                <span class="input-group-addon" id="basic-addon1"> <i
+                            class="glyphicon glyphicon-euro"></i></span>
+                    <input name="adres1" id="adres1" type="text" placeholder="Adresregel 1"
+                           class="form-control" required="true" maxlength="255"
+                           value="<?php if (!empty($waardes['adres1'])) {
+                               echo $waardes['adres1'];
+                           } ?>">
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="wachtwoord">Wachtwoord*</label>
-                <input name="wachtwoord" id="wachtwoord" type="password" placeholder="Wachtwoord"
-                       maxlength="60"
-                       class="form-control" required="true">
-            </div>
-
-            <div class="form-group">
-                <label for="wachtwoord2">Bevestig wachtwoord*</label>
-                <input name="wachtwoord2" id="wachtwoord2" type="password" maxlength="60"
-                       placeholder="Herhaal wachtwoord"
-                       class="form-control" required="true">
-            </div>
-
-            <hr>
-
-            <div class="form-group">
-                <label for="geheimevraag">Geheime vraag*</label>
-                <select name="geheimevraag" id="geheimevraag" type="text"
-                        placeholder="Kies een geheime vraag"
-                        class="form-control" required="true">
-                    <?php
-                    printVragen($Vragen);
-                    ?>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="antwoord">Antwoord op je geheime vraag*</label>
-                <input name="antwoord" id="antwoord" type="text"
-                       placeholder="Antwoord op je geheime vraag"
-                       class="form-control" required="true" maxlength="16">
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-6 col-md-push-3 text-center">
-                    <button type="submit" class="btn btn-primary">Registreer!</button>
+            <div class="col-md-6 nopadding1">
+                <h4>Betalingswijze*</h4>
+                <div class="form-group">
+                    <select name="geheimevraag" id="geheimevraag" type="text"
+                            placeholder="Kies een geheime vraag"
+                            class="form-control" required="true">
+                        <?php
+                        printBetalingswijzen($Betalingswijzen);
+                        ?>
+                    </select>
                 </div>
             </div>
 
+            <div class="form-group">
+                <h4>Betalingsinstructie*</h4>
+                <textarea name="Betalingswijze" id="Betalingsinstructie"
+                          placeholder="Vul hier jouw betalingsinstructie in!"
+                          class="form-control" rows="5"></textarea>
+            </div>
 
+            <h2>Locatie</h2>
+            <hr>
+            <br>
+            <div class="col-md-6 nopadding">
+                <h4>Woonplaats*</h4>
+                <div class="form-group">
+                    <input name="woonplaats" id="woonplaats" type="text" placeholder="Woonplaats"
+                           class="form-control" required="true" maxlength="85"
+                           value="<?php if (!empty($waardes['woonplaats'])) {
+                               echo $waardes['woonplaats'];
+                           } ?>">
+                </div>
+            </div>
+            <div class="col-md-6 nopadding1">
+                <h4>Land*</h4>
+                <div class="form-group">
+                    </label>
+                    <select name="land" id="land" type="text"
+                            class="form-control" required="true">
+                        <?php
+                        printLanden($Landen);
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <br>
+            <br>
+            <h2>Verzending</h2>
+            <hr>
+            <br>
+            <div class="form-group">
+                <h4>Verzendkosten*</h4>
+                <input name="verzendkosten" id="verzendkosten" type="text"
+                       placeholder="Vul hier je verzendkosten in" maxlength="64"
+                       class="form-control" required="true" value="<?php if (!empty($waardes['verzendkosten'])) {
+                    echo $waardes['verzendkosten'];
+                } ?>">
+            </div>
+
+            <div class="form-group">
+                <h4>Verzendinstructies*</h4>
+                <textarea name="Betalingswijze" id="Betalingsinstructie"
+                          placeholder="Vul hier jouw betalingsinstructie in!"
+                          class="form-control" rows="5"></textarea>
+            </div>
+            <br>
+            <button class="btn-primary btn-lg center-block" type="submit">
+                Plaats advertentie!
+            </button>
+            <?php if (!isset($_GET['rubriek'])) {
+                echo '</fieldset>';
+            }
+            ?>
         </form>
     </div>
 </div>
@@ -288,10 +269,10 @@ require('navbar.php');
             }
             var total = this.files[0].size
             var maxMB = 5;
-            if ((total/1000/1024)  > maxMB) {
-                alert("U heeft de maximum grootte van 15MB overschreden. Uw foto's zijn: " + (total /1000/1024).toFixed(2) + "MB");
-                $("#afbeelding").val("");
-                $("#AfbeeldingName").html("Selecteer drie extra afbeeldingen!");
+            if ((total / 1000 / 1024) > maxMB) {
+                alert("U heeft de maximum grootte van" + maxMB + "MB overschreden. Uw foto's zijn: " + (total / 1000 / 1024).toFixed(2) + "MB");
+                $("#thumbnail").val("");
+                $("#ThumbnailName").html("Selecteer een afbeelding!");
             }
         });
     });
@@ -303,7 +284,7 @@ require('navbar.php');
                 filenames += '<p>' + this.files[i].name + '</p>';
             }
             var total = 0;
-            $("#afbeelding").each(function() {
+            $("#afbeelding").each(function () {
                 for (var i = 0; i < this.files.length; i++) {
                     total += this.files[i].size;
                 }
@@ -315,8 +296,8 @@ require('navbar.php');
                 $("#AfbeeldingName").html("Selecteer drie extra afbeeldingen!");
             }
             var maxMB = 15;
-            if (total / 1000 / 1024  > maxMB) {
-                alert("U heeft de maximum grootte van 15MB overschreden. Uw foto's zijn: " + (total /1000/1024).toFixed(2) + "MB");
+            if (total / 1000 / 1024 > maxMB) {
+                alert("U heeft de maximum grootte van" + maxMB + "MB overschreden. Uw foto's zijn: " + (total / 1000 / 1024).toFixed(2) + "MB");
                 $("#afbeelding").val("");
                 $("#AfbeeldingName").html("Selecteer drie extra afbeeldingen!");
             }
