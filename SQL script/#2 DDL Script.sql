@@ -1,37 +1,34 @@
-IF OBJECT_ID('dbo.Voorwerp_Rubriek') IS NOT NULL
-  DROP TABLE Voorwerp_Rubriek
-IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
-  DROP TABLE Rubriek
-IF OBJECT_ID('dbo.Bestand') IS NOT NULL
-  DROP TABLE Bestand
-IF OBJECT_ID('dbo.LooptijdWaardes') IS NOT NULL
-  DROP TABLE LooptijdWaardes
-IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
-  DROP TABLE Voorwerp
-IF OBJECT_ID('dbo.Verkoper') IS NOT NULL
-  DROP TABLE Verkoper
-IF OBJECT_ID('dbo.Gebruikerstelefoon') IS NOT NULL
-  DROP TABLE Gebruikerstelefoon
-IF OBJECT_ID('dbo.Administrator') IS NOT NULL
-  DROP TABLE Administrator
-IF OBJECT_ID('dbo.Gebruiker') IS NOT NULL
-  DROP TABLE Gebruiker
 IF OBJECT_ID('dbo.Landen') IS NOT NULL
   DROP TABLE Landen
-IF OBJECT_ID('dbo.Betalingswijzen') IS NOT NULL
-  DROP TABLE Betalingswijzen
-IF OBJECT_ID('dbo.Bod') IS NOT NULL
-  DROP TABLE Bod
 IF OBJECT_ID('dbo.Vraag') IS NOT NULL
   DROP TABLE Vraag
+IF OBJECT_ID('dbo.Gebruiker') IS NOT NULL
+  DROP TABLE Gebruiker
+IF OBJECT_ID('dbo.Administrator') IS NOT NULL
+  DROP TABLE Administrator
+IF OBJECT_ID('dbo.Gebruikerstelefoon') IS NOT NULL
+  DROP TABLE Gebruikerstelefoon
+IF OBJECT_ID('dbo.Controleopties') IS NOT NULL
+  DROP TABLE Controleopties
+IF OBJECT_ID('dbo.Verkoper') IS NOT NULL
+  DROP TABLE Verkoper
+IF OBJECT_ID('dbo.LooptijdWaardes') IS NOT NULL
+  DROP TABLE LooptijdWaardes
+IF OBJECT_ID('dbo.Betalingswijzen') IS NOT NULL
+  DROP TABLE Betalingswijzen
+IF OBJECT_ID('dbo.Voorwerp') IS NOT NULL
+  DROP TABLE Voorwerp
+IF OBJECT_ID('dbo.Bestand') IS NOT NULL
+  DROP TABLE Bestand
+IF OBJECT_ID('dbo.Rubriek') IS NOT NULL
+  DROP TABLE Rubriek
+IF OBJECT_ID('dbo.Voorwerp_Rubriek') IS NOT NULL
+  DROP TABLE Voorwerp_Rubriek
+IF OBJECT_ID('dbo.Bod') IS NOT NULL
+  DROP TABLE Bod
 IF OBJECT_ID('dbo.Registreer') IS NOT NULL
   DROP TABLE Registreer
 GO
-
-CREATE TABLE Betalingswijzen (
-  BW_betalingswijze VARCHAR(25) NOT NULL, --Keuze betalingswijzen
-  CONSTRAINT PK_Betalingswijze PRIMARY KEY (BW_betalingswijze),
-);
 
 CREATE TABLE Landen (
   LAN_landcode CHAR(2)     NOT NULL, --Zie ISO 3166/1 alpha-2
@@ -87,11 +84,6 @@ CREATE TABLE Gebruikerstelefoon (
     ON DELETE NO ACTION,
 );
 
---Tabel om de valide looptijden in op te slaan.
-CREATE TABLE LooptijdWaardes (
-  LOP_looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
-);
-
 CREATE TABLE Controleopties (
   CON_controleoptie VARCHAR(24) --Redelijke lengte
 )
@@ -104,6 +96,17 @@ CREATE TABLE Verkoper (
   VER_creditcard    VARCHAR(19), --Langste nummer : zie https://en.wikipedia.org/wiki/Payment_card_number
   CONSTRAINT FK_verkopercontroleopties FOREIGN KEY (VER_controleoptie) REFERENCES Controleopties (CON_controleoptie)
 )
+
+--Tabel om de valide looptijden in op te slaan.
+CREATE TABLE LooptijdWaardes (
+  LOP_looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
+);
+
+--Mogelijke betalingswijzen
+CREATE TABLE Betalingswijzen (
+  BW_betalingswijze VARCHAR(25) NOT NULL, --Keuze betalingswijzen
+  CONSTRAINT PK_Betalingswijze PRIMARY KEY (BW_betalingswijze),
+);
 
 CREATE TABLE Voorwerp (
   VW_voorwerpnummer      BIGINT                              NOT NULL                                                                                                                                                           IDENTITY, --Genereerd zelf nummer, zo veel mogelijk voorwerpen
