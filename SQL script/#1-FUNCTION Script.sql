@@ -54,16 +54,19 @@ IF OBJECT_ID('FN_BodhogerdanMinimaalBod') IS NOT NULL
   IF OBJECT_ID('dbo.Bod') IS NOT NULL
     DROP TABLE [dbo].[Bod]
 DROP FUNCTION [dbo].[FN_BodhogerdanMinimaalBod]
-
+GO
 CREATE FUNCTION FN_BodhogerdanMinimaalBod
   (@Voorwerp  BIGINT,
    @Bodbedrag NUMERIC(9, 2)
   )
   RETURNS BIT
   BEGIN
-    RETURN @Bodbedrag >= (SELECT VW_minimaalnieuwbod FROM Voorwerp WHERE VW_voorwerpnummer = @Voorwerp)
-  END
+    IF (@Bodbedrag >= (SELECT VW_minimaalnieuwbod FROM Voorwerp WHERE VW_voorwerpnummer = @Voorwerp))
+		RETURN 1
 
+	RETURN 0
+  END
+  GO
 --Functie om te kijken of je niet op je eigen voorwerp gaat bieden
 
 IF OBJECT_ID('dbo.FN_nietEigenVoorwerp') IS NOT NULL
