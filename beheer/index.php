@@ -64,26 +64,6 @@ require('../PHP/SQL-Queries.php');
 include "../navbar.php";
 
 ?>
-<!-- accountControls -->
-
-<div class="collapse text-center" id="accountControls">
-    <div class="list-group">
-        <a href="#" class="list-group-item">Mijn account</a>
-        <a href="../BeheerLogin.php?loggedOut=True" class="list-group-item">Log out</a>
-    </div>
-</div>
-
-
-<!-- Mobile Buttons -->
-
-<div class="container-fluid collapse text-center" id="MobileButtons" style="font-size: 24px;">
-    <div class="row">
-        <ul class="nav nav-pills nav-stacked bg-info lead">
-            <li><a class="row-md-12" href="#">Mijn account</a></li>
-            <li><a class="row-md-12" href="http://iproject3.icasites.nl/BeheerLogin.php?loggedOut=True">Log out</a></li>
-        </ul>
-    </div>
-</div>
 
 <!-- end navbar -->
 
