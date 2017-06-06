@@ -44,6 +44,19 @@ function FindAdminUsers($username)
     return $stmt->fetch();
 }
 
+/* function for Finding user info for profiel page*/
+function findUserInfo($username)
+{
+  GLOBAL $connection;
+  GLOBAL $QueryFindUserInfo;
+
+  $stmt = $connection->prepare($QueryFindUserInfo);
+  $stmt->execute(array($username));
+  return $stmt-> fetchAll(); 
+
+}
+
+
 /*function for finding adverts per user*/
 function findAuctionsByUser($username, $auction)
 {
@@ -431,7 +444,7 @@ function DrawSearchResults($auction)
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
-                        <button class=\"btn text-center btn-info bied\">Bied Nu!</button>
+                        <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] .'&snelbod=' .$auction["VW_minimalenieuwebod"] . "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
                     </div>
                 </div>
             </div>
@@ -536,6 +549,7 @@ function SearchFunction($SearchOptions)
 //Prepare the query
     $QuerySearchProducts = <<< EOT
 SELECT DISTINCT
+  VW_minimalenieuwebod,
   VW_voorwerpnummer,
   VW_titel,
   (COALESCE((SELECT TOP 1 BOD_Bodbedrag
@@ -585,7 +599,7 @@ WHERE (VW_titel LIKE '%$SearchKeyword%')
     AND(VW_verkoper LIKE '%$SearchUser%')
   AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
-   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail,VW_verkoper,GEB_rating
+   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail,VW_verkoper,GEB_rating, VW_minimalenieuwebod
 ORDER BY $SearchFilter , VW_voorwerpnummer
 OFFSET $Offset ROWS
 FETCH NEXT $ResultsPerPage ROWS ONLY

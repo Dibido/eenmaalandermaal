@@ -53,6 +53,7 @@ require('PHP/connection.php');
 
 <?php
 require('navbar.php');
+ $username = $_SESSION['Username']; 
 ?>
 
 <div class="container">
@@ -67,10 +68,12 @@ require('navbar.php');
         <div class="panel panel-default Details-wrapper">
                 <div class="list-group-item active text-center">Persoonlijke Beschrijving</div>
                     <div class="panel-body">
-                        <p><span class="glyphicon glyphicon-user"></span> Naam: <b><?php //echo $ItemInfo["VW_verkoper"] ?></b></p>
+                        <p><span class="glyphicon glyphicon-user"></span> username: <b><?php echo "$username" ?> </b></b></p>
+                        <p><span class="glyphicon glyphicon-user"></span> Voornaam + Achternaam: <?php echo ''; ?> </p>
                         <p><span class="glyphicon glyphicon-gift"></span> Geboortedatum:</p>
+                        <p><span class="glyphicon glyphicon-envelope"></span> Email-adres:</p>
+                        <p><span class="glyphicon glyphicon-map-marker"></span> Postcode + Plaats :</p>
                         <p><span class="glyphicon glyphicon-globe"></span> Land:</p>
-                        <p><span class="glyphicon glyphicon-map-marker"></span> Plaats:</p>
                         <p><span class="glyphicon glyphicon-shopping-cart"></span> Type account:</p>
                         <br>
                         <br>
@@ -88,7 +91,7 @@ require('navbar.php');
             <div class="list-group-item active text-center">Gegevens</div>
             <div class="panel-body">
 
-               <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Naam: <span class="glyphicon glyphicon-user text-right" style="font-size: 75px;"></span></div>
+               <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Naam: <span class="glyphicon glyphicon-user" style="float-right; font-size: 75px;"></span></div>
                <div class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"></span> Type account:</div>
                <a href="#"><button class="btn btn-primary center-block btn-lg " type="button" style="margin-top: 10px;">
                             <span class="glyphicon glyphicon-repeat"></span> UPGRADE ACCOUNT!</button></a>

@@ -43,7 +43,8 @@
 
 <?php
 session_start();
-if (isset($_SESSION['Username'])) {
+
+if (isset($_SESSION['Username'])) { 
     //echo 'U bent ingelogd';
     echo '<div class="collapse text-center" id="accountControls">
     <div class="list-group">
@@ -51,6 +52,17 @@ if (isset($_SESSION['Username'])) {
         <a href="../login.php?loggedOut=True" class="list-group-item">Log out</a>
     </div>
 </div>';
+
+    echo "<!-- Mobile Buttons -->
+<div class=\"container-fluid collapse text-center\" id=\"MobileButtons\" style=\"font-size: 24px;\">
+    <div class=\"row\">
+        <ul class=\"nav nav-pills nav-stacked bg-info lead\">
+            <li><a class=\"row-md-12\" href=\"profiel.php\">Mijn account</a></li>
+            <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/Login.php?loggedOut=True\">Log out</a></li>
+        </ul>
+    </div>
+</div>";
+
 } elseif (isset($_SESSION['adminUsername'])){
     echo '<div class="collapse text-center" id="accountControls">
     <div class="list-group">
@@ -59,14 +71,33 @@ if (isset($_SESSION['Username'])) {
     </div>
 </div>';
 
+    echo "<!-- Mobile Buttons -->
+
+<div class=\"container-fluid collapse text-center\" id=\"MobileButtons\" style=\"font-size: 24px;\">
+    <div class=\"row\">
+        <ul class=\"nav nav-pills nav-stacked bg-info lead\">
+            <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/profiel.php\">Mijn account</a></li>
+            <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/BeheerLogin.php?loggedOut=True\">Log out</a></li>
+        </ul>
+    </div>
+</div>";
 } else {
     //echo 'U bent niet ingelogd';
     echo '<div class="collapse text-center" id="accountControls">
     <div class="list-group">
-        <a href="login.php" class="list-group-item">Log In</a>
+        <a href="login.php" class="list-group-item">Log in</a>
         <a href="registreer1.php" class="list-group-item">Registreer</a>
     </div>
 </div>';
+
+    echo "<div class=\"container-fluid collapse text-center\" id=\"MobileButtons\" style=\"font-size: 24px;\">
+    <div class=\"row\">
+        <ul class=\"nav nav-pills nav-stacked bg-info lead\">
+            <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/login.php\">Log in</a></li>
+            <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/registreer1.php\">Registreer</a></li>
+        </ul>
+    </div>
+</div>";
 }
 ?>
 

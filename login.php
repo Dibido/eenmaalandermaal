@@ -62,6 +62,11 @@ if (isset($_GET["loggedOut"]) && $_GET["loggedOut"] == 'True') {
     $successMessage = [True, 'Successvol uitgelogged.'];
 }
 
+/* checking if the user tried to place an offer on an advert*/
+if (isset($_GET["bieden"]) && $_GET["bieden"] == 'True') {
+    $errorMessage = [True, 'U moet inloggen om een bod te plaatsen.'];
+}
+
 
 ?>
 

@@ -253,6 +253,13 @@ FROM Gebruiker
 WHERE GEB_gebruikersnaam = ?
 EOT;
 
+/* Query voor het zoeken van user info*/
+$QueryFindUserInfo = <<<EOT
+SELECT * 
+FROM Gebruiker
+WHERE GEB_gebruikersnaam = ?
+EOT;
+
 
 /* query voor het zoeken van een Admin*/
 $QueryFindAdmin = <<<EOT
