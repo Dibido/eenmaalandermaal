@@ -131,7 +131,7 @@ function GetLastOffers($voorwerpnummer)
 
     $QueryGetLastOffers = <<<EOT
     
-    select top 10 * from Bod where BOD_voorwerpnummer = $voorwerpnummer ORDER BY BOD_bodTijdEnDag DESC
+    select top 10 * from Bod where BOD_voorwerpnummer = $voorwerpnummer ORDER BY BOD_bodbedrag DESC
 
 EOT;
 

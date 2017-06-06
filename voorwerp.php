@@ -287,10 +287,15 @@ require('navbar.php');
 <script type="text/javascript">
 
     (function(){
+
+        <?php
+            $ItemInfo = GetItemDetails($ItemID);
+            $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
+        ?>
+
         var open = $("#MoreOffers").hasClass("collapse in");
         var hasFocus = ($("#bodInput").is(":focus"));
         var text = $('#bodInput').val();
-
 
         //getting the panel
         $.get( "voorwerpPanel.php?ItemID=<?php echo $ItemID;?>", function( data ) {
@@ -307,13 +312,16 @@ require('navbar.php');
             //getting the value from the previous page load
             if(text == ''){
                 $('#bodInput').val(<?php echo $minimumBod;?>);
+
             }else if (typeof text == 'undefined') {
+                $('#bodInput').val(<?php echo $minimumBod;?>);
+
+            }else if (parseFloat(text) < <?php echo $minimumBod;?> || parseFloat(text) == <?php echo $minimumBod;?>){
                 $('#bodInput').val(<?php echo $minimumBod;?>);
             }
             else{
                 $('#bodInput').val(text);
             }
-
         });
         setTimeout(arguments.callee, 5000);
     })();
