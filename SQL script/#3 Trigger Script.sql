@@ -30,21 +30,19 @@ CREATE TRIGGER TR_minimalenieuwebod
 FOR INSERT, UPDATE, DELETE
 AS
   BEGIN
-    DECLARE @huidigebod NUMERIC(9, 2)
-    SET @huidigebod = (select Voorwerp.VW_hoogstebod from Voorwerp where VW_voorwerpnummer = (select BOD_voorwerpnummer from inserted))
     UPDATE dbo.Voorwerp
     SET Voorwerp.VW_minimalenieuwebod =
     (
       CASE
-      WHEN @huidigebod BETWEEN 1 AND 49.99
-        THEN (voorwerp.VW_hoogstebod + 0.50)
-      WHEN @huidigebod BETWEEN 50 AND 499.99
+      WHEN VW_hoogstebod BETWEEN 1 AND 49.99
+        THEN (VW_hoogstebod + 0.50)
+      WHEN VW_hoogstebod BETWEEN 50 AND 499.99
         THEN (VW_hoogstebod + 1.00)
-      WHEN @huidigebod BETWEEN 500 AND 999.99
+      WHEN VW_hoogstebod BETWEEN 500 AND 999.99
         THEN (VW_hoogstebod + 5.00)
-      WHEN @huidigebod BETWEEN 1000 AND 4999.99
+      WHEN VW_hoogstebod BETWEEN 1000 AND 4999.99
         THEN (VW_hoogstebod + 10.00)
-      WHEN @huidigebod > 5000
+      WHEN VW_hoogstebod > 5000
         THEN (VW_hoogstebod + 50.00)
       END
     )
