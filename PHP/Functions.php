@@ -297,6 +297,41 @@ function InsertIntoDatabase($SetRegistratie, $email, $code)
     $stmt->execute();
 }
 
+/*this function inserts an offer into the database */
+
+/*
+ * intake:
+ * the $bod (offer)
+ * the user
+ * itemID
+ */
+
+
+/*
+ * output:
+ * nothing
+ *
+ */
+
+function insertBod($itemID, $user, $offer)
+{
+    GLOBAL $connection;
+
+    $query = <<<EOT
+
+INSERT INTO Bod (BOD_voorwerpnummer, BOD_gebruiker, BOD_bodbedrag)
+VALUES (:itemID , :user, :offer )
+
+EOT;
+
+    $stmt = $connection->prepare($query);
+    $stmt->bindParam(':offer', $offer);
+    $stmt->bindParam(':user', $user);
+    $stmt->bindParam(':itemID', $itemID);
+    $stmt->execute();
+
+}
+
 
 /* This function draws an auction */
 

@@ -11,6 +11,7 @@ $ItemInfo = GetItemDetails($ItemID);
 $ItemInfo = $ItemInfo[0];
 
 $ItemImages = GetItemImages($ItemID);
+$minimumBod = $ItemInfo["VW_minimalenieuwebod"];
 
 
 /* making sure an image is available */
@@ -25,6 +26,32 @@ for ($i = 0; $i < 3; $i++) {
     }
 }
 
+
+
+/* de functie voor het bieden */
+
+$error = [False, ''];
+
+$bod = $_POST["bod"];
+print_r($_POST);
+echo $bod;
+
+// testing if the input is an int or a float
+if (isset($bod) AND !empty($bod) AND isset($_SESSION["Username"])) {
+    if (filter_input(INPUT_POST, "bod", FILTER_VALIDATE_INT)
+        OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)){
+
+        //cleaning the input for html
+        $bod = cleanInput($bod);
+        insertBod($ItemID, $_SESSION["Username"], $bod);
+
+    }else{
+        $error = [True, 'Vul alstublieft een getal in'];
+    }
+    if ($error[0]){
+        echo "<script type='text/javascript'>alert('$error[1]');</script>";
+    }
+}
 
 ?>
 
@@ -264,6 +291,8 @@ require('navbar.php');
         var hasFocus = ($("#bodInput").is(":focus"));
         var text = $('#bodInput').val();
 
+
+        //getting the panel
         $.get( "voorwerpPanel.php?ItemID=<?php echo $ItemID;?>", function( data ) {
             $( "#dynamicPanel" ).html( data );
             if (open)
@@ -271,10 +300,19 @@ require('navbar.php');
                 $("#MoreOffers").addClass( "collapse in");
             } else $("#MoreOffers").addClass("collapse");
 
+            //resetting the focus to the input
             if (hasFocus){
                 $("#bodInput").focus();
             }
-            $('#bodInput').val(text);
+            //getting the value from the previous page load
+            if(text == ''){
+                $('#bodInput').val(<?php echo $minimumBod;?>);
+            }else if (typeof text == 'undefined') {
+                $('#bodInput').val(<?php echo $minimumBod;?>);
+            }
+            else{
+                $('#bodInput').val(text);
+            }
 
         });
         setTimeout(arguments.callee, 5000);
@@ -282,6 +320,7 @@ require('navbar.php');
 
 
 </script>
+
 
 
 </div>
