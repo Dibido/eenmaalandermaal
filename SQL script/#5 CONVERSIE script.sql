@@ -72,7 +72,7 @@ INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_
     ELSE LTRIM(RTRIM(Conditie))
     END
                                                              AS VW_conditie,
-    ('/thumb/' + Thumbnail)                                  AS VW_thumbnail,
+    ('/thumbnails/' + Thumbnail)                                  AS VW_thumbnail,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_minimaalnieuwbod,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_hoogstebod,
