@@ -6,6 +6,9 @@ require('PHP/SQL-Queries.php');
 require('PHP/connection.php');
 
 //$ItemInfo = GetItemDetails(fonorama);
+$username = $_SESSION['Username']; 
+$userinfo = findUserInfo($username)[0];
+print_r($userinfo);
 
 ?>
 
@@ -53,7 +56,6 @@ require('PHP/connection.php');
 
 <?php
 require('navbar.php');
- $username = $_SESSION['Username']; 
 ?>
 
 <div class="container">
@@ -68,16 +70,12 @@ require('navbar.php');
         <div class="panel panel-default Details-wrapper">
                 <div class="list-group-item active text-center">Persoonlijke Beschrijving</div>
                     <div class="panel-body">
-                        <p><span class="glyphicon glyphicon-user"></span> username: <b><?php echo "$username" ?> </b></b></p>
-                        <p><span class="glyphicon glyphicon-user"></span> Voornaam + Achternaam: <?php echo ''; ?> </p>
-                        <p><span class="glyphicon glyphicon-gift"></span> Geboortedatum:</p>
-                        <p><span class="glyphicon glyphicon-envelope"></span> Email-adres:</p>
-                        <p><span class="glyphicon glyphicon-map-marker"></span> Postcode + Plaats :</p>
-                        <p><span class="glyphicon glyphicon-globe"></span> Land:</p>
-                        <p><span class="glyphicon glyphicon-shopping-cart"></span> Type account:</p>
-                        <br>
-                        <br>
-                        <br>
+                        <p><span class="glyphicon glyphicon-user"></span> Voornaam + Achternaam: <b><?php echo $userinfo["GEB_voornaam"] . ' ' . $userinfo["GEB_achternaam"]?></b></p>
+                        <p><span class="glyphicon glyphicon-gift"></span> Geboortedatum: <b><?php echo $userinfo["GEB_voornaam"]?></b></p>
+                        <p><span class="glyphicon glyphicon-envelope"></span> Email-adres: <b><?php echo $userinfo["GEB_mailbox"]?></b></p>
+                        <p><span class="glyphicon glyphicon-map-marker"></span> Postcode + Plaats : <b><?php echo $userinfo["GEB_postcode"] . ' ' . $userinfo["GEB_plaatsnaam"]?></b></p>
+                        <p><span class="glyphicon glyphicon-globe"></span> Land: <b><?php echo $userinfo["GEB_Land"]?></b></p>
+                        <p><span class="glyphicon glyphicon-shopping-cart"></span> Type account: <b><?php if ($userinfo["GEB_verkoper"] == 0) {echo "Geen verkoper";} else echo "Verkoper" ?></b></p>
                     </div>
         </div>
     </div>
@@ -91,10 +89,10 @@ require('navbar.php');
             <div class="list-group-item active text-center">Gegevens</div>
             <div class="panel-body">
 
-               <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Naam: <span class="glyphicon glyphicon-user" style="float-right; font-size: 75px;"></span></div>
-               <div class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"></span> Type account:</div>
+               <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Username: <b><?php echo "$username" ?> </b></div>
+               <div class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"></span> Type account: <b><?php if ($userinfo["GEB_verkoper"] == 0) {echo "Geen verkoper";} else echo "Verkoper" ?></b></div>
                <a href="#"><button class="btn btn-primary center-block btn-lg " type="button" style="margin-top: 10px;">
-                            <span class="glyphicon glyphicon-repeat"></span> UPGRADE ACCOUNT!</button></a>
+                            <span class="glyphicon glyphicon-repeat"></span><?php if ($userinfo["GEB_verkoper"] == 0) {echo " UPGRADE ACCOUNT!";} else echo "DOWNGRADEN"?></button></a> <!-- MISCHIEN KNOP WEGLATEN BIJ VERKOPER of DOWNGRADEn -->
                
                 
 
@@ -104,19 +102,19 @@ require('navbar.php');
                 <div class="panel-body">
                     <div class="UserContainer">
                         <div id="User" style="background-image:url(images/User.png)"></div>
-                        <div class="UserInfo"><?php// echo $ItemInfo["VW_verkoper"] ?></div>
+                        <div class="UserInfo"><?php echo $userinfo["GEB_gebruikersnaam"] ?></div>
                     </div>
                     <div id="UserRating" class="text-center">
                         <div>
                             <?php
 
-                            //$Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
+        
 
-                            //$rating = floor($Userinfo[0]["GEB_rating"]) / 10;
+                            $rating = floor($userinfo[14]["GEB_rating"]) / 10;
 
-                            //for($i = 0; $i < $rating/2; $i++){
-                                //echo " <i class=\"glyphicon glyphicon-star\"></i>";
-                            //}
+                            for($i = 0; $i < $rating/2; $i++){
+                                echo " <i class=\"glyphicon glyphicon-star\"></i>";
+                            }
 
                             //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
                             ?>

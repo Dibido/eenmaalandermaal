@@ -1,9 +1,9 @@
-DECLARE @DropScript nVARCHAR(MAX) = ''
-SELECT @DropScript += 'ALTER TABLE ' + C.TABLE_NAME +' DROP CONSTRAINT ' + C.CONSTRAINT_NAME + CHAR(13)
+DECLARE @DropConstraints nVARCHAR(MAX) = ''
+SELECT @DropConstraints += 'ALTER TABLE ' + C.TABLE_NAME +' DROP CONSTRAINT ' + C.CONSTRAINT_NAME + CHAR(13)
 FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS C INNER JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS R ON C.CONSTRAINT_NAME = R.CONSTRAINT_NAME
 											INNER JOIN INFORMATION_SCHEMA.TABLES T ON C.TABLE_NAME = T.TABLE_NAME
-PRINT @DropScript
-exec sp_executesql @DropScript
+PRINT @DropConstraints
+exec sp_executesql @DropConstraints
 
 DECLARE @DropTable nVARCHAR(MAX) = ''
 SELECT @DropTable += 'DROP TABLE ' + TABLE_NAME + CHAR(13)
@@ -83,8 +83,9 @@ CREATE TABLE Verkoper (
 
 --Tabel om de valide looptijden in op te slaan.
 CREATE TABLE LooptijdWaardes (
-  LOP_looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
-  CONSTRAINT PK_Looptijd PRIMARY KEY (LOP_looptijd)
+	LOP_ID TINYINT IDENTITY NOT NULL,
+	LOP_looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
+	CONSTRAINT PK_Looptijd PRIMARY KEY (LOP_looptijd)
 );
 
 --Mogelijke betalingswijzen
@@ -116,7 +117,7 @@ CREATE TABLE Voorwerp (
   VW_veilinggesloten     BIT                                 NOT NULL                                                                                                                                                           DEFAULT 0, --Veiling gesloten of open
   VW_verkoopprijs        NUMERIC(9, 2)                       NULL, --Prijs waarvoor het voorwerp verkocht is
   VW_hoogstebod          NUMERIC(9, 2)                       NOT NULL, --Berekende kolom door middel van een trigger.
-  VW_minimaalnieuwbod    NUMERIC(9, 2)                       NULL,
+  VW_minimaalnieuwbod    NUMERIC(9, 2)  DEFAULT 0                     NULL,
   VW_bodcount            NUMERIC(9) DEFAULT 0                NOT NULL,
 
   CONSTRAINT PK_Voorwerp PRIMARY KEY (VW_voorwerpnummer),
@@ -132,7 +133,7 @@ CREATE TABLE Voorwerp (
   CONSTRAINT CHK_TitelNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_BeschrijvingNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_titel))) >= 2), --Kan niet leeg zijn
   CONSTRAINT CHK_PlaatsnaamNietLeeg CHECK (LEN(RTRIM(LTRIM(VW_plaatsnaam))) >= 2), --Kan niet leeg zijn
-  CONSTRAINT CHK_LooptijdBegindagInHetVerleden CHECK (VW_looptijdStart >=
+  CONSTRAINT CHK_LooptijdBegindagInDeToekomst CHECK (VW_looptijdStart >=
                                                       GETDATE()), --De begin datum van een veiling mag niet voor de huidige datum liggen.
   CONSTRAINT CHK_StartprijsHogerDan1 CHECK (VW_startprijs >= 1.00), --Appendix B, Mindstends een euro
   CONSTRAINT CHK_VerkoopprijsGroterOfGelijk CHECK (VW_verkoopprijs >=
