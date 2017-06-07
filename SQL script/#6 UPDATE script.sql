@@ -1,6 +1,13 @@
 --Dit script kan gebruikt worden om de data die al in de database staat te updaten.
 
 
+-- User rating randomisen
+Update Gebruiker SET GEB_rating =  100
+GO
+Update Gebruiker SET GEB_rating =  CEILING(RAND(CHECKSUM(NEWID()))*100)
+GO
+
+
 IF OBJECT_ID('SP_UpdateLooptijd', 'P') IS NOT NULL
   DROP PROCEDURE SP_UpdateLooptijd;
 GO
