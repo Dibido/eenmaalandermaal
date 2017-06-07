@@ -918,10 +918,10 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
 
         // Display the result in the element with id="demo"
       if(seconds < 10){
-        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = days  + "d " + hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = days  + "d " + hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
         // If the count down is finished, write some text
