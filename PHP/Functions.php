@@ -1148,7 +1148,7 @@ function checkEmailSent()
                 InsertIntoDatabase($SetRegistratie, $email, $code);
                 mail($email, $subject, $message, $headers);
                 echo '  <div class="alert alert-success">
-                            <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
+                            <strong>Success!<br></strong> Er is een verificatiecode verzonden naar ' . $email . '!</div>';
             }
         } else if(!isset($_POST['code'])) {
             echo '  <div class="alert alert-danger" >
@@ -1268,8 +1268,25 @@ function doRegistratie()
     $error = false;
 
     if (count($_SESSION) == 14) {
-        foreach ($_SESSION as $veld => $value) {
-            $value = cleanInput($value);
+
+        $userInfo = array(
+            $_SESSION['gebruikersnaam'],
+            $_SESSION['voornaam'],
+            $_SESSION['achternaam'],
+            $_SESSION['adres1'],
+            $_SESSION['adres2'],
+            $_SESSION['postcode'],
+            $_SESSION['woonplaats'],
+            $_SESSION['land'],
+            $_SESSION['geboortedatum'],
+            $_SESSION['email'],
+            $_SESSION['wachtwoord'],
+            $_SESSION['geheimevraag'],
+            $_SESSION['antwoord']
+        );
+
+        for($i = 0; $i < count($userInfo); $i++){
+            $userInfo[$i] = cleanInput($userInfo[$i]);
         }
 
 
@@ -1284,19 +1301,19 @@ EOT;
 
             GLOBAL $connection;
             $stmt = $connection->prepare($sqlInsertUser);
-            $stmt->bindParam(':gebruikersnaam', $_SESSION['gebruikersnaam']);
-            $stmt->bindParam(':voornaam', $_SESSION['voornaam']);
-            $stmt->bindParam(':achternaam', $_SESSION['achternaam']);
-            $stmt->bindParam(':adres1', $_SESSION['adres1']);
-            $stmt->bindParam(':adres2', $_SESSION['adres2']);
-            $stmt->bindParam(':postcode', $_SESSION['postcode']);
-            $stmt->bindParam(':woonplaats', $_SESSION['woonplaats']);
-            $stmt->bindParam(':land', $_SESSION['land']);
-            $stmt->bindParam(':geboortedatum', $_SESSION['geboortedatum']);
-            $stmt->bindParam(':email', $_SESSION['email']);
-            $stmt->bindParam(':wachtwoord', $_SESSION['wachtwoord']);
-            $stmt->bindParam(':geheimevraag', $_SESSION['geheimevraag']);
-            $stmt->bindParam(':antwoord', $_SESSION['antwoord']);
+            $stmt->bindParam(':gebruikersnaam',             $userInfo[0]);
+            $stmt->bindParam(':voornaam',                   $userInfo[1]);
+            $stmt->bindParam(':achternaam',                 $userInfo[2]);
+            $stmt->bindParam(':adres1',                     $userInfo[3]);
+            $stmt->bindParam(':adres2',                     $userInfo[4]);
+            $stmt->bindParam(':postcode',                   $userInfo[5]);
+            $stmt->bindParam(':woonplaats',                 $userInfo[6]);
+            $stmt->bindParam(':land',                       $userInfo[7]);
+            $stmt->bindParam(':geboortedatum',              $userInfo[8]);
+            $stmt->bindParam(':email',                      $userInfo[9]);
+            $stmt->bindParam(':wachtwoord',                 $userInfo[10]);
+            $stmt->bindParam(':geheimevraag',               $userInfo[11]);
+            $stmt->bindParam(':antwoord',                   $userInfo[12]);
             $stmt->execute();
 
             // Delete user from Registratie Table
@@ -1308,11 +1325,11 @@ EOT;
             $stmt = $connection->prepare($sqlDeleteUser);
             $stmt->bindParam(':email', $_SESSION['email']);
             $stmt->execute();
-            $geregistreerdeGebruiker = $_SESSION['gebruikersnaam'];
+            $geregistreerdeGebruiker = cleanInput($_SESSION['gebruikersnaam']);
             session_unset();
 
             $_SESSION["Username"] = $geregistreerdeGebruiker;
-            echo '  <div class="alert alert-success">
+            echo '  <div class="alert alert-success"> 
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>
                             <hr>
             <p class="text-center">U bent tevens ingelogd.</p>
