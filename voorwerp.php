@@ -46,17 +46,27 @@ if (isset($bod) AND !empty($bod)) {
         //cleaning the input for html
         $bod = cleanInput($bod);
 
-        //checking if the offer is greater than the last offer
-        if ($bod >= $minimumBod AND $bod <= 9999999.99) {
+        //checking if the user does not try to place an offer on his own advert
+        if ($_SESSION["Username"] == $ItemInfo["VW_verkoper"]) {
+            $error = [True, 'U kunt niet op uw eigen veilingen bieden.'];
+
+            //checking if the offer is greater than the last offer
+        } else if ($bod >= $minimumBod AND $bod <= 9999999.99) {
+
             //inserting the offer
             insertBod($ItemID, $_SESSION["Username"], $bod);
             header('Location: voorwerp.php?ItemID=' . $ItemID);
+
         } else {
-            $error = [True, 'Vul alstublieft een geldig bod in'];
+            $error = [True, 'Vul alstublieft een geldig bod in.'];
         }
+
+
     } else {
-        $error = [True, 'Vul alstublieft een getal in'];
+        $error = [True, 'Vul alstublieft een getal in.'];
     }
+
+    //returning the errors
     if ($error[0]) {
         echo "<script type='text/javascript'>alert('$error[1]');</script>";
     }
