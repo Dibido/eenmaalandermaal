@@ -149,7 +149,7 @@
 /*details*/
 .Details-wrapper{
     margin-top: 15px;
-}
+   }
 
 .Details{
     width: 100%;
@@ -182,9 +182,9 @@
     overflow: hidden;
     white-space: nowrap;
     display: inline-flex;
-    justify-content: center;
+    justify-content: left;
     text-align: left;
-    justify-items: center;
+    justify-items: left;
 }
 .breadcrumb{
     margin-bottom: 0;

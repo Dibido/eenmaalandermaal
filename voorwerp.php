@@ -36,27 +36,28 @@ $bod = $_POST["bod"];
 
 // testing if the input is an int or a float
 if (isset($bod) AND !empty($bod)) {
-    if(!isset($_SESSION["Username"])){
+    if (!isset($_SESSION["Username"])) {
         header('Location: login.php?bieden=True');
     }
     if (filter_input(INPUT_POST, "bod", FILTER_VALIDATE_INT)
-        OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)){
+        OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)
+    ) {
 
         //cleaning the input for html
         $bod = cleanInput($bod);
 
         //checking if the offer is greater than the last offer
-        if($bod >= $minimumBod AND $bod <= 9999999.99){
+        if ($bod >= $minimumBod AND $bod <= 9999999.99) {
             //inserting the offer
             insertBod($ItemID, $_SESSION["Username"], $bod);
-            header('Location: voorwerp.php?ItemID='. $ItemID);
-        }else{
+            header('Location: voorwerp.php?ItemID=' . $ItemID);
+        } else {
             $error = [True, 'Vul alstublieft een geldig bod in'];
         }
-    }else{
+    } else {
         $error = [True, 'Vul alstublieft een getal in'];
     }
-    if ($error[0]){
+    if ($error[0]) {
         echo "<script type='text/javascript'>alert('$error[1]');</script>";
     }
 }
@@ -74,7 +75,7 @@ if (isset($snelBod) AND !empty($snelBod)) {
     //inserting the offer
     insertBod($ItemID, $_SESSION["Username"], $minimumBod);
 
-    header('Location: voorwerp.php?ItemID='. $ItemID);
+    header('Location: voorwerp.php?ItemID=' . $ItemID);
 }
 
 ?>
@@ -130,12 +131,12 @@ require('navbar.php');
 
 <ol class="breadcrumb">
     <li><a href="#" onclick="history.go(-1)"><span id="lastPage">Vorige pagina</span>
-        <script type="text/javascript">
+            <script type="text/javascript">
 
-            var elem = window.history.previous.href;
-            $("#lastPage").append(elem);
+                var elem = window.history.previous.href;
+                $("#lastPage").append(elem);
 
-        </script>
+            </script>
         </a></li>
 
     <li><a href="#"><?php echo $ItemInfo["VW_titel"] ?></a></li>
@@ -198,8 +199,44 @@ require('navbar.php');
             </a>
         </div>
 
-
         <!--  carousel end -->
+
+        <!-- Rubrieken panel -->
+
+        <div class="panel panel-default Details-wrapper">
+            <div class="rubrieken">
+                <ol class="breadcrumb">
+                    <li><b>Rubriek: </b></li>
+                    <?php
+                    $categories = GetAboveCategories($ItemInfo["VR_Rubriek_Nummer"]);
+                    for ($i = count($categories) - 1; $i >= 0; $i = $i - 1) {
+                        echo "<li><a href=\"resultaten.php?rubriek=";
+                        echo $categories[$i]["RB_Nummer"];
+                        echo "\">";
+                        echo $categories[$i][0];
+                        echo "</a>";
+                        echo "</li>";
+                    }
+                    ?>
+                </ol>
+            </div>
+        </div>
+
+       <!-- Rubrieken panel END -->
+
+        <!-- Description panel -->
+
+        <div class="panel panel-default " id="Description-Wrapper">
+            <div class="panel-heading text-center">Beschrijving</div>
+            <div class="panel-body" style="height:100%;">
+                <div style="height:100%;">
+                    <iframe src="http://iproject3.icasites.nl/voorwerpDescription.php?ItemID=<?php echo $ItemID ?>"
+                            id="Description"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description end -->
 
         <!-- Details panel -->
 
@@ -210,45 +247,19 @@ require('navbar.php');
                 $category = GetCategoryPerAuction($ItemInfo["VW_voorwerpnummer"]);
                 $category = $category[0];
                 ?>
-                <div class="rubrieken">
-                    <ol class="breadcrumb">
-                        <li><b>Rubriek: </b></li>
-                    <?php
 
-                    $categories = GetAboveCategories($ItemInfo["VR_Rubriek_Nummer"]);
-                    for ($i = count($categories)-1; $i >= 0; $i = $i-1){
-                        echo "<li><a href=\"resultaten.php?rubriek=";
-                        echo $categories[$i]["RB_Nummer"];
-                        echo "\">";
-                        echo $categories[$i][0];
-                        echo "</a>";
-                        echo "</li>";
-                    }
+                <div class="Detail"><b class="text-left">Locatie:</b><span
+                            class="text-left"><?php echo $ItemInfo["VW_plaatsnaam"]; ?></span></div>
+                <div class="Detail "><b class="text-center">geplaatst:</b><span
+                            class="text-center"><?php echo $ItemInfo["VW_looptijdStart"]; ?></span></div>
+                <div class="Detail"><b class="text-right">conditie:</b><span
+                            class="text-right"> <?php echo $ItemInfo["VW_conditie"]; ?></span></div>
 
-                    ?>
-                    </ol></div>
-
-                <div class="Detail"><b class="text-left">Locatie:</b><span class="text-left"><?php echo $ItemInfo["VW_plaatsnaam"]; ?></span></div>
-                <div class="Detail "><b class="text-center">geplaatst:</b><span class="text-center"><?php echo $ItemInfo["VW_looptijdStart"]; ?></span></div>
-                <div class="Detail"><b class="text-right">conditie:</b><span class="text-right"> <?php echo $ItemInfo["VW_conditie"]; ?></span></div>
             </div>
         </div>
+
 
         <!-- panel end -->
-
-        <!-- Description panel -->
-
-        <div class="panel panel-default " id="Description-Wrapper">
-            <div class="panel-heading text-center">Beschrijving</div>
-            <div class="panel-body" style="height:100%;">
-                <div style="height:100%;">
-                    <iframe src="http://iproject3.icasites.nl/voorwerpDescription.php?ItemID=<?php echo $ItemID?>" id="Description"></iframe>
-                </div>
-            </div>
-        </div>
-
-        <!-- Description end -->
-
 
         <!-- end of left col -->
 
@@ -287,11 +298,11 @@ require('navbar.php');
 
                 $auctions = findAuctionsByUser($ItemInfo["VW_verkoper"], $ItemID);
 
-                if(isset($auctions[0]) AND !empty($auctions)){
-                    foreach ($auctions as $auction){
+                if (isset($auctions[0]) AND !empty($auctions)) {
+                    foreach ($auctions as $auction) {
                         DrawItemAuction($auction);
                     }
-                }else{
+                } else {
                     echo "Deze gebruiker heeft geen andere advertenties.";
                 }
 
@@ -310,7 +321,7 @@ require('navbar.php');
 
 <script type="text/javascript">
 
-    (function(){
+    (function () {
 
 
         var open = $("#MoreOffers").hasClass("collapse in");
@@ -318,28 +329,27 @@ require('navbar.php');
         var text = $('#bodInput').val();
 
         //getting the panel
-        $.get( "voorwerpPanel.php?ItemID=<?php echo $ItemID;?>", function( data ) {
-            $( "#dynamicPanel" ).html( data );
-            if (open)
-            {
-                $("#MoreOffers").addClass( "collapse in");
+        $.get("voorwerpPanel.php?ItemID=<?php echo $ItemID;?>", function (data) {
+            $("#dynamicPanel").html(data);
+            if (open) {
+                $("#MoreOffers").addClass("collapse in");
             } else $("#MoreOffers").addClass("collapse");
 
             //resetting the focus to the input
-            if (hasFocus){
+            if (hasFocus) {
                 $("#bodInput").focus();
             }
             //getting the value from the previous page load
-            if(text == ''){
+            if (text == '') {
                 $('#bodInput').val(<?php echo $minimumBod;?>);
 
-            }else if (typeof text == 'undefined') {
+            } else if (typeof text == 'undefined') {
                 $('#bodInput').val(<?php echo $minimumBod;?>);
 
-            }else if (parseFloat(text) < <?php echo $minimumBod;?> || parseFloat(text) == <?php echo $minimumBod;?>){
+            } else if (parseFloat(text) < <?php echo $minimumBod;?> || parseFloat(text) == <?php echo $minimumBod;?>) {
                 $('#bodInput').val(<?php echo $minimumBod;?>);
             }
-            else{
+            else {
                 $('#bodInput').val(text);
             }
         });
@@ -348,7 +358,6 @@ require('navbar.php');
 
 
 </script>
-
 
 
 </div>
