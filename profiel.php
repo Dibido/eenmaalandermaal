@@ -8,6 +8,7 @@ require('PHP/connection.php');
 //$ItemInfo = GetItemDetails(fonorama);
 $username = $_SESSION['Username']; 
 $userinfo = findUserInfo($username)[0];
+$userads = findUserAds($username)[0];
 print_r($userinfo);
 
 
@@ -144,36 +145,10 @@ require('navbar.php');
                   <div class="tab-content">
                     <div id="home" class="tab-pane fade in active">
                       <h3>Mijn advertenties</h3>
-                      <?php
-
-
-                    $UserAds = SendToDatabase($QueryUserAds);
-
-                    if ($UserAds[0]) {
-                        foreach ($UserAds as $advert) {
-                            DrawAuction($advert);
-                        }
-                    } else {
-                        echo "<b>Error on loading auctions: </b>" . "<br><br>" . $UserAds[1];
-                    }
-                        print_r($QueryUserAds);
-                    ?>
-
+                 
                     </div>
                     <div id="menu1" class="tab-pane fade">
                       <h3>Mijn biedingen</h3>
-                            <?php
-                                 $UserAds = SendToDatabase($QueryUserAds);
-
-                            if ($UserAds[0]) {
-                                foreach ($UserAds as $advert) {
-                                    DrawAuction($advert);
-                                }
-                            } else {
-                                echo "<b>Error on loading auctions: </b>" . "<br><br>" . $UserAds[1];
-                            }
-
-                            ?>
                     </div>
                     <div id="menu2" class="tab-pane fade">
                       <h3>Gewonnen veilingen</h3>
