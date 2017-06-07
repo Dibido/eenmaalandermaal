@@ -46,9 +46,10 @@ if (isset($bod) AND !empty($bod)) {
         $bod = cleanInput($bod);
 
         //checking if the offer is greater than the last offer
-        if($bod >= $minimumBod){
+        if($bod >= $minimumBod AND $bod <= 9999999.99){
             //inserting the offer
             insertBod($ItemID, $_SESSION["Username"], $bod);
+            header('Location: voorwerp.php?ItemID='. $ItemID);
         }else{
             $error = [True, 'Vul alstublieft een geldig bod in'];
         }
