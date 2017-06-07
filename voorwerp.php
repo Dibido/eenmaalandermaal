@@ -49,6 +49,7 @@ if (isset($bod) AND !empty($bod)) {
         if($bod >= $minimumBod){
             //inserting the offer
             insertBod($ItemID, $_SESSION["Username"], $bod);
+            header('Location: voorwerp.php?ItemID='. $ItemID);
         }else{
             $error = [True, 'Vul alstublieft een geldig bod in'];
         }

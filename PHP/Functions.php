@@ -412,7 +412,7 @@ function DrawItemAuction($auction)
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
-                        <a class=\"btn text-center btn-info bied\">Bied Nu!</a>
+                         <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] .'&snelbod=True'. "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
                     </div>
                 </div>
             </div>
@@ -444,7 +444,7 @@ function DrawSearchResults($auction)
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
-                        <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] .'&snelbod=' .$auction["VW_minimalenieuwebod"] . "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
+                        <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] .'&snelbod=True'. "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
                     </div>
                 </div>
             </div>
