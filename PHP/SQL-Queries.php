@@ -157,7 +157,6 @@ ORDER BY VW_looptijdStart ASC, VW_titel
 
 EOT;
 
-
 /* Query landen ophalen registratie form */
 $GetLandenQuerie = <<<EOT
 
@@ -259,6 +258,36 @@ SELECT *
 FROM Gebruiker
 WHERE GEB_gebruikersnaam = ?
 EOT;
+
+//producten van gebruikers 
+$QueryUserAds = <<<EOT
+SELECT
+  TOP 40
+  VW_voorwerpnummer,VW_titel, VW_verkoper,
+  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
+  (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+              FROM Bod
+              WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                                       FROM Bod
+                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+              ORDER BY BOD_Bodbedrag DESC), (select TOP 1 VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
+  VW_looptijdEinde,
+  VW_thumbnail AS ImagePath
+FROM Voorwerp
+
+  INNER JOIN Voorwerp_Rubriek
+    ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  
+GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
+HAVING VW_verkoper = ?
+ORDER BY VW_looptijdStart ASC, VW_titel
+
+EOT;
+
+
+
+
 
 
 /* query voor het zoeken van een Admin*/

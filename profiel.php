@@ -10,6 +10,7 @@ $username = $_SESSION['Username'];
 $userinfo = findUserInfo($username)[0];
 print_r($userinfo);
 
+
 ?>
 
 <!doctype html>
@@ -124,43 +125,65 @@ require('navbar.php');
             </div>
         </div>
     </div>
-
+</div>
 
 <!-- ADS -->
-<div class="col-md-12 col-sm-12">
-    <div class="panel panel-default Details-wrapper">
-        <div class="list-group-item active text-center">Mijn EenMaalAndermaal</div>
- 
-<div class="panel-body">
+<div class="container-fluid"> 
+    <div class="col-md-12 col-sm-12">
+        <div class="panel panel-default Details-wrapper">
+            <div class="list-group-item active text-center">Mijn EenMaalAndermaal</div>
+     
+                <div class="panel-body">
 
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#home">Mijn advertenties</a></li>
-    <li><a data-toggle="tab" href="#menu1">Mijn biedingen</a></li>
-    <li><a data-toggle="tab" href="#menu2">Gewonnen veilingen</a></li>
-  </ul>
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#home">Mijn advertenties</a></li>
+                    <li><a data-toggle="tab" href="#menu1">Mijn biedingen</a></li>
+                    <li><a data-toggle="tab" href="#menu2">Gewonnen veilingen</a></li>
+                  </ul>
 
-  <div class="tab-content">
-    <div id="home" class="tab-pane fade in active">
-      <h3>Mijn advertenties</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-    </div>
-    <div id="menu1" class="tab-pane fade">
-      <h3>Mijn biedingen</h3>
-      <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    <div id="menu2" class="tab-pane fade">
-      <h3>Gewonnen veilingen</h3>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-    </div>
-  </div>
-</div>
+                  <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                      <h3>Mijn advertenties</h3>
+                      <?php
+
+
+                    $UserAds = SendToDatabase($QueryUserAds);
+
+                    if ($UserAds[0]) {
+                        foreach ($UserAds as $advert) {
+                            DrawAuction($advert);
+                        }
+                    } else {
+                        echo "<b>Error on loading auctions: </b>" . "<br><br>" . $UserAds[1];
+                    }
+                        print_r($QueryUserAds);
+                    ?>
+
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                      <h3>Mijn biedingen</h3>
+                            <?php
+                                 $UserAds = SendToDatabase($QueryUserAds);
+
+                            if ($UserAds[0]) {
+                                foreach ($UserAds as $advert) {
+                                    DrawAuction($advert);
+                                }
+                            } else {
+                                echo "<b>Error on loading auctions: </b>" . "<br><br>" . $UserAds[1];
+                            }
+
+                            ?>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                      <h3>Gewonnen veilingen</h3>
+                      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                    </div>
+                  </div>
+                </div>
         </div>
     </div>
-
-
-
-
-    </div>
+</div>
 </div>
 
 <?php include('footer.html'); ?>
