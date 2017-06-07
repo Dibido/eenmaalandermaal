@@ -56,6 +56,20 @@ function findUserInfo($username)
 
 }
 
+/* function for Finding user ADS for profiel page*/
+function findUserAds($username)
+{
+  GLOBAL $connection;
+  GLOBAL $QueryFindUserAds;
+
+  $stmt = $connection->prepare($QueryFindUserAds);
+  $stmt->execute(array($username));
+  return $stmt-> fetchAll(); 
+
+}
+
+
+
 
 /*function for finding adverts per user*/
 function findAuctionsByUser($username, $auction)
