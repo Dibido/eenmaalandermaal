@@ -1258,7 +1258,7 @@ function doRegistratie()
 
     if (count($_SESSION) == 14) {
         foreach ($_SESSION as $veld => $value) {
-            $veld = cleanInput($veld);
+            $value = cleanInput($value);
         }
 
 
