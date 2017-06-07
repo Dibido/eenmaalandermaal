@@ -28,6 +28,7 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
     -- is niet bekend.
     1                        AS GEB_vraag,
     --Default vraag
+    1                        AS GEB_verkoper,
     'Defaultantwoord'        AS GEB_antwoordtekst,
     LTRIM(RTRIM(Postalcode)) AS GEB_postcode,
     LTRIM(RTRIM(Location))   AS GEB_plaatsnaam,
@@ -43,13 +44,14 @@ GO
 --Conversiescript verkoper
 
 INSERT INTO Verkoper (VER_gebruiker, VER_bank, VER_bankrekening, VER_controleoptie, VER_creditcard)
-	SELECT DISTINCT
-		LTRIM(RTRIM(Username)) AS VER_gebruiker,
-		 'Onbekend' AS VER_bank, --default omdat we de bank niet weten
-		 'Onbekend' AS VER_bankrekening,
-		 'Creditcard' AS VER_controleoptie,
-		'Onbekend' AS VER_creditcard
-	FROM Users
+  SELECT DISTINCT
+    LTRIM(RTRIM(Username)) AS VER_gebruiker,
+    'Onbekend'             AS VER_bank,
+    --default omdat we de bank niet weten
+    'Onbekend'             AS VER_bankrekening,
+    'Creditcard'           AS VER_controleoptie,
+    'Onbekend'             AS VER_creditcard
+  FROM Users
 GO
 
 --Conversiescript voorwerp
@@ -58,7 +60,7 @@ DECLARE @FromDate DATE = DATEADD(DAY, 1, getdate()) --begindatum random datum.
 DECLARE @ToDate DATE = dateADD(DAY, 14, GETDATE()) --Einddatum random datum.
 
 SET IDENTITY_INSERT voorwerp ON
-INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs,VW_minimaalnieuwbod, VW_hoogstebod, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
+INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_minimaalnieuwbod, VW_hoogstebod, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
   SELECT
     ID                                                       AS VW_voorwerpnummer,
     LTRIM(RTRIM(titel))                                      AS VW_titel,
@@ -72,8 +74,8 @@ INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_
                                                              AS VW_conditie,
     ('/thumb/' + Thumbnail)                                  AS VW_thumbnail,
     dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_startprijs,
-	dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs))	AS VW_minimaalnieuwbod,
-	dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_hoogstebod,
+    dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_minimaalnieuwbod,
+    dbo.FN_Verandervaluta(Valuta, dbo.FN_Maaknumeric(Prijs)) AS VW_hoogstebod,
     (SELECT DATEADD(
         MINUTE,
         ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, @FromDate, @ToDate) + DATEDIFF(MINUTE, 0, @FromDate),
@@ -82,7 +84,7 @@ INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_
     --Random in de toekomst tussen de FromDate en ToDate.
     (SELECT LOP_Looptijd
      FROM LooptijdWaardes
-     WHERE LOP_ID = ((Items.ID % 5) + 1))                        AS VW_looptijd,
+     WHERE LOP_ID = ((Items.ID % 5) + 1))                    AS VW_looptijd,
     -- Random looptijd genereren aan de hand van het id.
     'Bank / giro'                                            AS VW_betalingswijze,
     CASE WHEN CHARINDEX(',', [locatie]) > 0 --Als er een locatie is ingevuld, haal het land eraf.
