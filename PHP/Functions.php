@@ -1265,7 +1265,7 @@ function checkRegistratie()
 
 function doRegistratie()
 {
-    $error = false; // Dibran stelde voor dit op een andere plek neer te zetten, But I'm a Rebbbbeelllllll
+    $error = false;
 
     if (count($_SESSION) == 14) {
 
