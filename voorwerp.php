@@ -22,7 +22,7 @@ for ($i = 0; $i < 3; $i++) {
     if (!isset($ItemImages[$i]["BES_filenaam"]) OR empty($ItemImages[$i]["BES_filenaam"])) {
         $ItemImages[$i]["BES_filenaam"] = "images/no-image-available.jpg";
     } else {
-        $ItemImages[$i]["BES_filenaam"] = "http://iproject3.icasites.nl/pics/" . $ItemImages[$i]["BES_filenaam"];
+        $ItemImages[$i]["BES_filenaam"] = "http://iproject3.icasites.nl" . $ItemImages[$i]["BES_filenaam"];
     }
 }
 
@@ -194,7 +194,7 @@ require('navbar.php');
 
                 <div class="item">
                     <div class="AuctionImage"
-                         style="background-image: url(<?php echo "http://iproject3.icasites.nl/thumbnails/" . $ItemInfo["VW_thumbnail"]; ?>)"></div>
+                         style="background-image: url(<?php echo "http://iproject3.icasites.nl" . $ItemInfo["VW_thumbnail"]; ?>)"></div>
                 </div>
             </div>
 
