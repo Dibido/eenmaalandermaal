@@ -1,4 +1,3 @@
-
 --Dit stuk sql leest de triggers uit en verwijdert ze.
 DECLARE @DropTriggers nVARCHAR(MAX) = ''
 SELECT @DropTriggers += 'DROP TRIGGER ' + [so].[name] + CHAR(13)
@@ -7,11 +6,9 @@ INNER JOIN sysobjects AS so2 ON so.parent_obj = so2.Id
 WHERE [so].[type] = 'TR'
 PRINT @DropTriggers
 EXEC sp_executesql @DropTriggers
+GO
 
 --Trigger om het hoogste bod op een voorwerp bij te houden
-IF OBJECT_ID('TR_HoogsteBod') IS NOT NULL
-  DROP TRIGGER [dbo].[TR_HoogsteBod]
-GO
 CREATE TRIGGER TR_HoogsteBod
   ON Bod
 FOR INSERT, UPDATE, DELETE
@@ -30,11 +27,8 @@ AS
                ORDER BY BOD_Bodbedrag DESC), VW_startprijs
     ))
   END
-
+  GO
 --Trigger om het minimale nieuwe bod te berekenen
-IF OBJECT_ID('TR_minimalenieuwebod') IS NOT NULL
-  DROP TRIGGER [dbo].[TR_minimalenieuwebod]
-GO
 CREATE TRIGGER TR_minimalenieuwebod
   ON Bod
 FOR INSERT, UPDATE, DELETE
@@ -57,11 +51,9 @@ AS
       END
     )
   END
+  GO
 
 --Trigger om het aantal voorwerpen per rubriek te berekenen.
-IF OBJECT_ID('TR_ComputedCount') IS NOT NULL
-  DROP TRIGGER [dbo].[TR_ComputedCount]
-GO
 CREATE TRIGGER TR_ComputedCount
   ON Voorwerp_Rubriek
 FOR INSERT, UPDATE, DELETE
@@ -80,10 +72,8 @@ AS
                  FROM Voorwerp_Rubriek
                  WHERE Voorwerp_Rubriek.VR_Rubriek_Nummer = RB_Nummer)
   END
+  GO
 
-IF OBJECT_ID('TR_BodCount') IS NOT NULL
-  DROP TRIGGER [dbo].[TR_BodCount]
-GO
 CREATE TRIGGER TR_BodCount ON Bod
 FOR INSERT,UPDATE,DELETE
 AS
@@ -93,16 +83,16 @@ AS
     UPDATE Voorwerp
     SET VW_BodCount =
     (
-      select count(BOD_voorwerpnummer) from Bod group by BOD_voorwerpnummer
-
+      select count(BOD_voorwerpnummer)
+	  from Bod
+	  WHERE Bod.BOD_voorwerpnummer = (select BOD_voorwerpnummer from inserted)
+	  group by BOD_voorwerpnummer
     )
   END
+  GO
+
 
 -- Trigger die registratiecodes die ouder dan 24 uur zijn verwijderd.
-IF OBJECT_ID('TR_ActivatieVerlopen') IS NOT NULL
-  DROP TRIGGER [dbo].[TR_ActivatieVerlopen]
-GO
-
 CREATE TRIGGER TR_ActivatieVerlopen
   ON dbo.Registreer
 FOR INSERT, UPDATE

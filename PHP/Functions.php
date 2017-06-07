@@ -931,15 +931,20 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Display the result in the element with id="demo"
-        
-        if(days >= 1){
+     
+     
+     /* Laat seconden niet zien indien dagen += 1 is.
+       if(days >= 1){
         document.getElementById("' . $VW_Nummer . '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
-        }else if(days < 1 && seconds < 10){
-        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
+        }else
+      */
+      
+      if(seconds < 10){
+        document.getElementById("' . $VW_Nummer . '").innerHTML = days  + "d " + hours + "h " // days  + "d " + weg halen indien terug naar oude situatie (seconden niet laten zien indien dag +=1 is.
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . '").innerHTML = days  + "d " + hours + "h " // days  + "d " + weg halen indien terug naar oude situatie (seconden niet laten zien indien dag +=1 is.
             + minutes + "m " + seconds +  "s" ;
         }
         // If the count down is finished, write some text
@@ -1267,7 +1272,7 @@ function doRegistratie()
 
     if (count($_SESSION) == 14) {
         foreach ($_SESSION as $veld => $value) {
-            $veld = cleanInput($veld);
+            $value = cleanInput($value);
         }
 
 

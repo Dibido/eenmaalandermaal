@@ -107,7 +107,7 @@ AS
               AND ISNULL((SELECT TOP 1 b.BOD_bodbedrag
                           FROM Bod b
                           WHERE b.BOD_voorwerpnummer = Biedingen.BOD_voorwerpnummer
-                          ORDER BY b.BOD_bodbedrag DESC), Biedingen.VW_startprijs) < 9999960 /*Prevent overflow*/
+                          ORDER BY b.BOD_bodbedrag DESC), Biedingen.VW_startprijs) < 9999960  -- Prevent overflow
               --Alleen random voorwerpen.
               AND Biedingen.RandNr % 3 = 0
       SET @LoopCount += 1
