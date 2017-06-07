@@ -12,7 +12,6 @@ $ItemInfo = $ItemInfo[0];
 $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
 session_start();
 
-
 ?>
 
 
@@ -102,7 +101,7 @@ session_start();
             <form id="bodForm" class="form-inline" method="POST" action="voorwerp.php?ItemID=<?php echo $ItemID; ?>">
                 <div class="input-group InputBod">
                     <div class="input-group-addon">&euro;</div>
-                    <input form="bodForm" type="number" step=".01" class="form-control" id="bodInput" name="bod" min="<?php echo $minimumBod; ?>" max="999999999.99" autofocus>
+                    <input form="bodForm" type="number" step=".01" class="form-control" id="bodInput" name="bod" min="<?php echo $minimumBod; ?>" max="9999999.99" autofocus>
                 </div>
                 <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
             </form>
