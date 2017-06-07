@@ -121,11 +121,13 @@ session_start();
                     <?php
 
                     $Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
-                    print_r($Userinfo);
-                    $rating = floor($Userinfo[0]["GEB_rating"]) / 10;
-
-                    for ($i = 0; $i < $rating / 2; $i++) {
+                    $rating = ceil(($Userinfo[0]["GEB_rating"] /20)); // Delen door 2. Rating van 0 tot 100, sterren 0 tot 5.
+                    $legeSterren = 5 - $rating;
+                    for ($i = 0; $i < $rating; $i++) {
                         echo " <i class=\"glyphicon glyphicon-star\"></i>";
+                    }
+                    for ($i = 0; $i < $legeSterren; $i++) {
+                        echo " <i class=\"glyphicon glyphicon-star-empty\"></i>";
                     }
 
                     //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
