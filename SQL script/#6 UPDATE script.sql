@@ -1,18 +1,20 @@
---Dit script kan gebruikt worden om de data die al in de database staat te updaten.
-
-
--- User rating randomisen
-Update Gebruiker SET GEB_rating =  100
+--De stored procedures in dit script kunnen gebruikt worden om de data die al in de database staat te updaten.
+--Drop alle procedures
+IF OBJECT_ID('SP_UpdateRating', 'P') IS NOT NULL
+  DROP PROCEDURE SP_UpdateLooptijd;
 GO
-Update Gebruiker SET GEB_rating =  CEILING(RAND(CHECKSUM(NEWID()))*100)
-GO
-
-
 IF OBJECT_ID('SP_UpdateLooptijd', 'P') IS NOT NULL
   DROP PROCEDURE SP_UpdateLooptijd;
 GO
 IF OBJECT_ID('SP_UpdateBiedingen', 'P') IS NOT NULL
   DROP PROCEDURE SP_UpdateBiedingen
+GO
+
+-- User rating randomizen
+CREATE PROCEDURE [dbo].[SP_UpdateRating]
+AS
+  UPDATE Gebruiker
+  SET GEB_rating = CEILING(RAND(CHECKSUM(NEWID())) * 100)
 GO
 
 --Procedure om de starttijden en looptijden van de voorwerpen te updaten.
@@ -39,8 +41,8 @@ AS
     --Doet een random waarde modulo het verschil tussen de min en max waarde van de range en voegt dan de begintijd toe.
     VW_looptijd        = (SELECT Looptijd
                           FROM TEMP_LooptijdWaardes
-                          WHERE ID = (Voorwerp.VW_voorwerpnummer % ((SELECT count(*)
-                                                                     FROM TEMP_LooptijdWaardes) + 1) + 1))
+                          WHERE ID = (Items.ID % ((SELECT count(*)
+                                                   FROM TEMP_LooptijdWaardes) + 1) + 1))
   --Pakt het ID en doet modulo op het aantal van de tabel + 1 wat een range van 0 - 4 geeft. We tellen er een bij op om de 1 - 5 van de identity te krijgen.
   --Tijdelijke tabel opruimen.
   IF OBJECT_ID('dbo.TEMP_LooptijdWaardes') IS NOT NULL
@@ -70,16 +72,16 @@ AS
               OVER (
                 ORDER BY newID() ),
               v.VW_verkoper,
-                v.VW_voorwerpnummer                                      AS BOD_voorwerpnummer,
+                v.VW_voorwerpnummer                        AS BOD_voorwerpnummer,
               v.VW_startprijs,
                 ISNULL((SELECT TOP 1 b.BOD_bodbedrag
                         FROM Bod b
                         WHERE b.BOD_voorwerpnummer = v.VW_voorwerpnummer
                         ORDER BY b.BOD_bodbedrag DESC)
                 , v.VW_startprijs)
-                + 50.0 + (ABS(Checksum(NewID()) % 10) + 1)               AS BOD_bodbedrag,
+                + 50.0 + (ABS(Checksum(NewID()) % 10) + 1) AS BOD_bodbedrag,
               --De huidige waarde plus 50 (het hoogste minimale bod) en een random waarde van 1 tot 10
-                (dbo.FN_GenereerRandomgebruiker(newID())) AS BOD_gebruiker,
+                (dbo.FN_GenereerRandomgebruiker(newID()))  AS BOD_gebruiker,
                 (SELECT DATEADD(
                     MINUTE,
                     ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, ISNULL((SELECT TOP 1 b.BOD_bodTijdEnDag
@@ -99,7 +101,7 @@ AS
                                                 WHERE b.BOD_voorwerpnummer = v.VW_voorwerpnummer
                                                 ORDER BY b.BOD_bodTijdEnDag DESC), v.VW_looptijdStart)),
                     0
-                ))                                                       AS BOD_bodTijdEnDag -- Tijd binnen een bepaalde range.
+                ))                                         AS BOD_bodTijdEnDag -- Tijd binnen een bepaalde range.
             FROM Voorwerp v
           ) Biedingen
         --De gebruiker mag niet op zijn eigen voorwerpen bieden.
