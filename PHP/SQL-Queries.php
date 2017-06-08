@@ -47,7 +47,20 @@ EOT;
 $QueryTopCategories = <<<EOT
 
 
-select TOP 10 RB_Naam,RB_Nummer, RB_voorwerpcount from Rubriek ORDER BY RB_voorwerpcount DESC
+SELECT
+  top 10
+  RB_Naam,
+  RB_Nummer,
+  sum(VW_bodcount)
+
+FROM Rubriek
+  INNER JOIN Voorwerp_Rubriek
+  on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+  inner join Voorwerp
+  ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  group by RB_Naam, RB_Nummer, VW_bodcount
+ORDER BY sum(Voorwerp.VW_bodcount) desc
+
 
 
 EOT;
@@ -56,7 +69,7 @@ EOT;
 $QueryTop2 = <<<EOT
 SELECT
   --Vul hier je TOP X hoeveelheid in
-  TOP 2
+  top 2
   VW_voorwerpnummer,
   VW_titel,
   --Laat het hoogste bod zien op het voorwerpnummer
@@ -70,26 +83,27 @@ SELECT
   --Tijdsverschil tussen nu en het einde van de veiling
   VW_looptijdEinde                                                                         AS tijd,
   VW_looptijdEinde,
-  VW_thumbnail       AS ImagePath,
-  COUNT(BOD_voorwerpnummer)                                                                                 AS Biedingen
+  VW_thumbnail       AS ImagePath
 --Selecteerd het eerste filepath die hij vind voor het voorwerpnummer
 
 FROM Voorwerp
-  LEFT OUTER JOIN BOD
-    ON Voorwerp.VW_voorwerpnummer = BOD_voorwerpnummer
+  LEFT OUTER JOIN Voorwerp_Rubriek
+  on Voorwerp.VW_voorwerpnummer = Voorwerp_Rubriek.VR_Voorwerp_Nummer
 --Vul hier de minimum en maximum tijd over in
 
 WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 1 AND
-      VW_voorwerpnummer IN (SELECT VW_voorwerpnummer
-                            FROM Voorwerp
-                              INNER JOIN Voorwerp_Rubriek
-                                ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                            WHERE VR_Rubriek_Nummer IN (
-                              select TOP 30 RB_Nummer from Rubriek ORDER BY RB_voorwerpcount DESC
+      VR_Rubriek_Nummer IN (select top 5 RB_Nummer
+                            from Rubriek
+                              inner JOIN Voorwerp_Rubriek
+                                on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                              inner join Voorwerp
+                                on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                            group by RB_Nummer
+                            ORDER BY sum(VW_bodcount) DESC
                             )
-      )
-GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel,VW_thumbnail,VW_startprijs
-ORDER BY tijd ASC, Biedingen DESC, VW_titel ASC
+GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel,VW_thumbnail,VW_startprijs, VW_bodcount
+ORDER BY tijd ASC, VW_bodcount DESC, VW_titel ASC
+
 
 EOT;
 
