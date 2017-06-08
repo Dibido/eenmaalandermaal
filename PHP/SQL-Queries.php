@@ -127,7 +127,14 @@ WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
     FULL OUTER JOIN Rubriek
       ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   WHERE RB_Naam IN (
-    select TOP 5 RB_Naam from Rubriek ORDER BY RB_voorwerpcount DESC
+    select top 1 RB_Naam
+from Rubriek
+inner JOIN Voorwerp_Rubriek
+on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+inner join Voorwerp
+on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+group by RB_Naam
+ORDER BY sum(VW_bodcount) DESC
   )
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
 GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs
@@ -161,6 +168,11 @@ EOT;
 $GetLandenQuerie = <<<EOT
 
 SELECT LAN_landcode, LAN_landnaam FROM Landen
+EOT;
+
+$GetLandnaamQuerie = <<<EOT
+
+SELECT LAN_landcode FROM Landen
 EOT;
 
 /* Query om de betaalmethode op te halen */

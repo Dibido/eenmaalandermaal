@@ -4,13 +4,30 @@ require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
-$Betalingswijzen = SendToDatabase($GetBethaalMethodesQuerie);
+$Betalingswijzen = SendToDatabase2($GetBethaalMethodesQuerie);
 $Landen = SendToDatabase($GetLandenQuerie);
+$Landnamen = SendToDatabase2($GetLandnaamQuerie);
+
+//$Looptijden = SendToDatabase($GetLooptijdenQuerie);
 if (isset($_GET['rubriek']) && !empty($_GET['rubriek'])) {
     $rubriek = ($_GET['rubriek']);
 } else {
     $rubriek = 'NULL';
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $target_dir = 'upload/';
+    $target_file = $target_dir . basename($_FILES["thumbnail"]["name"]);
+    $errorResults = checkPlaatsenVoorwerp($Betalingswijzen, $Landnamen, $_POST);
+    if ($errorResults[sizeof($errorResults) - 1] == false) {
+        if (move_uploaded_file($_FILES["thumbnail"]["tmp_name"], $target_file)) {
+            echo $target_file;
+        } else {
+            echo 'KUT DING';
+        }
+    }
+}
+print_r($_POST);
+$waardes = $_POST;
 ?>
 
 
@@ -69,8 +86,17 @@ require('navbar.php');
 
 <h1 class="text-center">Plaats Advertente!</h1>
 <br>
+
 <div class="well container">
 
+    <?php
+    if (!empty($errorResults) AND end($errorResults) == true) {
+        echo '<div class="col-xs-12" ><div class="alert alert-danger alert-dismissable fade in center-block col-md-6 col-md-push-3">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <h2 class="center-text alert-danger" ><strong>Niet alles is goed ingevuld!</strong></h2><br>';
+        echo drawErrorResult($errorResults);
+        echo '</div></div>';
+    } ?>
     <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12 col-xs-push-1">
         <h2>Kies eerst uw rubriek!</h2>
         <hr>
@@ -83,7 +109,7 @@ require('navbar.php');
         </div>
     </div>
     <div class="col-md-5 col-sm-5 col-xs-5 col-xs-push-2 right">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <?php
             if (!isset($_GET['rubriek'])) {
                 echo "<fieldset disabled>";
@@ -95,7 +121,7 @@ require('navbar.php');
             <div class="form-group">
                 <h4>Titel Voorwerp*</h4>
                 <input name="Titel" id="Titel" type="text" placeholder="Titel" maxlength="90"
-                       class="form-control" required value="<?php if (!empty($waardes['Titel'])) {
+                       class="form-control" value="<?php if (!empty($waardes['Titel'])) {
                     echo $waardes['Titel'];
                 } ?>">
             </div>
@@ -104,7 +130,10 @@ require('navbar.php');
                 <label for="Beschrijving"></label><h4>Beschrijving*</h4>
                 <textarea name="Beschrijving" id="Beschrijving"
                           placeholder="Vul hier de beschrijving van je voorwerp in!"
-                          class="form-control" required rows="5"></textarea>
+                          class="form-control" rows="5" value="
+                          "><?php if (!empty($waardes['Beschrijving'])) {
+                        echo $waardes['Beschrijving'];
+                    } ?></textarea>
             </div>
 
             <div class="form-group" id="ThumbnailUpload">
@@ -123,7 +152,7 @@ require('navbar.php');
                 <h4>Extra afbeeldingen*</h4>
                 <label class="btn btn-warning btn-lg"> <span class="glyphicon glyphicon-cloud-upload"></span> Upload
                     hier maximaal 3 extra afbeeldingen!
-                    <input name="afbeelding" id="afbeelding" type="file" style="display:none" multiple
+                    <input name="afbeelding[]" id="afbeelding" type="file" style="display:none" multiple
                            class="form-control">
 
                 </label>
@@ -157,43 +186,47 @@ require('navbar.php');
 
                 <span class="input-group-addon" id="basic-addon1"> <i
                             class="glyphicon glyphicon-euro"></i></span>
-                    <input name="adres1" id="adres1" type="text" placeholder="Adresregel 1"
-                           class="form-control" required="true" maxlength="255"
-                           value="<?php if (!empty($waardes['adres1'])) {
-                               echo $waardes['adres1'];
-                           } ?>">
+                    <input name="startprijs" id="startprijs" type="number" placeholder="Startprijs"
+                           class="form-control" ="true" maxlength="9"
+                    value="<?php if (!empty($waardes['startprijs'])) {
+                        echo $waardes['startprijs'];
+                    } ?>">
                 </div>
             </div>
             <div class="col-md-6 nopadding1">
                 <h4>Betalingswijze*</h4>
                 <div class="form-group">
-                    <select name="geheimevraag" id="geheimevraag" type="text"
-                            placeholder="Kies een geheime vraag"
-                            class="form-control" required="true">
-                        <?php
-                        printBetalingswijzen($Betalingswijzen);
-                        ?>
+                    <select name="betalingswijze" id="betalingswijze"
+                            class="form-control" ="true">
+                    <?php
+                    printBetalingswijzen($Betalingswijzen);
+                    ?>
                     </select>
                 </div>
             </div>
 
             <div class="form-group">
                 <h4>Betalingsinstructie*</h4>
-                <textarea name="Betalingswijze" id="Betalingsinstructie"
+                <textarea name="Betalingsinstructie" id="Betalingsinstructie"
                           placeholder="Vul hier jouw betalingsinstructie in!"
-                          class="form-control" rows="5"></textarea>
+                          class="form-control" rows="5"><?php if (!empty($waardes['Betalingsinstructie'])) {
+                        echo $waardes['Betalingsinstructie'];
+                    } ?></textarea>
             </div>
 
             <h2>Locatie</h2>
             <hr>
             <br>
             <div class="col-md-6 nopadding">
-                <h4>Woonplaats*</h4>
-                <div class="form-group">
-                    <input name="woonplaats" id="woonplaats" type="text" placeholder="Woonplaats"
-                           class="form-control" required="true" maxlength="85"
-                           value="<?php if (!empty($waardes['woonplaats'])) {
-                               echo $waardes['woonplaats'];
+                <h4>Plaats*</h4>
+                <div class="input-group">
+
+                <span class="input-group-addon" id="basic-addon1"> <i
+                            class="glyphicon glyphicon-home"></i></span>
+                    <input name="plaats" id="woonplaats" type="text" placeholder="Woonplaats"
+                           class="form-control" maxlength="85"
+                           value="<?php if (!empty($waardes['plaats'])) {
+                               echo $waardes['plaats'];
                            } ?>">
                 </div>
             </div>
@@ -202,7 +235,7 @@ require('navbar.php');
                 <div class="form-group">
                     </label>
                     <select name="land" id="land" type="text"
-                            class="form-control" required="true">
+                            class="form-control">
                         <?php
                         printLanden($Landen);
                         ?>
@@ -216,18 +249,21 @@ require('navbar.php');
             <br>
             <div class="form-group">
                 <h4>Verzendkosten*</h4>
-                <input name="verzendkosten" id="verzendkosten" type="text"
+                <input name="verzendkosten" id="verzendkosten" type="number"
                        placeholder="Vul hier je verzendkosten in" maxlength="64"
-                       class="form-control" required="true" value="<?php if (!empty($waardes['verzendkosten'])) {
+                       class="form-control" value="<?php if (!empty($waardes['verzendkosten'])) {
                     echo $waardes['verzendkosten'];
                 } ?>">
             </div>
 
             <div class="form-group">
                 <h4>Verzendinstructies*</h4>
-                <textarea name="Betalingswijze" id="Betalingsinstructie"
-                          placeholder="Vul hier jouw betalingsinstructie in!"
-                          class="form-control" rows="5"></textarea>
+
+                <textarea name="verzendinstructies" id="verzendinstructies"
+                          placeholder="Vul hier jouw verzendinstructies in!"
+                          class="form-control" rows="5"><?php if (!empty($waardes['verzendinstructies'])) {
+                        echo $waardes['verzendinstructies'];
+                    } ?></textarea>
             </div>
             <br>
             <button class="btn-primary btn-lg center-block" type="submit">
@@ -241,8 +277,6 @@ require('navbar.php');
     </div>
 </div>
 
-<input id="fileopen" type="file" value=""/>
-<button id="clear">Clear</button>
 <script>
     $(document).ready(function () {
         $('#list').click(function (event) {
@@ -304,7 +338,6 @@ require('navbar.php');
         });
     });
 </script>
-
 
 </body>
 </html>

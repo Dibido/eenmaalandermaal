@@ -12,13 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['sorteerfilter'])) {
         $sorteerfilter = ($_GET['sorteerfilter']);
     } else {
-        $_GET['sorteerfilter'] = 0;
-        $sorteerfilter = $_GET['sorteerfilter'];
+        $sorteerfilter = 0;
     }
     if (isset($_GET['betalingsmethode'])) {
         $betalingsmethode = $_GET['betalingsmethode'];
     }else{
-        $_GET['betalingsmethode'] = '';
         $betalingsmethode = $_GET['betalingsmethode'];
     }
     if (isset($_GET['prijs'])) {
@@ -29,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['rubriek']) && !empty($_GET['rubriek'])) {
         $rubriek = ($_GET['rubriek']);
     } else {
-        $_GET['rubriek'] = 'NULL';
         $rubriek = 'NULL';
     }
     if (isset($_GET['user'])) {
@@ -37,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } else {
         $user = "";
     }
-
     if (!isset($prijs['min'])) {
         $prijs['min'] = 0;
     }
@@ -51,6 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $pagenum = round($_GET['pagenum']);
     }
     //results per page
+    $pagenum = cleanInput(urldecode($pagenum));
+    $ResultsPerPage = 12;
+    $zoekterm = cleanInput(urldecode($zoekterm));
+    $rubriek = cleanInput(urldecode($rubriek));
+    $sorteerfilter = cleanInput(urldecode($sorteerfilter));
+    $betalingsmethode = cleanInput(urldecode($betalingsmethode));
+    $user = cleanInput(urldecode($user));
     $ResultsPerPage = 12;
     $Offset = $ResultsPerPage * ($pagenum - 1);
     $_GET['maxremainingtime'] = "NULL";
@@ -62,17 +65,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     //Create dictionary with all variables from the GET request. Dictionary is used to give all values to the query
     $Dictionary = array(
         'SearchKeyword' => $zoekterm,
-        'SearchFilter' => $waardes[($_GET['sorteerfilter'])],
-        'SearchPaymentMethod' => $_GET['betalingsmethode'],
-        'SearchCategory' => $_GET['rubriek'],
-        'SearchMinRemainingTime' => $_GET['minremainingtime'],
-        'SearchMaxRemainingTime' => $_GET['maxremainingtime'],
+        'SearchFilter' => $waardes[$sorteerfilter],
+        'SearchPaymentMethod' => $betalingsmethode,
+        'SearchCategory' => $rubriek,
+        'SearchMinRemainingTime' => '',
+        'SearchMaxRemainingTime' => '',
         'SearchMinPrice' => $prijs['min'],
         'SearchMaxPrice' => $prijs['max'],
         'ResultsPerPage' => $ResultsPerPage,
         'Offset' => $Offset,
-        'SearchUser' => $user
+        'SearchUser' => $user,
+        'Pagenum' => $pagenum
     );
+    foreach($Dictionary as $key => $value){
+        $Dictionary[$key]= cleanInput(urldecode($Dictionary[$key]));
+    }
 }
 ?>
 
@@ -294,9 +301,8 @@ require('navbar.php');
 
         <div class="col-md-5 col-sm-6 col-xs-6 col-md-push-5 col-sm-push-3 col-xs-push-3">
             <ul class="pagination">
-
                 <?php
-                drawPageNumbers($pagenum,$Dictionary,$result,$ResultsPerPage,$zoekterm,$rubriek,$sorteerfilter,$prijs,$betalingsmethode,$user);
+                drawPageNumbers($Dictionary, $result);
                 ?>
 
         </div>
