@@ -1,4 +1,9 @@
 <?php
+
+
+
+
+
 session_start();
 
 require('PHP/Functions.php');
@@ -13,6 +18,13 @@ $ItemInfo = $ItemInfo[0];
 $ItemImages = GetItemImages($ItemID);
 $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
 
+//$date = new DateTime($ItemInfo["VW_looptijdEinde"]);
+
+/*
+if($date->format('Y-m-d H:i:s') < getdate()){
+    echo 'Je mag niet bieden nu!';
+}
+*/
 
 /* making sure an image is available */
 if (!isset($ItemInfo["VW_thumbnail"]) OR empty($ItemInfo["VW_thumbnail"])) {
@@ -44,12 +56,6 @@ if (isset($bod) AND !empty($bod)) {
 
 
 
-        /*
-        if($ItemInfo["VW_looptijdEinde"] < getdate()){
-
-        }
-
-        */
 
         //cleaning the input for html
         $bod = cleanInput($bod);
