@@ -5,7 +5,7 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 require('PHP/connection.php');
 
-$username = $_SESSION['Username']; 
+$username = $_SESSION['Username'];
 $userinfo = findUserInfo($username)[0];
 $userads = findUserAds($username);
 $userbod = findBodAds($username);
@@ -73,19 +73,24 @@ require('navbar.php');
 
     <div class="col-md-8 col-sm-12">
         <div class="panel panel-default Details-wrapper">
-                <div class="list-group-item active text-center">Persoonlijke Beschrijving</div>
-                    <div class="panel-body">
-                        <p><span class="glyphicon glyphicon-user"></span> Voornaam + Achternaam: <b><?php echo $userinfo["GEB_voornaam"] . ' ' . $userinfo["GEB_achternaam"]?></b></p>
-                        <p><span class="glyphicon glyphicon-gift"></span> Geboortedatum: <b><?php echo $userinfo["GEB_voornaam"]?></b></p>
-                        <p><span class="glyphicon glyphicon-envelope"></span> Email-adres: <b><?php echo $userinfo["GEB_mailbox"]?></b></p>
-                        <p><span class="glyphicon glyphicon-map-marker"></span> Postcode + Plaats : <b><?php echo $userinfo["GEB_postcode"] . ' ' . $userinfo["GEB_plaatsnaam"]?></b></p>
-                        <p><span class="glyphicon glyphicon-globe"></span> Land: <b><?php echo $userinfo["GEB_Land"]?></b></p>
-                        <p><span class="glyphicon glyphicon-shopping-cart"></span> Type account: <b><?php if ($userinfo["GEB_verkoper"] == 0) {echo "Geen verkoper";} else echo "Verkoper" ?></b></p>
-                    </div>
+            <div class="list-group-item active text-center">Persoonlijke Beschrijving</div>
+            <div class="panel-body">
+                <p><span class="glyphicon glyphicon-user"></span> Voornaam + Achternaam:
+                    <b><?php echo $userinfo["GEB_voornaam"] . ' ' . $userinfo["GEB_achternaam"] ?></b></p>
+                <p><span class="glyphicon glyphicon-gift"></span> Geboortedatum:
+                    <b><?php echo $userinfo["GEB_voornaam"] ?></b></p>
+                <p><span class="glyphicon glyphicon-envelope"></span> Email-adres:
+                    <b><?php echo $userinfo["GEB_mailbox"] ?></b></p>
+                <p><span class="glyphicon glyphicon-map-marker"></span> Postcode + Plaats :
+                    <b><?php echo $userinfo["GEB_postcode"] . ' ' . $userinfo["GEB_plaatsnaam"] ?></b></p>
+                <p><span class="glyphicon glyphicon-globe"></span> Land: <b><?php echo $userinfo["GEB_Land"] ?></b></p>
+                <p><span class="glyphicon glyphicon-shopping-cart"></span> Type account:
+                    <b><?php if ($userinfo["GEB_verkoper"] == 0) {
+                            echo "Geen verkoper";
+                        } else echo "Verkoper" ?></b></p>
+            </div>
         </div>
     </div>
-
-
 
 
     <!-- START Sidebar -->
@@ -94,51 +99,55 @@ require('navbar.php');
             <div class="list-group-item active text-center">Gegevens</div>
             <div class="panel-body">
 
-               <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Username: <b><?php echo "$username" ?> </b></div>
-               <div class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"></span> Type account: <b><?php if ($userinfo["GEB_verkoper"] == 0) {echo "Geen verkoper";} else echo "Verkoper" ?></b></div>
-               <div class="list-group-item "><span class="glyphicon glyphicon-thumbs-up"></span> Mijn Rating: <b><?php
+                <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Username:
+                    <b><?php echo "$username" ?> </b></div>
+                <div class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"></span> Type account:
+                    <b><?php if ($userinfo["GEB_verkoper"] == 0) {
+                            echo "Geen verkoper";
+                        } else echo "Verkoper" ?></b></div>
+                <div class="list-group-item "><span class="glyphicon glyphicon-thumbs-up"></span> Mijn Rating: <b><?php
 
-                    $Userinfo = GetUserInfoPerAuction($username);
-                                $rating = ceil(($Userinfo[0]["GEB_rating"] /20)); // Delen door 2. Rating van 0 tot 100, sterren 0 tot 5.
-                                $legeSterren = 5 - $rating;
-                                for ($i = 0; $i < $rating; $i++) {
-                                    echo " <i class=\"glyphicon glyphicon-star\"></i>";
-                                }
-                                for ($i = 0; $i < $legeSterren; $i++) {
-                                    echo " <i class=\"glyphicon glyphicon-star-empty\"></i>";
-                                }
-                                //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
+                        $Userinfo = GetUserInfoPerAuction($username);
+                        $rating = ceil(($Userinfo[0]["GEB_rating"] / 20)); // Delen door 2. Rating van 0 tot 100, sterren 0 tot 5.
+                        $legeSterren = 5 - $rating;
+                        for ($i = 0; $i < $rating; $i++) {
+                            echo " <i class=\"glyphicon glyphicon-star\"></i>";
+                        }
+                        for ($i = 0; $i < $legeSterren; $i++) {
+                            echo " <i class=\"glyphicon glyphicon-star-empty\"></i>";
+                        }
+                        //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
 
 
+                        ?> </b></div>
 
 
-                ?> </b></div>
-
-
-                <?php  if ($userinfo["GEB_verkoper"] == 0){echo  '<a href="#"><button class="btn btn-primary center-block btn-lg " type="button" style="margin-top: 10px;">
-                            <span class="glyphicon glyphicon-repeat"></span> UPGRADE ACCOUNT!</button></a>';} else echo ' ' ?>
+                <?php if ($userinfo["GEB_verkoper"] == 0) {
+                    echo '<a href="#"><button class="btn btn-primary center-block btn-lg " type="button" style="margin-top: 10px;">
+                            <span class="glyphicon glyphicon-repeat"></span> UPGRADE ACCOUNT!</button></a>';
+                } else echo ' ' ?>
             </div>
         </div>
     </div>
 </div>
 
 <!-- ADS -->
-<div class="container-fluid"> 
+<div class="container-fluid">
     <div class="col-md-12 col-sm-12">
         <div class="panel panel-default Details-wrapper">
             <div class="list-group-item active text-center">Mijn EenMaalAndermaal</div>
-     
-                <div class="panel-body">
 
-                  <ul class="nav nav-tabs">
+            <div class="panel-body">
+
+                <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#home">Mijn advertenties</a></li>
                     <li><a data-toggle="tab" href="#menu1">Mijn biedingen</a></li>
                     <li><a data-toggle="tab" href="#menu2">Gewonnen veilingen</a></li>
-                  </ul>
+                </ul>
 
-                  <div class="tab-content">
+                <div class="tab-content">
                     <div id="home" class="tab-pane fade in active">
-                      <h3>Mijn advertenties</h3>   
+                        <h3>Mijn advertenties</h3>
                         <?php
 
                         $auctions = $userads;
@@ -149,13 +158,13 @@ require('navbar.php');
                         } else {
                             echo "U heeft geen geplaatste advertenties.";
                         }
-            
+
 
                         ?>
                     </div>
                     <div id="menu1" class="tab-pane fade">
-                      <h3>Mijn biedingen</h3>
-                       <?php
+                        <h3>Mijn biedingen</h3>
+                        <?php
 
                         $auctions = $userbod;
                         if (isset($auctions[0]) AND !empty($auctions)) {
@@ -165,13 +174,13 @@ require('navbar.php');
                         } else {
                             echo "U heeft nog geen bod geplaatst.";
                         }
-            
+
 
                         ?>
                     </div>
                     <div id="menu2" class="tab-pane fade">
-                      <h3>Gewonnen veilingen</h3>
-                      <?php
+                        <h3>Gewonnen veilingen</h3>
+                        <?php
 
                         $auctions = $userwin;
                         if (isset($auctions[0]) AND !empty($auctions)) {
@@ -181,12 +190,12 @@ require('navbar.php');
                         } else {
                             echo "U heeft nog niets gewonnen :(";
                         }
-            
+
 
                         ?>
                     </div>
-                  </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
