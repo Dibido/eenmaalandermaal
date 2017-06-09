@@ -1,9 +1,8 @@
 <?php
 
-
 /*
  *
- *  This file includes functions for often-used SQL querries, thus giving the HTML-pages better readability
+ *  This file includes functions for often-used SQL queries, thus giving the HTML-pages better readability
  *
  *
  */
@@ -14,6 +13,13 @@
  *  These are all the used querries
  *
  */
+
+$QueryInsertImages = <<<EOT
+
+INSERT INTO BESTAND(BES_filenaam, BES_voorwerpnummer)
+VALUES (:filenaam , :voorwerpnummer);
+
+EOT;
 
 $QueryFindAuctionsByUser = <<<EOT
     
@@ -36,30 +42,29 @@ $QueryFindAuctionsByUser = <<<EOT
   COUNT(*)                                                                                 AS Biedingen
 
 FROM Voorwerp
-where VW_verkoper = ? 
+WHERE VW_verkoper = ? 
 AND VW_voorwerpnummer != ?
 GROUP BY VW_voorwerpnummer,vw_titel,VW_looptijdEinde,VW_thumbnail
 
 EOT;
 
 
-
 $QueryTopCategories = <<<EOT
 
 
 SELECT
-  top 10
+  TOP 10
   RB_Naam,
   RB_Nummer,
   sum(VW_bodcount)
 
 FROM Rubriek
   INNER JOIN Voorwerp_Rubriek
-  on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-  inner join Voorwerp
+  ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+  INNER JOIN Voorwerp
   ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-  group by RB_Naam, RB_Nummer, VW_bodcount
-ORDER BY sum(Voorwerp.VW_bodcount) desc
+  GROUP BY RB_Naam, RB_Nummer, VW_bodcount
+ORDER BY sum(Voorwerp.VW_bodcount) DESC
 
 
 
@@ -69,7 +74,7 @@ EOT;
 $QueryTop2 = <<<EOT
 SELECT
   --Vul hier je TOP X hoeveelheid in
-  top 2
+  TOP 2
   VW_voorwerpnummer,
   VW_titel,
   --Laat het hoogste bod zien op het voorwerpnummer
@@ -88,17 +93,17 @@ SELECT
 
 FROM Voorwerp
   LEFT OUTER JOIN Voorwerp_Rubriek
-  on Voorwerp.VW_voorwerpnummer = Voorwerp_Rubriek.VR_Voorwerp_Nummer
+  ON Voorwerp.VW_voorwerpnummer = Voorwerp_Rubriek.VR_Voorwerp_Nummer
 --Vul hier de minimum en maximum tijd over in
 
 WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 1 AND
-      VR_Rubriek_Nummer IN (select top 5 RB_Nummer
-                            from Rubriek
-                              inner JOIN Voorwerp_Rubriek
-                                on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                              inner join Voorwerp
-                                on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                            group by RB_Nummer
+      VR_Rubriek_Nummer IN (SELECT TOP 5 RB_Nummer
+                            FROM Rubriek
+                              INNER JOIN Voorwerp_Rubriek
+                                ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+                              INNER JOIN Voorwerp
+                                ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+                            GROUP BY RB_Nummer
                             ORDER BY sum(VW_bodcount) DESC
                             )
 GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel,VW_thumbnail,VW_startprijs, VW_bodcount
@@ -141,13 +146,13 @@ WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
     FULL OUTER JOIN Rubriek
       ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   WHERE RB_Naam IN (
-    select top 1 RB_Naam
-from Rubriek
-inner JOIN Voorwerp_Rubriek
-on Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-inner join Voorwerp
-on Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-group by RB_Naam
+    SELECT TOP 1 RB_Naam
+FROM Rubriek
+INNER JOIN Voorwerp_Rubriek
+ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+INNER JOIN Voorwerp
+ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+GROUP BY RB_Naam
 ORDER BY sum(VW_bodcount) DESC
   )
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
@@ -167,7 +172,7 @@ SELECT
                                        FROM Bod
                                        WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                        ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-              ORDER BY BOD_Bodbedrag DESC), (select TOP 1 VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
+              ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
   VW_looptijdEinde,
   VW_thumbnail AS ImagePath
 FROM Voorwerp
@@ -192,7 +197,7 @@ EOT;
 /* Query om de betaalmethode op te halen */
 
 $GetBethaalMethodesQuerie = <<<EOT
-select * from Betalingswijzen ORDER BY BW_Betalingswijze DESC
+SELECT * FROM Betalingswijzen ORDER BY BW_Betalingswijze DESC
 EOT;
 
 /* Query landen ophalen registratie form */
@@ -254,7 +259,7 @@ FROM Voorwerp
   LEFT OUTER JOIN Rubriek r2 ON r2.RB_Nummer = r1.RB_Parent
   LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
-WHERE VW_voorwerpnummer = 
+WHERE VW_voorwerpnummer = ?
 
 
 EOT;
@@ -265,7 +270,7 @@ $QueryImagesFromItem = <<<EOT
 
 SELECT BES_filenaam
 FROM Bestand, Voorwerp
-WHERE Bestand.BES_voorwerpnummer =
+WHERE Bestand.BES_voorwerpnummer = ?
 
 EOT;
 
@@ -297,7 +302,7 @@ SELECT
                                        FROM Bod
                                        WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                        ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-              ORDER BY BOD_Bodbedrag DESC), (select TOP 1 VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
+              ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
   VW_looptijdEinde,
   VW_thumbnail AS ImagePath
 FROM Voorwerp
@@ -321,7 +326,7 @@ SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_
                                        FROM Bod
                                        WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                        ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-              ORDER BY BOD_Bodbedrag DESC), (select TOP 1 VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
+              ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
   VW_looptijdEinde,
   VW_thumbnail AS ImagePath
 FROM bod b
@@ -329,6 +334,7 @@ INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer
 WHERE BOD_gebruiker = ?
 GROUP BY BOD_voorwerpnummer,vw_voorwerpnummer, BOD_bodTijdEnDag, VW_titel, BOD_gebruiker, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
 EOT;
+
 
 /* query voor het zoeken van een Admin*/
 $QueryFindAdmin = <<<EOT
@@ -348,27 +354,27 @@ WHERE GEB_gebruikersnaam = ?
 EOT;
 
 $rubriekQuery = <<<EOT
-SELECT A.RB_Naam AS HoofdRubriek, B.RB_Naam AS Rubriek, C.RB_Naam AS SubRubriek, D.RB_Naam as SubSubRubriek, E.RB_Naam as SubSubSubRubriek, F.RB_Naam as SubSubSubSubRubriek, A.RB_Nummer as HoofdRubriekNummer, B.RB_Nummer as RubriekNummer, C.RB_Nummer AS SubRubriekNummer, D.RB_Nummer as SubSubRubriekNummer, E.RB_Nummer as SubSubSubRubriekNummer,F.RB_Nummer as SubSubSubSubRubriekNummer
+SELECT A.RB_Naam AS HoofdRubriek, B.RB_Naam AS Rubriek, C.RB_Naam AS SubRubriek, D.RB_Naam AS SubSubRubriek, E.RB_Naam AS SubSubSubRubriek, F.RB_Naam AS SubSubSubSubRubriek, A.RB_Nummer AS HoofdRubriekNummer, B.RB_Nummer AS RubriekNummer, C.RB_Nummer AS SubRubriekNummer, D.RB_Nummer AS SubSubRubriekNummer, E.RB_Nummer AS SubSubSubRubriekNummer,F.RB_Nummer AS SubSubSubSubRubriekNummer
                         FROM Rubriek A
 						FULL OUTER JOIN Rubriek B
-						on B.RB_Parent = A.RB_Nummer
+						ON B.RB_Parent = A.RB_Nummer
 						FULL OUTER JOIN Rubriek C
-						on C.RB_Parent = B.RB_Nummer
+						ON C.RB_Parent = B.RB_Nummer
 						FULL OUTER JOIN Rubriek D
-						on D.RB_Parent = c.RB_Nummer
+						ON D.RB_Parent = c.RB_Nummer
 						FULL OUTER JOIN Rubriek E
-						on E.RB_Parent = D.RB_Nummer
+						ON E.RB_Parent = D.RB_Nummer
 						FULL OUTER JOIN Rubriek F
-						on F.RB_Parent = E.RB_Nummer          
+						ON F.RB_Parent = E.RB_Nummer          
                         WHERE A.RB_Parent = -1
                         GROUP BY F.RB_Naam,E.RB_Naam,D.RB_Naam, C.RB_Naam,B.RB_Naam,A.RB_Naam, F.RB_Nummer, E.RB_Nummer,D.RB_Nummer,C.RB_Nummer,B.RB_Nummer,A.RB_Nummer
                         ORDER BY A.RB_Naam, B.RB_Naam, C.RB_Naam,D.RB_Naam,E.RB_Naam, F.RB_Nummer
 EOT;
 
 $betalingsMethodeQuery = <<<EOT
-select * 
-from Betalingswijzen 
-ORDER BY BW_betalingswijze desc
+SELECT * 
+FROM Betalingswijzen 
+ORDER BY BW_betalingswijze DESC
 EOT;
 
 ?>
