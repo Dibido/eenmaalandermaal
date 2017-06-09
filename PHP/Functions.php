@@ -24,6 +24,18 @@ function insertBestanden($voorwerpnummer, $aantalplaatjes, $extensie)
     }
 }
 
+function insertThumbnail($files,$voorwerpnummer)
+{
+    global $connection;
+    global $QueryUpdateImages;
+    $extention = pathinfo($files['thumbnail']["name"], PATHINFO_EXTENSION);
+    $filepath = '/upload/' . $voorwerpnummer[0] . '_0.' . $extention;
+    $stmt = $connection->prepare($QueryUpdateImages);
+    $stmt->bindParam(':thumbnail', $filepath);
+    $stmt->bindParam(':voorwerpnummer', $voorwerpnummer[0]);
+    $stmt->execute();
+}
+
 
 /*change time formatting based on remaining time.
 > 2 days = date

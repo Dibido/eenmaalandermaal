@@ -21,6 +21,14 @@ VALUES (:filenaam , :voorwerpnummer);
 
 EOT;
 
+$QueryUpdateImages = <<<EOT
+
+update Voorwerp
+set VW_thumbnail = :thumbnail
+where VW_voorwerpnummer = :voorwerpnummer
+
+EOT;
+
 $QueryFindAuctionsByUser = <<<EOT
     
     SELECT

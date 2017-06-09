@@ -30,9 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $aantalplaatjes = sizeof($_FILES['afbeelding']['name']);
         echo $aantalplaatjes;
         insertBestanden($lastID[0],$aantalplaatjes,$extentions);
+        insertThumbnail($_FILES,$lastID);
         uploadExtraAfbeeldingen($_FILES,$lastID,$aantalplaatjes,$extentions);
         uploadThumbnail($_FILES, $lastID);
 
+        header('Location: voorwerp.php?ItemID='.$lastID[0]);
     }
 }
 
