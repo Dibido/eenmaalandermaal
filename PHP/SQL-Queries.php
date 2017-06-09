@@ -318,7 +318,7 @@ EOT;
 
 // Biedingen van gebruikers voor profiel pagina
 $QueryUserBod = <<<EOT
-SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_gebruiker, (select distinct top 1  BOD_bodTijdEnDag from bod) as tijd1,
+SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_gebruiker, (select distinct TOP 1  BOD_bodTijdEnDag from bod) as tijd1,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
               FROM Bod
