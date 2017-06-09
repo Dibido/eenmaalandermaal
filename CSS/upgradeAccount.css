@@ -5,10 +5,13 @@
 #conroleButton{
     width: 48%;
     float: right;
-
 }
 .panel p{
     border-bottom: #e5e5e5 solid 2px;
     margin-bottom: 25px;
     padding-bottom: 5px;
+}
+#plaatsAdvertentieForm{
+    margin: 0;
+    display: none;
 }

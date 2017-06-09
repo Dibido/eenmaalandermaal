@@ -60,12 +60,21 @@ function findUserInfo($username)
 function findUserAds($username)
 {
     GLOBAL $connection;
+<<<<<<< HEAD
     GLOBAL $QueryUserAds;
     
     $stmt = $connection->prepare($QueryUserAds);
     $stmt->execute(array($username));
     //$stmt->nextRowset();
     return $stmt-> fetchAll(); 
+=======
+    GLOBAL $QueryFindUserAds;
+
+    $stmt = $connection->prepare($QueryFindUserAds);
+    $stmt->execute(array($username));
+    return $stmt->fetchAll();
+
+>>>>>>> c509a8417c851af3063c4a18e80763a7dd2e3885
 }
 
 
@@ -1464,5 +1473,33 @@ function FindUser($username)
     return $stmt->fetch();
 }
 
+
+/* this function updates user information to updgrade his account to an account that can sell items */
+
+/* input:
+ *
+ *
+ */
+
+
+
+function upgradeAccount($itemID, $user, $offer)
+{
+    GLOBAL $connection;
+
+    $query = <<<EOT
+
+INSERT INTO Bod (BOD_voorwerpnummer, BOD_gebruiker, BOD_bodbedrag)
+VALUES (:itemID , :user, :offer )
+
+EOT;
+
+    $stmt = $connection->prepare($query);
+    $stmt->bindParam(':offer', $offer);
+    $stmt->bindParam(':user', $user);
+    $stmt->bindParam(':itemID', $itemID);
+    $stmt->execute();
+
+}
 
 ?>
