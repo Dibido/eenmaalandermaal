@@ -1,8 +1,8 @@
 --Dit stuk sql leest de triggers uit en verwijdert ze.
-DECLARE @DropTriggers nVARCHAR(MAX) = ''
+DECLARE @DropTriggers NVARCHAR(MAX) = ''
 SELECT @DropTriggers += 'DROP TRIGGER ' + [so].[name] + CHAR(13)
 FROM sysobjects AS [so]
-INNER JOIN sysobjects AS so2 ON so.parent_obj = so2.Id
+  INNER JOIN sysobjects AS so2 ON so.parent_obj = so2.Id
 WHERE [so].[type] = 'TR'
 PRINT @DropTriggers
 EXEC sp_executesql @DropTriggers
@@ -27,7 +27,7 @@ AS
                ORDER BY BOD_Bodbedrag DESC), VW_startprijs
     ))
   END
-  GO
+GO
 --Trigger om het minimale nieuwe bod te berekenen
 CREATE TRIGGER TR_minimalenieuwebod
   ON Bod
@@ -51,7 +51,7 @@ AS
       END
     )
   END
-  GO
+GO
 
 --Trigger om het aantal voorwerpen per rubriek te berekenen.
 CREATE TRIGGER TR_ComputedCount
@@ -72,11 +72,12 @@ AS
                  FROM Voorwerp_Rubriek
                  WHERE Voorwerp_Rubriek.VR_Rubriek_Nummer = RB_Nummer)
   END
-  GO
+GO
 
 
-CREATE TRIGGER TR_BodCount ON Bod
-FOR INSERT,UPDATE,DELETE
+CREATE TRIGGER TR_BodCount
+  ON Bod
+FOR INSERT, UPDATE, DELETE
 AS
   BEGIN
     --Bijwerken aantal biedingen per voorwerp
@@ -84,13 +85,13 @@ AS
     UPDATE Voorwerp
     SET VW_BodCount =
     (
-      COALESCE((select  count(BOD_voorwerpnummer)
-	  from Bod
-	  WHERE Bod.BOD_voorwerpnummer = VW_voorwerpnummer
-	  group by BOD_voorwerpnummer),0)
+      COALESCE((SELECT count(BOD_voorwerpnummer)
+                FROM Bod
+                WHERE Bod.BOD_voorwerpnummer = VW_voorwerpnummer
+                GROUP BY BOD_voorwerpnummer), 0)
     )
   END
-  GO
+GO
 
 -- Trigger die registratiecodes die ouder dan 24 uur zijn verwijderd.
 CREATE TRIGGER TR_ActivatieVerlopen
