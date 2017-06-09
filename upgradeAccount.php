@@ -19,16 +19,49 @@ $errorMessage = [False];
 $disabled = '';
 
 foreach ($_POST as $itemId => $item){
+    $it = trim($item);
     if(empty($item)){
         $errorMessage = [True, ' U heeft niet alle velden ingevuld.'];
     }else{
          $results[$itemId] = cleanInput($item);
 
          /* Form handeling */
-        $disabled = 'disabled';
-        $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
 
+
+        //checking the input for invalid values
+        if(len($results["banknaam"]) <= 24){
+            if(len($results["rekeningnummer"]) <= 31){
+                if(len($results["creditcardnummer"]) <= 19){
+
+                }
+
+            }
+
+        }
+
+        $results[""]
+
+
+         bank = 24
+             bankreninig = 31
+                 creditcard = 19
+                     controle = correct?
+
+         //creating the code for the user
+
+
+
+         //
+
+        $disabled = 'disabled';
+        $formSend = True;
+        $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
     }
+}
+
+
+if($formSend){
+
 }
 
 
@@ -89,14 +122,14 @@ include "navbar.php";
             <div class="panel-heading text-center">Vul uw gegevens in</div>
             <div class="panel-body">
 
-                <form action="upgradeAccount.php" method="POST" id="mainForm">
+                <form <?php if($formSend){echo "action=upgradeAccount2.php";} ?> action="upgradeAccount.php" method="POST" id="mainForm">
 
                     <!-- banknaam input -->
 
                     <div class="form-group">
                         <div class="input-group">
                             <input <?php echo $disabled?> name="banknaam" type="text" class="form-control" placeholder="banknaam"
-                                   required value="<?php echo $results["banknaam"]; ?>">
+                                   required value="<?php echo $results["banknaam"]; ?>"  max="24">
                             <div class="input-group-addon"><i class="glyphicon glyphicon-home"></i></div>
                         </div>
                     </div>
@@ -107,7 +140,7 @@ include "navbar.php";
                     <div class="form-group">
                         <div class="input-group">
                             <input <?php echo $disabled?> name="rekeningnummer" type="text" class="form-control" placeholder="rekeningnummer"
-                                   required value="<?php echo $results["rekeningnummer"]; ?>">
+                                   required value="<?php echo $results["rekeningnummer"]; ?>" max="31">
                             <div class="input-group-addon"><i class=" glyphicon glyphicon-euro"></i></div>
                         </div>
                     </div>
@@ -118,7 +151,7 @@ include "navbar.php";
                     <div class="form-group">
                         <div class="input-group">
                             <input <?php echo $disabled?> name="creditcardnummer" type="text" class="form-control" placeholder="creditcardnummer"
-                                   required value="<?php echo $results["creditcardnummer"]; ?>">
+                                   required value="<?php echo $results["creditcardnummer"]; ?>" max="19">
                             <div class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></div>
                         </div>
                     </div>
@@ -157,7 +190,7 @@ include "navbar.php";
 
                 <?php
 
-                    if($disabled == '') {
+                    if(!$formSend) {
                         echo "
                         <p>Wanneer een gebruiker zich wilt registreren als een verkoper, is het nodig om een extra controle te ondergaan.
                         Deze controle is mogelijk in de vorm van een brief, met een persoonlijke code. Of via een controle van uw creditcard.
@@ -177,19 +210,15 @@ include "navbar.php";
 
                 <?php
 
-                    if($disabled != ''){
+                    if($formSend){
                         echo" <div class=\"form-group\">
                             <div class=\"input-group\">
                                 <input name=\"verificatiecode\" type=\"text\" class=\"form-control\" placeholder=\"verificatiecode\"
-                                       required>
+                                       required form='mainForm'>
                                 <div class=\"input-group-addon\"><i class=\"glyphicon glyphicon-check\"></i></div>
                             </div>
                         </div>";
                     }
-
-
-
-
 
 
 
@@ -202,13 +231,13 @@ include "navbar.php";
                     <select class="form-control controleSelect" required form="mainForm" name="controleOptie" id="controleSelect">
 
                         <?php
-                        if($disabled == ''){
+                        if(!$formSend){
                             echo"
                                  <option value=\"\" disabled selected>Controle voor registratie</option>
                                  <option>Creditcard</option>
                                  <option>Post</option>";
                         }else{
-                            echo "<option id=\"" . $disabled . "\" value=\"" . $results["controleOptie"] . "\" disabled selected>" . $results["controleOptie"] . "</option>";
+                            echo "<option id=\"" . $disabled . "\" value=\"" . $results["controleOptie"] . "\" selected>" . $results["controleOptie"] . "</option>";
                         }
 
                         ?>
