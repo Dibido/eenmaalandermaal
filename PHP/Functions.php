@@ -29,10 +29,19 @@ function insertThumbnail($files,$voorwerpnummer)
     global $connection;
     global $QueryUpdateImages;
     $extention = pathinfo($files['thumbnail']["name"], PATHINFO_EXTENSION);
-    $filepath = '/upload/' . $voorwerpnummer[0] . '_0.' . $extention;
+    $filepath = '/upload/' . $voorwerpnummer . '_0.' . $extention;
     $stmt = $connection->prepare($QueryUpdateImages);
     $stmt->bindParam(':thumbnail', $filepath);
-    $stmt->bindParam(':voorwerpnummer', $voorwerpnummer[0]);
+    $stmt->bindParam(':voorwerpnummer', $voorwerpnummer);
+    $stmt->execute();
+}
+
+function insertRubriek($rubriek,$voorwerpnummer){
+    global $connection;
+    global $QueryInsertRubriek;
+    $stmt = $connection->prepare($QueryInsertRubriek);
+    $stmt->bindParam(':voorwerpnummer', $voorwerpnummer);
+    $stmt->bindParam(':rubriek', $rubriek);
     $stmt->execute();
 }
 
@@ -1385,7 +1394,6 @@ function prepareveilingInput($waardes, $sessie)
 
 function plaatsAdvertentie($veilingInput)
 {
-    print_r($veilingInput);
     GLOBAL $connection;
     GLOBAL $plaatsVeilingQuery;
     GLOBAL $plaatsVeilingInRubriekQuery;
@@ -1594,6 +1602,8 @@ function uploadThumbnail($files, $id)
     $extention = pathinfo($files['thumbnail']["name"], PATHINFO_EXTENSION);
     move_uploaded_file($files['thumbnail']["tmp_name"], $target_dir . $id[0] . '_0.' . $extention);
 }
+
+
 
 
 function getCodeFromMail()

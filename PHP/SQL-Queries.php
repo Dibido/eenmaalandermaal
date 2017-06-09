@@ -453,8 +453,8 @@ INSERT into Voorwerp
 )
 EOT;
 
-$plaatsVeilingInRubriekQuery = <<<EOT
-INSERT INTO
+$QueryInsertRubriek = <<<EOT
+INSERT INTO Voorwerp_Rubriek values(:voorwerpnummer, :rubriek)
 
 EOT;
 
