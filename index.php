@@ -121,7 +121,7 @@ require('navbar.php');
                             if (empty($BestFromCategories[$i]["ImagePath"])) {
                                 $BestFromCategories[$i]["ImagePath"] = "images/no-image-available.jpg";
                             } else {
-                                $BestFromCategories[$i]["ImagePath"] = "http://iproject3.icasites.nl/pics/" . $BestFromCategories[$i]["ImagePath"];
+                                $BestFromCategories[$i]["ImagePath"] = "http://iproject3.icasites.nl" . $BestFromCategories[$i]["ImagePath"];
                             }
                         }
 
@@ -237,7 +237,7 @@ require('navbar.php');
                 foreach ($TopClosed as $veiling) {
 
                     //preparing the image paths
-                    $veiling["ImagePath"] = "http://iproject3.icasites.nl/thumbnails/" .  $veiling["ImagePath"];
+                    $veiling["ImagePath"] = "http://iproject3.icasites.nl" .  $veiling["ImagePath"];
 
                     echo "<div class=\"veiling-rand col-md-12 col-sm-6 col-xs-6\">
                     <div class=\"veiling\">

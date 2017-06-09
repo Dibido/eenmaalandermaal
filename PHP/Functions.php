@@ -47,29 +47,33 @@ function FindAdminUsers($username)
 /* function for Finding user info for profiel page*/
 function findUserInfo($username)
 {
-  GLOBAL $connection;
-  GLOBAL $QueryFindUserInfo;
+    GLOBAL $connection;
+    GLOBAL $QueryFindUserInfo;
 
-  $stmt = $connection->prepare($QueryFindUserInfo);
-  $stmt->execute(array($username));
-  return $stmt-> fetchAll(); 
+    $stmt = $connection->prepare($QueryFindUserInfo);
+    $stmt->execute(array($username));
+    return $stmt->fetchAll();
 
 }
 
 /* function for Finding user ADS for profiel page*/
 function findUserAds($username)
 {
-  GLOBAL $connection;
-  GLOBAL $QueryFindUserAds;
+    GLOBAL $connection;
+    GLOBAL $QueryFindUserAds;
 
+<<<<<<< HEAD
   $stmt = $connection->prepare($QueryFindUserAds);
   $stmt->execute(array($username));
   return $stmt-> fetch(); 
   //return $stmt-> fetchAll(); 
+=======
+    $stmt = $connection->prepare($QueryFindUserAds);
+    $stmt->execute(array($username));
+    return $stmt->fetchAll();
+>>>>>>> 49e341ad2f51699a4ad591750f7c79f1070cc743
 
 }
-
-
 
 
 /*function for finding adverts per user*/
@@ -206,7 +210,7 @@ EOT;
 
 function GetCategoryPerAuction($categoryID)
 {
-    
+
 
     $QueryGetUserInfo = <<<EOT
     
@@ -313,6 +317,20 @@ function SendToDatabase($query)
     }
 }
 
+function SendToDatabase2($query)
+{
+    GLOBAL $connection;
+
+    //tries to send the query and returns the response
+    try {
+        return $response = $connection->query($query)->fetchAll(PDO::FETCH_COLUMN);
+
+        //if unsuccessful, returns a False as first item and the error as the second item in a list
+    } catch (Exception $e) {
+        return [False, 'Error: ' . $e->getMessage()];
+    }
+}
+
 
 // Insert data in de DB
 function InsertIntoDatabase($SetRegistratie, $email, $code)
@@ -390,14 +408,14 @@ function DrawAuction($auction)
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" . $auction["VW_titel"] . "
                     </div>
-                    <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
+                    <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
                         <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
-                        <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] .'&snelbod=True'. "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
+                        <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . '&snelbod=True' . "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
                     </div>
                 </div>
             </div>
@@ -405,8 +423,8 @@ function DrawAuction($auction)
             
     ";
     createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
-
 }
+
 function DrawItemAuction($auction)
 {
     //testing for missing images and replacing with backup image
@@ -420,14 +438,14 @@ function DrawItemAuction($auction)
                 <div class=\"veiling\">
                     <div class=\"veiling-titel label label-default\">" . $auction["VW_titel"] . "
                     </div>
-                    <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
+                    <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
                         <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
-                        <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] .'&snelbod=True'. "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
+                        <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . '&snelbod=True' . "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
                     </div>
                 </div>
             </div>
@@ -452,14 +470,14 @@ function DrawSearchResults($auction)
                     <div class=\"veiling-titel label label-default\">" .
         $auction["VW_titel"] . "
                     </div>"
-        . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/thumbnails/' . $auction["ImagePath"] . ")\"></div></a>
+        . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
                         <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
-                        <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] .'&snelbod=True'. "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
+                        <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . '&snelbod=True' . "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
                     </div>
                 </div>
             </div>
@@ -547,20 +565,6 @@ function SearchFunction($SearchOptions)
     $SearchUser = $SearchOptions['SearchUser'];
     $ResultsPerPage = $SearchOptions['ResultsPerPage'];
     $Offset = $SearchOptions['Offset'];
-
-    //clean the input
-    $SearchKeyword = cleanInput($SearchKeyword);
-    $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
-    $SearchFilter = cleanInput($SearchFilter);
-    $SearchCategory = cleanInput($SearchCategory);
-    $SearchMaxRemainingTime = cleanInput($SearchMaxRemainingTime);
-    $SearchMinRemainingTime = cleanInput($SearchMinRemainingTime);
-    $SearchMinPrice = cleanInput($SearchMinPrice);
-    $SearchMaxPrice = cleanInput($SearchMaxPrice);
-    $ResultsPerPage = cleanInput($ResultsPerPage);
-    $SearchUser = cleanInput($SearchUser);
-    $Offset = cleanInput($Offset);
-
 //Prepare the query
     $QuerySearchProducts = <<< EOT
 SELECT DISTINCT
@@ -593,9 +597,7 @@ FROM Voorwerp
   LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
 WHERE (VW_titel LIKE '%$SearchKeyword%')
-  AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
-  AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
-  AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+   AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
    FROM Bod
    WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
                                FROM Bod
@@ -643,17 +645,6 @@ function amountOfResultsLeft($SearchOptions)
     $SearchUser = $SearchOptions['SearchUser'];
     $ResultsPerPage = $SearchOptions['ResultsPerPage'];
     $Offset = $SearchOptions['Offset'];
-    //clean the input
-    $SearchKeyword = cleanInput($SearchKeyword);
-    $SearchPaymentMethod = cleanInput($SearchPaymentMethod);
-    $SearchCategory = cleanInput($SearchCategory);
-    $SearchMaxRemainingTime = cleanInput($SearchMaxRemainingTime);
-    $SearchMinRemainingTime = cleanInput($SearchMinRemainingTime);
-    $SearchMinPrice = cleanInput($SearchMinPrice);
-    $SearchMaxPrice = cleanInput($SearchMaxPrice);
-    $ResultsPerPage = cleanInput($ResultsPerPage);
-    $SearchUser = cleanInput($SearchUser);
-    $Offset = cleanInput($Offset);
 
 //Prepare the query
     $QuerySearchProducts = <<< EOT
@@ -672,8 +663,6 @@ FROM Voorwerp
   LEFT OUTER JOIN Rubriek r3 ON r3.RB_Nummer = r2.RB_Parent
   LEFT OUTER JOIN Rubriek r4 ON r4.RB_Nummer = r3.RB_Parent
 WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
-  AND ($SearchMaxRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) <= $SearchMaxRemainingTime)
-  AND ($SearchMinRemainingTime IS NULL OR DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) >= $SearchMinRemainingTime)
   AND ($SearchMinPrice IS NULL OR (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
    FROM Bod
    WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
@@ -729,9 +718,10 @@ function printVragen($Vragen)
     }
 }
 
-function printBetalingswijzen($Betaalmethodes){
-    foreach($Betaalmethodes as $betaalmethode){
-        echo '<option value="' . $betaalmethode['BW_betalingswijze'] . '">'. $betaalmethode['BW_betalingswijze'] .'</option>';
+function printBetalingswijzen($Betaalmethodes)
+{
+    foreach ($Betaalmethodes as $betaalmethode) {
+        echo '<option value="' . $betaalmethode['BW_betalingswijze'] . '">' . $betaalmethode['BW_betalingswijze'] . '</option>';
     }
 }
 
@@ -804,6 +794,7 @@ function printCategories($zoekterm, $rubriekQuery, $rubriekNummer, $sorteerfilte
     }
     echo '</ul>';
 }
+
 function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
 {
     global $connection;
@@ -824,9 +815,10 @@ function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
             if (!isset($rubrieken[$i][$j + 1]) OR ($j == (sizeof($rubrieken[$i]) / 2) - 1) AND isset($rubrieken[$i][$j])) {
                 //If a rubriekNummer was entered and the current categorie number is in the array $parentRubrieken it will have a primrose yellow background
                 if (in_array($rubrieken[$i][$j + 6], $parentRubrieken)) {
-                    echo "<div class='label-info'><a href=?rubriek=" . urldecode($rubrieken[$i][$j + 6]) . ">" . urldecode($rubrieken[$i][$j]). "</a></div><ul>";
+                    echo "<div class='label-info'><a href=?rubriek=" . urldecode($rubrieken[$i][$j + 6]) . ">" . urldecode($rubrieken[$i][$j]) . "</a></div><ul>";
                 } else {
-                    echo "<a href=?rubriek=" . urldecode($rubrieken[$i][$j + 6]) . ">" . urldecode($rubrieken[$i][$j]). "</a><ul>";                }
+                    echo "<a href=?rubriek=" . urldecode($rubrieken[$i][$j + 6]) . ">" . urldecode($rubrieken[$i][$j]) . "</a><ul>";
+                }
                 //If the last object in the three was printed it will stop the second loop.
                 $j = sizeof($rubrieken[$i]);
             } //If the current category is set and it is not the same as the category from last row a new Unordered list will be created
@@ -854,7 +846,17 @@ function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
     echo '</ul>';
 }
 
-function drawPagenumbers($pagenum,$Dictionary,$result,$ResultsPerPage,$zoekterm,$rubriek,$sorteerfilter,$prijs,$betalingsmethode,$user){
+function drawPagenumbers($Dictionary, $result)
+{
+    $zoekterm = $Dictionary['SearchKeyword'];
+    $betalingsmethode = $Dictionary ['SearchPaymentMethod'];
+    $rubriek = $Dictionary ['SearchCategory'];
+    $sorteerfilter = $Dictionary['SearchFilter'];
+    $prijs['min'] = $Dictionary ['SearchMinPrice'];
+    $prijs['max'] = $Dictionary ['SearchMaxPrice'];
+    $user = $Dictionary ['SearchUser'];
+    $pagenum = $Dictionary ['Pagenum'];
+    $ResultsPerPage = $Dictionary['ResultsPerPage'];
     if (!empty($result)) {
         //Returns the amount of results on the next 4 pages.
         $amountOfResults = amountOfResultsLeft($Dictionary);
@@ -871,31 +873,31 @@ function drawPagenumbers($pagenum,$Dictionary,$result,$ResultsPerPage,$zoekterm,
         if ($pagenum != 1) {
             $startPage--;
             echo '<li class="page-item">';
-            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $previousPage . "> <- Vorige</a> ";
+            echo "<a href=" . " ?zoekterm=" . urlencode($zoekterm) . "&rubriek=" . urlencode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $previousPage . "> <- Vorige</a> ";
             echo '</li>';
         }
         if ($startPage < 1) {
             $startPage = 1;
         }
-        if($lastPageNum >= $pagenum + 4){
-            $lastPageNum --;
+        if ($lastPageNum >= $pagenum + 4) {
+            $lastPageNum--;
         }
         //Loop creates all buttons to the next or pages before the current one.
         for ($i = $startPage; $i <= $lastPageNum; $i++) {
             if ($i == $pagenum) {
                 echo '<li class="page-item active text-center">';
-                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
+                echo "<a href=" . " ?zoekterm=" . urlencode($zoekterm) . "&rubriek=" . urlencode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
                 echo '</li>';
             } else {
                 echo '<li class="page-item">';
-                echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
+                echo "<a href=" . " ?zoekterm=" . urlencode($zoekterm) . "&rubriek=" . urlencode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $i . ">" . $i . "</a> ";
                 echo '</li>';
             }
         }
         //Only when the amount of future pages is 1 or higher the next button will be created. This since there is no next page when there are no future pages.
         if ($amountOfFuturePages > 0) {
             echo '<li class="page-item">';
-            echo "<a href=" . " ?zoekterm=" . urldecode($zoekterm) . "&rubriek=" . urldecode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $nextPage . ">Volgende -></a> ";
+            echo "<a href=" . " ?zoekterm=" . urlencode($zoekterm) . "&rubriek=" . urlencode($rubriek) . "&sorteerfilter=" . urlencode($sorteerfilter) . "&prijs=" . $prijs["min"] . urlencode(",") . $prijs["max"] . "&betalingsmethode=" . urlencode($betalingsmethode) . "&user=" . $user . "&pagenum=" . $nextPage . ">Volgende -></a> ";
             echo '</li></ul>';
         }
     }
@@ -904,7 +906,7 @@ function drawPagenumbers($pagenum,$Dictionary,$result,$ResultsPerPage,$zoekterm,
     elseif ($pagenum != 1) {
         echo '<h1> Page ' . $pagenum . ' does not exist</h1>';
     }
-                echo '</div>';
+    echo '</div>';
 
 
 //Einde Paginanummering
@@ -912,37 +914,31 @@ function drawPagenumbers($pagenum,$Dictionary,$result,$ResultsPerPage,$zoekterm,
 
 function createTimer($tijd, $VW_Titel, $VW_Nummer)
 {
+    $timer = "timer".$VW_Nummer;
     echo '<script>
     // Set the date we\'re counting down to
-    var countDownDate = new Date("' . $tijd . '").getTime();
-
+    var '.$timer.' = new Date("' . $tijd . '").getTime();
     // Update the count down every 1 second
     var x = setInterval(function() {
-
         // Get todays date and time
         var now = new Date().getTime();
-
         // Find the distance between now an the count down date
-        var distance = countDownDate - now;
-
+        var distance = '.$timer.' - now;
         // Time calculations for days, hours, minutes and seconds
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
         // Display the result in the element with id="demo"
-     
-     
-     
-       if(days >= 1){
+        
+        if(days >= 1){
         document.getElementById("' . $VW_Nummer . '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
-        }else if(seconds < 10){
-        document.getElementById("' . $VW_Nummer . '").innerHTML =  hours + "h " 
+        }else if(days < 1 && seconds < 10){
+        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("' . $VW_Nummer . '").innerHTML =  hours + "h " 
+        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
         // If the count down is finished, write some text
@@ -954,6 +950,7 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
 </script>
 ';
 }
+
 
 
 // functie die email adres invult bij laden registreer1.php indien al ingevuld.
@@ -1149,9 +1146,9 @@ function checkEmailSent()
                 InsertIntoDatabase($SetRegistratie, $email, $code);
                 mail($email, $subject, $message, $headers);
                 echo '  <div class="alert alert-success">
-                            <strong>Success!</strong>Er is een verificatiecode verzonden naar ' . $email . '!</div>';
+                            <strong>Success!<br></strong> Er is een verificatiecode verzonden naar ' . $email . '!</div>';
             }
-        } else if(!isset($_POST['code'])) {
+        } else if (!isset($_POST['code'])) {
             echo '  <div class="alert alert-danger" >
                         <strong > Fout!</br></strong > Vul A.U.B. een geldig E-mailadres in.
                         </div > ';
@@ -1192,6 +1189,115 @@ function validateHash()
     return $emailadres;
 }
 
+function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
+{
+    $looptijden = array(1, 3, 5, 7, 9);
+    $errorResults = array();
+    $maxFileSize = 5000000;
+    $totalSize = 0;
+    $thumbnailFileType = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
+    $afbeeldingFileTypes = array();
+    $allowedFileTypes = array('png','jpg','jpeg');
+    for ($i = 0; $i < sizeof($_FILES['afbeelding']['name']); $i++) {
+        $totalSize += $_FILES['afbeelding']['size'][$i];
+    }
+    for ($i = 0; $i < 9; $i++) {   //for-loop vullen van array anders undefined index
+        $errorResults[$i] = "";
+    }
+    $errorResults[9] = false;
+    if ($_SERVER["REQUEST_METHOD"] != "POST"){return $errorResults;}
+    if (empty($_POST['Titel'])) {
+        $errorResults[0] = "Titel is een verplicht veld!";
+        $errorResults[9] = true;
+    } elseif (strlen(trim($_POST['Titel'])) < 4) {
+        $errorResults[0] = "De Titel heeft een minimum lengte van 4 tekens!";
+        $errorResults[9] = true;
+    } elseif (strlen(trim($_POST['Titel'])) > 90) {
+        $errorResults[0] = "De Titel heeft een maximum lengte van 90 tekens!";
+        $errorResults[9] = true;
+    }
+    if (empty($_POST['Beschrijving'])) {
+        $errorResults[1] = "Beschrijving is een verplicht veld!";
+        $errorResults[9] = true;
+    } elseif (strlen(trim($_POST['Beschrijving'])) < 20) {
+        $errorResults[1] = "De beschrijving heeft een minimum lengte van 20 tekens";
+        $errorResults[9] = true;
+    }
+    if ($_FILES['thumbnail']['size'] > $maxFileSize) {
+        $errorResults[2] = "De maximum toegestane grootte van de thumbnail is " . $maxFileSize . "uw file is: " . $_FILES['thumbnail']['size'] / 1000 / 1024 . "MB";
+        $errorResults[9] = true;
+    } elseif (!in_array($thumbnailFileType,$allowedFileTypes)) {
+        $errorResults[2] = "De thumbnail mag alleen een .jpg, .png of .jpeg bestand zijn.";
+        $errorResults[9] = true;
+    } elseif ($_FILES['thumbnail']['error'] == 4) {
+        $errorResults[2] = "Er was geen thumbnail geselecteerd";
+        $errorResults[9] = true;
+    } elseif($_FILES['thumbnail']['error'] != 0) {
+        $errorResults[2] = "Er is iets mis gegaan probeer opnieuw de thumbnail up te loaden";
+        $errorResults[9] = true;
+    }
+    if ($totalSize > $maxFileSize * 3) {
+        $errorResults[3] = "De maximum toegestane grootte van de afbeeldingen is " . 3 * $maxFileSize . "MB uw file is: " . $totalSize . "MB";
+        $errorResults[9] = true;
+    } elseif (!in_array(4, $_FILES['afbeelding']['error']) and !in_array(0, $_FILES['afbeelding']['error'])) {
+        $errorResults[3] = "Er is iets mis gegaan probeer opnieuw de afbeelding up te loaden";
+        $errorResults[9] = true;
+    } elseif (sizeof($_FILES['afbeelding']['error']) > 3){
+        $errorResults[3] = "U mag maximaal 3 extra afbeeldingen selecteren";
+        $errorResults[9] = true;
+    }
+    if (empty($_POST['looptijd'])) {
+        $errorResults[4] = "Er was looptijd geselecteerd!";
+        $errorResults[9] = true;
+    } elseif (!in_array($_POST['looptijd'], $looptijden)) {
+        $errorResults[4] = "De looptijd mag enkel 1,3,5,7,10 dag(en) zijn!";
+        $errorResults[9] = true;
+    }
+    if (empty($_POST['startprijs'])) {
+        $errorResults[5] = "Er was geen startprijs ingevuld!";
+        $errorResults[9] = true;
+    } elseif ($_POST['startprijs'] < 1 OR $_POST['startprijs'] > 9999999.9) {
+        $errorResults[5] = "De startprijs mag niet lager dan €1 zijn en niet hoger dan €9.999.999,9!";
+        $errorResults[9] = true;
+    }
+    if (empty($_POST['betalingswijze'])) {
+        $errorResults[6] = "De betalingswijze mag niet leeg zijn!";
+        $errorResults[9] = true;
+    }/* elseif (!in_array($_POST['betalingswijze'], $Betalingswijzen)) {
+        $errorResults[6] = "Selecteer een geldige betalingswijze";
+        $errorResults[9] = true;
+    }*/
+    if (empty($_POST['plaats'])) {
+        $errorResults[7] = "De plaatsnaam mag niet leeg zijn!";
+        $errorResults[9] = true;
+    }
+    if (empty($_POST['land'])) {
+        $errorResults[7] = "Het land mag niet leeg zijn!";
+        $errorResults[9] = true;
+    } elseif (!in_array($_POST['land'], $landen)) {
+        $errorResults[7] = "Selecteer een gelding land!";
+        $errorResults[9] = true;
+    }
+    if (!empty($_POST['verzendkosten'])) {
+        if (!is_numeric($_POST['verzendkosten'])) {
+            $errorResults[8] = "Verzendkosten mogen allen uitgedrukt worden in cijfers!";
+            $errorResults[9] = true;
+        }
+    }
+    return $errorResults;
+}
+
+function drawErrorResult($errorResults)
+{
+    $errorMessage = '';
+    for ($i = 0; $i < sizeof($errorResults) - 1; $i++) {
+        if (!empty($errorResults[$i])) {
+            $errorMessage = $errorMessage . $errorResults[$i] . '<br>';
+        }
+    }
+
+    return $errorMessage;
+}
 
 function checkRegistratie()
 {
@@ -1266,11 +1372,28 @@ function checkRegistratie()
 
 function doRegistratie()
 {
-    $error = false; // Dibran stelde voor dit op een andere plek neer te zetten, But I'm a Rebbbbeelllllll
+    $error = false;
 
     if (count($_SESSION) == 14) {
-        foreach ($_SESSION as $veld => $value) {
-            $value = cleanInput($value);
+
+        $userInfo = array(
+            $_SESSION['gebruikersnaam'],
+            $_SESSION['voornaam'],
+            $_SESSION['achternaam'],
+            $_SESSION['adres1'],
+            $_SESSION['adres2'],
+            $_SESSION['postcode'],
+            $_SESSION['woonplaats'],
+            $_SESSION['land'],
+            $_SESSION['geboortedatum'],
+            $_SESSION['email'],
+            $_SESSION['wachtwoord'],
+            $_SESSION['geheimevraag'],
+            $_SESSION['antwoord']
+        );
+
+        for ($i = 0; $i < count($userInfo); $i++) {
+            $userInfo[$i] = cleanInput($userInfo[$i]);
         }
 
 
@@ -1285,19 +1408,19 @@ EOT;
 
             GLOBAL $connection;
             $stmt = $connection->prepare($sqlInsertUser);
-            $stmt->bindParam(':gebruikersnaam', $_SESSION['gebruikersnaam']);
-            $stmt->bindParam(':voornaam', $_SESSION['voornaam']);
-            $stmt->bindParam(':achternaam', $_SESSION['achternaam']);
-            $stmt->bindParam(':adres1', $_SESSION['adres1']);
-            $stmt->bindParam(':adres2', $_SESSION['adres2']);
-            $stmt->bindParam(':postcode', $_SESSION['postcode']);
-            $stmt->bindParam(':woonplaats', $_SESSION['woonplaats']);
-            $stmt->bindParam(':land', $_SESSION['land']);
-            $stmt->bindParam(':geboortedatum', $_SESSION['geboortedatum']);
-            $stmt->bindParam(':email', $_SESSION['email']);
-            $stmt->bindParam(':wachtwoord', $_SESSION['wachtwoord']);
-            $stmt->bindParam(':geheimevraag', $_SESSION['geheimevraag']);
-            $stmt->bindParam(':antwoord', $_SESSION['antwoord']);
+            $stmt->bindParam(':gebruikersnaam', $userInfo[0]);
+            $stmt->bindParam(':voornaam', $userInfo[1]);
+            $stmt->bindParam(':achternaam', $userInfo[2]);
+            $stmt->bindParam(':adres1', $userInfo[3]);
+            $stmt->bindParam(':adres2', $userInfo[4]);
+            $stmt->bindParam(':postcode', $userInfo[5]);
+            $stmt->bindParam(':woonplaats', $userInfo[6]);
+            $stmt->bindParam(':land', $userInfo[7]);
+            $stmt->bindParam(':geboortedatum', $userInfo[8]);
+            $stmt->bindParam(':email', $userInfo[9]);
+            $stmt->bindParam(':wachtwoord', $userInfo[10]);
+            $stmt->bindParam(':geheimevraag', $userInfo[11]);
+            $stmt->bindParam(':antwoord', $userInfo[12]);
             $stmt->execute();
 
             // Delete user from Registratie Table
@@ -1309,11 +1432,11 @@ EOT;
             $stmt = $connection->prepare($sqlDeleteUser);
             $stmt->bindParam(':email', $_SESSION['email']);
             $stmt->execute();
-            $geregistreerdeGebruiker = $_SESSION['gebruikersnaam'];
+            $geregistreerdeGebruiker = cleanInput($_SESSION['gebruikersnaam']);
             session_unset();
 
             $_SESSION["Username"] = $geregistreerdeGebruiker;
-            echo '  <div class="alert alert-success">
+            echo '  <div class="alert alert-success"> 
                             <strong>Success!</strong>U bent succesvol geregistreerd op EenmaalAndermaal!</div>
                             <hr>
             <p class="text-center">U bent tevens ingelogd.</p>
@@ -1347,7 +1470,6 @@ function FindUser($username)
     $stmt->execute(array($username));
     return $stmt->fetch();
 }
-
 
 
 ?>

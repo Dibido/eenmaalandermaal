@@ -66,6 +66,10 @@ if (isset($_GET["loggedOut"]) && $_GET["loggedOut"] == 'True') {
 if (isset($_GET["bieden"]) && $_GET["bieden"] == 'True') {
     $errorMessage = [True, 'U moet inloggen om een bod te plaatsen.'];
 }
+/* checking if the user tried to open an unauthorised page */
+if (isset($_GET["unauthorised"]) && $_GET["unauthorised"] == 'True'){
+    $errorMessage = [True, 'U moet inloggen om deze pagina te bezoeken.'];
+}
 
 
 ?>

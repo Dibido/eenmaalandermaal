@@ -4,9 +4,7 @@
 --Return:
 --Een random gebruikersnaam
 IF OBJECT_ID('dbo.FN_GenereerRandomgebruiker') IS NOT NULL
-  IF OBJECT_ID('dbo.Bod') IS NOT NULL
-    DROP TABLE [dbo].[Bod]
-DROP FUNCTION [dbo].[FN_GenereerRandomgebruiker]
+  DROP FUNCTION [dbo].[FN_GenereerRandomgebruiker]
 GO
 
 CREATE FUNCTION FN_GenereerRandomgebruiker
@@ -62,14 +60,16 @@ CREATE FUNCTION FN_BodhogerdanMinimaalBod
   )
   RETURNS BIT
   BEGIN
-    IF (@Bodbedrag >= (SELECT VW_minimaalnieuwbod FROM Voorwerp WHERE VW_voorwerpnummer = @Voorwerp))
-		RETURN 1
+    IF (@Bodbedrag >= (SELECT VW_minimalenieuwebod
+                       FROM Voorwerp
+                       WHERE VW_voorwerpnummer = @Voorwerp))
+      RETURN 1
 
-	RETURN 0
+    RETURN 0
   END
-  GO
---Functie om te kijken of je niet op je eigen voorwerp gaat bieden
+GO
 
+--Functie om te kijken of je niet op je eigen voorwerp gaat bieden
 IF OBJECT_ID('dbo.FN_nietEigenVoorwerp') IS NOT NULL
   IF OBJECT_ID('dbo.Bod') IS NOT NULL
     DROP TABLE [dbo].[Bod]

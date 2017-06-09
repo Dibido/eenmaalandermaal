@@ -35,7 +35,7 @@ FOR INSERT, UPDATE, DELETE
 AS
   BEGIN
     UPDATE dbo.Voorwerp
-    SET Voorwerp.VW_minimaalnieuwbod =
+    SET Voorwerp.VW_minimalenieuwebod =
     (
       CASE
       WHEN VW_hoogstebod BETWEEN 1 AND 49.99
@@ -74,6 +74,7 @@ AS
   END
   GO
 
+
 CREATE TRIGGER TR_BodCount ON Bod
 FOR INSERT,UPDATE,DELETE
 AS
@@ -83,14 +84,13 @@ AS
     UPDATE Voorwerp
     SET VW_BodCount =
     (
-      select count(BOD_voorwerpnummer)
+      COALESCE((select  count(BOD_voorwerpnummer)
 	  from Bod
-	  WHERE Bod.BOD_voorwerpnummer = (select BOD_voorwerpnummer from inserted)
-	  group by BOD_voorwerpnummer
+	  WHERE Bod.BOD_voorwerpnummer = VW_voorwerpnummer
+	  group by BOD_voorwerpnummer),0)
     )
   END
   GO
-
 
 -- Trigger die registratiecodes die ouder dan 24 uur zijn verwijderd.
 CREATE TRIGGER TR_ActivatieVerlopen

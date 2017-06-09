@@ -1,6 +1,5 @@
 <?php
 session_start();
-//ob_start();
 
 require('PHP/connection.php');
 require('PHP/Functions.php');
