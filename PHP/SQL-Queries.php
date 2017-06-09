@@ -466,4 +466,8 @@ $rubriekNummerAfstammelingVanRoot = <<<EOT
 select dbo.FN_RubriekIsAfstammelingVan(:Rubriek, -1)
 EOT;
 
+$QuerygebruikerIsVerkoper = <<<EOT
+select VER_gebruiker from Verkoper where VER_gebruiker = :gebruiker
+EOT;
+
 ?>

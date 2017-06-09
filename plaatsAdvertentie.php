@@ -9,6 +9,11 @@ $Landen = SendToDatabase($GetLandenQuerie);
 $Landnamen = SendToDatabase2($GetLandnaamQuerie);
 $rubriek = '';
 //$Looptijden = SendToDatabase($GetLooptijdenQuerie);
+if (!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])) {
+    header("Location: login.php?unauthorised=True");
+}
+gebruikerIsVerkoperCheck($_SESSION['Username']);
+
 if (isset($_GET['rubriek']) && !empty($_GET['rubriek'])) {
     $rubriek = ($_GET['rubriek']);
     if(!is_numeric($rubriek)){

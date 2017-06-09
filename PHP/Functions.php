@@ -45,6 +45,18 @@ function insertRubriek($rubriek,$voorwerpnummer){
     $stmt->execute();
 }
 
+function gebruikerIsVerkoperCheck($username){
+    global $connection;
+    global $QuerygebruikerIsVerkoper;
+    $stmt = $connection->prepare($QuerygebruikerIsVerkoper);
+    $stmt->bindParam(':gebruiker',  $username);
+     $stmt->execute();
+    if(empty($stmt->fetchAll())){
+        header("Location: upgradeAccount.php");
+    }
+}
+
+
 
 /*change time formatting based on remaining time.
 > 2 days = date
@@ -1602,9 +1614,6 @@ function uploadThumbnail($files, $id)
     $extention = pathinfo($files['thumbnail']["name"], PATHINFO_EXTENSION);
     move_uploaded_file($files['thumbnail']["tmp_name"], $target_dir . $id[0] . '_0.' . $extention);
 }
-
-
-
 
 function getCodeFromMail()
 {
