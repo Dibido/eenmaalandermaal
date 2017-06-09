@@ -14,7 +14,6 @@ $userwin = findWinAds($username);
 //print_r($userads);
 //print_r($userbod);
 
-
 ?>
 
 <!doctype html>
@@ -116,10 +115,8 @@ require('navbar.php');
                 ?> </b></div>
 
 
-
-               <a href="#"><button class="btn btn-primary center-block btn-lg " type="button" style="margin-top: 10px;">
-                            <span class="glyphicon glyphicon-repeat"></span><?php if ($userinfo["GEB_verkoper"] == 0) {echo " UPGRADE ACCOUNT!";} else echo " DOWNGRADEN"?></button></a> <!-- MISCHIEN KNOP WEGLATEN BIJ VERKOPER of DOWNGRADEn -->
-               
+                <?php  if ($userinfo["GEB_verkoper"] == 0){echo  '<a href="#"><button class="btn btn-primary center-block btn-lg " type="button" style="margin-top: 10px;">
+                            <span class="glyphicon glyphicon-repeat"></span> UPGRADE ACCOUNT!</button></a>';} else echo ' ' ?>
             </div>
         </div>
     </div>
