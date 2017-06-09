@@ -1490,6 +1490,10 @@ function doRegistratie()
 {
     $error = false;
 
+    foreach($_SESSION as $value){
+        $_SESSION[$value] = trim($value);
+    }
+
     if (count($_SESSION) == 14) {
 
         $userInfo = array(

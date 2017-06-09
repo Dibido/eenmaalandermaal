@@ -1,3 +1,24 @@
+--Functie om te checken of de veiling is afgelopen.
+/*
+Input: @voorwerpnummer om voor te checken
+Return: Of de veiling gesloten is.
+ */
+IF OBJECT_ID('dbo.FN_VeilingAfgelopen') IS NOT NULL
+  DROP FUNCTION [dbo].[FN_VeilingAfgelopen]
+GO
+
+CREATE FUNCTION FN_VeilingAfgelopen
+  (@Voorwerpnummer BIGINT)
+  RETURNS BIT
+AS
+  BEGIN
+    IF (GETDATE() > (SELECT VW_looptijdEinde
+                     FROM Voorwerp
+                     WHERE VW_voorwerpnummer = @Voorwerpnummer))
+      RETURN 1
+    RETURN 0
+  END
+
 --Functie om een random gebruiker te vinden
 --Variabelen:
 --@Identifier, een unieke identity in de tabel.
