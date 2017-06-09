@@ -1539,6 +1539,8 @@ function createUpgradeCode($username)
     $code = md5($username . $date);
     $code = substr($code, 0, 16);
 
+
+    /*
     $query = <<<EOT
 
 INSERT INTO Upgrade (UPG_gebruikersnaam, UPG_code, UPG_tijd)
@@ -1551,6 +1553,7 @@ EOT;
     $stmt->bindParam(':code', $code);
     $stmt->bindParam(':tijd', $date);
     $stmt->execute();
+    */
 
 }
 
@@ -1629,9 +1632,6 @@ EOT;
                 height: auto !important;
                 max-width: 100% !important;
                 width: auto !important; }}
-            /* -------------------------------------
-              HEAD STYLES
-            ------------------------------------- */
             @media all {
               .ExternalClass {
                 width: 100%; }
