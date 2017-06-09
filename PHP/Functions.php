@@ -688,7 +688,7 @@ WHERE (VW_titel LIKE '%$SearchKeyword%')
     AND(VW_verkoper LIKE '%$SearchUser%')
   AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
-   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_startprijs, VW_thumbnail,VW_verkoper,GEB_rating, VW_minimalenieuwebod
+   Voorwerp.VW_looptijdEinde,VW_looptijdStart, VW_looptijdEinde, VW_bodcount,VW_startprijs, VW_thumbnail,VW_verkoper,GEB_rating, VW_minimalenieuwebod
 ORDER BY $SearchFilter , VW_voorwerpnummer
 OFFSET $Offset ROWS
 FETCH NEXT $ResultsPerPage ROWS ONLY
@@ -697,6 +697,7 @@ FETCH NEXT $ResultsPerPage ROWS ONLY
     
 EOT;
     //executing the query
+    print_r($QuerySearchProducts);
     return SendToDatabase($QuerySearchProducts);
 
 

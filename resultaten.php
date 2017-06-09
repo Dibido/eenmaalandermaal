@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $_GET['maxremainingtime'] = "NULL";
     $_GET['minremainingtime'] = "NULL";
     //Waardes is an array that contains the right term to for the query. the form outputs 0-3 each number has their own value in the array
-    $waardes = array("VW_looptijdStart DESC", "VW_looptijdEinde ASC", "prijs ASC", "prijs DESC", "GEB_rating DESC", "GEB_rating ASC", "count(BOD_voorwerpnummer) DESC", "count(BOD_voowerpnummer) ASC", "VW_titel ASC", "VW_titel DESC");
+    $waardes = array("VW_looptijdStart DESC", "VW_looptijdEinde ASC", "prijs ASC", "prijs DESC", "GEB_rating DESC", "GEB_rating ASC", "VW_bodcount DESC", "VW_bodcount ASC", "VW_titel ASC", "VW_titel DESC");
     //betaalMethodes is an array with all possible payment methods that are in the table Betalingswijzen
     $betaalMethodes = SendToDatabase($betalingsMethodeQuery);
     //Create dictionary with all variables from the GET request. Dictionary is used to give all values to the query
