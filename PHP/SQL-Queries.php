@@ -93,19 +93,10 @@ SELECT
 
 FROM Voorwerp
   LEFT OUTER JOIN Voorwerp_Rubriek
-  ON Voorwerp.VW_voorwerpnummer = Voorwerp_Rubriek.VR_Voorwerp_Nummer
+    ON Voorwerp.VW_voorwerpnummer = Voorwerp_Rubriek.VR_Voorwerp_Nummer
 --Vul hier de minimum en maximum tijd over in
 
-WHERE DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) < 1000 AND DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde) > 1 AND
-      VR_Rubriek_Nummer IN (SELECT TOP 5 RB_Nummer
-                            FROM Rubriek
-                              INNER JOIN Voorwerp_Rubriek
-                                ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-                              INNER JOIN Voorwerp
-                                ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-                            GROUP BY RB_Nummer
-                            ORDER BY sum(VW_bodcount) DESC
-                            )
+WHERE VW_veilinggesloten != 1
 GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel,VW_thumbnail,VW_startprijs, VW_bodcount
 ORDER BY tijd ASC, VW_bodcount DESC, VW_titel ASC
 
@@ -318,7 +309,7 @@ EOT;
 
 // Biedingen van gebruikers voor profiel pagina
 $QueryUserBod = <<<EOT
-SELECT TOP 40 BOD_voorwerpnummer, VW_titel, b.BOD_gebruiker,
+SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_gebruiker, (select distinct TOP 1  BOD_bodTijdEnDag from bod) as tijd1,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
               FROM Bod
@@ -333,7 +324,6 @@ FROM bod b
 INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer
 WHERE BOD_gebruiker = ?
 GROUP BY BOD_voorwerpnummer,vw_voorwerpnummer, BOD_bodTijdEnDag, VW_titel, BOD_gebruiker, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
-ORDER BY BOD_bodTijdEnDag
 EOT;
 
 

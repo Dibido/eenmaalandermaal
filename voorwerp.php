@@ -40,8 +40,16 @@ if (isset($bod) AND !empty($bod)) {
         header('Location: login.php?bieden=True');
     }
     if (filter_input(INPUT_POST, "bod", FILTER_VALIDATE_INT)
-        OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)
-    ) {
+        OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)) {
+
+
+
+        /*
+        if($ItemInfo["VW_looptijdEinde"] < getdate()){
+
+        }
+
+        */
 
         //cleaning the input for html
         $bod = cleanInput($bod);
