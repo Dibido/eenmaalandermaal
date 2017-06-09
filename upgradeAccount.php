@@ -35,11 +35,13 @@ foreach ($_POST as $itemId => $item) {
                 if (strlen($results["creditcardnummer"]) <= 19) {
 
                     //creating a code for the user
+                    createUpgradeCode($_SESSION["Username"]);
 
-
+                    //updating the page to waiting for code state
                     $disabled = 'disabled';
                     $formSend = True;
                     $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
+
                 } else {
                     $errorMessage = [True, ' Uw creditcardnummer kan niet langer dan 19 characters zijn.'];
                 }
