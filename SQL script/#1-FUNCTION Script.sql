@@ -1,4 +1,8 @@
 --Functie om te checken of de veiling is afgelopen.
+/*
+Input: @voorwerpnummer om voor te checken
+Return: Of de veiling gesloten is.
+ */
 IF OBJECT_ID('dbo.FN_VeilingAfgelopen') IS NOT NULL
   DROP FUNCTION [dbo].[FN_VeilingAfgelopen]
 GO
