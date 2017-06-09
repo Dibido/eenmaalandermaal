@@ -3,7 +3,6 @@ require('connection.php');
 require('SQL-Queries.php');
 require('Functions.php');
 
-
 $QuerieInfoGeslotenVeilingen = <<<EOT
 SELECT VW_voorwerpnummer AS voorwerpnummer, VW_titel AS titel, VW_hoogstebod AS verkoopprijs, BOD_gebruiker AS koper, GEB_mailbox AS email_koper, (SELECT  GEB_gebruikersnaam FROM Gebruiker WHERE GEB_gebruikersnaam = VW_verkoper) AS verkoper ,(SELECT  GEB_mailbox FROM Gebruiker WHERE GEB_gebruikersnaam = VW_verkoper) AS email_verkoper
 FROM Voorwerp   INNER JOIN BOD
@@ -388,11 +387,6 @@ FROM Voorwerp
 WHERE VW_looptijdEinde < GETDATE()
 EOT;
 
-
-
 SendToDatabase($QuerieSluitVeilingen);
-
-
-
 
 ?>

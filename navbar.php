@@ -46,6 +46,8 @@
 
 <?php
 session_start();
+
+//Include om de verlopen veilingen te verwerken
 include('PHP/sluitVeilingen.php');
 
 if (isset($_SESSION['Username'])) { 
