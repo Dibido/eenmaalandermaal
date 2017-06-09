@@ -12,8 +12,6 @@ require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
-print_r($_SESSION);
-print_r($_POST);
 
 
 //redirect of no login
@@ -50,9 +48,6 @@ foreach ($_POST as $itemId => $item) {
             if (strlen($results["rekeningnummer"]) <= 31) {
                 if (strlen($results["creditcardnummer"]) <= 19) {
 
-                    //creating a code for the user
-                    createUpgradeCode($_SESSION["Username"]);
-
                     //updating the page to waiting for code state
                     $disabled = 'disabled';
                     $formSend = True;
@@ -71,6 +66,14 @@ foreach ($_POST as $itemId => $item) {
         }
 
     }
+}
+
+if($successMessage[0]){
+    //inserting user in the database
+    createUpgradeCode($_SESSION["Username"]);
+
+    //sending the email
+    sendUpgradeMail($_SESSION["Username"]);
 }
 
 

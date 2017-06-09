@@ -1,9 +1,5 @@
 <?php
 
-
-
-
-
 session_start();
 
 require('PHP/Functions.php');
@@ -17,7 +13,6 @@ $ItemInfo = $ItemInfo[0];
 
 $ItemImages = GetItemImages($ItemID);
 $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
-
 
 
 /* making sure an image is available */
@@ -42,33 +37,38 @@ $bod = $_POST["bod"];
 
 // testing if the input is an int or a float
 if (isset($bod) AND !empty($bod)) {
-    if (!isset($_SESSION["Username"])) {
-        header('Location: login.php?bieden=True');
-    }
-    if (filter_input(INPUT_POST, "bod", FILTER_VALIDATE_INT)
-        OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)) {
+    if (!checkVeilingAfgelopen($ItemInfo["VW_voorwerpnummer"])[0]) {
 
-        //cleaning the input for html
-        $bod = cleanInput($bod);
+        if (!isset($_SESSION["Username"])) {
+            header('Location: login.php?bieden=True');
+        }
+        if (filter_input(INPUT_POST, "bod", FILTER_VALIDATE_INT)
+            OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)
+        ) {
 
-        //checking if the user does not try to place an offer on his own advert
-        if ($_SESSION["Username"] == $ItemInfo["VW_verkoper"]) {
-            $error = [True, 'U kunt niet op uw eigen veilingen bieden.'];
+            //cleaning the input for html
+            $bod = cleanInput($bod);
 
-            //checking if the offer is greater than the last offer
-        } else if ($bod >= $minimumBod AND $bod <= 999999999.99) {
+            //checking if the user does not try to place an offer on his own advert
+            if ($_SESSION["Username"] == $ItemInfo["VW_verkoper"]) {
+                $error = [True, 'U kunt niet op uw eigen veilingen bieden.'];
 
-            //inserting the offer
-            insertBod($ItemID, $_SESSION["Username"], $bod);
-            header('Location: voorwerp.php?ItemID=' . $ItemID);
+                //checking if the offer is greater than the last offer
+            } else if ($bod >= $minimumBod AND $bod <= 999999999.99) {
 
+                //inserting the offer
+                insertBod($ItemID, $_SESSION["Username"], $bod);
+                header('Location: voorwerp.php?ItemID=' . $ItemID);
+
+            } else {
+                $error = [True, 'Vul alstublieft een geldig bod in.'];
+            }
         } else {
-            $error = [True, 'Vul alstublieft een geldig bod in.'];
+            $error = [True, 'Vul alstublieft een getal in.'];
         }
 
-
     } else {
-        $error = [True, 'Vul alstublieft een getal in.'];
+        $error = [True, 'Deze veiling is gesloten, u kunt helaas niet meer bieden. '];
     }
 
     //returning the errors
@@ -90,7 +90,7 @@ if (isset($snelBod) AND !empty($snelBod)) {
     //inserting the offer
     insertBod($ItemID, $_SESSION["Username"], $minimumBod);
 
-    //header('Location: voorwerp.php?ItemID=' . $ItemID);
+    header('Location: voorwerp.php?ItemID=' . $ItemID);
 }
 
 ?>
@@ -237,7 +237,7 @@ require('navbar.php');
             </div>
         </div>
 
-       <!-- Rubrieken panel END -->
+        <!-- Rubrieken panel END -->
 
         <!-- Description panel -->
 

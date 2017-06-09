@@ -1121,11 +1121,11 @@ function checkEmailSent()
                 <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Vul deze in op de website om de registratieprocedure af te ronden of klik op de activeer knop.</p>
                 <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;box-sizing:border-box;width:100%;">
                   <tbody>
-                    
+                    <tr>
                       <td align="left" style="font-family:sans-serif;font-size:14px;vertical-align:top;padding-bottom:15px;">
                         <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;width:auto;">
                           <tbody>
-                           
+                            <tr>
                               <td style="font-family:sans-serif;font-size:14px;vertical-align:top;background-color:#ffffff;border-radius:5px;text-align:center;background-color:#413b88;"> <a href="http://iproject3.icasites.nl/registreer1.php?code=' . $code . ' " target="_blank" style="text-decoration:underline;background-color:#ffffff;border:solid 1px #413b88;border-radius:5px;box-sizing:border-box;color:#413b88;cursor:pointer;display:inline-block;font-size:14px;font-weight:bold;margin:0;padding:12px 25px;text-decoration:none;text-transform:capitalize;background-color:#413b88;border-color:#413b88;color:#ffffff;">activeren</a>
                               </td>
                             </tr>
@@ -1596,60 +1596,53 @@ function FindUser($username)
  */
 
 
-/*
+
 function upgradeAccount($itemID, $user, $offer)
 {
     GLOBAL $connection;
 
-    $query = <<<EOT
 
-INSERT INTO Bod (BOD_voorwerpnummer, BOD_gebruiker, BOD_bodbedrag)
-VALUES (:itemID , :user, :offer )
+    $stmt = $connection->prepare(
+        "INSERT INTO Upgrade (UPG_gebruikersnaam, UPG_code, UPG_tijd)
+                    VALUES(:gebruikersnaam, :code, :tijd)
+    ");
 
-EOT;
-
-    $stmt = $connection->prepare($query);
-    $stmt->bindParam(':offer', $offer);
-    $stmt->bindParam(':user', $user);
-    $stmt->bindParam(':itemID', $itemID);
+    $stmt->bindParam(':gebruikersnaam', $username);
+    $stmt->bindParam(':code', $code);
+    $stmt->bindParam(':tijd', $date);
     $stmt->execute();
 
+
 }
-*/
+
 function createUpgradeCode($username)
 {
-
 
     /* preparing the query and inserting into the database */
     GLOBAL $connection;
 
-    $date = date("Y/m/d");
-    $code = md5($username . $date);
+    $code = md5($username . date("Y/m/d"));
     $code = substr($code, 0, 16);
+    $tijd = date("Y/m/d");
 
+    $stmt = $connection->prepare(
+        "INSERT INTO Upgrade (UPG_gebruikersnaam, UPG_code, UPG_tijd)
+                    VALUES(:username, :code, :tijd)
+    ");
 
-    /*
-    $query = <<<EOT
-
-INSERT INTO Upgrade (UPG_gebruikersnaam, UPG_code, UPG_tijd)
-VALUES (:username , :code, :tijd )
-
-EOT;
-
-    $stmt = $connection->prepare($query);
     $stmt->bindParam(':username', $username);
     $stmt->bindParam(':code', $code);
-    $stmt->bindParam(':tijd', $date);
-    $stmt->execute();
-    */
+    $stmt->bindParam(':tijd', $tijd);
+
+    try{
+        $stmt->execute();
+
+    }catch (Exception $e){
+        echo 'er ging iets mis : ' . $e;
+    }
+
 
 }
-
-
-
-
-
-
 
 
 function sendUpgradeMail($username)
@@ -1673,14 +1666,21 @@ SELECT GEB_mailbox FROM Gebruiker WHERE GEB_gebruikersnaam = ?
 EOT;
     GLOBAL $connection;
 
-    $stmt = $connection->prepare($query);
-    $stmt->execute(array($username));
-    $email = $stmt->fetch();
-    $email = $email[0];
+    try{
+        $stmt = $connection->prepare($query);
+        $stmt->execute(array($username));
+        $email = $stmt->fetch();
+    } catch(Exception $e){
+        echo 'er ging iets fout bij het ophalen van het email adres: ' . $e;
+    }
+
+    echo $email = $email[0];
 
 
     //Verificatie mail
-    $message = '
+
+    $message = <<<EOT
+
 <!DOCTYPE html><html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width">
     
@@ -1720,6 +1720,9 @@ EOT;
                 height: auto !important;
                 max-width: 100% !important;
                 width: auto !important; }}
+            /* -------------------------------------
+              HEAD STYLES
+            ------------------------------------- */
             @media all {
               .ExternalClass {
                 width: 100%; }
@@ -1768,16 +1771,18 @@ EOT;
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
                   <tr>
                     <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Beste gebruiker,</p>
-                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft aangegeven dat u wilt opgraden naar een verkoopaccount. Dit is uw persoonlijke code: <b> ' . $code . ' </b> </p>
+                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft aangegeven zich aan te willen melden op EenmaalAndermaal. Dit is uw persoonlijke code: <b> ' . $code . ' </b> </p>
                   </tr>
                 </table>
-                <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Vul deze in op de website om de registratieprocedure af te ronden. </p>
+                <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Vul deze in op de website om de registratieprocedure af te ronden of klik op de activeer knop.</p>
                 <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;box-sizing:border-box;width:100%;">
                   <tbody>
-                    
+                    <tr>
                       <td align="left" style="font-family:sans-serif;font-size:14px;vertical-align:top;padding-bottom:15px;">
                         <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;width:auto;">
                           <tbody>
+                            <tr>
+                              <td style="font-family:sans-serif;font-size:14px;vertical-align:top;background-color:#ffffff;border-radius:5px;text-align:center;background-color:#413b88;"> <a href="http://iproject3.icasites.nl/registreer1.php?code=' . $code . ' " target="_blank" style="text-decoration:underline;background-color:#ffffff;border:solid 1px #413b88;border-radius:5px;box-sizing:border-box;color:#413b88;cursor:pointer;display:inline-block;font-size:14px;font-weight:bold;margin:0;padding:12px 25px;text-decoration:none;text-transform:capitalize;background-color:#413b88;border-color:#413b88;color:#ffffff;">activeren</a>
                               </td>
                             </tr>
                           </tbody>
@@ -1821,7 +1826,13 @@ EOT;
     </table>
   </body>
 </html>
-';
+
+
+
+
+EOT;
+
+
 
     mail($email, $subject, $message, $headers);
 
@@ -1829,6 +1840,20 @@ EOT;
 
 }
 
+function checkVeilingAfgelopen($veilingID){
 
+    $query = <<<EOT
+
+SELECT dbo.FN_VeilingAfgelopen(?)
+
+EOT;
+
+    GLOBAL $connection;
+
+    $stmt = $connection->prepare($query);
+    $stmt->execute(array($veilingID));
+    return $stmt->fetch();
+
+}
 
 ?>
