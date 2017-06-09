@@ -326,7 +326,7 @@ SELECT TOP 40 BOD_voorwerpnummer, VW_titel, b.BOD_gebruiker,
                                        FROM Bod
                                        WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                        ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-              ORDER BY BOD_Bodbedrag DESC), (select TOP 1 VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
+              ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
   VW_looptijdEinde,
   VW_thumbnail AS ImagePath
 FROM bod b
