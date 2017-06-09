@@ -85,7 +85,7 @@ if (isset($snelBod) AND !empty($snelBod)) {
     //inserting the offer
     insertBod($ItemID, $_SESSION["Username"], $minimumBod);
 
-    header('Location: voorwerp.php?ItemID=' . $ItemID);
+    //header('Location: voorwerp.php?ItemID=' . $ItemID);
 }
 
 ?>

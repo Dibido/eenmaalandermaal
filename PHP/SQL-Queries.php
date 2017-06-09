@@ -367,9 +367,58 @@ SELECT A.RB_Naam AS HoofdRubriek, B.RB_Naam AS Rubriek, C.RB_Naam AS SubRubriek,
 EOT;
 
 $betalingsMethodeQuery = <<<EOT
-select * 
+select BW_betalingswijze as betalingswijze
 from Betalingswijzen 
 ORDER BY BW_betalingswijze desc
+EOT;
+
+$plaatsVeilingQuery = <<<EOT
+
+INSERT into Voorwerp
+  (VW_titel,
+   VW_beschrijving,
+   VW_startprijs,
+   VW_betalingswijze,
+   VW_betalingsinstructie,
+   VW_plaatsnaam,
+   VW_land,
+   Vw_looptijd,
+   VW_verzendkosten,
+   VW_verzendinstructies,
+   VW_verkoper,
+   VW_conditie,
+   VW_thumbnail,
+   VW_hoogstebod)
+   values
+   (
+   :VW_titel,
+   :VW_beschrijving,
+   :VW_startprijs,
+   :VW_betalingswijze,
+   :VW_betalingsinstructie,
+   :VW_plaatsnaam,
+   :VW_land,
+   :Vw_looptijd,
+   :VW_verzendkosten,
+   :VW_verzendinstructies,
+   :VW_verkoper,
+   :VW_conditie,
+   :VW_thumbnail,
+   :VW_hoogstebod
+)
+EOT;
+
+$plaatsVeilingInRubriekQuery = <<<EOT
+INSERT INTO
+
+EOT;
+
+$getVoorwerpNummerQuery = <<<EOT
+select top 1 @@IDENTITY from Voorwerp
+EOT;
+
+$rubriekNummerAfstammelingVanRoot = <<<EOT
+select dbo.FN_RubriekIsAfstammelingVan(:Rubriek, -1)
 EOT;
 
 ?>
