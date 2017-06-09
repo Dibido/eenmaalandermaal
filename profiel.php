@@ -11,7 +11,7 @@ $userads = findUserAds($username);
 $userbod = findBodAds($username);
 //print_r('Username');
 //print_r($userads);
-print_r($userbod);
+//print_r($userbod);
 
 
 ?>
