@@ -1640,6 +1640,7 @@ function createUpgradeCode($username)
 
     try{
         $stmt->execute();
+        return $code;
 
     }catch (Exception $e){
         echo 'er ging iets mis : ' . $e;
@@ -1649,7 +1650,7 @@ function createUpgradeCode($username)
 }
 
 
-function sendUpgradeMail($username)
+function sendUpgradeMail($username, $code)
 {
 
     /* preparing the mail */
@@ -1682,7 +1683,6 @@ EOT;
 
 
     //Verificatie mail
-
     $message = <<<EOT
 
 <!DOCTYPE html><html><head>
@@ -1775,24 +1775,12 @@ EOT;
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
                   <tr>
                     <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Beste gebruiker,</p>
-                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft aangegeven zich aan te willen melden op EenmaalAndermaal. Dit is uw persoonlijke code: <b> ' . $code . ' </b> </p>
+                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft aangegeven dat u uw account wilt upgraden naar een verkoopaccount. Dit is uw persoonlijke code: $code <b> </b> </p>
                   </tr>
                 </table>
-                <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Vul deze in op de website om de registratieprocedure af te ronden of klik op de activeer knop.</p>
+                <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Vul deze in op de website om de registratieprocedure af te ronden.</p>
                 <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;box-sizing:border-box;width:100%;">
                   <tbody>
-                    <tr>
-                      <td align="left" style="font-family:sans-serif;font-size:14px;vertical-align:top;padding-bottom:15px;">
-                        <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;width:auto;">
-                          <tbody>
-                            <tr>
-                              <td style="font-family:sans-serif;font-size:14px;vertical-align:top;background-color:#ffffff;border-radius:5px;text-align:center;background-color:#413b88;"> <a href="http://iproject3.icasites.nl/registreer1.php?code=' . $code . ' " target="_blank" style="text-decoration:underline;background-color:#ffffff;border:solid 1px #413b88;border-radius:5px;box-sizing:border-box;color:#413b88;cursor:pointer;display:inline-block;font-size:14px;font-weight:bold;margin:0;padding:12px 25px;text-decoration:none;text-transform:capitalize;background-color:#413b88;border-color:#413b88;color:#ffffff;">activeren</a>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </td>
-                    </tr>
                     <tr>
                       <td style="font-family:sans-serif;font-size:14px;vertical-align:top;padding-bottom:15px;">
                         <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Met vriendelijke groet,</p>
@@ -1835,8 +1823,6 @@ EOT;
 
 
 EOT;
-
-
 
     mail($email, $subject, $message, $headers);
 

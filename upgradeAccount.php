@@ -70,10 +70,10 @@ foreach ($_POST as $itemId => $item) {
 
 if($successMessage[0]){
     //inserting user in the database
-    createUpgradeCode($_SESSION["Username"]);
+    $code = createUpgradeCode($_SESSION["Username"]);
 
     //sending the email
-    sendUpgradeMail($_SESSION["Username"]);
+    sendUpgradeMail($_SESSION["Username"] , $code);
 }
 
 
