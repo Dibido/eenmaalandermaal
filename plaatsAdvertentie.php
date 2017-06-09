@@ -94,7 +94,7 @@ require('navbar.php');
 ?>
 
 
-<h1 class="text-center">Plaats Advertente!</h1>
+<h1 class="text-center">Plaats Advertentie!</h1>
 <br>
 
 <div class="well container">
