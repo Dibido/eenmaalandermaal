@@ -657,7 +657,7 @@ SELECT DISTINCT
   VW_looptijdEinde,
   VW_betalingswijze,
   VW_verkoper,
-  count(BOD_voorwerpnummer) as aantalBiedingen,
+  VW_bodcount as aantalBiedingen,
   GEB_rating
 FROM Voorwerp
   LEFT OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
