@@ -10,9 +10,7 @@ $userinfo = findUserInfo($username)[0];
 $userads = findUserAds($username);
 $userbod = findBodAds($username);
 $userwin = findWinAds($username);
-//print_r('Username');
-//print_r($userads);
-//print_r($userbod);
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['username'])) {
         $username = cleanInput($_GET['username']);
@@ -103,28 +101,29 @@ require('navbar.php');
             <div class="list-group-item active text-center">Gegevens</div>
             <div class="panel-body">
 
-               <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Username: <b><?php echo "$username" ?> </b></div>
-               <div class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"></span> Type account: <b><?php if ($userinfo["GEB_verkoper"] == 0) {echo "Geen verkoper";} else echo "Verkoper" ?></b></div>
-               <div class="list-group-item "><span class="glyphicon glyphicon-thumbs-up"></span> Mijn Rating: <b><?php
-                    
-                    $Userinfo = GetUserInfoPerAuction($username);
-                                $rating = ceil(($Userinfo[0]["GEB_rating"] /20)); // Delen door 2. Rating van 0 tot 100, sterren 0 tot 5.
-                                $legeSterren = 5 - $rating;
-                                for ($i = 0; $i < $rating; $i++) {
-                                    echo " <i class=\"glyphicon glyphicon-star\"></i>";
-                                }
-                                for ($i = 0; $i < $legeSterren; $i++) {
-                                    echo " <i class=\"glyphicon glyphicon-star-empty\"></i>";
-                                }
-                                //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
-            
+                <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Username:
+                    <b><?php echo "$username" ?> </b></div>
+                <div class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"></span> Type account:
+                    <b><?php if ($userinfo["GEB_verkoper"] == 0) {
+                            echo "Geen verkoper";
+                        } else echo "Verkoper" ?></b></div>
+                <div class="list-group-item "><span class="glyphicon glyphicon-thumbs-up"></span> Mijn Rating: <b><?php
 
+                        $Userinfo = GetUserInfoPerAuction($username);
+                        $rating = ceil(($Userinfo[0]["GEB_rating"] / 20)); // Delen door 2. Rating van 0 tot 100, sterren 0 tot 5.
+                        $legeSterren = 5 - $rating;
+                        for ($i = 0; $i < $rating; $i++) {
+                            echo " <i class=\"glyphicon glyphicon-star\"></i>";
+                        }
+                        for ($i = 0; $i < $legeSterren; $i++) {
+                            echo " <i class=\"glyphicon glyphicon-star-empty\"></i>";
+                        }
 
-                ?> </b></div>
+                        ?> </b></div>
 
 
                 <?php if ($userinfo["GEB_verkoper"] == 0) {
-                    echo '<a href="#"><button class="btn btn-primary center-block btn-lg " type="button" style="margin-top: 10px;">
+                    echo '<a href="upgradeAccount.php"><button class="btn btn-primary center-block btn-lg " type="button" style="margin-top: 10px;">
                             <span class="glyphicon glyphicon-repeat"></span> UPGRADE ACCOUNT!</button></a>';
                 } else echo ' ' ?>
             </div>
@@ -189,7 +188,7 @@ require('navbar.php');
                                 DrawAuction($auction);
                             }
                         } else {
-                            echo "U heeft nog niets gewonnen :(";
+                            echo "U heeft nog niets gewonnen.";
                         }
 
 
