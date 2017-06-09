@@ -8,8 +8,9 @@ require('PHP/connection.php');
 //$ItemInfo = GetItemDetails(fonorama);
 $username = $_SESSION['Username']; 
 $userinfo = findUserInfo($username)[0];
-$userads = findUserAds($username)[0];
-print_r($userinfo);
+$userads = findUserAds($username);
+print_r('Username');
+print_r($userads);
 
 
 ?>
@@ -144,11 +145,24 @@ require('navbar.php');
 
                   <div class="tab-content">
                     <div id="home" class="tab-pane fade in active">
-                      <h3>Mijn advertenties</h3>
-                 
+                      <h3>Mijn advertenties</h3>   
                     </div>
                     <div id="menu1" class="tab-pane fade">
                       <h3>Mijn biedingen</h3>
+                        <?php
+
+                        /*$auctions = $userads;
+
+                        if (isset($auctions[0]) AND !empty($auctions)) {
+                            foreach ($auctions as $auction) {
+                                DrawItemAuction($auction);
+                            }
+                        } else {
+                            echo "Deze gebruiker heeft geen andere advertenties.";
+                        }*/
+
+
+                        ?>
                     </div>
                     <div id="menu2" class="tab-pane fade">
                       <h3>Gewonnen veilingen</h3>
