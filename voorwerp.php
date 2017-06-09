@@ -1,4 +1,9 @@
 <?php
+
+
+
+
+
 session_start();
 
 require('PHP/Functions.php');
@@ -13,6 +18,13 @@ $ItemInfo = $ItemInfo[0];
 $ItemImages = GetItemImages($ItemID);
 $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
 
+//$date = new DateTime($ItemInfo["VW_looptijdEinde"]);
+
+/*
+if($date->format('Y-m-d H:i:s') < getdate()){
+    echo 'Je mag niet bieden nu!';
+}
+*/
 
 /* making sure an image is available */
 if (!isset($ItemInfo["VW_thumbnail"]) OR empty($ItemInfo["VW_thumbnail"])) {
@@ -42,9 +54,8 @@ if (isset($bod) AND !empty($bod)) {
     if (filter_input(INPUT_POST, "bod", FILTER_VALIDATE_INT)
         OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)) {
 
-        if($ItemInfo["VW_looptijdEinde"] < localtime()){
 
-        }
+
 
         //cleaning the input for html
         $bod = cleanInput($bod);
@@ -88,7 +99,7 @@ if (isset($snelBod) AND !empty($snelBod)) {
     //inserting the offer
     insertBod($ItemID, $_SESSION["Username"], $minimumBod);
 
-    header('Location: voorwerp.php?ItemID=' . $ItemID);
+    //header('Location: voorwerp.php?ItemID=' . $ItemID);
 }
 
 ?>
