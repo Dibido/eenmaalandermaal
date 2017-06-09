@@ -313,7 +313,7 @@ EOT;
 
 // Biedingen van gebruikers voor profiel pagina
 $QueryUserBod = <<<EOT
-SELECT TOP 40 BOD_voorwerpnummer, VW_titel, b.BOD_gebruiker,
+SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_gebruiker, (select distinct top 1  BOD_bodTijdEnDag from bod) as tijd1,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
               FROM Bod
@@ -328,7 +328,6 @@ FROM bod b
 INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer
 WHERE BOD_gebruiker = ?
 GROUP BY BOD_voorwerpnummer,vw_voorwerpnummer, BOD_bodTijdEnDag, VW_titel, BOD_gebruiker, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
-ORDER BY BOD_bodTijdEnDag
 EOT;
 
 /* query voor het zoeken van een Admin*/

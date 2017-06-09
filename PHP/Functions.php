@@ -67,6 +67,18 @@ function findUserAds($username)
     return $stmt-> fetchAll(); 
 }
 
+/* function for Finding user BOD for profiel page*/
+function findBodAds($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryUserBod;
+    
+    $stmt = $connection->prepare($QueryUserBod);
+    $stmt->execute(array($username));
+    return $stmt-> fetchAll(); 
+}
+
+
 
 /*function for finding adverts per user*/
 function findAuctionsByUser($username, $auction)
