@@ -9,6 +9,11 @@ $Landen = SendToDatabase($GetLandenQuerie);
 $Landnamen = SendToDatabase2($GetLandnaamQuerie);
 $rubriek = '';
 //$Looptijden = SendToDatabase($GetLooptijdenQuerie);
+if (!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])) {
+    header("Location: login.php?unauthorised=True");
+}
+gebruikerIsVerkoperCheck($_SESSION['Username']);
+
 if (isset($_GET['rubriek']) && !empty($_GET['rubriek'])) {
     $rubriek = ($_GET['rubriek']);
     if(!is_numeric($rubriek)){
@@ -18,22 +23,18 @@ if (isset($_GET['rubriek']) && !empty($_GET['rubriek'])) {
 }
 $waardes = $_POST;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $target_dir = 'upload/';
-    $target_file = $target_dir . basename($_FILES["thumbnail"]["name"]);
     $errorResults = checkPlaatsenVoorwerp($Betalingswijzen, $Landnamen);
     if ($errorResults[sizeof($errorResults) - 1] != true) {
         $veilingInput = prepareveilingInput($waardes,$_SESSION);
         plaatsAdvertentie($veilingInput);
         $lastID = getLastID();
-        print_r($lastID);
         $extentions = getExtension($_FILES);
         $aantalplaatjes = sizeof($_FILES['afbeelding']['name']);
-        echo $aantalplaatjes;
         insertBestanden($lastID[0],$aantalplaatjes,$extentions);
-        insertThumbnail($_FILES,$lastID);
+        insertThumbnail($_FILES,$lastID[0]);
         uploadExtraAfbeeldingen($_FILES,$lastID,$aantalplaatjes,$extentions);
         uploadThumbnail($_FILES, $lastID);
-
+        insertRubriek($rubriek,$lastID[0]);
         header('Location: voorwerp.php?ItemID='.$lastID[0]);
     }
 }
