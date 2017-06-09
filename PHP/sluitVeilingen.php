@@ -373,6 +373,9 @@ foreach ($info as $GeslotenVeiling) {
 }
 
 
+/* -------------------------------------
+           SLUIT ALLE VERLOPEN VEILINGEN
+        ------------------------------------- */
 
 $QuerieSluitVeilingen = <<<EOT
 UPDATE Voorwerp

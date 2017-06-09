@@ -15,7 +15,7 @@ function insertBestanden($voorwerpnummer, $aantalplaatjes, $extensie)
 
     for($i = 0; $i < $aantalplaatjes; $i++) {
         $imageextensie = $extensie[$i];
-        $filepath = '/upload/' . $voorwerpnummer . '_' . $i . $imageextensie;
+        $filepath = '/upload/' . $voorwerpnummer . '_' . $i . '.' . $imageextensie;
 
         $stmt = $connection->prepare($QueryInsertImages);
         $stmt->bindParam(':filenaam', $filepath);
