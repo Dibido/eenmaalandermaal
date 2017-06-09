@@ -60,7 +60,7 @@ CREATE FUNCTION FN_BodhogerdanMinimaalBod
   )
   RETURNS BIT
   BEGIN
-    IF (@Bodbedrag >= (SELECT VW_minimaalnieuwbod
+    IF (@Bodbedrag >= (SELECT VW_minimalenieuwebod
                        FROM Voorwerp
                        WHERE VW_voorwerpnummer = @Voorwerp))
       RETURN 1

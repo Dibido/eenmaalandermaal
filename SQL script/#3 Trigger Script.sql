@@ -35,7 +35,7 @@ FOR INSERT, UPDATE, DELETE
 AS
   BEGIN
     UPDATE dbo.Voorwerp
-    SET Voorwerp.VW_minimaalnieuwbod =
+    SET Voorwerp.VW_minimalenieuwebod =
     (
       CASE
       WHEN VW_hoogstebod BETWEEN 1 AND 49.99
