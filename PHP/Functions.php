@@ -103,6 +103,17 @@ function findBodAds($username)
     return $stmt-> fetchAll(); 
 }
 
+/* function for Finding user WIN for profiel page*/
+function findWinAds($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryUserWin;
+    
+    $stmt = $connection->prepare($QueryUserWin);
+    $stmt->execute(array($username));
+    return $stmt-> fetchAll(); 
+}
+
 
 
 /*function for finding adverts per user*/
