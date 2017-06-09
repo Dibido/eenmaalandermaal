@@ -174,6 +174,8 @@ ORDER BY VW_looptijdStart ASC, VW_titel
 
 EOT;
 
+
+
 /* Query landen ophalen registratie form */
 $GetLandenQuerie = <<<EOT
 
@@ -325,6 +327,31 @@ INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer
 WHERE BOD_gebruiker = ?
 GROUP BY BOD_voorwerpnummer,vw_voorwerpnummer, BOD_bodTijdEnDag, VW_titel, BOD_gebruiker, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
 EOT;
+// Gewonnen ads van gebruiker voor profiel pagina
+
+$QueryUserWin = <<<EOT
+SELECT
+  TOP 40
+  VW_voorwerpnummer,VW_titel, VW_verkoper,
+  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
+  (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+              FROM Bod
+              WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                                       FROM Bod
+                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+              ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
+  VW_looptijdEinde,
+  VW_thumbnail AS ImagePath
+FROM Voorwerp
+
+  INNER JOIN Voorwerp_Rubriek
+    ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+  
+GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper,VW_Koper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
+HAVING VW_koper IS NOT NULL  AND VW_Koper = ?
+ORDER BY VW_looptijdStart ASC, VW_titel
+EOT;
 
 
 /* query voor het zoeken van een Admin*/
@@ -363,9 +390,58 @@ SELECT A.RB_Naam AS HoofdRubriek, B.RB_Naam AS Rubriek, C.RB_Naam AS SubRubriek,
 EOT;
 
 $betalingsMethodeQuery = <<<EOT
-SELECT * 
-FROM Betalingswijzen 
-ORDER BY BW_betalingswijze DESC
+select BW_betalingswijze as betalingswijze
+from Betalingswijzen 
+ORDER BY BW_betalingswijze desc
+EOT;
+
+$plaatsVeilingQuery = <<<EOT
+
+INSERT into Voorwerp
+  (VW_titel,
+   VW_beschrijving,
+   VW_startprijs,
+   VW_betalingswijze,
+   VW_betalingsinstructie,
+   VW_plaatsnaam,
+   VW_land,
+   Vw_looptijd,
+   VW_verzendkosten,
+   VW_verzendinstructies,
+   VW_verkoper,
+   VW_conditie,
+   VW_thumbnail,
+   VW_hoogstebod)
+   values
+   (
+   :VW_titel,
+   :VW_beschrijving,
+   :VW_startprijs,
+   :VW_betalingswijze,
+   :VW_betalingsinstructie,
+   :VW_plaatsnaam,
+   :VW_land,
+   :Vw_looptijd,
+   :VW_verzendkosten,
+   :VW_verzendinstructies,
+   :VW_verkoper,
+   :VW_conditie,
+   :VW_thumbnail,
+   :VW_hoogstebod
+)
+EOT;
+
+$plaatsVeilingInRubriekQuery = <<<EOT
+INSERT INTO
+
+EOT;
+
+$getVoorwerpNummerQuery = <<<EOT
+select top 1 @@IDENTITY from Voorwerp
+EOT;
+
+$rubriekNummerAfstammelingVanRoot = <<<EOT
+select dbo.FN_RubriekIsAfstammelingVan(:Rubriek, -1)
 EOT;
 
 ?>

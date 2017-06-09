@@ -9,6 +9,7 @@ $username = $_SESSION['Username'];
 $userinfo = findUserInfo($username)[0];
 $userads = findUserAds($username);
 $userbod = findBodAds($username);
+$userwin = findWinAds($username);
 //print_r('Username');
 //print_r($userads);
 //print_r($userbod);
@@ -173,7 +174,19 @@ require('navbar.php');
                     </div>
                     <div id="menu2" class="tab-pane fade">
                       <h3>Gewonnen veilingen</h3>
-                      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                      <?php
+
+                        $auctions = $userwin;
+                        if (isset($auctions[0]) AND !empty($auctions)) {
+                            foreach ($auctions as $auction) {
+                                DrawAuction($auction);
+                            }
+                        } else {
+                            echo "U heeft nog niets gewonnen :(";
+                        }
+            
+
+                        ?>
                     </div>
                   </div>
                 </div>

@@ -97,8 +97,19 @@ function findBodAds($username)
 {
     GLOBAL $connection;
     GLOBAL $QueryUserBod;
-    
+
     $stmt = $connection->prepare($QueryUserBod);
+    $stmt->execute(array($username));
+    return $stmt-> fetchAll();
+}
+
+/* function for Finding user WIN for profiel page*/
+function findWinAds($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryUserWin;
+    
+    $stmt = $connection->prepare($QueryUserWin);
     $stmt->execute(array($username));
     return $stmt-> fetchAll(); 
 }
@@ -829,6 +840,7 @@ function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
     global $connection;
     //When a rubriekNummer is entered the function getParentCategories returns all Numbers of the parents
     //These are used to open the selected categories
+    $parentRubrieken = array();
     if (!empty($rubriekNummer)) {
         $parentRubrieken = getParentCategories($rubriekNummer);
     }
@@ -1226,92 +1238,105 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
     $totalSize = 0;
     $thumbnailFileType = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
     $afbeeldingFileTypes = array();
-    $allowedFileTypes = array('png','jpg','jpeg');
+    $allowedFileTypes = array('png', 'jpg', 'jpeg');
     for ($i = 0; $i < sizeof($_FILES['afbeelding']['name']); $i++) {
         $totalSize += $_FILES['afbeelding']['size'][$i];
     }
-    for ($i = 0; $i < 9; $i++) {   //for-loop vullen van array anders undefined index
+    for ($i = 0; $i < 11; $i++) {   //for-loop vullen van array anders undefined index
         $errorResults[$i] = "";
     }
-    $errorResults[9] = false;
-    if ($_SERVER["REQUEST_METHOD"] != "POST"){return $errorResults;}
+    $errorResults[10] = false;
+    if ($_SERVER["REQUEST_METHOD"] != "POST") {
+        return $errorResults;
+    }
     if (empty($_POST['Titel'])) {
         $errorResults[0] = "Titel is een verplicht veld!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     } elseif (strlen(trim($_POST['Titel'])) < 4) {
         $errorResults[0] = "De Titel heeft een minimum lengte van 4 tekens!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     } elseif (strlen(trim($_POST['Titel'])) > 90) {
         $errorResults[0] = "De Titel heeft een maximum lengte van 90 tekens!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }
     if (empty($_POST['Beschrijving'])) {
         $errorResults[1] = "Beschrijving is een verplicht veld!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     } elseif (strlen(trim($_POST['Beschrijving'])) < 20) {
         $errorResults[1] = "De beschrijving heeft een minimum lengte van 20 tekens";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }
     if ($_FILES['thumbnail']['size'] > $maxFileSize) {
         $errorResults[2] = "De maximum toegestane grootte van de thumbnail is " . $maxFileSize . "uw file is: " . $_FILES['thumbnail']['size'] / 1000 / 1024 . "MB";
-        $errorResults[9] = true;
-    } elseif (!in_array($thumbnailFileType,$allowedFileTypes)) {
+        $errorResults[10] = true;
+    } elseif (!in_array($thumbnailFileType, $allowedFileTypes)) {
         $errorResults[2] = "De thumbnail mag alleen een .jpg, .png of .jpeg bestand zijn.";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     } elseif ($_FILES['thumbnail']['error'] == 4) {
         $errorResults[2] = "Er was geen thumbnail geselecteerd";
-        $errorResults[9] = true;
-    } elseif($_FILES['thumbnail']['error'] != 0) {
+        $errorResults[10] = true;
+    } elseif ($_FILES['thumbnail']['error'] != 0) {
         $errorResults[2] = "Er is iets mis gegaan probeer opnieuw de thumbnail up te loaden";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }
     if ($totalSize > $maxFileSize * 3) {
         $errorResults[3] = "De maximum toegestane grootte van de afbeeldingen is " . 3 * $maxFileSize . "MB uw file is: " . $totalSize . "MB";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     } elseif (!in_array(4, $_FILES['afbeelding']['error']) and !in_array(0, $_FILES['afbeelding']['error'])) {
         $errorResults[3] = "Er is iets mis gegaan probeer opnieuw de afbeelding up te loaden";
-        $errorResults[9] = true;
-    } elseif (sizeof($_FILES['afbeelding']['error']) > 3){
+        $errorResults[10] = true;
+    } elseif (sizeof($_FILES['afbeelding']['error']) > 3) {
         $errorResults[3] = "U mag maximaal 3 extra afbeeldingen selecteren";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }
     if (empty($_POST['looptijd'])) {
         $errorResults[4] = "Er was looptijd geselecteerd!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     } elseif (!in_array($_POST['looptijd'], $looptijden)) {
         $errorResults[4] = "De looptijd mag enkel 1,3,5,7,10 dag(en) zijn!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }
     if (empty($_POST['startprijs'])) {
         $errorResults[5] = "Er was geen startprijs ingevuld!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     } elseif ($_POST['startprijs'] < 1 OR $_POST['startprijs'] > 9999999.9) {
         $errorResults[5] = "De startprijs mag niet lager dan €1 zijn en niet hoger dan €9.999.999,9!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }
     if (empty($_POST['betalingswijze'])) {
         $errorResults[6] = "De betalingswijze mag niet leeg zijn!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }/* elseif (!in_array($_POST['betalingswijze'], $Betalingswijzen)) {
         $errorResults[6] = "Selecteer een geldige betalingswijze";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }*/
     if (empty($_POST['plaats'])) {
         $errorResults[7] = "De plaatsnaam mag niet leeg zijn!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }
     if (empty($_POST['land'])) {
         $errorResults[7] = "Het land mag niet leeg zijn!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     } elseif (!in_array($_POST['land'], $landen)) {
         $errorResults[7] = "Selecteer een gelding land!";
-        $errorResults[9] = true;
+        $errorResults[10] = true;
     }
     if (!empty($_POST['verzendkosten'])) {
         if (!is_numeric($_POST['verzendkosten'])) {
             $errorResults[8] = "Verzendkosten mogen allen uitgedrukt worden in cijfers!";
-            $errorResults[9] = true;
+            $errorResults[10] = true;
         }
+    }
+    global $rubriekNummerAfstammelingVanRoot;
+    global $connection;
+    $rubriek = (int)$_POST['rubriek'];
+    $stmt = $connection->prepare($rubriekNummerAfstammelingVanRoot);
+    $stmt->bindParam(':Rubriek', $rubriek);
+    $stmt->execute();
+    $response = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    if ($response[0] == 0) {
+        $errorResults[9] = "Kies een ander rubriek!";
+        $errorResults[10] = true;
     }
     return $errorResults;
 }
@@ -1326,6 +1351,68 @@ function drawErrorResult($errorResults)
     }
 
     return $errorMessage;
+}
+
+function prepareveilingInput($waardes, $sessie)
+{
+
+    $veilingInput[0] = $waardes['Titel'];
+    $veilingInput[1] = $waardes['Beschrijving'];
+    $veilingInput[2] = ((int)$waardes['startprijs']);
+    $veilingInput[3] = $waardes['betalingswijze'];
+    $veilingInput[4] = $waardes['Betalingsinstructie'];
+    $veilingInput[5] = $waardes['plaats'];
+    $veilingInput[6] = $waardes['land'];
+    $veilingInput[7] = ((int)$waardes['looptijd']);
+    $veilingInput[8] = ((int)$waardes['verzendkosten']);
+    $veilingInput[9] = $waardes['verzendinstructies'];
+    $veilingInput[10] = $sessie['Username'];
+    $veilingInput[11] = '';
+    $veilingInput[12] = 'upload/temporaryImage';
+    $veilingInput[13] = ((int)$waardes['startprijs']);
+    return $veilingInput;
+}
+
+function plaatsAdvertentie($veilingInput)
+{
+    print_r($veilingInput);
+    GLOBAL $connection;
+    GLOBAL $plaatsVeilingQuery;
+    GLOBAL $plaatsVeilingInRubriekQuery;
+    GLOBAL $getVoorwerpNummerQuery;
+    $stmt = $connection->prepare($plaatsVeilingQuery);
+    $stmt->bindParam(':VW_titel', $veilingInput[0]);
+    $stmt->bindParam(':VW_beschrijving', $veilingInput[1]);
+    $stmt->bindParam(':VW_startprijs', $veilingInput[2]);
+    $stmt->bindParam(':VW_betalingswijze', $veilingInput[3]);
+    $stmt->bindParam(':VW_betalingsinstructie', $veilingInput[4]);
+    $stmt->bindParam(':VW_plaatsnaam', $veilingInput[5]);
+    $stmt->bindParam(':VW_land', $veilingInput[6]);
+    $stmt->bindParam(':Vw_looptijd', $veilingInput[7]);
+    $stmt->bindParam(':VW_verzendkosten', $veilingInput[8]);
+    $stmt->bindParam(':VW_verzendinstructies', $veilingInput[9]);
+    $stmt->bindParam(':VW_verkoper', $veilingInput[10]);
+    $stmt->bindParam(':VW_conditie', $veilingInput[11]);
+    $stmt->bindParam(':VW_thumbnail', $veilingInput[12]);
+    $stmt->bindParam(':VW_hoogstebod', $veilingInput[13]);
+    $stmt->execute();
+
+}
+
+function getLastID()
+{
+    global $connection;
+    global $getVoorwerpNummerQuery;
+    return sendtoDatabase2($getVoorwerpNummerQuery);
+}
+
+function getExtension($files)
+{
+    $thumbnailFileType = array();
+    for ($i = 0; $i < sizeof($files['afbeelding']['name']); $i++) {
+        $thumbnailFileType[$i] = pathinfo($_FILES['afbeelding']['name'][$i], PATHINFO_EXTENSION);
+    }
+    return $thumbnailFileType;
 }
 
 function checkRegistratie()
@@ -1532,6 +1619,7 @@ EOT;
 function createUpgradeCode($username)
 {
 
+
     /* preparing the query and inserting into the database */
     GLOBAL $connection;
 
@@ -1539,6 +1627,8 @@ function createUpgradeCode($username)
     $code = md5($username . $date);
     $code = substr($code, 0, 16);
 
+
+    /*
     $query = <<<EOT
 
 INSERT INTO Upgrade (UPG_gebruikersnaam, UPG_code, UPG_tijd)
@@ -1551,6 +1641,7 @@ EOT;
     $stmt->bindParam(':code', $code);
     $stmt->bindParam(':tijd', $date);
     $stmt->execute();
+    */
 
 }
 
@@ -1629,9 +1720,6 @@ EOT;
                 height: auto !important;
                 max-width: 100% !important;
                 width: auto !important; }}
-            /* -------------------------------------
-              HEAD STYLES
-            ------------------------------------- */
             @media all {
               .ExternalClass {
                 width: 100%; }
