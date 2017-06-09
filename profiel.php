@@ -142,15 +142,14 @@ require('navbar.php');
                         <?php
 
                         $auctions = $userads;
-
                         if (isset($auctions[0]) AND !empty($auctions)) {
                             foreach ($auctions as $auction) {
-                                DrawItemAuction($auction);
+                                DrawAuction($auction);
                             }
                         } else {
-                            echo " geen andere advertenties.";
+                            echo "U heeft geen geplaatste advertenties.";
                         }
-                            print_r($auctions);
+            
 
                         ?>
                     </div>

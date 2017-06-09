@@ -285,7 +285,7 @@ FROM Gebruiker
 WHERE GEB_gebruikersnaam = ?
 EOT;
 
-//producten van gebruikers 
+//producten van gebruikers voor profiel pagina
 $QueryUserAds = <<<EOT
 SELECT
   TOP 40
@@ -311,10 +311,25 @@ ORDER BY VW_looptijdStart ASC, VW_titel
 
 EOT;
 
-
-
-
-
+// Biedingen van gebruikers voor profiel pagina
+$QueryUserBod = <<<EOT
+SELECT TOP 40 BOD_voorwerpnummer, VW_titel, b.BOD_gebruiker,
+  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
+  (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+              FROM Bod
+              WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                                       FROM Bod
+                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+              ORDER BY BOD_Bodbedrag DESC), (select TOP 1 VW_startprijs from Voorwerp where VW_voorwerpnummer = VW_voorwerpnummer)))  as prijs,
+  VW_looptijdEinde,
+  VW_thumbnail AS ImagePath
+FROM bod b
+INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer
+WHERE BOD_gebruiker = ?
+GROUP BY BOD_voorwerpnummer,vw_voorwerpnummer, BOD_bodTijdEnDag, VW_titel, BOD_gebruiker, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
+ORDER BY BOD_bodTijdEnDag
+EOT;
 
 /* query voor het zoeken van een Admin*/
 $QueryFindAdmin = <<<EOT
