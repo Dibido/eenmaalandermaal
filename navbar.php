@@ -46,6 +46,7 @@
 
 <?php
 session_start();
+include('/PHP/sluitVeilingen.php');
 
 if (isset($_SESSION['Username'])) { 
     //echo 'U bent ingelogd';
