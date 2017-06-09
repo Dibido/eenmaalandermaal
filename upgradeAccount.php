@@ -9,7 +9,7 @@ print_r($_POST);
 
 
 //redirect of no login
-if(!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])){
+if (!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])) {
     header("Location: login.php?unauthorised=True");
 }
 
@@ -18,51 +18,45 @@ if(!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])){
 $errorMessage = [False];
 $disabled = '';
 
-foreach ($_POST as $itemId => $item){
-    $it = trim($item);
-    if(empty($item)){
+foreach ($_POST as $itemId => $item) {
+    $item = trim($item);
+    if (empty($item)) {
         $errorMessage = [True, ' U heeft niet alle velden ingevuld.'];
-    }else{
-         $results[$itemId] = cleanInput($item);
+        $emptyItem = True;
+    } else if(!$emptyItem) {
+        $results[$itemId] = cleanInput($item);
 
-         /* Form handeling */
 
+        /* Form handeling */
 
         //checking the input for invalid values
-        if(len($results["banknaam"]) <= 24){
-            if(len($results["rekeningnummer"]) <= 31){
-                if(len($results["creditcardnummer"]) <= 19){
+        if (strlen($results["banknaam"]) <= 24) {
+            if (strlen($results["rekeningnummer"]) <= 31) {
+                if (strlen($results["creditcardnummer"]) <= 19) {
 
+                    //creating a code for the user
+                    createUpgradeCode($_SESSION["Username"]);
+
+                    //updating the page to waiting for code state
+                    $disabled = 'disabled';
+                    $formSend = True;
+                    $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
+
+                } else {
+                    $errorMessage = [True, ' Uw creditcardnummer kan niet langer dan 19 characters zijn.'];
                 }
 
+            } else {
+                $errorMessage = [True, 'Uw rekeningnummer kan niet langer dan 31 characters zijn.'];
             }
 
+        } else {
+            $errorMessage = [True, 'Uw banknaam kan niet langer dan 24 characters zijn.'];
         }
 
-        $results[""]
-
-
-         bank = 24
-             bankreninig = 31
-                 creditcard = 19
-                     controle = correct?
-
-         //creating the code for the user
-
-
-
-         //
-
-        $disabled = 'disabled';
-        $formSend = True;
-        $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
     }
 }
 
-
-if($formSend){
-
-}
 
 
 
@@ -129,7 +123,7 @@ include "navbar.php";
                     <div class="form-group">
                         <div class="input-group">
                             <input <?php echo $disabled?> name="banknaam" type="text" class="form-control" placeholder="banknaam"
-                                   required value="<?php echo $results["banknaam"]; ?>"  max="24">
+                                   required value="<?php echo $results["banknaam"]; ?>"  maxlength="24">
                             <div class="input-group-addon"><i class="glyphicon glyphicon-home"></i></div>
                         </div>
                     </div>
@@ -140,7 +134,7 @@ include "navbar.php";
                     <div class="form-group">
                         <div class="input-group">
                             <input <?php echo $disabled?> name="rekeningnummer" type="text" class="form-control" placeholder="rekeningnummer"
-                                   required value="<?php echo $results["rekeningnummer"]; ?>" max="31">
+                                   required value="<?php echo $results["rekeningnummer"]; ?>" maxlength="31">
                             <div class="input-group-addon"><i class=" glyphicon glyphicon-euro"></i></div>
                         </div>
                     </div>
@@ -151,7 +145,7 @@ include "navbar.php";
                     <div class="form-group">
                         <div class="input-group">
                             <input <?php echo $disabled?> name="creditcardnummer" type="text" class="form-control" placeholder="creditcardnummer"
-                                   required value="<?php echo $results["creditcardnummer"]; ?>" max="19">
+                                   required value="<?php echo $results["creditcardnummer"]; ?>" maxlength="19">
                             <div class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></div>
                         </div>
                     </div>

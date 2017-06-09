@@ -1,5 +1,30 @@
 <?php
 
+/*Function for inserting the images into the Bestand table.
+Input:
+    Voorwerpnummer, VW_voorwerpnummer,
+    Aantalplaatjes, Number of images to insert
+    Extensie, File extension to use
+Output:
+    Inserted images using voorwerpnummer and count with correct extension in the /upload/ folder.
+     */
+function insertBestanden($voorwerpnummer, $aantalplaatjes, $extensie)
+{
+    global $connection;
+    global $QueryInsertImages;
+
+    for($i = 0; $i < $aantalplaatjes; $i++) {
+        $imageextensie = $extensie[$i];
+        $filepath = '/upload/' . $voorwerpnummer . '_' . $i . $imageextensie;
+
+        $stmt = $connection->prepare($QueryInsertImages);
+        $stmt->bindParam(':filenaam', $filepath);
+        $stmt->bindParam(':voorwerpnummer', $voorwerpnummer);
+        $stmt->execute();
+    }
+}
+
+
 /*change time formatting based on remaining time.
 > 2 days = date
 > 2 hours = hours + minutes
@@ -60,17 +85,11 @@ function findUserInfo($username)
 function findUserAds($username)
 {
     GLOBAL $connection;
-    GLOBAL $QueryFindUserAds;
-
-
-  $stmt = $connection->prepare($QueryFindUserAds);
-  $stmt->execute(array($username));
-  return $stmt-> fetch(); 
-  //return $stmt-> fetchAll();
-    $stmt = $connection->prepare($QueryFindUserAds);
+    GLOBAL $QueryUserAds;
+    
+    $stmt = $connection->prepare($QueryUserAds);
     $stmt->execute(array($username));
-    return $stmt->fetchAll();
-
+    return $stmt-> fetchAll(); 
 }
 
 
@@ -1497,5 +1516,211 @@ EOT;
     $stmt->execute();
 
 }
+
+function createUpgradeCode($username)
+{
+
+
+    /* preparing the query and inserting into the database */
+    GLOBAL $connection;
+
+    $date = date("Y/m/d");
+    $code = md5($username . $date);
+    $code = substr($code, 0, 16);
+
+    $query = <<<EOT
+
+INSERT INTO Upgrade (UPG_gebruikersnaam, UPG_code, UPG_tijd)
+VALUES (:username , :code, :tijd )
+
+EOT;
+
+
+
+    $stmt = $connection->prepare($query);
+    $stmt->bindParam(':offer', $username);
+    $stmt->bindParam(':user', $code);
+    $stmt->bindParam(':itemID', $date);
+    $stmt->execute();
+
+
+
+
+    /* preparing the mail */
+
+    // Mail Headers
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= 'From: info@iproject3.icasites.nl' . "\r\n";
+    $subject = 'EenmaalAndermaal: uw upgrade code ';
+
+
+    //getting the email adress from the user
+
+    $query = <<<EOT
+
+SELECT GEB_mailbox FROM Gebruiker WHERE GEB_gebruikersnaam = ?
+
+EOT;
+
+    $stmt = $connection->prepare($query);
+    $stmt->execute(array($username));
+    $stmt->fetch();
+
+    $email = $stmt[0];
+
+
+    //Verificatie mail
+    $message = '
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width">
+    
+    <title>Email Verificatie</title>
+    <style type="text/css">
+            /* -------------------------------------
+                RESPONSIVE AND MOBILE FRIENDLY STYLES
+            ------------------------------------- */
+            @media only screen and (max-width: 620px) {
+              table[class=body] h1 {
+                font-size: 28px !important;
+                margin-bottom: 10px !important; }
+              table[class=body] p,
+              table[class=body] ul,
+              table[class=body] ol,
+              table[class=body] td,
+              table[class=body] span,
+              table[class=body] a {
+                font-size: 16px !important; }
+              table[class=body] .wrapper,
+              table[class=body] .article {
+                padding: 10px !important; }
+              table[class=body] .content {
+                padding: 0 !important; }
+              table[class=body] .container {
+                padding: 0 !important;
+                width: 100% !important; }
+              table[class=body] .main {
+                border-left-width: 0 !important;
+                border-radius: 0 !important;
+                border-right-width: 0 !important; }
+              table[class=body] .btn table {
+                width: 100% !important; }
+              table[class=body] .btn a {
+                width: 100% !important; }
+              table[class=body] .img-responsive {
+                height: auto !important;
+                max-width: 100% !important;
+                width: auto !important; }}
+            /* -------------------------------------
+              HEAD STYLES
+            ------------------------------------- */
+            @media all {
+              .ExternalClass {
+                width: 100%; }
+              .ExternalClass,
+              .ExternalClass p,
+              .ExternalClass span,
+              .ExternalClass font,
+              .ExternalClass td,
+              .ExternalClass div {
+                line-height: 100%; }
+              .apple-link a {
+                color: inherit !important;
+                font-family: inherit !important;
+                font-size: inherit !important;
+                font-weight: inherit !important;
+                line-height: inherit !important;
+                text-decoration: none !important; }
+              .btn-primary table td:hover {
+                background-color: #35316f !important; }
+              .btn-primary a:hover {
+                background-color: #35316f !important;
+                border-color: #35316f !important; } }
+    </style>
+  </head>
+  <body class="" style="background-color:#f6f6f6;font-family:sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.4;margin:0;padding:0;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;">
+    <table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#f6f6f6;width:100%;">
+      <tr>
+        <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">&nbsp;</td>
+        <td class="container" style="font-family:sans-serif;font-size:14px;vertical-align:top;display:block;max-width:580px;padding:10px;width:580px;Margin:0 auto !important;">
+          <div class="content" style="box-sizing:border-box;display:block;Margin:0 auto;max-width:580px;padding:10px;">
+            <!-- START CENTERED WHITE CONTAINER -->
+            <table class="main" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;background:#fff;border-radius:3px;width:100%;">
+              <!-- START MAIN CONTENT AREA -->
+              <div style="background-color: #f6d155">
+                <tr>
+                </tr>
+                <tr>
+                  <td align="center" style="font-family:sans-serif;font-size:14px;vertical-align:top;background-color: #f6d155;">
+                    <a href="http://iproject3.icasites.nl/" style="color:#413b88;text-decoration:underline;">
+                      <img src="http://iproject3.icasites.nl/images/testlogo.png" alt="EenmaalAndermaal Logo" height="70" width="auto" style="border:none;-ms-interpolation-mode:bicubic;max-width:100%;margin:15px;">
+                    </a>
+                  </td>
+                </tr>
+              </div>
+              <td class="wrapper" style="font-family:sans-serif;font-size:14px;vertical-align:top;box-sizing:border-box;padding:20px;">
+                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
+                  <tr>
+                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Beste gebruiker,</p>
+                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft aangegeven dat u wilt opgraden naar een verkoopaccount. Dit is uw persoonlijke code: <b> ' . $code . ' </b> </p>
+                  </tr>
+                </table>
+                <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Vul deze in op de website om de registratieprocedure af te ronden. </p>
+                <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;box-sizing:border-box;width:100%;">
+                  <tbody>
+                    
+                      <td align="left" style="font-family:sans-serif;font-size:14px;vertical-align:top;padding-bottom:15px;">
+                        <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;width:auto;">
+                          <tbody>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="font-family:sans-serif;font-size:14px;vertical-align:top;padding-bottom:15px;">
+                        <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Met vriendelijke groet,</p>
+                        <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Het EenmaalAndermaal Team</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+              <!-- END MAIN CONTENT AREA -->
+            </table>
+            <!-- START FOOTER -->
+            <div class="footer" style="clear:both;padding-top:10px;text-align:center;width:100%;background-color: #444;">
+              <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
+                <tr>
+                  <td class="content-block" style="font-family:sans-serif;font-size:14px;vertical-align:top;color:#fff;font-size:12px;text-align:center; margin-bottom:10px color: #f0f0f0;">
+                    <span class="apple-link" style="color:#fff;font-size:12px;text-align:center;"><a href="http://iproject3.icasites.nl/" style="color:#413b88;text-decoration:underline;color:#fff;font-size:12px;text-align:center;"><u>EenmaalAndermaal B.V.</u></a></span>
+                    <br>
+                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;color:#fff;font-size:12px;text-align:center;">KVK-nummer: 09091785</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-family:sans-serif;font-size:14px;vertical-align:top;color:#fff;font-size:12px;text-align:center;">
+                    Powered by Groep 3
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- END FOOTER -->
+            <!-- END CENTERED WHITE CONTAINER -->
+          </div>
+        </td>
+        <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">&nbsp;</td>
+      </tr>
+    </table>
+  </body>
+</html>
+';
+
+    mail($email, $subject, $message, $headers);
+
+}
+
+
 
 ?>
