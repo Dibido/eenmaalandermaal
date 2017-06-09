@@ -62,6 +62,7 @@ require('navbar.php');
 
             <div class="row text-center">
                 <div class="col-md-6 col-md-push-3">
+
                     <h2>Email verificatie</h2>
                     <h3>Na het verifiëren van uw emailadres kunt u zich registreren!</h3>
                 </div>

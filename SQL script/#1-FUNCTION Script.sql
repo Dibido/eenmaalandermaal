@@ -149,6 +149,27 @@ CREATE FUNCTION [dbo].[FN_StripHTML](@HTMLText VARCHAR(MAX))
   END
 GO
 
+IF OBJECT_ID('FN_RubriekIsAfstammelingVan') IS NOT NULL
+  DROP FUNCTION [dbo].[FN_RubriekIsAfstammelingVan]
+GO
+
+create FUNCTION [dbo].[FN_RubriekIsAfstammelingVan](
+  @KindRubriek INT,
+  @SuperRubriek INT
+)
+  RETURNS BIT
+  BEGIN
+    IF @KindRubriek = @SuperRubriek OR @kindRubriek IS NULL OR @SuperRubriek IS NULL
+      RETURN 0
+
+    DECLARE @ParentVanKind INT = (SELECT TOP 1 RB_Parent FROM Rubriek WHERE Rubriek.RB_Nummer = @KindRubriek)
+    IF @ParentVanKind = @SuperRubriek
+      RETURN 1
+
+    RETURN dbo.FN_RubriekIsAfstammelingVan(@ParentVanKind,@SuperRubriek)
+
+  END
+
 
 --Niet meer nodig ivm VW_minimaalnieuwbod
 /*CREATE FUNCTION FN_bodHogerDanStartprijs(

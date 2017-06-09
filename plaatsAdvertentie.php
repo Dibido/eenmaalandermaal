@@ -3,31 +3,38 @@
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
-
-$Betalingswijzen = SendToDatabase2($GetBethaalMethodesQuerie);
+Session_START();
+$Betalingswijzen = SendToDatabase($GetBethaalMethodesQuerie);
 $Landen = SendToDatabase($GetLandenQuerie);
 $Landnamen = SendToDatabase2($GetLandnaamQuerie);
-
+$rubriek = '';
 //$Looptijden = SendToDatabase($GetLooptijdenQuerie);
 if (isset($_GET['rubriek']) && !empty($_GET['rubriek'])) {
     $rubriek = ($_GET['rubriek']);
-} else {
-    $rubriek = 'NULL';
+    if(!is_numeric($rubriek)){
+        $rubriek = 38;
+    }
+    $_POST['rubriek'] = $rubriek;
 }
+$waardes = $_POST;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $target_dir = 'upload/';
     $target_file = $target_dir . basename($_FILES["thumbnail"]["name"]);
-    $errorResults = checkPlaatsenVoorwerp($Betalingswijzen, $Landnamen, $_POST);
-    if ($errorResults[sizeof($errorResults) - 1] == false) {
-        if (move_uploaded_file($_FILES["thumbnail"]["tmp_name"], $target_file)) {
-            echo $target_file;
-        } else {
-            echo 'KUT DING';
-        }
+    $errorResults = checkPlaatsenVoorwerp($Betalingswijzen, $Landnamen);
+    if ($errorResults[sizeof($errorResults) - 1] != true) {
+        $veilingInput = prepareveilingInput($waardes,$_SESSION);
+        plaatsAdvertentie($veilingInput);
+        $lastID = getLastID();
+        print_r($lastID);
+        $extentions = getExtension($_FILES);
+        $aantalplaatjes = sizeof($_FILES['afbeelding']['name']);
+        insertBestanden($lastID[0],$aantalplaatjes,$extentions);
+        $stmt = $connection->prepare($plaatsVeilingInRubriekQuery);
+
+
     }
 }
-print_r($_POST);
-$waardes = $_POST;
+
 ?>
 
 
@@ -90,7 +97,7 @@ require('navbar.php');
 <div class="well container">
 
     <?php
-    if (!empty($errorResults) AND end($errorResults) == true) {
+    if (!empty($errorResults)) {
         echo '<div class="col-xs-12" ><div class="alert alert-danger alert-dismissable fade in center-block col-md-6 col-md-push-3">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <h2 class="center-text alert-danger" ><strong>Niet alles is goed ingevuld!</strong></h2><br>';
@@ -103,7 +110,6 @@ require('navbar.php');
         <br>
         <div class="list-group-item panel-collapse collapse in">
             <?php
-            $rubriek = 'NULL';
             printCategoriesAdvertentiePagina($rubriekQuery, $rubriek);
             ?>
         </div>
@@ -273,6 +279,10 @@ require('navbar.php');
                 echo '</fieldset>';
             }
             ?>
+            <input type="hidden" name="rubriek" value="
+               <?php
+                echo $rubriek;
+                ?>">
         </form>
     </div>
 </div>
