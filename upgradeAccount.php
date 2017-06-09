@@ -1,4 +1,12 @@
 <?php
+
+/*
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+error_reporting(-1);
+
+*/
+
 session_start();
 require('PHP/connection.php');
 require('PHP/Functions.php');
@@ -16,7 +24,15 @@ if (!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])) {
 
 // form validation
 $errorMessage = [False];
+$successMessage = [False];
 $disabled = '';
+$formSend = False;
+
+$results["banknaam"] = '';
+$results["rekeningnummer"] = '';
+$results["creditcardnummer"] = '';
+
+
 
 foreach ($_POST as $itemId => $item) {
     $item = trim($item);
@@ -108,6 +124,11 @@ foreach ($_POST as $itemId => $item) {
 <?php
 include "navbar.php";
 ?>
+<!-- Breadcrumb -->
+<ol class="breadcrumb " style="position: fixed; top: 50px; display: block; width: 100%;">
+    <li class="breadcrumb-item"><a href="profiel.php">profielpagina</a></li>
+    <li class="breadcrumb-item active">upgrade account</li>
+</ol>
 
 <div class="container center-block">
     <div class="col-xs-10 col-xs-push-1 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
