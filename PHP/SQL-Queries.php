@@ -286,9 +286,23 @@ EOT;
 
 /* Query voor het zoeken van user info*/
 $QueryFindUserInfo = <<<EOT
-SELECT * 
+SELECT
+  GEB_gebruikersnaam,
+  GEB_voornaam,
+  GEB_achternaam,
+  GEB_adresregel_1,
+  GEB_adresregel_2,
+  GEB_postcode,
+  GEB_plaatsnaam,
+  GEB_geboortedag,
+  GEB_mailbox,
+  GEB_verkoper,
+  GEB_rating,
+  GEB_actief,
+  (SELECT Landen.LAN_landnaam FROM Landen WHERE LAN_landcode = Gebruiker.GEB_Land) AS GEB_Land
 FROM Gebruiker
 WHERE GEB_gebruikersnaam = ?
+
 EOT;
 
 //producten van gebruikers voor profiel pagina
