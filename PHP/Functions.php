@@ -62,6 +62,11 @@ function findUserAds($username)
     GLOBAL $connection;
     GLOBAL $QueryFindUserAds;
 
+
+  $stmt = $connection->prepare($QueryFindUserAds);
+  $stmt->execute(array($username));
+  return $stmt-> fetch(); 
+  //return $stmt-> fetchAll();
     $stmt = $connection->prepare($QueryFindUserAds);
     $stmt->execute(array($username));
     return $stmt->fetchAll();
