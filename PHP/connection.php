@@ -1,10 +1,10 @@
 <?php
 
 
-$hostname = "mssql.iproject.icasites.nl,1433";
-$dbname = "iproject3";
-$username = "iproject3";
-$pw= "QNxaK62B";
+$hostname = "localhost";
+$dbname = "eenmaalandermaal";
+$username = "minty";
+$pw= "P@ssw0rd";
 $connection=NULL;
 
 try {

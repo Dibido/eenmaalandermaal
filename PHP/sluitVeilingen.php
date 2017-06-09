@@ -1,7 +1,7 @@
 <?php
-require('connection.php');
-require('SQL-Queries.php');
-require('Functions.php');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 $QuerieInfoGeslotenVeilingen = <<<EOT
 SELECT VW_voorwerpnummer AS voorwerpnummer, VW_titel AS titel, VW_hoogstebod AS verkoopprijs, BOD_gebruiker AS koper, GEB_mailbox AS email_koper, (SELECT  GEB_gebruikersnaam FROM Gebruiker WHERE GEB_gebruikersnaam = VW_verkoper) AS verkoper ,(SELECT  GEB_mailbox FROM Gebruiker WHERE GEB_gebruikersnaam = VW_verkoper) AS email_verkoper
