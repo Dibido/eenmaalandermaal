@@ -13,9 +13,9 @@ function insertBestanden($voorwerpnummer, $aantalplaatjes, $extensie)
     global $connection;
     global $QueryInsertImages;
 
-    for($i = 0; $i < $aantalplaatjes; $i++) {
+    for ($i = 0; $i < $aantalplaatjes; $i++) {
         $imageextensie = $extensie[$i];
-        $filepath = '/upload/' . $voorwerpnummer . '_' . $i . '.' . $imageextensie;
+        $filepath = '/upload/' . $voorwerpnummer . '_' . ($i+1) . '.' . $imageextensie;
 
         $stmt = $connection->prepare($QueryInsertImages);
         $stmt->bindParam(':filenaam', $filepath);
@@ -100,7 +100,7 @@ function findBodAds($username)
 
     $stmt = $connection->prepare($QueryUserBod);
     $stmt->execute(array($username));
-    return $stmt-> fetchAll();
+    return $stmt->fetchAll();
 }
 
 /* function for Finding user WIN for profiel page*/
@@ -113,7 +113,6 @@ function findWinAds($username)
     $stmt->execute(array($username));
     return $stmt-> fetchAll(); 
 }
-
 
 
 /*function for finding adverts per user*/
@@ -958,13 +957,13 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
     $timer = "timer".$VW_Nummer;
     echo '<script>
     // Set the date we\'re counting down to
-    var '.$timer.' = new Date("' . $tijd . '").getTime();
+    var ' . $timer . ' = new Date("' . $tijd . '").getTime();
     // Update the count down every 1 second
     var x = setInterval(function() {
         // Get todays date and time
         var now = new Date().getTime();
         // Find the distance between now an the count down date
-        var distance = '.$timer.' - now;
+        var distance = ' . $timer . ' - now;
         // Time calculations for days, hours, minutes and seconds
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -991,7 +990,6 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
 </script>
 ';
 }
-
 
 
 // functie die email adres invult bij laden registreer1.php indien al ingevuld.
@@ -1570,6 +1568,22 @@ EOT;
 
 }
 
+function uploadExtraAfbeeldingen($files, $id, $aantalplaatjes, $extentions)
+{
+    $target_dir = 'upload/';
+    for ($i = 0; $i < $aantalplaatjes; $i++) {
+        move_uploaded_file($files['afbeelding']["tmp_name"][$i], $target_dir . $id[0] . '_' . ($i + 1) . '.' . $extentions[$i]);
+    }
+}
+
+function uploadThumbnail($files, $id)
+{
+    $target_dir = 'upload/';
+    $extention = pathinfo($files['thumbnail']["name"], PATHINFO_EXTENSION);
+    move_uploaded_file($files['thumbnail']["tmp_name"], $target_dir . $id[0] . '_0.' . $extention);
+}
+
+
 function getCodeFromMail()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -1825,7 +1839,6 @@ EOT;
 EOT;
 
     mail($email, $subject, $message, $headers);
-
 
 
 }
