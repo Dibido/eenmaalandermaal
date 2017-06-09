@@ -112,6 +112,7 @@ AS
                           ORDER BY b.BOD_bodbedrag DESC), Biedingen.VW_startprijs) < 9999960  -- Prevent overflow
               --Alleen random voorwerpen.
               AND Biedingen.RandNr % 3 = 0
+              AND BOD_voorwerpnummer NOT IN (select VW_voorwerpnummer from Voorwerp where VW_veilinggesloten = 1)
       SET @LoopCount += 1
     END
 GO
