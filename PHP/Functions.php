@@ -1472,4 +1472,32 @@ function FindUser($username)
 }
 
 
+/* this function updates user information to updgrade his account to an account that can sell items */
+
+/* input:
+ *
+ *
+ */
+
+
+
+function upgradeAccount($itemID, $user, $offer)
+{
+    GLOBAL $connection;
+
+    $query = <<<EOT
+
+INSERT INTO Bod (BOD_voorwerpnummer, BOD_gebruiker, BOD_bodbedrag)
+VALUES (:itemID , :user, :offer )
+
+EOT;
+
+    $stmt = $connection->prepare($query);
+    $stmt->bindParam(':offer', $offer);
+    $stmt->bindParam(':user', $user);
+    $stmt->bindParam(':itemID', $itemID);
+    $stmt->execute();
+
+}
+
 ?>

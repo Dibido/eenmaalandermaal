@@ -5,15 +5,39 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
 print_r($_SESSION);
+print_r($_POST);
 
+
+//redirect of no login
 if(!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])){
-    header("Location: login.php");
+    header("Location: login.php?unauthorised=True");
 }
+
+
+// form validation
+$errorMessage = [False];
+$disabled = '';
+
+foreach ($_POST as $itemId => $item){
+    if(empty($item)){
+        $errorMessage = [True, ' U heeft niet alle velden ingevuld.'];
+    }else{
+         $results[$itemId] = cleanInput($item);
+
+         /* Form handeling */
+        $disabled = 'disabled';
+        $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
+
+    }
+}
+
+
+
+
 
 ?>
 
 <!doctype html>
-
 <html lang="en">
 
 <head>
@@ -65,14 +89,14 @@ include "navbar.php";
             <div class="panel-heading text-center">Vul uw gegevens in</div>
             <div class="panel-body">
 
-                <form action="upgradeAccount.php" method="POST">
-
+                <form action="upgradeAccount.php" method="POST" id="mainForm">
 
                     <!-- banknaam input -->
 
                     <div class="form-group">
                         <div class="input-group">
-                            <input name="banknaam" type="text" class="form-control" placeholder="banknaam" required>
+                            <input <?php echo $disabled?> name="banknaam" type="text" class="form-control" placeholder="banknaam"
+                                   required value="<?php echo $results["banknaam"]; ?>">
                             <div class="input-group-addon"><i class="glyphicon glyphicon-home"></i></div>
                         </div>
                     </div>
@@ -82,8 +106,8 @@ include "navbar.php";
 
                     <div class="form-group">
                         <div class="input-group">
-                            <input name="rekeningnummer" type="text" class="form-control" placeholder="rekeningnummer"
-                                   required>
+                            <input <?php echo $disabled?> name="rekeningnummer" type="text" class="form-control" placeholder="rekeningnummer"
+                                   required value="<?php echo $results["rekeningnummer"]; ?>">
                             <div class="input-group-addon"><i class=" glyphicon glyphicon-euro"></i></div>
                         </div>
                     </div>
@@ -93,11 +117,12 @@ include "navbar.php";
 
                     <div class="form-group">
                         <div class="input-group">
-                            <input name="creditcardnummer" type="text" class="form-control" placeholder="creditcardnummer"
-                                   required>
+                            <input <?php echo $disabled?> name="creditcardnummer" type="text" class="form-control" placeholder="creditcardnummer"
+                                   required value="<?php echo $results["creditcardnummer"]; ?>">
                             <div class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></div>
                         </div>
                     </div>
+
 
 
                     <!-- Alerts -->
@@ -129,24 +154,71 @@ include "navbar.php";
             <div class="panel-body">
 
                 <!-- toelichting op controle -->
-                <p>Wanneer een gebruiker zich wilt registreren als een verkoper, is het nodig om een extra controle te ondergaan.
-                Deze controle is mogelijk in de vorm van een brief, met een persoonlijke code. Of via een controle van uw creditcard.
-                Hieronder kunt u een van deze opties kiezen. </p>
 
+                <?php
+
+                    if($disabled == '') {
+                        echo "
+                        <p>Wanneer een gebruiker zich wilt registreren als een verkoper, is het nodig om een extra controle te ondergaan.
+                        Deze controle is mogelijk in de vorm van een brief, met een persoonlijke code. Of via een controle van uw creditcard.
+                         Hieronder kunt u een van deze opties kiezen. </p>";
+                    } else{
+                        echo "
+                        
+                        <p>Hier onder kunt u uw verificatiecode invullen.</p>
+                        
+                        ";
+                    }
+
+                 ?>
+
+
+                <!-- inut voor verificatiecode -->
+
+                <?php
+
+                    if($disabled != ''){
+                        echo" <div class=\"form-group\">
+                            <div class=\"input-group\">
+                                <input name=\"verificatiecode\" type=\"text\" class=\"form-control\" placeholder=\"verificatiecode\"
+                                       required>
+                                <div class=\"input-group-addon\"><i class=\"glyphicon glyphicon-check\"></i></div>
+                            </div>
+                        </div>";
+                    }
+
+
+
+
+
+
+
+                ?>
 
 
                     <!-- Controle input -->
 
                 <form class="form-inline">
-                    <select class="form-control" id="controleSelect" required>
-                        <option value="" disabled selected>Controle voor registratie</option>
-                        <option>Creditcard</option>
-                        <option>Post</option>
+                    <select class="form-control controleSelect" required form="mainForm" name="controleOptie" id="controleSelect">
+
+                        <?php
+                        if($disabled == ''){
+                            echo"
+                                 <option value=\"\" disabled selected>Controle voor registratie</option>
+                                 <option>Creditcard</option>
+                                 <option>Post</option>";
+                        }else{
+                            echo "<option id=\"" . $disabled . "\" value=\"" . $results["controleOptie"] . "\" disabled selected>" . $results["controleOptie"] . "</option>";
+                        }
+
+                        ?>
+
                     </select>
 
                     <!-- submit button -->
 
-                    <button id="conroleButton" type="submit" class="btn btn-primary">Submit</button>
+                    <button id="conroleButton" type="submit" class="btn btn-primary" form="mainForm" >Submit</button>
+
                 </form>
             </div>
         </div>
