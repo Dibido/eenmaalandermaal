@@ -829,6 +829,7 @@ function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
     global $connection;
     //When a rubriekNummer is entered the function getParentCategories returns all Numbers of the parents
     //These are used to open the selected categories
+    $parentRubrieken = array();
     if (!empty($rubriekNummer)) {
         $parentRubrieken = getParentCategories($rubriekNummer);
     }
@@ -1383,7 +1384,6 @@ function plaatsAdvertentie($veilingInput)
     $stmt->bindParam(':VW_conditie', $veilingInput[11]);
     $stmt->bindParam(':VW_thumbnail', $veilingInput[12]);
     $stmt->bindParam(':VW_hoogstebod', $veilingInput[13]);
-    print_r($stmt);
     $stmt->execute();
 
 }
@@ -1392,14 +1392,16 @@ function getLastID()
 {
     global $connection;
     global $getVoorwerpNummerQuery;
-    return $connection->query($getVoorwerpNummerQuery)->fetchAll(PDO::FETCH_ASSOC);
+    return sendtoDatabase2($getVoorwerpNummerQuery);
 }
 
 function getExtension($files)
 {
-    for ($i = 0; $i < $files['afbeelding']['name']) {
-        $thumbnailFileType = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
+    $thumbnailFileType = array();
+    for ($i = 0; $i < sizeof($files['afbeelding']['name']); $i++) {
+        $thumbnailFileType[$i] = pathinfo($_FILES['afbeelding']['name'][$i], PATHINFO_EXTENSION);
     }
+    return $thumbnailFileType;
 }
 
 function checkRegistratie()
@@ -1602,7 +1604,7 @@ EOT;
     $stmt->execute();
 
 }
-
+*/
 function createUpgradeCode($username)
 {
 

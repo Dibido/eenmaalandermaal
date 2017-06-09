@@ -24,9 +24,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($errorResults[sizeof($errorResults) - 1] != true) {
         $veilingInput = prepareveilingInput($waardes,$_SESSION);
         plaatsAdvertentie($veilingInput);
-        print_r(getLastID());
         $lastID = getLastID();
-
+        print_r($lastID);
+        $extentions = getExtension($_FILES);
+        $aantalplaatjes = sizeof($_FILES['afbeelding']['name']);
+        insertBestanden($lastID[0],$aantalplaatjes,$extentions);
         $stmt = $connection->prepare($plaatsVeilingInRubriekQuery);
 
 
