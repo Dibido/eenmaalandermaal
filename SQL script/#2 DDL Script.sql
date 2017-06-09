@@ -193,8 +193,8 @@ CREATE TABLE Bod (
                                                ) = 1
   ), --Bodbedrag moet hoger of gelijk zijn aan het minimalebod.
   CONSTRAINT CHK_NietEigenVoorwerp CHECK (dbo.FN_nietEigenVoorwerp(BOD_voorwerpnummer, BOD_gebruiker) =
-                                          1) --Mag niet op zijn eigen voorwerp bieden.
-    CONSTRAINT CHK_VeilingNietAfgelopen CHECK (dbo.FN_VeilingAfgelopen(BOD_voorwerpnummer) = 0) --Mag niet op een verlopen veiling bieden.
+                                          1), --Mag niet op zijn eigen voorwerp bieden.
+  CONSTRAINT CHK_VeilingNietAfgelopen CHECK (dbo.FN_VeilingAfgelopen(BOD_voorwerpnummer) = 0) --Mag niet op een verlopen veiling bieden.
 );
 
 CREATE TABLE Registreer (
