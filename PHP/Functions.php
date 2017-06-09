@@ -92,6 +92,18 @@ function findUserAds($username)
     return $stmt-> fetchAll(); 
 }
 
+/* function for Finding user BOD for profiel page*/
+function findBodAds($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryUserBod;
+    
+    $stmt = $connection->prepare($QueryUserBod);
+    $stmt->execute(array($username));
+    return $stmt-> fetchAll(); 
+}
+
+
 
 /*function for finding adverts per user*/
 function findAuctionsByUser($username, $auction)
@@ -156,7 +168,7 @@ SELECT
   VW_verzendkosten,
   VW_conditie, 
   VW_hoogstebod,
-  VW_minimalenieuwebod
+  VW_minimalenieuwebod,
   
 FROM Voorwerp
   FULL OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
@@ -1497,7 +1509,7 @@ function FindUser($username)
  */
 
 
-
+/*
 function upgradeAccount($itemID, $user, $offer)
 {
     GLOBAL $connection;
@@ -1516,10 +1528,9 @@ EOT;
     $stmt->execute();
 
 }
-
+*/
 function createUpgradeCode($username)
 {
-
 
     /* preparing the query and inserting into the database */
     GLOBAL $connection;
@@ -1535,16 +1546,23 @@ VALUES (:username , :code, :tijd )
 
 EOT;
 
-
-
     $stmt = $connection->prepare($query);
-    $stmt->bindParam(':offer', $username);
-    $stmt->bindParam(':user', $code);
-    $stmt->bindParam(':itemID', $date);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':code', $code);
+    $stmt->bindParam(':tijd', $date);
     $stmt->execute();
 
+}
 
 
+
+
+
+
+
+
+function sendUpgradeMail($username)
+{
 
     /* preparing the mail */
 
@@ -1562,12 +1580,12 @@ EOT;
 SELECT GEB_mailbox FROM Gebruiker WHERE GEB_gebruikersnaam = ?
 
 EOT;
+    GLOBAL $connection;
 
     $stmt = $connection->prepare($query);
     $stmt->execute(array($username));
-    $stmt->fetch();
-
-    $email = $stmt[0];
+    $email = $stmt->fetch();
+    $email = $email[0];
 
 
     //Verificatie mail
@@ -1718,6 +1736,8 @@ EOT;
 ';
 
     mail($email, $subject, $message, $headers);
+
+
 
 }
 
