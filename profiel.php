@@ -8,8 +8,10 @@ require('PHP/connection.php');
 $username = $_SESSION['Username']; 
 $userinfo = findUserInfo($username)[0];
 $userads = findUserAds($username);
+$userbod = findBodAds($username);
 //print_r('Username');
 //print_r($userads);
+print_r($userbod);
 
 
 ?>
@@ -142,21 +144,32 @@ require('navbar.php');
                         <?php
 
                         $auctions = $userads;
-
                         if (isset($auctions[0]) AND !empty($auctions)) {
                             foreach ($auctions as $auction) {
-                                DrawItemAuction($auction);
+                                DrawAuction($auction);
                             }
                         } else {
-                            echo " geen andere advertenties.";
+                            echo "U heeft geen geplaatste advertenties.";
                         }
-                            print_r($auctions);
+            
 
                         ?>
                     </div>
                     <div id="menu1" class="tab-pane fade">
                       <h3>Mijn biedingen</h3>
-                       
+                       <?php
+
+                        $auctions = $userbod;
+                        if (isset($auctions[0]) AND !empty($auctions)) {
+                            foreach ($auctions as $auction) {
+                                DrawAuction($auction);
+                            }
+                        } else {
+                            echo "U heeft nog geen bod geplaatst.";
+                        }
+            
+
+                        ?>
                     </div>
                     <div id="menu2" class="tab-pane fade">
                       <h3>Gewonnen veilingen</h3>

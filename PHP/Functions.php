@@ -1,5 +1,30 @@
 <?php
 
+/*Function for inserting the images into the Bestand table.
+Input:
+    Voorwerpnummer, VW_voorwerpnummer,
+    Aantalplaatjes, Number of images to insert
+    Extensie, File extension to use
+Output:
+    Inserted images using voorwerpnummer and count with correct extension in the /upload/ folder.
+     */
+function insertBestanden($voorwerpnummer, $aantalplaatjes, $extensie)
+{
+    global $connection;
+    global $QueryInsertImages;
+
+    for($i = 0; $i < $aantalplaatjes; $i++) {
+        $imageextensie = $extensie[$i];
+        $filepath = '/upload/' . $voorwerpnummer . '_' . $i . $imageextensie;
+
+        $stmt = $connection->prepare($QueryInsertImages);
+        $stmt->bindParam(':filenaam', $filepath);
+        $stmt->bindParam(':voorwerpnummer', $voorwerpnummer);
+        $stmt->execute();
+    }
+}
+
+
 /*change time formatting based on remaining time.
 > 2 days = date
 > 2 hours = hours + minutes
@@ -66,6 +91,18 @@ function findUserAds($username)
     $stmt->execute(array($username));
     return $stmt-> fetchAll(); 
 }
+
+/* function for Finding user BOD for profiel page*/
+function findBodAds($username)
+{
+    GLOBAL $connection;
+    GLOBAL $QueryUserBod;
+    
+    $stmt = $connection->prepare($QueryUserBod);
+    $stmt->execute(array($username));
+    return $stmt-> fetchAll(); 
+}
+
 
 
 /*function for finding adverts per user*/
