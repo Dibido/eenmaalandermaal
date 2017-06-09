@@ -42,9 +42,14 @@ if (isset($bod) AND !empty($bod)) {
     if (filter_input(INPUT_POST, "bod", FILTER_VALIDATE_INT)
         OR filter_input(INPUT_POST, "bod", FILTER_VALIDATE_FLOAT)) {
 
-        if($ItemInfo["VW_looptijdEinde"] < localtime()){
+
+
+        /*
+        if($ItemInfo["VW_looptijdEinde"] < getdate()){
 
         }
+
+        */
 
         //cleaning the input for html
         $bod = cleanInput($bod);
