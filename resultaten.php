@@ -159,12 +159,12 @@ require('navbar.php');
                         //Array to be able to create a for loop. When adding a new one nothing has to be changed this way.
                         $filterNamen = array("Tijd: nieuw aangeboden", "Tijd: eerst afgelopen", "Prijs: laagste bovenaan", "Prijs: hoogste bovenaan", "Gebruikerswaardering: hoogste bovenaan", "Gebruikerswaardering: laagste bovenaan","Aantal biedingen: hoogste aantal bovenaan", "Aantal biedingen: laagste aantal bovenaan", "Titel: A-Z", "Titel: Z-A");
                         if (isset($sorteerfilter)) {
-                            echo "<option value=" . ($_GET['sorteerfilter']) . " selected>" . $filterNamen[$sorteerfilter] . "</option>";
+                            echo "<option value=" . ($sorteerfilter) . " selected>" . $filterNamen[$sorteerfilter] . "</option>";
                             echo $filterNamen[$sorteerfilter];
                         }
                         //Creates all options in the array $filterNamen
                         for ($i = 0; $i < sizeof($filterNamen); $i++) {
-                            if ($_GET['sorteerfilter'] != $i) {
+                            if ($sorteerfilter != $i) {
                                 echo "<option value=" . $i . ">" . $filterNamen[$i] . "</option>";
                             }
                         }
