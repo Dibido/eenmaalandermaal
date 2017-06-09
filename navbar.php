@@ -12,8 +12,10 @@
                             data-target="#MobileButtons"><i class="glyphicon glyphicon-menu-hamburger"></i></button>
                 </li>
                 <li>
-                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton">Plaats veiling
+                    <form action="plaatsAdvertentie.php">
+                    <button class="btn btn-primary navbar-btn hidden-sm hidden-xsv NavLeftButton" type="submit">Plaats veiling
                     </button>
+                    </form>
                 </li>
                 <li>
                     <button class="btn btn-default navbar-btn hidden-sm hidden-xsv NavRightButton"
