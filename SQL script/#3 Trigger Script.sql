@@ -104,3 +104,13 @@ AS
   END
 GO
 
+--Trigger die de upgradecode na een week verwijderd
+CREATE TRIGGER TR_UpgradeVerlopen
+  ON dbo.Upgrade
+FOR INSERT, UPDATE
+AS
+  BEGIN
+    DELETE FROM Upgrade
+    WHERE UPG_tijd < DATEADD(WEEK, -1, GETDATE())
+  END
+GO

@@ -5,12 +5,11 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 require('PHP/connection.php');
 
-//$ItemInfo = GetItemDetails(fonorama);
 $username = $_SESSION['Username']; 
 $userinfo = findUserInfo($username)[0];
 $userads = findUserAds($username);
-print_r('Username');
-print_r($userads);
+//print_r('Username');
+//print_r($userads);
 
 
 ?>
@@ -51,6 +50,7 @@ print_r($userads);
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
     <link rel="stylesheet" href="CSS/footer.css">
+    <link rel="stylesheet" href="CSS/HomePage.css">
 </head>
 
 <body>
@@ -94,36 +94,29 @@ require('navbar.php');
 
                <div class="list-group-item "><span class="glyphicon glyphicon-user"></span> Username: <b><?php echo "$username" ?> </b></div>
                <div class="list-group-item"><span class="glyphicon glyphicon-shopping-cart"></span> Type account: <b><?php if ($userinfo["GEB_verkoper"] == 0) {echo "Geen verkoper";} else echo "Verkoper" ?></b></div>
+               <div class="list-group-item "><span class="glyphicon glyphicon-thumbs-up"></span> Mijn Rating: <b><?php
+
+                    $Userinfo = GetUserInfoPerAuction($username);
+                                $rating = ceil(($Userinfo[0]["GEB_rating"] /20)); // Delen door 2. Rating van 0 tot 100, sterren 0 tot 5.
+                                $legeSterren = 5 - $rating;
+                                for ($i = 0; $i < $rating; $i++) {
+                                    echo " <i class=\"glyphicon glyphicon-star\"></i>";
+                                }
+                                for ($i = 0; $i < $legeSterren; $i++) {
+                                    echo " <i class=\"glyphicon glyphicon-star-empty\"></i>";
+                                }
+                                //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
+
+
+
+
+                ?> </b></div>
+
+
+
                <a href="#"><button class="btn btn-primary center-block btn-lg " type="button" style="margin-top: 10px;">
-                            <span class="glyphicon glyphicon-repeat"></span><?php if ($userinfo["GEB_verkoper"] == 0) {echo " UPGRADE ACCOUNT!";} else echo "DOWNGRADEN"?></button></a> <!-- MISCHIEN KNOP WEGLATEN BIJ VERKOPER of DOWNGRADEn -->
+                            <span class="glyphicon glyphicon-repeat"></span><?php if ($userinfo["GEB_verkoper"] == 0) {echo " UPGRADE ACCOUNT!";} else echo " DOWNGRADEN"?></button></a> <!-- MISCHIEN KNOP WEGLATEN BIJ VERKOPER of DOWNGRADEn -->
                
-                
-
-                 <!-- gebruikersinformatie -->
-
-                    <div class="panel-heading text-center">Gebruikers informatie</div>
-                <div class="panel-body">
-                    <div class="UserContainer">
-                        <div id="User" style="background-image:url(images/User.png)"></div>
-                        <div class="UserInfo"><?php echo $userinfo["GEB_gebruikersnaam"] ?></div>
-                    </div>
-                    <div id="UserRating" class="text-center">
-                        <div>
-                            <?php
-
-        
-
-                            $rating = floor($userinfo[14]["GEB_rating"]) / 10;
-
-                            for($i = 0; $i < $rating/2; $i++){
-                                echo " <i class=\"glyphicon glyphicon-star\"></i>";
-                            }
-
-                            //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
-                            ?>
-                        </div>
-                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -146,23 +139,24 @@ require('navbar.php');
                   <div class="tab-content">
                     <div id="home" class="tab-pane fade in active">
                       <h3>Mijn advertenties</h3>   
-                    </div>
-                    <div id="menu1" class="tab-pane fade">
-                      <h3>Mijn biedingen</h3>
                         <?php
 
-                        /*$auctions = $userads;
+                        $auctions = $userads;
 
                         if (isset($auctions[0]) AND !empty($auctions)) {
                             foreach ($auctions as $auction) {
                                 DrawItemAuction($auction);
                             }
                         } else {
-                            echo "Deze gebruiker heeft geen andere advertenties.";
-                        }*/
-
+                            echo " geen andere advertenties.";
+                        }
+                            print_r($auctions);
 
                         ?>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                      <h3>Mijn biedingen</h3>
+                       
                     </div>
                     <div id="menu2" class="tab-pane fade">
                       <h3>Gewonnen veilingen</h3>

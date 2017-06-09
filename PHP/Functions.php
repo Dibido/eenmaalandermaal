@@ -60,12 +60,11 @@ function findUserInfo($username)
 function findUserAds($username)
 {
     GLOBAL $connection;
-    GLOBAL $QueryFindUserAds;
-
-    $stmt = $connection->prepare($QueryFindUserAds);
+    GLOBAL $QueryUserAds;
+    
+    $stmt = $connection->prepare($QueryUserAds);
     $stmt->execute(array($username));
-    return $stmt->fetchAll();
-
+    return $stmt-> fetchAll(); 
 }
 
 

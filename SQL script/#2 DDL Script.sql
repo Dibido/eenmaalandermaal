@@ -202,3 +202,10 @@ CREATE TABLE Registreer (
   REG_tijd  DATETIME     NOT NULL DEFAULT GETDATE(),
   CONSTRAINT PK_Registreer PRIMARY KEY (REG_email)
 )
+
+CREATE TABLE Upgrade (
+  UPG_gebruikersnaam VARCHAR(64) NOT NULL,
+  UPG_code  VARCHAR(16)  NOT NULL,
+  UPG_tijd  DATETIME     NOT NULL DEFAULT GETDATE(),
+  CONSTRAINT PK_Upgrade PRIMARY KEY (UPG_gebruikersnaam)
+)
