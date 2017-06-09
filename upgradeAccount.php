@@ -232,7 +232,7 @@ include "navbar.php";
                         echo" <div class=\"form-group\">
                             <div class=\"input-group\">
                                 <input name=\"verificatiecode\" type=\"text\" class=\"form-control\" placeholder=\"verificatiecode\"
-                                       required form='mainForm'>
+                                       required form='mainForm' >
                                 <div class=\"input-group-addon\"><i class=\"glyphicon glyphicon-check\"></i></div>
                             </div>
                         </div>";

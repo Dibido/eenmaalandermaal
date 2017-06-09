@@ -1854,6 +1854,28 @@ EOT;
 
 
 }
+function checkUpgradeCode ($upgradecode, $username){
+
+    $query = <<<EOT
+
+SELECT * 
+FROM Upgrade
+WHERE UPG_gebruikersnaam = ?
+
+EOT;
+
+    GLOBAL $connection;
+
+    $stmt = $connection->prepare($query);
+    $stmt->execute(array($username));
+    $results = $stmt->fetch();
+
+    return ($results["UPG_code"] == $upgradecode);
+}
+
+
+
+
 
 function checkVeilingAfgelopen($veilingID){
 
@@ -1871,4 +1893,28 @@ EOT;
 
 }
 
+function insertVerkoper($array){
+
+    GLOBAL $connection;
+
+    $stmt = $connection->prepare(
+        "INSERT INTO Verkoper (VER_gebruiker, VER_bank, VER_bankrekening, VER_controleoptie, VER_creditcard)
+    VALUES (:username, :banknaam, :rekeningnummer :verificatiecode, :creditcardnummer)
+    ");
+
+    $stmt->bindParam(':username', $array["username"]);
+    $stmt->bindParam(':banknaam', $array["banknaam"]);
+    $stmt->bindParam(':rekeningnummer', $array["rekeningnummer"]);
+    $stmt->bindParam(':verificatiecode', $array["verificatiecode"]);
+    $stmt->bindParam(':creditcardnummer', $array["creditcardnummer"]);
+
+    try{
+        $stmt->execute();
+        return [True];
+
+    }catch (Exception $e){
+        return [False, 'er ging iets mis : ' . $e];
+    }
+
+}
 ?>

@@ -1,4 +1,9 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 require('PHP/connection.php');
 require('PHP/Functions.php');
@@ -16,7 +21,9 @@ if(!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])){
 
 // form validation
 $errorMessage = [False];
+$successMessage = [False];
 $disabled = '';
+$correctCode = False;
 
 foreach ($_POST as $itemId => $item){
     if(empty($item)){
@@ -25,12 +32,24 @@ foreach ($_POST as $itemId => $item){
         $results[$itemId] = cleanInput($item);
 
         /* checking if the code is correct */
+        if(checkUpgradeCode($results["verificatiecode"] ,$_SESSION["Username"])){
+            $correctCode = True;
 
+        }else{
+            $errorMessage = [True, ' De code is helaas incorrect.'];
+        }
 
-        /* Form handeling */
-        $formSend = True;
-        $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
     }
+}
+if ($correctCode){
+   $results = insertVerkoper($_POST);
+   if($results[0]){
+       $successMessage = [True, ' U bent succesvol geregistreerd als verkoper.'];
+   }else{
+       $errorMessage = [False, $results[1]];
+   }
+
+
 }
 
 
