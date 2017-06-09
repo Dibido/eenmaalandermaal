@@ -140,7 +140,7 @@ foreach ($info as $GeslotenVeiling) {
                   <tr>
                     <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Beste gebruiker,</p>
                     <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft de veiling met de titel: <b> ' . $titel . ' </b> gewonnen!</p>
-                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft voor dit object �<b> ' . $verkoopprijs . ' </b> betaald.</p>
+                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft voor dit object €<b> ' . $verkoopprijs . ' </b> betaald.</p>
                   </tr>
                 </table>
                 <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Klik op de knop om de veiling te bekijken.</p>
