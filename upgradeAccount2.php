@@ -9,9 +9,6 @@ require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
-print_r($_SESSION);
-print_r($_POST);
-
 
 //redirect of no login
 if(!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])){
@@ -25,34 +22,46 @@ $successMessage = [False];
 $disabled = '';
 $correctCode = False;
 
-foreach ($_POST as $itemId => $item){
-    if(empty($item)){
-        $errorMessage = [True, ' U heeft niet alle velden ingevuld.'];
-    }else{
+
+
+$noEmptyItems = True;
+
+/* cleaning the post */
+foreach ($_POST as $itemId => $item) {
+    if(!empty($item)){
         $results[$itemId] = cleanInput($item);
-
-        /* checking if the code is correct */
-        if(checkUpgradeCode($results["verificatiecode"] ,$_SESSION["Username"])){
-            $correctCode = True;
-
-        }else{
-            $errorMessage = [True, ' De code is helaas incorrect.'];
-        }
-
+    }else{
+        $noEmptyItems = False;
     }
 }
-if ($correctCode){
-   $results = insertVerkoper($_POST);
-   if($results[0]){
-       $successMessage = [True, ' U bent succesvol geregistreerd als verkoper.'];
-   }else{
-       $errorMessage = [False, $results[1]];
-   }
 
 
+/* checking if the code is correct */
+if($noEmptyItems){
+    $correctCode = checkUpgradeCode($results["verificatiecode"] ,$_SESSION["Username"]);
+    if($correctCode){
+        $successMessage = [True, ' Uw code was correct, maar er ging iets fout bij u toevoegen als een verkoper. '];
+
+        // inserting the user in the sellers table
+        $info = insertVerkoper($_SESSION["Username"] , $results);
+        if($info[0]){
+            $successMessage = $info[1];
+            $errorMessage = [FALSE];
+        }else{
+            $errorMessage = $info[1];
+            $successMessage = [FALSE];
+        }
+
+    }else{
+        $errorMessage = [True, 'De code is helaas incorrect. klik' .  "<a href=\"upgradeAccount.php?reset=True\">" . ' hier' . '</a> om terug te gaan. '];
+
+        //TODO: mogelijkheid om terug te gaan en aanpassingen te maken
+    }
+
+    //when empty fields are found
+} else {
+    $errorMessage = [True, ' U heeft niet alle velden ingevuld. klik' .  "<a href=\"upgradeAccount.php?reset=True\">" . ' hier' . '</a> om terug te gaan.'];
 }
-
-
 
 
 
@@ -103,6 +112,11 @@ if ($correctCode){
 <?php
 include "navbar.php";
 ?>
+<ol class="breadcrumb " style="position: fixed; top: 50px; display: block; width: 100%;">
+    <li class="breadcrumb-item"><a href="upgradeAccount.php?reset=True">upgrade account</a></li>
+    <li class="breadcrumb-item active">check upgradecode</li>
+</ol>
+
 
 <div class="container center-block">
     <div class="col-xs-10 col-xs-push-1 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
@@ -117,13 +131,13 @@ include "navbar.php";
 
                         echo "<div class=\"alert alert-danger alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
-                             <strong>Error!</strong> " . $errorMessage[1] . "
+                             <strong>Error! </strong> " . $errorMessage[1] . "
                           </div>";
 
                     } else if ($successMessage[0]) {
                         echo "<div class=\"alert alert-success alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
-                             <strong>Success!</strong> " . $successMessage[1] . "
+                             <strong>Success! </strong> " . $successMessage[1] . "
                           </div>";
                     }
                     ?>

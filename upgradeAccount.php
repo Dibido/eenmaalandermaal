@@ -40,7 +40,6 @@ foreach ($_POST as $itemId => $item) {
     } else if(!$emptyItem) {
         $results[$itemId] = cleanInput($item);
 
-
         /* Form handeling */
 
         //checking the input for invalid values
@@ -48,8 +47,8 @@ foreach ($_POST as $itemId => $item) {
             if (strlen($results["rekeningnummer"]) <= 31) {
                 if (strlen($results["creditcardnummer"]) <= 19) {
 
-                    //updating the page to waiting for code state
-                    $disabled = 'disabled';
+                    //updating the page to: waiting for code
+                    $disabled = 'readonly';
                     $formSend = True;
                     $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
 

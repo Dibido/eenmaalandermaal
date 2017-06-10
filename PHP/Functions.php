@@ -1948,24 +1948,36 @@ EOT;
 
 }
 
-function insertVerkoper($array){
+function insertVerkoper($username , $array){
 
     GLOBAL $connection;
 
     $stmt = $connection->prepare(
         "INSERT INTO Verkoper (VER_gebruiker, VER_bank, VER_bankrekening, VER_controleoptie, VER_creditcard)
-    VALUES (:username, :banknaam, :rekeningnummer :verificatiecode, :creditcardnummer)
+    VALUES (:username, :banknaam, :rekeningnummer, :controleoptie, :creditcardnummer)
     ");
 
-    $stmt->bindParam(':username', $array["username"]);
+    $stmt->bindParam(':username', $username);
     $stmt->bindParam(':banknaam', $array["banknaam"]);
     $stmt->bindParam(':rekeningnummer', $array["rekeningnummer"]);
-    $stmt->bindParam(':verificatiecode', $array["verificatiecode"]);
+    $stmt->bindParam(':controleoptie', $array["controleOptie"]);
     $stmt->bindParam(':creditcardnummer', $array["creditcardnummer"]);
 
     try{
+        //insering into the verkoper table
         $stmt->execute();
-        return [True];
+
+        //inserting into the gebruiker table
+        $stmt = $connection->prepare(
+            "        
+        UPDATE
+        Gebruiker SET GEB_verkoper = 1
+        WHERE GEB_gebruikersnaam = :username
+    ");
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        return [True, 'U bent nu geregistreerd als een verkoper!'];
+
 
     }catch (Exception $e){
         return [False, 'er ging iets mis : ' . $e];
