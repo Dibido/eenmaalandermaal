@@ -138,14 +138,14 @@ WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
       ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = VW_voorwerpnummer
     FULL OUTER JOIN Rubriek
       ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
-  WHERE RB_Naam IN (
-    SELECT TOP 1 RB_Naam
+  WHERE RB_Nummer IN (
+    SELECT TOP 1 RB_Nummer
 FROM Rubriek
 INNER JOIN Voorwerp_Rubriek
 ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
 INNER JOIN Voorwerp
 ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-GROUP BY RB_Naam
+GROUP BY RB_Nummer
 ORDER BY sum(VW_bodcount) DESC
   )
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
