@@ -14,13 +14,14 @@
  *
  */
 
+//Insert de bestand namen in de tabel bestand
 $QueryInsertImages = <<<EOT
 
 INSERT INTO BESTAND(BES_filenaam, BES_voorwerpnummer)
 VALUES (:filenaam , :voorwerpnummer);
 
 EOT;
-
+//Update de thumbnail omdat bij het inserten van het voorwerp het ID nog niet bekend is en de thumbnail dus niet goed ingesteld kan worden.
 $QueryUpdateImages = <<<EOT
 
 update Voorwerp
@@ -56,12 +57,13 @@ GROUP BY VW_voorwerpnummer,vw_titel,VW_looptijdEinde,VW_thumbnail
 
 EOT;
 
-
+//Laat de top 15 categorieën zien
+//Deze zijn geordend op de sum van VW_bodcount
 $QueryTopCategories = <<<EOT
 
 
 SELECT
-  TOP 10
+  TOP 14
   RB_Naam,
   RB_Nummer,
   sum(VW_bodcount)
@@ -94,19 +96,13 @@ SELECT
                                      ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
              ORDER BY BOD_Bodbedrag DESC), (VW_startprijs))) AS prijs,
   --Tijdsverschil tussen nu en het einde van de veiling
-  VW_looptijdEinde                                                                         AS tijd,
   VW_looptijdEinde,
   VW_thumbnail       AS ImagePath
---Selecteerd het eerste filepath die hij vind voor het voorwerpnummer
 
 FROM Voorwerp
-  LEFT OUTER JOIN Voorwerp_Rubriek
-    ON Voorwerp.VW_voorwerpnummer = Voorwerp_Rubriek.VR_Voorwerp_Nummer
---Vul hier de minimum en maximum tijd over in
-
-WHERE VW_veilinggesloten != 1
+WHERE VW_veilinggesloten != 1 AND DATEDIFF(minute,GETDATE(),VW_looptijdEinde) > 3
 GROUP BY VW_voorwerpnummer, VW_looptijdEinde, VW_titel,VW_thumbnail,VW_startprijs, VW_bodcount
-ORDER BY tijd ASC, VW_bodcount DESC, VW_titel ASC
+ORDER BY VW_looptijdEinde ASC, VW_bodcount DESC, VW_titel ASC
 
 
 EOT;
@@ -126,15 +122,13 @@ SELECT
                                      ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
              ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) AS prijs,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)              AS tijd,
-  COUNT(BOD_voorwerpnummer)                                                 AS Biedingen,
+  VW_bodcount                                                 AS Biedingen,
   VW_looptijdEinde,
+  --Selecteerd het eerste filepath die hij vind voor het voorwerpnummer
   (SELECT TOP 1 BES_filenaam
    FROM Bestand
    WHERE BES_voorwerpnummer = VW_voorwerpnummer)           AS ImagePath
 FROM Voorwerp
-  --Inner join naar Bod zodat per Voorwerp het aantal biedingen bekeken kan worden.
-  LEFT OUTER JOIN Bod
-    ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer
 --Where statement om te kijken of het Voorwerp nummer in de belangrijkste categorie zit.
 WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
   SELECT DISTINCT VW_voorwerpnummer
@@ -155,7 +149,7 @@ GROUP BY RB_Naam
 ORDER BY sum(VW_bodcount) DESC
   )
 ) --TODO AND Verkoper van voorwerp in top van de gebruikerreviews
-GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs
+GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs,VW_bodcount
 ORDER BY Biedingen DESC, VW_titel ASC
 
 EOT;
@@ -175,8 +169,6 @@ SELECT
   VW_looptijdEinde,
   VW_thumbnail AS ImagePath
 FROM Voorwerp
-  INNER JOIN Voorwerp_Rubriek
-    ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
 GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
 ORDER BY VW_looptijdStart ASC, VW_titel
 

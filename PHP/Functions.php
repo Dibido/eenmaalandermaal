@@ -23,11 +23,17 @@ function insertExtraAfbeeldingen($voorwerpnummer, $aantalplaatjes, $extensie)
         $stmt->execute();
     }
 }
-
+/*Function for inserting the images into the Bestand table.
+Input:
+    Voorwerpnummer, VW_voorwerpnummer,
+Output:
+    Inserted images using voorwerpnummer and count with correct extension in the /upload/ folder.
+     */
 function insertThumbnail($files,$voorwerpnummer)
 {
     global $connection;
     global $QueryUpdateImages;
+    //verkrijgt de extentie van de file
     $extention = pathinfo($files['thumbnail']["name"], PATHINFO_EXTENSION);
     $filepath = '/upload/' . $voorwerpnummer . '_0.' . $extention;
     $stmt = $connection->prepare($QueryUpdateImages);
@@ -35,7 +41,7 @@ function insertThumbnail($files,$voorwerpnummer)
     $stmt->bindParam(':voorwerpnummer', $voorwerpnummer);
     $stmt->execute();
 }
-
+// Insert de gekozen rubriek bij het voorwerpnummer
 function insertRubriek($rubriek,$voorwerpnummer){
     global $connection;
     global $QueryInsertRubriek;
@@ -44,13 +50,14 @@ function insertRubriek($rubriek,$voorwerpnummer){
     $stmt->bindParam(':rubriek', $rubriek);
     $stmt->execute();
 }
-
+//Controleerd of de opgegeven gebruiker wel een verkoper is.
 function gebruikerIsVerkoperCheck($username){
     global $connection;
     global $QuerygebruikerIsVerkoper;
     $stmt = $connection->prepare($QuerygebruikerIsVerkoper);
     $stmt->bindParam(':gebruiker',  $username);
      $stmt->execute();
+     //Wanneer  de uitkomst leeg is wordt de gebruiker verwezen naar upgradeAccount.php.
     if(empty($stmt->fetchAll())){
         header("Location: upgradeAccount.php");
     }
@@ -494,6 +501,7 @@ function DrawAuction($auction)
             <!-- End template -->
             
     ";
+    //Maakt een timer aan voor het voorwerp
     createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
 }
 
@@ -524,10 +532,11 @@ function DrawItemAuction($auction)
             <!-- End template -->
             
     ";
+    //Maakt een timer aan voor het voorwerp
     createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
 
 }
-
+//Doet het zelfde als de vorige twee functies alleen zijn de kolommen aangepast.
 function DrawSearchResults($auction)
 {
     //testing for missing images and replacing with backup image
@@ -555,17 +564,21 @@ function DrawSearchResults($auction)
             </div>
             <!-- End template -->
     ";
+    //Maakt een timer aan voor het voorwerp
     createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
 
 }
 
-
+//Input: resultaten en zoekterm
+//Output: Geenresultaten voor zoekterm of alle resultaten voor de zoekterm
 function outputRows($result, $zoekterm)
 {
     global $zoekterm;
+    //Check of er resultaten gevonden waren
     if (empty($result)) {
         echo "Geen resultaten gevonden voor: '" . $zoekterm . "'";
     } else {
+        //Elk resultaat wordt geprint
         foreach ($result as $auction) {
             DrawSearchResults($auction);
         }
@@ -815,7 +828,7 @@ EOT;
     RETURN $connection->query($QueryParentCategories)->fetchAll(PDO::FETCH_COLUMN);
 }
 
-//Prints all categories in the Rubriek table in the right orer.
+//Prints all categories in the Rubriek table in the right order.
 function printCategories($zoekterm, $rubriekQuery, $rubriekNummer, $sorteerfilter, $prijs, $betalingsmethode)
 {
     global $connection;
@@ -824,7 +837,11 @@ function printCategories($zoekterm, $rubriekQuery, $rubriekNummer, $sorteerfilte
     if (!empty($rubriekNummer)) {
         $parentRubrieken = getParentCategories($rubriekNummer);
     }
-    //Returns all Categories in the following format: Head-categorie/categorie/subcategorie/subsubcategorie and so on
+    //Returns all Categories in the following format:
+    // Head-categorie/categorie/subcategorie1/subsubcategorie1
+    // Head-categorie/categorie/subcategorie1/subsubcategorie2
+    // Head-categorie/categorie/subcategorie1/subsubcategorie3
+    // Head-categorie/categorie/subcategorie2/subsubcategorie1 and so on
     $rubrieken = $connection->query($rubriekQuery)->fetchAll(PDO::FETCH_NUM);
     //Unorderlist with all Categories in it. The class is used to be able to open and close the unorder list.
     echo '<ul id="Rubrieken" class="nav panel-collapse collapse in">';
@@ -867,6 +884,7 @@ function printCategories($zoekterm, $rubriekQuery, $rubriekNummer, $sorteerfilte
     echo '</ul>';
 }
 
+//Does the same as the function above only now the final categories do only contain the rubriek number as $_GET value
 function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
 {
     global $connection;
@@ -918,6 +936,7 @@ function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
     }
     echo '</ul>';
 }
+
 
 function drawPagenumbers($Dictionary, $result)
 {
@@ -989,20 +1008,14 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
 {
     $timer = "timer".$VW_Nummer;
     echo '<script>
-    // Set the date we\'re counting down to
     var ' . $timer . ' = new Date("' . $tijd . '").getTime();
-    // Update the count down every 1 second
     var x = setInterval(function() {
-        // Get todays date and time
         var now = new Date().getTime();
-        // Find the distance between now an the count down date
         var distance = ' . $timer . ' - now;
-        // Time calculations for days, hours, minutes and seconds
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        // Display the result in the element with id="demo"
         
         if(days >= 1){
         document.getElementById("' . $VW_Nummer . '").innerHTML = days + "d " + hours + "h "
@@ -1014,7 +1027,7 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
         document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
-        // If the count down is finished, write some text
+        //Veiling wordt gesloten wanneer de overgebleven tijd kleiner is dan 0
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("' . $VW_Nummer . '").innerHTML = "Veiling gesloten";
@@ -1263,26 +1276,26 @@ function validateHash()
 
 function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
 {
+
     $looptijden = array(1, 3, 5, 7, 9);
     $errorResults = array();
     $maxFileSize = 5000000;
     $totalSize = 0;
     $thumbnailFileType = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
-    $afbeeldingFileTypes = array();
     $allowedFileTypes = array('png', 'jpg', 'jpeg');
-
+    //Totale grootte van alle afbeeldingen wordt bij elkaar opgeteld
     for ($i = 0; $i < sizeof($_FILES['afbeelding']['name']); $i++) {
         $totalSize += $_FILES['afbeelding']['size'][$i];
     }
-    for ($i = 0; $i < 11; $i++) {   //for-loop vullen van array anders undefined index
+    //for-loop vullen van array anders warning met undefined index
+    for ($i = 0; $i < 11; $i++) {
         $errorResults[$i] = "";
     }
     $errorResults[10] = false;
-    if ($_SERVER["REQUEST_METHOD"] != "POST") {
-        return $errorResults;
-    }
+    //Wanneer titel leeg is wordt er een error gegeven
     if (empty($_POST['Titel'])) {
         $errorResults[0] = "Titel is een verplicht veld!";
+        //De laatste waarde in de array $errorResults krijgt de waarde true als er één of meer errors is
         $errorResults[10] = true;
     } elseif (strlen(trim($_POST['Titel'])) < 4) {
         $errorResults[0] = "De Titel heeft een minimum lengte van 4 tekens!";
@@ -1365,6 +1378,8 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
     global $rubriekNummerAfstammelingVanRoot;
     global $connection;
     $rubriek = (int)$_POST['rubriek'];
+    //Er wordt gekeken of het ingevulde rubriek nummer wel afstamt van de root.
+    //Er kan dus geen verzonnen rubriek ingevuld worden
     $stmt = $connection->prepare($rubriekNummerAfstammelingVanRoot);
     $stmt->bindParam(':Rubriek', $rubriek);
     $stmt->execute();
@@ -1376,6 +1391,8 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
     return $errorResults;
 }
 
+//Input: Array met errorResultaten
+//Output: Net opgemaakt error report
 function drawErrorResult($errorResults)
 {
     $errorMessage = '';
@@ -1388,6 +1405,9 @@ function drawErrorResult($errorResults)
     return $errorMessage;
 }
 
+
+//Input: $_POST waardes van plaats veiling form & $_Session
+//Ouput: Waardes in een array op de juiste volgorde
 function prepareveilingInput($waardes, $sessie)
 {
 
@@ -1407,7 +1427,7 @@ function prepareveilingInput($waardes, $sessie)
     $veilingInput[13] = ((int)$waardes['startprijs']);
     return $veilingInput;
 }
-
+//Input waardes die in de tabel gezet moeten worden.
 function plaatsAdvertentie($veilingInput)
 {
     GLOBAL $connection;
@@ -1432,7 +1452,7 @@ function plaatsAdvertentie($veilingInput)
     $stmt->execute();
 
 }
-
+//Output: ID van het voorwerp dat net geinsert is.
 function getLastID()
 {
     global $connection;
@@ -1440,6 +1460,8 @@ function getLastID()
     return sendtoDatabase2($getVoorwerpNummerQuery);
 }
 
+//Input: $_files
+//Output: array van extensies in de juiste volgorde
 function getExtension($files)
 {
     $thumbnailFileType = array();
@@ -1604,6 +1626,13 @@ EOT;
 
 }
 
+
+//Input:    $_Files die in form geupload zijn.
+//          Het id van het voorwerp waar de afbeeldingen bij horen
+//          Aantal plaatjes zodat het aantalkeer dat de forloop moet draaien bekend is
+//          extensies zodat die achter de afbeeldingen gezet kunnen worden
+//
+//Output:   Alle afbeeldingen uit $files worden in de map /upload gezet met de juiste naam
 function uploadExtraAfbeeldingen($files, $id, $aantalplaatjes, $extentions)
 {
     $target_dir = 'upload/';
@@ -1611,7 +1640,10 @@ function uploadExtraAfbeeldingen($files, $id, $aantalplaatjes, $extentions)
         move_uploaded_file($files['afbeelding']["tmp_name"][$i], $target_dir . $id[0] . '_' . ($i + 1) . '.' . $extentions[$i]);
     }
 }
-
+//Input:    $_Files die in form geupload zijn
+//          Het id van het voorwerp waar de thumbnail bij moet
+//
+//Output:   De thumbnail uit $files wordt in de map /upload geplaats met de juiste naam
 function uploadThumbnail($files, $id)
 {
     $target_dir = 'upload/';
