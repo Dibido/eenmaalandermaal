@@ -16,16 +16,10 @@ $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
 
 
 /* making sure an image is available */
-if (!isset($ItemInfo["VW_thumbnail"]) OR empty($ItemInfo["VW_thumbnail"])) {
-    $ItemInfo["VW_thumbnail"] = "images/no-image-available.jpg";
+if (count($ItemImages) == 1 && empty($ItemImages[0])){
+    $ItemImages[0]["BES_filenaam"] = "images/no-image-available.jpg";
 }
-for ($i = 0; $i < 3; $i++) {
-    if (!isset($ItemImages[$i]["BES_filenaam"]) OR empty($ItemImages[$i]["BES_filenaam"])) {
-        $ItemImages[$i]["BES_filenaam"] = "images/no-image-available.jpg";
-    } else {
-        $ItemImages[$i]["BES_filenaam"] = "http://iproject3.icasites.nl" . $ItemImages[$i]["BES_filenaam"];
-    }
-}
+
 
 
 /* de functie voor het bieden */
@@ -144,21 +138,13 @@ if (isset($snelBod) AND !empty($snelBod)) {
 require('navbar.php');
 ?>
 
-<ol class="breadcrumb">
-    <li><a href="#" onclick="history.go(-1)"><span id="lastPage">Vorige pagina</span>
-            <script type="text/javascript">
-
-                var elem = window.history.previous.href;
-                $("#lastPage").append(elem);
-
-            </script>
-        </a></li>
-
+<ol class="breadcrumb" style="position: absolute; top: 50px; display: block; width: 100%;">
+    <li><a href="#" onclick="history.go(-1)"><span id="lastPage">Vorige pagina</span></a></li>
     <li><a href="#"><?php echo $ItemInfo["VW_titel"] ?></a></li>
 </ol>
 
 
-<div class="container">
+<div class="container" style="margin-top: 40px;">
     <div class="row">
         <div class="col-md-12" style="padding-left: 30px; padding-right: 30px;">
             <div class="HeaderTitle text-center"><?php echo $ItemInfo["VW_titel"] ?></div>
@@ -175,32 +161,46 @@ require('navbar.php');
             <!-- Indicators -->
             <ol class="carousel-indicators">
                 <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#myCarousel" data-slide-to="1"></li>
-                <li data-target="#myCarousel" data-slide-to="2"></li>
-                <li data-target="#myCarousel" data-slide-to="3"></li>
+
+                <?php
+
+                for($i = 1; count($ItemImages) > $i; $i++ ){
+                    echo "<li data-target=\"#myCarousel\" data-slide-to=\" " . $i . " \"></li>";
+                }
+
+                ?>
+
             </ol>
 
             <!-- Wrapper for slides -->
             <div class="carousel-inner">
-                <div class="item active">
-                    <div class="AuctionImage"
-                         style="background-image: url(<?php echo $ItemImages[0]["BES_filenaam"]; ?>)"></div>
-                </div>
 
-                <div class="item">
-                    <div class="AuctionImage"
-                         style="background-image: url(<?php echo $ItemImages[1]["BES_filenaam"]; ?>)"></div>
-                </div>
+                <?php
 
-                <div class="item">
-                    <div class="AuctionImage"
-                         style="background-image: url(<?php echo $ItemImages[2]["BES_filenaam"]; ?>)"></div>
-                </div>
+                $firstTime = True;
 
-                <div class="item">
-                    <div class="AuctionImage"
-                         style="background-image: url(<?php echo "http://iproject3.icasites.nl" . $ItemInfo["VW_thumbnail"]; ?>)"></div>
-                </div>
+                foreach ($ItemImages as $image){
+                    $image["BES_filenaam"] = "http://iproject3.icasites.nl" . $image["BES_filenaam"];
+
+                    if($firstTime){
+                        $firstTime = False;
+
+                        echo "
+                            <div class=\"item active\">
+                                <div class=\"AuctionImage\" style=\"background-image: url(" . $image["BES_filenaam"] . ")\"></div>
+                            </div>";
+
+                    } else {
+
+                        echo "
+                            <div class=\"item\">
+                                <div class=\"AuctionImage\" style=\"background-image: url( " . $image["BES_filenaam"] . " )\"></div>
+                            </div>";
+                    }
+                }
+
+                ?>
+
             </div>
 
             <!-- Left and right controls -->
