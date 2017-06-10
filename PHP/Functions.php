@@ -1546,8 +1546,8 @@ function doRegistratie()
 {
     $error = false;
 
-    foreach($_SESSION as $value){
-        $_SESSION[$value] = trim($value);
+    foreach($_SESSION as $key => $value){
+        $_SESSION[$key] = trim($value);
     }
 
     if (count($_SESSION) == 14) {
