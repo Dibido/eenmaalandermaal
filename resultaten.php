@@ -120,6 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
+    <link rel="stylesheet" href="CSS/footer.css">
 
     <!-- CSS voor price slider -->
     <link rel="stylesheet" type="text/css"
