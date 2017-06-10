@@ -4,6 +4,8 @@ require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 Session_START();
+
+$errorResults = array(false);
 //Haalt alle verschillende betalingswijzen op uit de database om later mee te vergelijken
 $Betalingswijzen = SendToDatabase($GetBethaalMethodesQuerie);
 //Haalt alle landcodes en landnamen op uit de database om later te laten zien in een select form
@@ -106,6 +108,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="CSS/HomePage.css">
     <link rel="stylesheet" href="CSS/veiling.css">
     <link rel="stylesheet" href="CSS/navigation.css">
+    <link rel="stylesheet" href="CSS/footer.css">
+
 
     <!-- CSS voor price slider -->
     <link rel="stylesheet" type="text/css"
@@ -133,7 +137,7 @@ require('navbar.php');
     <?php
     //Wanneer de laatste waarde uit de array $erroResults true is is er een fout geweest bij het invullen van het form
     //De foutmeldingen staan in de zelfde array nummer 0 t/m size-1
-    if ($errorResults[sizeof($errorResults)] == true) {
+    if ($errorResults[sizeof($errorResults)-1] == true) {
         echo '<div class="col-xs-12" ><div class="alert alert-danger alert-dismissable fade in center-block col-md-6 col-md-push-3">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
     <h2 class="center-text alert-danger" ><strong>Niet alles is goed ingevuld!</strong></h2><br>';
@@ -176,13 +180,11 @@ require('navbar.php');
             <div class="form-group">
                 <h4>Titel Voorwerp*</h4>
                 <input name="Titel" id="Titel" type="text" placeholder="Titel" maxlength="90"
-                       class="form-control" value="
-                    <?php
+                       class="form-control" value="<?php
                 //Wanneer er al een waarde was ingevuld maar niet alles was correct ingevuld wordt
                 //hier het ingevulde terug gezet.
-                if (!empty($waardes['Titel'])) {
-                    echo $waardes['Titel'];
-                } ?>">
+                 if (!empty($waardes['Titel'])) {echo $waardes['Titel'];
+                }?>">
             </div>
 
 
@@ -191,9 +193,7 @@ require('navbar.php');
                 <label for="Beschrijving"></label><h4>Beschrijving*</h4>
                 <textarea name="Beschrijving" id="Beschrijving"
                           placeholder="Vul hier de beschrijving van je voorwerp in!"
-                          class="form-control" rows="5" value="
-                          ">
-                    <?php
+                          class="form-control" rows="5"><?php
                     //Wanneer er al een waarde was ingevuld maar niet alles was correct ingevuld wordt
                     //hier het ingevulde terug gezet.
                     if (!empty($waardes['Beschrijving'])) {
@@ -287,10 +287,7 @@ require('navbar.php');
             <!-- Invullen van de betalingsinstructie -->
             <div class="form-group">
                 <h4>Betalingsinstructie*</h4>
-                <textarea name="Betalingsinstructie" id="Betalingsinstructie"
-                          placeholder="Vul hier jouw betalingsinstructie in!"
-                          class="form-control" rows="5">
-                    <?php
+                <textarea name="Betalingsinstructie" id="Betalingsinstructie" placeholder="Vul hier jouw betalingsinstructie in!" class="form-control" rows="5"><?php
                     //Wanneer er al een waarde was ingevuld maar niet alles was correct ingevuld wordt
                     //hier het ingevulde terug gezet.
                     if (!empty($waardes['Betalingsinstructie'])) {
@@ -384,6 +381,8 @@ require('navbar.php');
         </form>
     </div>
 </div>
+<?php include('footer.html');?>
+
 
 <script>
     //script voor de categorie boom

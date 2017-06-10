@@ -1374,6 +1374,10 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
             $errorResults[8] = "Verzendkosten mogen allen uitgedrukt worden in cijfers!";
             $errorResults[10] = true;
         }
+        elseif ($_POST['verzendkosten'] > 999.99){
+            $errorResults[8] = "Verzendkosten mogen maximaal €999.99 zijn!";
+            $errorResults[10] = true;
+        }
     }
     global $rubriekNummerAfstammelingVanRoot;
     global $connection;
@@ -1436,7 +1440,7 @@ function plaatsAdvertentie($veilingInput)
     GLOBAL $getVoorwerpNummerQuery;
     $stmt = $connection->prepare($plaatsVeilingQuery);
     $stmt->bindParam(':VW_titel', $veilingInput[0]);
-    $stmt->bindParam(':VW_beschrijving', $veilingInput[1]);
+    $stmt->bindParam(':VW_beschrijving', wordwrap($veilingInput[1], 100, "<br>"));
     $stmt->bindParam(':VW_startprijs', $veilingInput[2]);
     $stmt->bindParam(':VW_betalingswijze', $veilingInput[3]);
     $stmt->bindParam(':VW_betalingsinstructie', $veilingInput[4]);

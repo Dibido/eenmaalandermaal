@@ -17,7 +17,7 @@ FROM Rubriek H
     WHERE S.RB_Parent = H.RB_Nummer
   ) S
 WHERE H.RB_Parent = -1
-ORDER BY H.RB_Naam, Sub_Naam, H.RB_Nummer, H.RB_volgnummer";
+ORDER BY H.RB_Naam ASC, S.RB_volgnummer ASC";
 
 try {
     $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
@@ -135,5 +135,6 @@ require('navbar.php');
     laadLetters();
     ?>
 </div>
+
 </body>
 </html>
