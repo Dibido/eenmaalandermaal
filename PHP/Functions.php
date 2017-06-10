@@ -8,7 +8,7 @@ Input:
 Output:
     Inserted images using voorwerpnummer and count with correct extension in the /upload/ folder.
      */
-function insertBestanden($voorwerpnummer, $aantalplaatjes, $extensie)
+function insertExtraAfbeeldingen($voorwerpnummer, $aantalplaatjes, $extensie)
 {
     global $connection;
     global $QueryInsertImages;
@@ -697,7 +697,6 @@ FETCH NEXT $ResultsPerPage ROWS ONLY
     
 EOT;
     //executing the query
-    print_r($QuerySearchProducts);
     return SendToDatabase($QuerySearchProducts);
 
 
@@ -1271,6 +1270,7 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
     $thumbnailFileType = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
     $afbeeldingFileTypes = array();
     $allowedFileTypes = array('png', 'jpg', 'jpeg');
+
     for ($i = 0; $i < sizeof($_FILES['afbeelding']['name']); $i++) {
         $totalSize += $_FILES['afbeelding']['size'][$i];
     }
@@ -1294,11 +1294,14 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
     if (empty($_POST['Beschrijving'])) {
         $errorResults[1] = "Beschrijving is een verplicht veld!";
         $errorResults[10] = true;
-    } elseif (strlen(trim($_POST['Beschrijving'])) < 20) {
-        $errorResults[1] = "De beschrijving heeft een minimum lengte van 20 tekens";
+    } elseif (strlen(trim($_POST['Beschrijving'])) < 5) {
+        $errorResults[1] = "De beschrijving heeft een minimum lengte van 5 tekens";
         $errorResults[10] = true;
     }
-    if ($_FILES['thumbnail']['size'] > $maxFileSize) {
+    if(empty($_FILES['thumbnail']['name'])){
+        $errorResults[2] = "Thumbnail is een verplicht veld!";
+        $errorResults[10] = true;
+    }elseif ($_FILES['thumbnail']['size'] > $maxFileSize) {
         $errorResults[2] = "De maximum toegestane grootte van de thumbnail is " . $maxFileSize . "uw file is: " . $_FILES['thumbnail']['size'] / 1000 / 1024 . "MB";
         $errorResults[10] = true;
     } elseif (!in_array($thumbnailFileType, $allowedFileTypes)) {
@@ -1332,7 +1335,7 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
         $errorResults[5] = "Er was geen startprijs ingevuld!";
         $errorResults[10] = true;
     } elseif ($_POST['startprijs'] < 1 OR $_POST['startprijs'] > 9999999.9) {
-        $errorResults[5] = "De startprijs mag niet lager dan €1 zijn en niet hoger dan €9.999.999,9!";
+        $errorResults[5] = "De startprijs mag niet lager dan €1 zijn en niet hoger dan €9.999.999,99!";
         $errorResults[10] = true;
     }
     if (empty($_POST['betalingswijze'])) {
