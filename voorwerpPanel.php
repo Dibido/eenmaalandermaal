@@ -114,7 +114,7 @@ session_start();
         <div class="panel-body">
             <div class="UserContainer">
                 <div id="User" style="background-image:url(images/User.png)"></div>
-                <div class="UserInfo"><?php echo $ItemInfo["VW_verkoper"] ?></div>
+                <div class="UserInfo "><a href="profiel.php?username=<?php echo $ItemInfo["VW_verkoper"] ?>"><?php echo $ItemInfo["VW_verkoper"] ?></a></div>
             </div>
             <div id="UserRating" class="text-center">
                 <div>

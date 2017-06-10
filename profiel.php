@@ -5,7 +5,17 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 require('PHP/connection.php');
 
+/* getting the userinfo, and determining if the user is looking at his own, or another page*/
 $username = $_SESSION['Username'];
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if (isset($_GET['username'])) {
+        $username = cleanInput($_GET['username']);
+    }
+}
+
+
+
+
 $userinfo = findUserInfo($username)[0];
 $userads = findUserAds($username);
 $userbod = findBodAds($username);
@@ -65,7 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 require('navbar.php');
 ?>
 
-<div class="container">
+<ol class="breadcrumb " style="position: absolute; top: 50px; display: block; width: 100%;">
+    <li><a href="#" onclick="history.go(-1)"><span id="lastPage">Vorige pagina</span>
+    <li><a href="#">profielpagina van: <?php echo $username; ?></a></li>
+</ol>
+
+<div class="container" style="margin-top: 40px;">
     <div class="row">
         <div class="col-md-12"></div>
     </div>

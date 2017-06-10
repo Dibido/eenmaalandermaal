@@ -45,10 +45,10 @@ if($noEmptyItems){
         // inserting the user in the sellers table
         $info = insertVerkoper($_SESSION["Username"] , $results);
         if($info[0]){
-            $successMessage = $info[1];
+            $successMessage = [TRUE, $info[1]];
             $errorMessage = [FALSE];
         }else{
-            $errorMessage = $info[1];
+            $errorMessage = [True, $info[1]];
             $successMessage = [FALSE];
         }
 
