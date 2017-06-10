@@ -37,7 +37,7 @@ foreach ($_POST as $itemId => $item) {
 
 
 /* checking if the code is correct */
-if($noEmptyItems){
+if($noEmptyItems && isset($results)){
     $correctCode = checkUpgradeCode($results["verificatiecode"] ,$_SESSION["Username"]);
     if($correctCode){
         $successMessage = [True, ' Uw code was correct, maar er ging iets fout bij u toevoegen als een verkoper. '];
@@ -122,7 +122,7 @@ include "navbar.php";
     <div class="col-xs-10 col-xs-push-1 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
         <h3 style="border-bottom: #e5e5e5 solid 2px; padding: 5px; margin-bottom: 25px;" class="text-center">Upgrade uw account</h3>
         <div class="panel panel-default" >
-            <div class="panel-heading text-center">Vul uw gegevens in</div>
+            <div class="panel-heading text-center">Upgradestatus: </div>
             <div class="panel-body">
 
                 <?php

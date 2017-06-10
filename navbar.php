@@ -45,7 +45,11 @@
 
 
 <?php
-session_start();
+
+if(session_status() !=2){
+    session_start();
+}
+
 
 //Include om de verlopen veilingen te verwerken
 include('PHP/sluitVeilingen.php');

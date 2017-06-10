@@ -1,11 +1,5 @@
 <?php
 
-/*
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1);
-
-*/
 
 session_start();
 require('PHP/connection.php');
@@ -23,6 +17,7 @@ if (!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])) {
 // form validation
 $errorMessage = [False];
 $successMessage = [False];
+$infoMessage = [False];
 $disabled = '';
 $formSend = False;
 
@@ -31,7 +26,21 @@ $results["rekeningnummer"] = '';
 $results["creditcardnummer"] = '';
 
 
+/* resetting the upgrade process */
 
+if(isset($_GET["reset"])){
+    $resetResults = deleteFromUpgrade($_SESSION["Username"]);
+
+    if($resetResults[0]){
+        $infoMessage = [True, $resetResults[1]];
+    } else {
+        $errorMessage = [True, $resetResults[1]];
+    }
+
+}
+
+
+/* if the form was submitted, prepare a code */
 foreach ($_POST as $itemId => $item) {
     $item = trim($item);
     if (empty($item)) {
@@ -134,9 +143,11 @@ include "navbar.php";
 
 <div class="container center-block">
     <div class="col-xs-10 col-xs-push-1 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
-        <h3 style="border-bottom: #e5e5e5 solid 2px; padding: 5px; margin-bottom: 25px;" class="text-center">Upgrade uw account</h3>
+
+        <h3 style="border-bottom: #e5e5e5 solid 2px; padding: 5px; margin: 75px 0 25px 0;" class="text-center">Upgrade uw account</h3>
+
         <div class="panel panel-default" >
-            <div class="panel-heading text-center">Vul uw gegevens in</div>
+            <div class="panel-heading text-center">Vul uw gegevens in </div>
             <div class="panel-body">
 
                 <form <?php if($formSend){echo "action=upgradeAccount2.php";} ?> action="upgradeAccount.php" method="POST" id="mainForm">
@@ -192,7 +203,14 @@ include "navbar.php";
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
                              <strong>Success!</strong> " . $successMessage[1] . "
                           </div>";
+
+                    } else if ($infoMessage[0]){
+                        echo "<div class=\"alert alert-info alert-dismissable\">
+                             <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
+                             <strong>Info: </strong> " . $infoMessage[1] . "
+                          </div>";
                     }
+
 
                     ?>
                 </form>

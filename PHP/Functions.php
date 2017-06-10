@@ -1856,10 +1856,10 @@ EOT;
                 <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
                   <tr>
                     <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Beste gebruiker,</p>
-                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft aangegeven dat u uw account wilt upgraden naar een verkoopaccount. Dit is uw persoonlijke code: $code <b> </b> </p>
+                    <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">U heeft aangegeven dat u uw account wilt upgraden naar een verkoopaccount. Dit is uw persoonlijke code:  <b> $code </b> </p>
                   </tr>
                 </table>
-                <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Vul deze in op de website om de registratieprocedure af te ronden.</p>
+                <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Vul deze in op de website om het upgraden af te ronden.</p>
                 <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;box-sizing:border-box;width:100%;">
                   <tbody>
                     <tr>
@@ -1984,4 +1984,25 @@ function insertVerkoper($username , $array){
     }
 
 }
+
+function deleteFromUpgrade($username){
+
+
+    GLOBAL $connection;
+
+    $stmt = $connection->prepare(
+        "DELETE FROM Upgrade WHERE UPG_gebruikersnaam = :username ");
+
+    $stmt->bindParam(':username', $username);
+
+    try{
+        //insering into the verkoper table
+        $stmt->execute();
+        return [True, 'Upgrade reset, u kunt nu opnieuw uw gegevens invullen. '];
+
+    }catch (Exception $e){
+        return [False, 'er ging iets mis : ' . $e];
+    }
+}
+
 ?>
