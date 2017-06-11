@@ -408,7 +408,7 @@ SELECT A.RB_Naam AS HoofdRubriek, B.RB_Naam AS Rubriek, C.RB_Naam AS SubRubriek,
 EOT;
 
 $betalingsMethodeQuery = <<<EOT
-select BW_betalingswijze as betalingswijze
+select BW_betalingswijze
 from Betalingswijzen 
 ORDER BY BW_betalingswijze desc
 EOT;
@@ -429,7 +429,8 @@ INSERT into Voorwerp
    VW_verkoper,
    VW_conditie,
    VW_thumbnail,
-   VW_hoogstebod)
+   VW_hoogstebod,
+   VW_minimalenieuwebod)
    values
    (
    :VW_titel,
@@ -445,7 +446,8 @@ INSERT into Voorwerp
    :VW_verkoper,
    :VW_conditie,
    :VW_thumbnail,
-   :VW_hoogstebod
+   :VW_hoogstebod,
+   :VW_minimalenieuwebod
 )
 EOT;
 

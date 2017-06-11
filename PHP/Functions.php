@@ -12,9 +12,9 @@ function insertExtraAfbeeldingen($voorwerpnummer, $aantalplaatjes, $files)
 {
     global $connection;
     global $QueryInsertImages;
-    for ($i = 1; $i < $aantalplaatjes+1; $i++) {
-        $imageextensie = pathinfo($files['afbeelding']["name"][$i-1], PATHINFO_EXTENSION);
-        $filepath = '/upload/' . $voorwerpnummer . '_' . ($i+1) . '.' . $imageextensie;
+    for ($i = 1; $i < $aantalplaatjes + 1; $i++) {
+        $imageextensie = pathinfo($files['afbeelding']["name"][$i - 1], PATHINFO_EXTENSION);
+        $filepath = '/upload/' . $voorwerpnummer . '_' . ($i + 1) . '.' . $imageextensie;
 
         $stmt = $connection->prepare($QueryInsertImages);
         $stmt->bindParam(':filenaam', $filepath);
@@ -23,13 +23,14 @@ function insertExtraAfbeeldingen($voorwerpnummer, $aantalplaatjes, $files)
     }
 
 }
+
 /*Function for inserting the images into the Bestand table.
 Input:
     Voorwerpnummer, VW_voorwerpnummer,
 Output:
     Inserted images using voorwerpnummer and count with correct extension in the /upload/ folder.
      */
-function insertThumbnail($files,$voorwerpnummer)
+function insertThumbnail($files, $voorwerpnummer)
 {
     global $connection;
     global $QueryUpdateImages;
@@ -47,8 +48,10 @@ function insertThumbnail($files,$voorwerpnummer)
     $stmt->bindParam(':voorwerpnummer', $voorwerpnummer);
     $stmt->execute();
 }
+
 // Insert de gekozen rubriek bij het voorwerpnummer
-function insertRubriek($rubriek,$voorwerpnummer){
+function insertRubriek($rubriek, $voorwerpnummer)
+{
     global $connection;
     global $QueryInsertRubriek;
     $stmt = $connection->prepare($QueryInsertRubriek);
@@ -56,19 +59,20 @@ function insertRubriek($rubriek,$voorwerpnummer){
     $stmt->bindParam(':rubriek', $rubriek);
     $stmt->execute();
 }
+
 //Controleerd of de opgegeven gebruiker wel een verkoper is.
-function gebruikerIsVerkoperCheck($username){
+function gebruikerIsVerkoperCheck($username)
+{
     global $connection;
     global $QuerygebruikerIsVerkoper;
     $stmt = $connection->prepare($QuerygebruikerIsVerkoper);
-    $stmt->bindParam(':gebruiker',  $username);
-     $stmt->execute();
-     //Wanneer  de uitkomst leeg is wordt de gebruiker verwezen naar upgradeAccount.php.
-    if(empty($stmt->fetchAll())){
+    $stmt->bindParam(':gebruiker', $username);
+    $stmt->execute();
+    //Wanneer  de uitkomst leeg is wordt de gebruiker verwezen naar upgradeAccount.php.
+    if (empty($stmt->fetchAll())) {
         header("Location: upgradeAccount.php");
     }
 }
-
 
 
 /*change time formatting based on remaining time.
@@ -132,10 +136,10 @@ function findUserAds($username)
 {
     GLOBAL $connection;
     GLOBAL $QueryUserAds;
-    
+
     $stmt = $connection->prepare($QueryUserAds);
     $stmt->execute(array($username));
-    return $stmt-> fetchAll(); 
+    return $stmt->fetchAll();
 }
 
 /* function for Finding user BOD for profiel page*/
@@ -154,10 +158,10 @@ function findWinAds($username)
 {
     GLOBAL $connection;
     GLOBAL $QueryUserWin;
-    
+
     $stmt = $connection->prepare($QueryUserWin);
     $stmt->execute(array($username));
-    return $stmt-> fetchAll(); 
+    return $stmt->fetchAll();
 }
 
 
@@ -543,6 +547,7 @@ function DrawItemAuction($auction)
     createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
 
 }
+
 //Doet het zelfde als de vorige twee functies alleen zijn de kolommen aangepast.
 function DrawSearchResults($auction)
 {
@@ -583,7 +588,11 @@ function outputRows($result, $zoekterm)
     global $zoekterm;
     //Check of er resultaten gevonden waren
     if (empty($result)) {
-        echo "Geen resultaten gevonden voor: '" . $zoekterm . "'";
+        if (!empty($zoekterm)) {
+            echo "<h2 class= text-center>Geen resultaten gevonden voor: '" . $zoekterm . "'</h2>";
+        } else {
+            echo "<h2 class= text-center>Geen resultaten gevonden</h2>";
+        }
     } else {
         //Elk resultaat wordt geprint
         foreach ($result as $auction) {
@@ -704,7 +713,7 @@ WHERE (VW_titel LIKE '%$SearchKeyword%')
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
     AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
-    AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
+    AND ('$SearchPaymentMethod' IS NULL OR Voorwerp.VW_betalingswijze like '%$SearchPaymentMethod%')
     AND(VW_verkoper LIKE '%$SearchUser%')
   AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer, VW_titel, Rubriek.RB_Naam, VW_looptijdEinde, r1.RB_Naam, r2.RB_Naam, VW_betalingswijze,Voorwerp.VW_looptijdStart,
@@ -770,7 +779,7 @@ WHERE ('$SearchKeyword' IS NULL OR VW_titel LIKE '%$SearchKeyword%')
                                ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
    ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) <= $SearchMaxPrice)
     AND ($SearchCategory IS NULL OR Rubriek.RB_Nummer = $SearchCategory OR r1.RB_Nummer = $SearchCategory OR r2.RB_Nummer = $SearchCategory OR r3.RB_Nummer = $SearchCategory OR r4.RB_Nummer = $SearchCategory)
-    AND (NULL IS NULL OR Voorwerp.VW_betalingswijze like '%%')
+    AND ('$SearchPaymentMethod' IS NULL OR Voorwerp.VW_betalingswijze like '%$SearchPaymentMethod%')
         AND('$SearchUser' IS NULL OR VW_verkoper LIKE '%$SearchUser%')
   AND (VW_veilinggesloten != 1)
 GROUP BY VW_voorwerpnummer
@@ -947,10 +956,11 @@ function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
 
 function drawPagenumbers($Dictionary, $result)
 {
+
     $zoekterm = $Dictionary['SearchKeyword'];
-    $betalingsmethode = $Dictionary ['SearchPaymentMethod'];
+    $betalingsmethode = $Dictionary ['SearchPaymentMethodNumber'];
     $rubriek = $Dictionary ['SearchCategory'];
-    $sorteerfilter = $Dictionary['SearchFilter'];
+    $sorteerfilter = $Dictionary['SearchFilterNumber'];
     $prijs['min'] = $Dictionary ['SearchMinPrice'];
     $prijs['max'] = $Dictionary ['SearchMaxPrice'];
     $user = $Dictionary ['SearchUser'];
@@ -1013,7 +1023,7 @@ function drawPagenumbers($Dictionary, $result)
 
 function createTimer($tijd, $VW_Titel, $VW_Nummer)
 {
-    $timer = "timer".$VW_Nummer;
+    $timer = "timer" . $VW_Nummer;
     echo '<script>
     var ' . $timer . ' = new Date("' . $tijd . '").getTime();
     var x = setInterval(function() {
@@ -1318,10 +1328,10 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
         $errorResults[1] = "De beschrijving heeft een minimum lengte van 5 tekens";
         $errorResults[10] = true;
     }
-    if(empty($_FILES['thumbnail']['name'])){
+    if (empty($_FILES['thumbnail']['name'])) {
         $errorResults[2] = "Thumbnail is een verplicht veld!";
         $errorResults[10] = true;
-    }elseif ($_FILES['thumbnail']['size'] > $maxFileSize) {
+    } elseif ($_FILES['thumbnail']['size'] > $maxFileSize) {
         $errorResults[2] = "De maximum toegestane grootte van de thumbnail is " . $maxFileSize . "uw file is: " . $_FILES['thumbnail']['size'] / 1000 / 1024 . "MB";
         $errorResults[10] = true;
     } elseif (!in_array($thumbnailFileType, $allowedFileTypes)) {
@@ -1380,8 +1390,7 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
         if (!is_numeric($_POST['verzendkosten'])) {
             $errorResults[8] = "Verzendkosten mogen allen uitgedrukt worden in cijfers!";
             $errorResults[10] = true;
-        }
-        elseif ($_POST['verzendkosten'] > 999.99){
+        } elseif ($_POST['verzendkosten'] > 999.99) {
             $errorResults[8] = "Verzendkosten mogen maximaal €999.99 zijn!";
             $errorResults[10] = true;
         }
@@ -1436,8 +1445,10 @@ function prepareveilingInput($waardes, $sessie)
     $veilingInput[11] = '';
     $veilingInput[12] = 'upload/temporaryImage';
     $veilingInput[13] = ((int)$waardes['startprijs']);
+    $veilingInput[14] = ((int)$waardes['startprijs']);
     return $veilingInput;
 }
+
 //Input waardes die in de tabel gezet moeten worden.
 function plaatsAdvertentie($veilingInput)
 {
@@ -1445,7 +1456,7 @@ function plaatsAdvertentie($veilingInput)
     GLOBAL $plaatsVeilingQuery;
     GLOBAL $plaatsVeilingInRubriekQuery;
     GLOBAL $getVoorwerpNummerQuery;
-    if($veilingInput[7] == 9){
+    if ($veilingInput[7] == 9) {
         $veilingInput[7] = 10;
     }
     $stmt = $connection->prepare($plaatsVeilingQuery);
@@ -1463,9 +1474,12 @@ function plaatsAdvertentie($veilingInput)
     $stmt->bindParam(':VW_conditie', $veilingInput[11]);
     $stmt->bindParam(':VW_thumbnail', $veilingInput[12]);
     $stmt->bindParam(':VW_hoogstebod', $veilingInput[13]);
+    $stmt->bindParam(':VW_minimalenieuwebod', $veilingInput[14]);
+
     $stmt->execute();
 
 }
+
 //Output: ID van het voorwerp dat net geinsert is.
 function getLastID()
 {
@@ -1550,7 +1564,7 @@ function doRegistratie()
 {
     $error = false;
 
-    foreach($_SESSION as $key => $value){
+    foreach ($_SESSION as $key => $value) {
         $_SESSION[$key] = trim($value);
     }
 
@@ -1645,6 +1659,7 @@ function uploadExtraAfbeeldingen($files, $id, $aantalplaatjes)
         move_uploaded_file($files['afbeelding']["tmp_name"][$i], $target_dir . $id[0] . '_' . ($i + 2) . '.' . $extention);
     }
 }
+
 //Input:    $_Files die in form geupload zijn
 //          Het id van het voorwerp waar de thumbnail bij moet
 //
@@ -1687,7 +1702,6 @@ function FindUser($username)
  */
 
 
-
 function upgradeAccount($itemID, $user, $offer)
 {
     GLOBAL $connection;
@@ -1725,11 +1739,11 @@ function createUpgradeCode($username)
     $stmt->bindParam(':code', $code);
     $stmt->bindParam(':tijd', $tijd);
 
-    try{
+    try {
         $stmt->execute();
         return $code;
 
-    }catch (Exception $e){
+    } catch (Exception $e) {
         echo 'er ging iets mis : ' . $e;
     }
 
@@ -1758,11 +1772,11 @@ SELECT GEB_mailbox FROM Gebruiker WHERE GEB_gebruikersnaam = ?
 EOT;
     GLOBAL $connection;
 
-    try{
+    try {
         $stmt = $connection->prepare($query);
         $stmt->execute(array($username));
         $email = $stmt->fetch();
-    } catch(Exception $e){
+    } catch (Exception $e) {
         echo 'er ging iets fout bij het ophalen van het email adres: ' . $e;
     }
 
@@ -1915,7 +1929,9 @@ EOT;
 
 
 }
-function checkUpgradeCode ($upgradecode, $username){
+
+function checkUpgradeCode($upgradecode, $username)
+{
 
     $query = <<<EOT
 
@@ -1935,10 +1951,8 @@ EOT;
 }
 
 
-
-
-
-function checkVeilingAfgelopen($veilingID){
+function checkVeilingAfgelopen($veilingID)
+{
 
     $query = <<<EOT
 
@@ -1954,7 +1968,8 @@ EOT;
 
 }
 
-function insertVerkoper($username , $array){
+function insertVerkoper($username, $array)
+{
 
     GLOBAL $connection;
 
@@ -1969,7 +1984,7 @@ function insertVerkoper($username , $array){
     $stmt->bindParam(':controleoptie', $array["controleOptie"]);
     $stmt->bindParam(':creditcardnummer', $array["creditcardnummer"]);
 
-    try{
+    try {
         //insering into the verkoper table
         $stmt->execute();
 
@@ -1985,13 +2000,14 @@ function insertVerkoper($username , $array){
         return [True, 'U bent nu geregistreerd als een verkoper!'];
 
 
-    }catch (Exception $e){
+    } catch (Exception $e) {
         return [False, 'er ging iets mis : ' . $e];
     }
 
 }
 
-function deleteFromUpgrade($username){
+function deleteFromUpgrade($username)
+{
 
 
     GLOBAL $connection;
@@ -2001,12 +2017,12 @@ function deleteFromUpgrade($username){
 
     $stmt->bindParam(':username', $username);
 
-    try{
+    try {
         //insering into the verkoper table
         $stmt->execute();
         return [True, 'Upgrade reset, u kunt nu opnieuw uw gegevens invullen. '];
 
-    }catch (Exception $e){
+    } catch (Exception $e) {
         return [False, 'er ging iets mis : ' . $e];
     }
 }

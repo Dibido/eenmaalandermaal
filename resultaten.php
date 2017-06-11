@@ -6,7 +6,7 @@ require 'PHP/SQL-Queries.php';
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['zoekterm'])) {
         $zoekterm = ($_GET['zoekterm']);
-    } else{
+    } else {
         $zoekterm = '';
     }
     if (isset($_GET['sorteerfilter'])) {
@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     if (isset($_GET['betalingsmethode'])) {
         $betalingsmethode = $_GET['betalingsmethode'];
-    }else{
+    } else {
         $betalingsmethode = $_GET['betalingsmethode'];
     }
     if (isset($_GET['prijs'])) {
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $prijs['min'] = 0;
     }
     if (!isset($prijs['max'])) {
-        $prijs['max'] = 1000;
+        $prijs['max'] = 1500;
     }
     //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
     if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $Dictionary = array(
         'SearchKeyword' => $zoekterm,
         'SearchFilter' => $waardes[$sorteerfilter],
-        'SearchPaymentMethod' => $betalingsmethode,
+        'SearchPaymentMethod' => $betaalMethodes[$betalingsmethode]['BW_betalingswijze'],
         'SearchCategory' => $rubriek,
         'SearchMinRemainingTime' => '',
         'SearchMaxRemainingTime' => '',
@@ -75,10 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         'ResultsPerPage' => $ResultsPerPage,
         'Offset' => $Offset,
         'SearchUser' => $user,
-        'Pagenum' => $pagenum
+        'Pagenum' => $pagenum,
+        'SearchFilterNumber' => $sorteerfilter,
+        'SearchPaymentMethodNumber' => $betalingsmethode
     );
-    foreach($Dictionary as $key => $value){
-        $Dictionary[$key]= cleanInput(urldecode($Dictionary[$key]));
+    foreach ($Dictionary as $key => $value) {
+        $Dictionary[$key] = cleanInput(urldecode($Dictionary[$key]));
     }
 }
 ?>
@@ -138,7 +140,7 @@ require('navbar.php');
 
 <!-- Filter bar -->
 <div class="container-fluid">
-    <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+    <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
         <div class="list-group">
             <div class="list-group-item active">Sorteer Opties</div>
             <form method="get" action="resultaten.php" id="sorteerForm">
@@ -158,7 +160,7 @@ require('navbar.php');
                     <select class="form-control" name="sorteerfilter">
                         <?php
                         //Array to be able to create a for loop. When adding a new one nothing has to be changed this way.
-                        $filterNamen = array("Tijd: nieuw aangeboden", "Tijd: eerst afgelopen", "Prijs: laagste bovenaan", "Prijs: hoogste bovenaan", "Gebruikerswaardering: hoogste bovenaan", "Gebruikerswaardering: laagste bovenaan","Aantal biedingen: hoogste aantal bovenaan", "Aantal biedingen: laagste aantal bovenaan", "Titel: A-Z", "Titel: Z-A");
+                        $filterNamen = array("Tijd: nieuw aangeboden", "Tijd: eerst afgelopen", "Prijs: laagste bovenaan", "Prijs: hoogste bovenaan", "Gebruikerswaardering: hoogste bovenaan", "Gebruikerswaardering: laagste bovenaan", "Aantal biedingen: hoogste aantal bovenaan", "Aantal biedingen: laagste aantal bovenaan", "Titel: A-Z", "Titel: Z-A");
                         if (isset($sorteerfilter)) {
                             echo "<option value=" . ($sorteerfilter) . " selected>" . $filterNamen[$sorteerfilter] . "</option>";
                             echo $filterNamen[$sorteerfilter];
@@ -177,9 +179,9 @@ require('navbar.php');
                     <b><?php echo('€' . $prijs['min'] . '- €' . $prijs['max']); ?></b>
                     <div>
                         <input id="pslider" type="text" name="prijs"
-                               class="span1" value=""  style="width: 100%;"
+                               class="span1" value="" style="width: 100%;"
                                data-slider-min="1"
-                               data-slider-max="1000"
+                               data-slider-max="2000"
                                data-slider-step="5"
                         <?php
                         if (isset($prijs)) {
@@ -189,9 +191,9 @@ require('navbar.php');
                         }
                         ?>
                     </div>
-                <script>
-                    var slider = new Slider('#pslider', {});
-                </script>
+                    <script>
+                        var slider = new Slider('#pslider', {});
+                    </script>
                 </div>
 
                 <!-- Payment method select form -->
@@ -200,11 +202,13 @@ require('navbar.php');
                     <select class="form-control" name="betalingsmethode">
                         <?php
                         //Array to be able to create a for loop. When adding a new one nothing has to be changed this way.
-                        if (empty($betalingsmethode)) {
+                        if (!isset($betalingsmethode)) {
                             echo "<option disabled selected>Maak uw keuze</option>";
+                            $betalingsmethode = -1;
                         } elseif (isset($betalingsmethode)) {
                             echo "<option value=" . $betalingsmethode . " selected>" . $betaalMethodes[$betalingsmethode]['BW_betalingswijze'] . "</option>";
                         }
+                        print_r($betaalMethodes);
                         //Creates all options in the array $filterNamen
                         for ($i = 0; $i < sizeof($betaalMethodes); $i++) {
                             if ($betalingsmethode != $i) {
@@ -220,7 +224,8 @@ require('navbar.php');
 
                 <div class="list-group-item"> Gebruiker:
                     <div class="input-group">
-                        <input class="form-control" name="user" placeholder="Zoek op gebruikers" value="<?php echo $user; ?>"
+                        <input class="form-control" name="user" placeholder="Zoek op gebruikers"
+                               value="<?php echo $user; ?>"
                                autocomplete="off"
                                type="text">
                         <span class="input-group-btn" id="sizing-addon1" style="width:1%;"><button
@@ -299,16 +304,16 @@ require('navbar.php');
         $result = SearchFunction($Dictionary);
         outputRows($result, $Dictionary["SearchKeyword"]);
         ?>
+        <div class="text-center">
+        <ul class="pagination">
+            <?php
+            drawPageNumbers($Dictionary, $result);
+            ?>
+        </ul>
     </div>
-        <div class="col-xs-12 text-center">
-            <ul class="pagination">
-                <?php
-                drawPageNumbers($Dictionary, $result);
-                ?>
-            </ul>
-        </div>
-
+    </div>
 </div>
+
 
 <script>
     $(document).ready(function () {
