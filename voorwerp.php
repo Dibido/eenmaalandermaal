@@ -20,6 +20,36 @@ if (count($ItemImages) == 1 && empty($ItemImages[0])){
     $ItemImages[0]["BES_filenaam"] = "images/no-image-available.jpg";
 }
 
+/* making sure the properties are available*/
+
+if(empty($ItemInfo["VW_plaatsnaam"])){
+    $ItemInfo["VW_plaatsnaam"] = 'Onbekende plaatsnaam';
+}
+if(empty($ItemInfo["VW_looptijdStart"])){
+    $ItemInfo["VW_looptijdStart"] = 'Onbekende plaatsingstijd';
+}
+if(empty($ItemInfo["VW_conditie"])){
+    $ItemInfo["VW_conditie"] = 'Onbekende conditie';
+}
+if(empty($ItemInfo["VW_verzendkosten"])){
+    $ItemInfo["VW_verzendkosten"] = 'Onbekende verzendkosten';
+}
+if(empty($ItemInfo["VW_verzendinstructies"])){
+    $ItemInfo["VW_verzendinstructies"] = 'Onbekende verzendinstructies';
+}
+if(empty($ItemInfo["VW_betalingsinstructie"])){
+    $ItemInfo["VW_betalingsinstructie"] = 'Onbekende betalingsinstructie';
+}
+
+
+
+
+
+
+
+
+
+
 
 
 /* de functie voor het bieden */
@@ -119,7 +149,6 @@ if (isset($snelBod) AND !empty($snelBod)) {
     <link rel="stylesheet" href="CSS/BootstrapXL.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
     <link rel="stylesheet" href="CSS/veiling.css">
@@ -269,6 +298,12 @@ require('navbar.php');
                             class="text-center"><?php echo $ItemInfo["VW_looptijdStart"]; ?></span></div>
                 <div class="Detail"><b class="text-right">conditie:</b><span
                             class="text-right"> <?php echo $ItemInfo["VW_conditie"]; ?></span></div>
+                <div class="Detail"><b class="text-left">verzendkosten:</b><span
+                            class="text-left"> <?php echo $ItemInfo["VW_verzendkosten"]; ?></span></div>
+                <div class="Detail"><b class="text-center">conditie:</b><span
+                            class="text-center"> <?php echo $ItemInfo["VW_verzendinstructies"]; ?></span></div>
+                <div class="Detail"><b class="text-right">betalingsinstructie:</b><span
+                            class="text-right"> <?php echo $ItemInfo["VW_betalingsinstructie"]; ?></span></div>
 
             </div>
         </div>

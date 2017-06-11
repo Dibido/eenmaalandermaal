@@ -224,7 +224,8 @@ SELECT
   VW_verzendkosten,
   VW_conditie, 
   VW_hoogstebod,
-  VW_minimalenieuwebod
+  VW_minimalenieuwebod,
+  VW_betalingsinstructie
   
 FROM Voorwerp
   FULL OUTER JOIN Bod ON Bod.BOD_voorwerpnummer = Voorwerp.VW_voorwerpnummer

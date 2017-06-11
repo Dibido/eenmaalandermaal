@@ -159,8 +159,7 @@
 
 .Details{
     width: 100%;
-    height: 148px;
-    font-size: 1.3vw;
+    font-size: .9vw;
     display: inline-flex;
     justify-content: center;
     text-align: center;
@@ -229,9 +228,7 @@
         font-size: 6vw;
     }
     .Details{
-        font-size: 3vw;
-        height: 296px;
-
+        font-size: 2vw;
     }
     .Detail{
         text-align: center;

@@ -67,6 +67,7 @@ if (isset($_SESSION['Username'])) {
 <div class=\"container-fluid collapse text-center\" id=\"MobileButtons\" style=\"font-size: 24px;\">
     <div class=\"row\">
         <ul class=\"nav nav-pills nav-stacked bg-info lead\">
+        <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/plaatsAdvertentie.php\">Plaats veiling</a></li>
             <li><a class=\"row-md-12\" href=\"profiel.php\">Mijn account</a></li>
             <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/Login.php?loggedOut=True\">Log out</a></li>
         </ul>
@@ -86,6 +87,7 @@ if (isset($_SESSION['Username'])) {
 <div class=\"container-fluid collapse text-center\" id=\"MobileButtons\" style=\"font-size: 24px;\">
     <div class=\"row\">
         <ul class=\"nav nav-pills nav-stacked bg-info lead\">
+            <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/plaatsAdvertentie.php\">Plaats veiling</a></li>
             <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/profiel.php\">Mijn account</a></li>
             <li><a class=\"row-md-12\" href=\"http://iproject3.icasites.nl/BeheerLogin.php?loggedOut=True\">Log out</a></li>
         </ul>
