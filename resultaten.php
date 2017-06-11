@@ -304,7 +304,7 @@ require('navbar.php');
         $result = SearchFunction($Dictionary);
         outputRows($result, $Dictionary["SearchKeyword"]);
         ?>
-        <div class="text-center">
+        <div class="text-center col-xs-12">
         <ul class="pagination">
             <?php
             drawPageNumbers($Dictionary, $result);
