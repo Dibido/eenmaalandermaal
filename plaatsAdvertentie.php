@@ -179,7 +179,7 @@ require('navbar.php');
             <!-- Titel van de veiling-->
             <div class="form-group">
                 <h4>Titel Voorwerp*</h4>
-                <input name="Titel" id="Titel" type="text" placeholder="Titel" maxlength="90"
+                <input name="Titel" id="Titel" required type="text" placeholder="Titel" maxlength="90"
                        class="form-control" value="<?php
                 //Wanneer er al een waarde was ingevuld maar niet alles was correct ingevuld wordt
                 //hier het ingevulde terug gezet.
@@ -191,7 +191,7 @@ require('navbar.php');
             <!-- Beschrijving van de veiling -->
             <div class="form-group">
                 <label for="Beschrijving"></label><h4>Beschrijving*</h4>
-                <textarea name="Beschrijving" id="Beschrijving"
+                <textarea name="Beschrijving" required id="Beschrijving"
                           placeholder="Vul hier de beschrijving van je voorwerp in!"
                           class="form-control" rows="5"><?php
                     //Wanneer er al een waarde was ingevuld maar niet alles was correct ingevuld wordt
@@ -207,7 +207,7 @@ require('navbar.php');
                 <h4>Thumbnail*</h4>
                 <label class="btn btn-warning btn-lg"> <span class="glyphicon glyphicon-cloud-upload"></span> Upload
                     hier je thumbnail!
-                    <input name="thumbnail" id="thumbnail" type="file" style="display:none" class="form-control">
+                    <input name="thumbnail" id="thumbnail" required type="file" style="display:none" class="form-control">
 
                 </label>
                 <p id="ThumbnailName">
@@ -234,7 +234,7 @@ require('navbar.php');
             <!-- Looptijd slider -->
             <label for="looptijd"></label><h4>Looptijd veiling*</h4>
 
-            <input name="looptijd" id="looptijd" type="text"
+            <input name="looptijd" required id="looptijd" type="text"
                    style="width: 100%;"
                    data-provide="slider"
                    data-slider-ticks="[1,3, 5,7,9]"
@@ -261,7 +261,7 @@ require('navbar.php');
                 <span class="input-group-addon" id="basic-addon1"> <i
                             class="glyphicon glyphicon-euro"></i></span>
                     <input name="startprijs" id="startprijs" type="number" placeholder="Startprijs"
-                           class="form-control" ="true" maxlength="9"
+                           class="form-control" required maxlength="9"
                     value="<?php
                     //Wanneer er al een waarde was ingevuld maar niet alles was correct ingevuld wordt
                     //hier het ingevulde terug gezet.
@@ -275,7 +275,7 @@ require('navbar.php');
                 <h4>Betalingswijze*</h4>
                 <div class="form-group">
                     <select name="betalingswijze" id="betalingswijze"
-                            class="form-control" ="true">
+                            class="form-control" required>
                     <?php
                     //Print alle Betalingswijzen die in de database staan
                     printBetalingswijzen($Betalingswijzen);
@@ -286,7 +286,7 @@ require('navbar.php');
 
             <!-- Invullen van de betalingsinstructie -->
             <div class="form-group">
-                <h4>Betalingsinstructie*</h4>
+                <h4>Betalingsinstructie</h4>
                 <textarea name="Betalingsinstructie" id="Betalingsinstructie" placeholder="Vul hier jouw betalingsinstructie in!" class="form-control" rows="5"><?php
                     //Wanneer er al een waarde was ingevuld maar niet alles was correct ingevuld wordt
                     //hier het ingevulde terug gezet.
@@ -307,7 +307,7 @@ require('navbar.php');
                 <span class="input-group-addon" id="basic-addon1"> <i
                             class="glyphicon glyphicon-home"></i></span>
                     <input name="plaats" id="woonplaats" type="text" placeholder="Woonplaats"
-                           class="form-control" maxlength="85"
+                           class="form-control" required maxlength="85"
                            value="<?php if (!empty($waardes['plaats'])) {
                                echo $waardes['plaats'];
                            } ?>">
@@ -318,9 +318,8 @@ require('navbar.php');
             <div class="col-md-6 nopadding1">
                 <h4>Land*</h4>
                 <div class="form-group">
-                    </label>
-                    <select name="land" id="land" type="text"
-                            class="form-control">
+                    <select name="land" id="land"
+                            class="form-control" required>
                         <?php
                         //Print alle landen die in de database staan uit in het select form
                         printLanden($Landen);
@@ -337,8 +336,8 @@ require('navbar.php');
             <!-- Invullen verzendkosten -->
             <div class="form-group">
                 <h4>Verzendkosten*</h4>
-                <input name="verzendkosten" id="verzendkosten" type="number"
-                       placeholder="Vul hier je verzendkosten in" maxlength="64"
+                <input name="verzendkosten" id="verzendkosten" step="0.1" type="number" max="999.99"
+                       placeholder="Vul hier je verzendkosten in" maxlength="6"
                        class="form-control" value="
                     <?php
                 //Wanneer er al een waarde was ingevuld maar niet alles was correct ingevuld wordt

@@ -13,7 +13,7 @@ function insertExtraAfbeeldingen($voorwerpnummer, $aantalplaatjes, $extensie)
     global $connection;
     global $QueryInsertImages;
 
-    for ($i = 0; $i < $aantalplaatjes; $i++) {
+    for ($i = 0; $i < $aantalplaatjes+1; $i++) {
         $imageextensie = $extensie[$i];
         $filepath = '/upload/' . $voorwerpnummer . '_' . ($i+1) . '.' . $imageextensie;
 
@@ -22,6 +22,7 @@ function insertExtraAfbeeldingen($voorwerpnummer, $aantalplaatjes, $extensie)
         $stmt->bindParam(':voorwerpnummer', $voorwerpnummer);
         $stmt->execute();
     }
+
 }
 /*Function for inserting the images into the Bestand table.
 Input:
@@ -1440,7 +1441,7 @@ function plaatsAdvertentie($veilingInput)
     GLOBAL $getVoorwerpNummerQuery;
     $stmt = $connection->prepare($plaatsVeilingQuery);
     $stmt->bindParam(':VW_titel', $veilingInput[0]);
-    $stmt->bindParam(':VW_beschrijving', wordwrap($veilingInput[1], 100, "<br>"));
+    $stmt->bindParam(':VW_beschrijving', $veilingInput[1]);
     $stmt->bindParam(':VW_startprijs', $veilingInput[2]);
     $stmt->bindParam(':VW_betalingswijze', $veilingInput[3]);
     $stmt->bindParam(':VW_betalingsinstructie', $veilingInput[4]);
@@ -1469,9 +1470,10 @@ function getLastID()
 function getExtension($files)
 {
     $thumbnailFileType = array();
-    for ($i = 0; $i < sizeof($files['afbeelding']['name']); $i++) {
-        $thumbnailFileType[$i] = pathinfo($_FILES['afbeelding']['name'][$i], PATHINFO_EXTENSION);
+    for ($i = 1; $i < sizeof($files['afbeelding']['name'])+1; $i++) {
+        $thumbnailFileType[$i] = pathinfo($_FILES['afbeelding']['name'][$i-1], PATHINFO_EXTENSION);
     }
+    $thumbnailFileType[0] = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
     return $thumbnailFileType;
 }
 
@@ -1641,7 +1643,7 @@ function uploadExtraAfbeeldingen($files, $id, $aantalplaatjes, $extentions)
 {
     $target_dir = 'upload/';
     for ($i = 0; $i < $aantalplaatjes; $i++) {
-        move_uploaded_file($files['afbeelding']["tmp_name"][$i], $target_dir . $id[0] . '_' . ($i + 1) . '.' . $extentions[$i]);
+        move_uploaded_file($files['afbeelding']["tmp_name"][$i], $target_dir . $id[0] . '_' . ($i + 2) . '.' . $extentions[$i]);
     }
 }
 //Input:    $_Files die in form geupload zijn
@@ -1653,6 +1655,7 @@ function uploadThumbnail($files, $id)
     $target_dir = 'upload/';
     $extention = pathinfo($files['thumbnail']["name"], PATHINFO_EXTENSION);
     move_uploaded_file($files['thumbnail']["tmp_name"], $target_dir . $id[0] . '_0.' . $extention);
+    copy(($target_dir . $id[0] . '_0.' . $extention), ($target_dir . $id[0] . '_1.' . $extention));
 }
 
 function getCodeFromMail()
