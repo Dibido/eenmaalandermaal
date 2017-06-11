@@ -8,13 +8,12 @@ Input:
 Output:
     Inserted images using voorwerpnummer and count with correct extension in the /upload/ folder.
      */
-function insertExtraAfbeeldingen($voorwerpnummer, $aantalplaatjes, $extensie)
+function insertExtraAfbeeldingen($voorwerpnummer, $aantalplaatjes, $files)
 {
     global $connection;
     global $QueryInsertImages;
-
-    for ($i = 0; $i < $aantalplaatjes+1; $i++) {
-        $imageextensie = $extensie[$i];
+    for ($i = 1; $i < $aantalplaatjes+1; $i++) {
+        $imageextensie = pathinfo($files['afbeelding']["name"][$i-1], PATHINFO_EXTENSION);
         $filepath = '/upload/' . $voorwerpnummer . '_' . ($i+1) . '.' . $imageextensie;
 
         $stmt = $connection->prepare($QueryInsertImages);
@@ -34,11 +33,17 @@ function insertThumbnail($files,$voorwerpnummer)
 {
     global $connection;
     global $QueryUpdateImages;
+    global $QueryInsertImages;
     //verkrijgt de extentie van de file
     $extention = pathinfo($files['thumbnail']["name"], PATHINFO_EXTENSION);
     $filepath = '/upload/' . $voorwerpnummer . '_0.' . $extention;
     $stmt = $connection->prepare($QueryUpdateImages);
     $stmt->bindParam(':thumbnail', $filepath);
+    $stmt->bindParam(':voorwerpnummer', $voorwerpnummer);
+    $stmt->execute();
+    $filepath = '/upload/' . $voorwerpnummer . '_1.' . $extention;
+    $stmt = $connection->prepare($QueryInsertImages);
+    $stmt->bindParam(':filenaam', $filepath);
     $stmt->bindParam(':voorwerpnummer', $voorwerpnummer);
     $stmt->execute();
 }
@@ -1439,6 +1444,9 @@ function plaatsAdvertentie($veilingInput)
     GLOBAL $plaatsVeilingQuery;
     GLOBAL $plaatsVeilingInRubriekQuery;
     GLOBAL $getVoorwerpNummerQuery;
+    if($veilingInput[7] == 9){
+        $veilingInput[7] = 10;
+    }
     $stmt = $connection->prepare($plaatsVeilingQuery);
     $stmt->bindParam(':VW_titel', $veilingInput[0]);
     $stmt->bindParam(':VW_beschrijving', $veilingInput[1]);
@@ -1465,17 +1473,6 @@ function getLastID()
     return sendtoDatabase2($getVoorwerpNummerQuery);
 }
 
-//Input: $_files
-//Output: array van extensies in de juiste volgorde
-function getExtension($files)
-{
-    $thumbnailFileType = array();
-    for ($i = 1; $i < sizeof($files['afbeelding']['name'])+1; $i++) {
-        $thumbnailFileType[$i] = pathinfo($_FILES['afbeelding']['name'][$i-1], PATHINFO_EXTENSION);
-    }
-    $thumbnailFileType[0] = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
-    return $thumbnailFileType;
-}
 
 function checkRegistratie()
 {
@@ -1639,11 +1636,12 @@ EOT;
 //          extensies zodat die achter de afbeeldingen gezet kunnen worden
 //
 //Output:   Alle afbeeldingen uit $files worden in de map /upload gezet met de juiste naam
-function uploadExtraAfbeeldingen($files, $id, $aantalplaatjes, $extentions)
+function uploadExtraAfbeeldingen($files, $id, $aantalplaatjes)
 {
     $target_dir = 'upload/';
     for ($i = 0; $i < $aantalplaatjes; $i++) {
-        move_uploaded_file($files['afbeelding']["tmp_name"][$i], $target_dir . $id[0] . '_' . ($i + 2) . '.' . $extentions[$i]);
+        $extention = pathinfo($files['afbeelding']["name"][$i], PATHINFO_EXTENSION);
+        move_uploaded_file($files['afbeelding']["tmp_name"][$i], $target_dir . $id[0] . '_' . ($i + 2) . '.' . $extention);
     }
 }
 //Input:    $_Files die in form geupload zijn

@@ -52,16 +52,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //getlastID() returned zoals de naam al zegt het ID van het zojuist ingevulde voorwerp.
         //Dit ID wordt later gebruikt in de naam van de plaatjes.
         $lastID = getLastID();
-        //Returned de extensies van de afbeeldingen om zo de uit eindelijke naam in de map /upload te maken.
-        $extentions = getExtension($_FILES);
         //Returned het aantal plaatjes die geupload zijn als extra afbeelding.
         $aantalplaatjes = sizeof($_FILES['afbeelding']['name']);
         //Insert alle extra afbeeldingen in de database.
-        insertExtraAfbeeldingen($lastID[0], $aantalplaatjes, $extentions);
+        insertExtraAfbeeldingen($lastID[0], $aantalplaatjes,$_FILES);
         //Insert de thumbnail in de database.
         insertThumbnail($_FILES, $lastID[0]);
         //Upload de extra afbeeldingen in de /upload map op de server
-        uploadExtraAfbeeldingen($_FILES, $lastID, $aantalplaatjes, $extentions);
+        uploadExtraAfbeeldingen($_FILES, $lastID, $aantalplaatjes);
         //upload de thumbnail in de /upload map op de server
         uploadThumbnail($_FILES, $lastID);
         //insert het gekozen rubriek bij het voorwerpnummer.

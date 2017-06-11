@@ -63,7 +63,7 @@ $QueryTopCategories = <<<EOT
 
 
 SELECT
-  TOP 14
+  TOP 10
   RB_Naam,
   RB_Nummer,
   sum(VW_bodcount)
