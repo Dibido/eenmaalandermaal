@@ -1,4 +1,4 @@
---Voor het uitvoeren van dit script kan de range van begindatums van de voorwerpen ingevuld worden, dit moet in de toekomst zijn.
+--For running rhis script it is necessary to fill the range of the begindatums in. This needs too be in the future.
 
 --Conversiescript rubrieken
 INSERT INTO Rubriek (RB_Nummer, RB_Naam, RB_Parent, RB_volgnummer)
@@ -16,24 +16,24 @@ INSERT INTO Gebruiker (GEB_gebruikersnaam, GEB_voornaam, GEB_achternaam, GEB_adr
   SELECT DISTINCT
     LTRIM(RTRIM(Username))   AS GEB_gebruikersnaam,
     ('-')                    AS GEB_voornaam,
-    --is niet bekend.
+    --Unknown.
     ('-')                    AS GEB_achternaam,
-    --is niet bekend.
+    --Unknown.
     ('-')                    AS GEB_adresregel_1,
-    -- is niet bekend.
+    -- Unknown.
     getdate()                AS GEB_geboortedag,
     'Geen_mailadres@nope.nl' AS GEB_mailbox,
-    -- is niet bekend.
+    -- Unknown.
     'P@ssw0rd'               AS GEB_wachtwoord,
-    -- is niet bekend.
+    -- Unknown.
     1                        AS GEB_vraag,
-    --Default vraag
+    --Default question
     1                        AS GEB_verkoper,
     'Defaultantwoord'        AS GEB_antwoordtekst,
     LTRIM(RTRIM(Postalcode)) AS GEB_postcode,
     LTRIM(RTRIM(Location))   AS GEB_plaatsnaam,
     LTRIM(RTRIM(Country))    AS GEB_Land,
-    --Als er dubbele gebruikers zijn pakken we de gebruiker met de hoogste rating
+    --If there are two users with the same username we convert the one with the highest rating.
     (SELECT TOP 1 Rating
      FROM Users u
      WHERE u.Username = Username
@@ -55,9 +55,9 @@ INSERT INTO Verkoper (VER_gebruiker, VER_bank, VER_bankrekening, VER_controleopt
 GO
 
 --Conversiescript voorwerp
---Range van de random datums voor de looptijdstart, moet later of gelijk zijn aan getdate().
-DECLARE @FromDate DATE = DATEADD(DAY, 1, getdate()) --begindatum random datum.
-DECLARE @ToDate DATE = dateADD(DAY, 14, GETDATE()) --Einddatum random datum.
+--Range of random date for looptijdstart must be now or in the future.
+DECLARE @FromDate DATE = DATEADD(DAY, 1, getdate()) --begindatum random date.
+DECLARE @ToDate DATE = dateADD(DAY, 14, GETDATE()) --Einddatum random date.
 
 SET IDENTITY_INSERT voorwerp ON
 INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_verkoper, VW_conditie, VW_thumbnail, VW_startprijs, VW_minimaalnieuwbod, VW_hoogstebod, VW_looptijdStart, VW_looptijd, VW_betalingswijze, VW_plaatsnaam, VW_veilinggesloten)
@@ -81,13 +81,13 @@ INSERT INTO Voorwerp (VW_voorwerpnummer, VW_titel, VW_beschrijving, VW_land, VW_
         ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, @FromDate, @ToDate) + DATEDIFF(MINUTE, 0, @FromDate),
         0
     ))                                                       AS VW_looptijdstart,
-    --Random in de toekomst tussen de FromDate en ToDate.
+    --Random date in the future between: FromDate and ToDate.
     (SELECT LOP_Looptijd
      FROM LooptijdWaardes
      WHERE LOP_ID = ((Items.ID % 5) + 1))                    AS VW_looptijd,
-    -- Random looptijd genereren aan de hand van het id.
+    -- Random looptijd generete according to id.
     'Bank / giro'                                            AS VW_betalingswijze,
-    CASE WHEN CHARINDEX(',', [locatie]) > 0 --Als er een locatie is ingevuld, haal het land eraf.
+    CASE WHEN CHARINDEX(',', [locatie]) > 0 --When a location is entered delete country.
       THEN REPLACE(LEFT([locatie], CHARINDEX(',', [locatie])), ',', '')
     ELSE 'Geen plaatsnaam bekend'
     END                                                      AS VW_plaatsnaam,
@@ -118,12 +118,12 @@ INSERT INTO Bestand (BES_filenaam, BES_voorwerpnummer)
            ItemID,
            IllustratieFile,
            Rank()
-           OVER ( PARTITION BY ItemID --OVER voegt informatie samen zonder te groeperen
+           OVER ( PARTITION BY ItemID --OVER combines data without joining.
              ORDER BY IllustratieFile DESC ) AS Rank
          FROM Illustraties
        ) rs
-  WHERE Rank <= 4 --Selecteerd de top 4
-        AND EXISTS(SELECT * --Als het voorwerp bestaat.
+  WHERE Rank <= 4 --Selects the top 4.
+        AND EXISTS(SELECT * --When voorwerp exists.
                    FROM Voorwerp V
                    WHERE v.VW_voorwerpnummer = ItemID)
 GO

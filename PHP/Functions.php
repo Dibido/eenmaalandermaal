@@ -49,7 +49,13 @@ function insertThumbnail($files, $voorwerpnummer)
     $stmt->execute();
 }
 
-// Insert de gekozen rubriek bij het voorwerpnummer
+/*Insert the chosen category into the Voorwerp_Rubriek table
+Input:
+    Chosen category.
+    ObjectID.
+Output:
+    Inserted category with ObjectID.
+*/
 function insertRubriek($rubriek, $voorwerpnummer)
 {
     global $connection;
@@ -60,7 +66,12 @@ function insertRubriek($rubriek, $voorwerpnummer)
     $stmt->execute();
 }
 
-//Controleerd of de opgegeven gebruiker wel een verkoper is.
+/*Function to check whether the user is a seller.
+Input:
+    Username of the user to check.
+Output:
+    -
+*/
 function gebruikerIsVerkoperCheck($username)
 {
     global $connection;
@@ -68,21 +79,19 @@ function gebruikerIsVerkoperCheck($username)
     $stmt = $connection->prepare($QuerygebruikerIsVerkoper);
     $stmt->bindParam(':gebruiker', $username);
     $stmt->execute();
-    //Wanneer  de uitkomst leeg is wordt de gebruiker verwezen naar upgradeAccount.php.
+    $stmt->execute();
+    //When the result is empty, link to the upgradeAccount.php page.
     if (empty($stmt->fetchAll())) {
         header("Location: upgradeAccount.php");
     }
 }
 
-
-/*change time formatting based on remaining time.
-> 2 days = date
-> 2 hours = hours + minutes
-> 2 minutes minutes + seconds
-< 2 minutes minutes + seconds
-*/
-
-/* Format date to Year-month-day Hour:minutes */
+/* Format date to Year-month-day Hour:minutes
+Input:
+    Time.
+Output:
+    Formatted timestamp.
+ */
 function ConvertTime($time)
 {
     $datetime = new DateTime($time);
@@ -90,7 +99,13 @@ function ConvertTime($time)
 }
 
 
-/* function for finding admin users and checking their credentials*/
+/* function for finding admin users and checking their credentials
+Input:
+    Username of the user.
+    Password of the administrator
+Output:
+    Boolean whether password is correct.
+*/
 function CheckCredentials($username, $password)
 {
     $username = cleanInput($username);
@@ -106,7 +121,12 @@ function CheckCredentials($username, $password)
     return password_verify($password, $userInfo["GEB_wachtwoord"]);
 }
 
-/* function for finding admin users */
+/* Function for finding admin users
+Input:
+    Username.
+Output:
+    Username of the administrator.
+*/
 function FindAdminUsers($username)
 {
     GLOBAL $connection;
@@ -119,7 +139,12 @@ function FindAdminUsers($username)
     return $stmt->fetch();
 }
 
-/* function for Finding user info for profiel page*/
+/* function for Finding user info for profiel page
+Input:
+    Username.
+Output:
+    All user information.
+*/
 function findUserInfo($username)
 {
     GLOBAL $connection;
@@ -131,7 +156,12 @@ function findUserInfo($username)
 
 }
 
-/* function for Finding user ADS for profiel page*/
+/* Function for Finding user ADS for profiel page
+Input:
+    Username.
+Output:
+    Items of the user.
+*/
 function findUserAds($username)
 {
     GLOBAL $connection;
@@ -142,7 +172,12 @@ function findUserAds($username)
     return $stmt->fetchAll();
 }
 
-/* function for Finding user BOD for profiel page*/
+/* function for Finding user BOD for profiel page
+Input:
+    Username.
+Output:
+    Recent bids of the user.
+*/
 function findBodAds($username)
 {
     GLOBAL $connection;
@@ -153,7 +188,12 @@ function findBodAds($username)
     return $stmt->fetchAll();
 }
 
-/* function for Finding user WIN for profiel page*/
+/* function for Finding user WIN for profiel page
+Input:
+    Username
+Output:
+    Recently won items by this user.
+*/
 function findWinAds($username)
 {
     GLOBAL $connection;
@@ -165,7 +205,14 @@ function findWinAds($username)
 }
 
 
-/*function for finding adverts per user*/
+/*Function for finding other adverts of a user
+Used on the item page to show the other adverts of a user.
+
+Input:
+    Username, auction
+Output:
+    Auctions.
+*/
 function findAuctionsByUser($username, $auction)
 {
     GLOBAL $connection;
@@ -180,17 +227,13 @@ function findAuctionsByUser($username, $auction)
 
 /* function for getting the results for the product page */
 
-/* intake:
+/* input:
  * voorwerp id
- *
- *
  */
 
-
 /* output:
- * the result from the database (array)
- * or an list with false, and the database error
- *
+ * the result from the database (array).
+ * or an list with false, and the database error.
  */
 
 function GetItemDetails($ItemID)
@@ -248,6 +291,13 @@ EOT;
 
 
 /* function for getting the last offers of an auction */
+
+/*
+ * Input:
+ *  ItemID
+ * Output:
+ *  Last offers for the item.
+ */
 function GetLastOffers($voorwerpnummer)
 {
 
@@ -260,7 +310,14 @@ EOT;
     RETURN SendToDatabase($QueryGetLastOffers);
 }
 
-/* Function for the voowerperp page, helps build the breadcrums */
+/* Function for the item page to build the breadcrumb */
+
+/*
+ * Input:
+ *  ItemID
+ * Output:
+ *  Parent categories of the item.
+ */
 function GetAboveCategories($ItemID)
 {
     GLOBAL $connection;
@@ -281,7 +338,17 @@ EOT;
 
 }
 
+/* Function to get the user information.*/
 
+/*
+ * Input:
+ *  Username.
+ */
+
+/*
+ * Output:
+ *  User information of the user.
+ */
 function GetUserInfoPerAuction($username)
 {
 
@@ -294,10 +361,14 @@ function GetUserInfoPerAuction($username)
 
 EOT;
 
-    //RETURN $QueryGetUserInfo;
     RETURN SendToDatabase($QueryGetUserInfo);
 }
 
+/* Function to get category name.
+Input:
+    Category ID.
+Output:
+    Category Name.*/
 function GetCategoryPerAuction($categoryID)
 {
 
@@ -376,7 +447,7 @@ function cleanInput($input)
 }
 
 
-/* this function sends a prebuild query to the database and returns the result. */
+/* this function sends a prebuild query to the database using associated querying and returns the result. */
 
 /* intake:
  *
@@ -387,7 +458,7 @@ function cleanInput($input)
 
 /* returns:
  *
- * 2D array of the result if succesfull
+ * 2D array of the result if succesful
  * or a list with False and an error message.
  *
  */
@@ -407,6 +478,17 @@ function SendToDatabase($query)
     }
 }
 
+/* this function sends a prebuild query to the database using column querying and returns the result. */
+
+/* intake:
+ *  Query
+ */
+
+
+/* returns:
+ * 2D array of the result if succesful
+ * or a list with False and an error message.
+ */
 function SendToDatabase2($query)
 {
     GLOBAL $connection;
@@ -422,7 +504,16 @@ function SendToDatabase2($query)
 }
 
 
-// Insert data in de DB
+/* Function to insert the registery information into the Database.*/
+/*
+ * Input:
+ *
+ * Email-address.
+ * Activation-code
+ */
+/*
+ * Output:
+ */
 function InsertIntoDatabase($SetRegistratie, $email, $code)
 {
     GLOBAL $connection;
@@ -601,20 +692,6 @@ function outputRows($result, $zoekterm)
     }
 }
 
-/*
- *
- *
- *  [0] => Array
-        (
-            [VW_voorwerpnummer] => 8
-            [VW_titel] => Testproduct8
-            [prijs] => 2670.00
-            [tijd] => 344
-            [Biedingen] => 16
-            [ImagePath] => images/testImg8.jpg
-        )
- *
- *
 /*Function to load the header letters for the categories*/
 function laadLetters()
 {
@@ -650,17 +727,21 @@ function laadLetters()
     }
 }
 
-/* Zoekfilter - converteert input naar en query, stuurt results terug  */
+/* Searchfilter - Converts input to a query and returns the results. */
+/*Input:
+    Searchoptions array with all the options and criteria.
+*/
+/*Output:
+    Results of the searchquery.
+*/
 
 function SearchFunction($SearchOptions)
 {
-    //preparing for query
+    //Preparing for query
     $SearchKeyword = $SearchOptions['SearchKeyword'];
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchFilter = $SearchOptions['SearchFilter'];
     $SearchCategory = $SearchOptions['SearchCategory'];
-    $SearchMaxRemainingTime = $SearchOptions['SearchMaxRemainingTime'];
-    $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
     $SearchUser = $SearchOptions['SearchUser'];
@@ -725,7 +806,7 @@ FETCH NEXT $ResultsPerPage ROWS ONLY
 
     
 EOT;
-    //executing the query
+    //Executing the query
     return SendToDatabase($QuerySearchProducts);
 
 
@@ -739,8 +820,6 @@ function amountOfResultsLeft($SearchOptions)
     $SearchKeyword = $SearchOptions['SearchKeyword'];
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchCategory = $SearchOptions['SearchCategory'];
-    $SearchMaxRemainingTime = $SearchOptions['SearchMaxRemainingTime'];
-    $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
     $SearchUser = $SearchOptions['SearchUser'];
@@ -795,7 +874,14 @@ EOT;
 }
 
 
-// Print landen in registratie.php
+/* Function to print countries in a dropdown box.*/
+/*Input:
+    Countries.
+*/
+/*Output:
+    List of countrynames.
+*/
+
 function printLanden($Landen)
 {
 
@@ -810,7 +896,13 @@ function printLanden($Landen)
     }
 }
 
-// Print vragen in registratie.php
+/* Function to print questions in a dropdown box.*/
+/*
+ * Input:
+ *  Questions IDs.
+ * Output:
+ *  Questions.
+ */
 function printVragen($Vragen)
 {
     foreach ($Vragen as $Vraag) {
@@ -819,6 +911,13 @@ function printVragen($Vragen)
     }
 }
 
+/* Function to print paymethods in a dropdown box.*/
+/*
+ * Input:
+ * Paymethods.
+ * Output:
+ * List of formatted paymethods.
+*/
 function printBetalingswijzen($Betaalmethodes)
 {
     foreach ($Betaalmethodes as $betaalmethode) {
@@ -953,10 +1052,16 @@ function printCategoriesAdvertentiePagina($rubriekQuery, $rubriekNummer)
     echo '</ul>';
 }
 
-
+/*Function to print pagenumbers on the results page. */
+/*
+ * Input:
+ *  Dictionary with the search options.
+ *  Results of the searchquery.
+ * Output:
+ *  Formatted page numbering based on the search query.
+ */
 function drawPagenumbers($Dictionary, $result)
 {
-
     $zoekterm = $Dictionary['SearchKeyword'];
     $betalingsmethode = $Dictionary ['SearchPaymentMethodNumber'];
     $rubriek = $Dictionary ['SearchCategory'];
@@ -1016,11 +1121,18 @@ function drawPagenumbers($Dictionary, $result)
         echo '<h1> Page ' . $pagenum . ' does not exist</h1>';
     }
     echo '</div>';
-
-
-//Einde Paginanummering
 }
 
+/* Function to create a timer for an item.
+    This function uses javascript to format the time and insert a timer for an item based on its enddate.*/
+/*
+ * Input:
+ *  Time of the item.
+ *  Title of the item.
+ *  ItemID.
+ * Output:
+ *  Formatted timer.
+ */
 function createTimer($tijd, $VW_Titel, $VW_Nummer)
 {
     $timer = "timer" . $VW_Nummer;
@@ -1258,7 +1370,7 @@ function checkEmailSent()
     }
 }
 
-// Controlleert of de ingevoerde validatiecode op registreerq.php correct is. Indien ja > doorverwijzing naar registreer2.php, zo niet dan error.
+// Controleerd of de ingevoerde validatiecode op registreer1.php correct is. Indien ja > doorverwijzing naar registreer2.php, zo niet dan error.
 function checkUserLinked()
 {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -1279,6 +1391,7 @@ function checkUserLinked()
     }
 }
 
+/*Function to validate the registry hash.*/
 function validateHash()
 {
     if (isset($_SESSION['emailadres']) && !empty($_SESSION['emailadres'])) {
@@ -1291,9 +1404,9 @@ function validateHash()
     return $emailadres;
 }
 
+/*Function to check for errors in the plaatsVoorwerp velden.*/
 function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
 {
-
     $looptijden = array(1, 3, 5, 7, 9);
     $errorResults = array();
     $maxFileSize = 5000000;
@@ -1371,10 +1484,7 @@ function checkPlaatsenVoorwerp($Betalingswijzen, $landen)
     if (empty($_POST['betalingswijze'])) {
         $errorResults[6] = "De betalingswijze mag niet leeg zijn!";
         $errorResults[10] = true;
-    }/* elseif (!in_array($_POST['betalingswijze'], $Betalingswijzen)) {
-        $errorResults[6] = "Selecteer een geldige betalingswijze";
-        $errorResults[10] = true;
-    }*/
+    }
     if (empty($_POST['plaats'])) {
         $errorResults[7] = "De plaatsnaam mag niet leeg zijn!";
         $errorResults[10] = true;
@@ -1425,7 +1535,7 @@ function drawErrorResult($errorResults)
     return $errorMessage;
 }
 
-
+/*Function to order and convert values from the veiling input fields.*/
 //Input: $_POST waardes van plaats veiling form & $_Session
 //Ouput: Waardes in een array op de juiste volgorde
 function prepareveilingInput($waardes, $sessie)
@@ -1488,7 +1598,11 @@ function getLastID()
     return sendtoDatabase2($getVoorwerpNummerQuery);
 }
 
-
+/*Function to check the registration input fields.*/
+/*
+ * Output:
+ *  Formatted errormessages.
+ */
 function checkRegistratie()
 {
 
@@ -1559,7 +1673,11 @@ function checkRegistratie()
     }
 }
 
-
+/*Function to register a user*/
+/*
+ * Output:
+ *  Inserted registration for the user.
+ */
 function doRegistratie()
 {
     $error = false;
@@ -1694,12 +1812,16 @@ function FindUser($username)
 }
 
 
-/* this function updates user information to updgrade his account to an account that can sell items */
+/* This function updates user information to upgrade his account to an account that can sell items */
 
-/* input:
- *
- *
+/* Input:
+ *  ItemID.
+ *  Username.
+ *  Offer.
  */
+/* Output:
+ *  Inserted upgraded account.
+*/
 
 
 function upgradeAccount($itemID, $user, $offer)
@@ -1720,6 +1842,13 @@ function upgradeAccount($itemID, $user, $offer)
 
 }
 
+/* Function to create an upgrade code*/
+/*
+ * Input:
+ *  Username of the user to create the code for.
+ * Output:
+ *  Code for the user.
+ */
 function createUpgradeCode($username)
 {
 
@@ -1750,7 +1879,14 @@ function createUpgradeCode($username)
 
 }
 
-
+/*Function to send the email to the upgrade user.*/
+/*
+ * Input:
+ *  Username of the user.
+ *  Code for the activation.
+ * Output:
+ *  Mail sent to the user with the code.
+ */
 function sendUpgradeMail($username, $code)
 {
 
@@ -1930,6 +2066,14 @@ EOT;
 
 }
 
+/*Function to check the upgrade code*/
+/*
+ * Input:
+ *  Upgrade Code.
+ *  Username.
+ * Output:
+ *  Boolean whether code is correct.
+ */
 function checkUpgradeCode($upgradecode, $username)
 {
 
@@ -1950,7 +2094,13 @@ EOT;
     return ($results["UPG_code"] == $upgradecode);
 }
 
-
+/*Function to check whether an auction is elapsed*/
+/*
+ * Input:
+ *  AuctionID
+ * Output:
+ *  Boolean whether auction is elapsed.
+ */
 function checkVeilingAfgelopen($veilingID)
 {
 
@@ -1968,6 +2118,14 @@ EOT;
 
 }
 
+/*Function to insert a seller into the database */
+/*
+ * Input:
+ *  Username.
+ *  Array of userinput.
+ * Output:
+ *  Inserted seller.
+ */
 function insertVerkoper($username, $array)
 {
 
@@ -2006,6 +2164,13 @@ function insertVerkoper($username, $array)
 
 }
 
+/*Function to delete an entry from upgrade when the upgrade time is elapsed.*/
+/*
+ * Input:
+ *  Username.
+ * Output:
+ *  Error or success message.
+ */
 function deleteFromUpgrade($username)
 {
 

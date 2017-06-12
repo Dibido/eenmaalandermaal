@@ -1,12 +1,12 @@
---Functie om te checken of de veiling is afgelopen.
+--This function checks when the auction is closed.
 /*
-Input: @voorwerpnummer om voor te checken
-Return: Of de veiling gesloten is.
+Input: @voorwerpnummer is the number that we check.
+Return: If the auction has closed.
  */
 IF OBJECT_ID('dbo.FN_VeilingAfgelopen') IS NOT NULL
   DROP FUNCTION [dbo].[FN_VeilingAfgelopen]
 GO
-
+--Functie checks if the auction has ended.
 CREATE FUNCTION FN_VeilingAfgelopen
   (@Voorwerpnummer BIGINT)
   RETURNS BIT
@@ -19,11 +19,11 @@ AS
     RETURN 0
   END
 
---Functie om een random gebruiker te vinden
---Variabelen:
---@Identifier, een unieke identity in de tabel.
+--Function too find a random user.
+--Variabels:
+--@Identifier, a unique identity.
 --Return:
---Een random gebruikersnaam
+--A random user name.
 IF OBJECT_ID('dbo.FN_GenereerRandomgebruiker') IS NOT NULL
   DROP FUNCTION [dbo].[FN_GenereerRandomgebruiker]
 GO
@@ -33,7 +33,7 @@ CREATE FUNCTION FN_GenereerRandomgebruiker
   RETURNS VARCHAR(64)
 AS
   BEGIN
-    --Selecteer een random gebruiker aan de hand van de random identifier en het regelnummer.
+    --Selects a random user according too a random identity and rownumber.
     RETURN (SELECT TOP 1 GEB_gebruikersnaam
             FROM (SELECT
                     GEB_gebruikersnaam,
@@ -47,7 +47,7 @@ AS
   END
 GO
 
---Functie om te het aantal bestanden te returnen
+--Function to return the number of files.
 GO
 IF OBJECT_ID('dbo.FN_aantalBestandenPervoorwerpnummer') IS NOT NULL
   IF OBJECT_ID('dbo.Bestand') IS NOT NULL
@@ -67,7 +67,7 @@ CREATE FUNCTION FN_aantalBestandenPerVoorwerpnummer(
   END
 GO
 
---Functie die checkt of het bod hoog genoeg is.
+--Function that checks if the new offer is higher then the old one.
 
 IF OBJECT_ID('FN_BodhogerdanMinimaalBod') IS NOT NULL
   IF OBJECT_ID('dbo.Bod') IS NOT NULL
@@ -90,7 +90,7 @@ CREATE FUNCTION FN_BodhogerdanMinimaalBod
   END
 GO
 
---Functie om te kijken of je niet op je eigen voorwerp gaat bieden
+--Function that check if a user isnt bidding on his own auction.
 IF OBJECT_ID('dbo.FN_nietEigenVoorwerp') IS NOT NULL
   IF OBJECT_ID('dbo.Bod') IS NOT NULL
     DROP TABLE [dbo].[Bod]
@@ -114,7 +114,7 @@ CREATE FUNCTION FN_nietEigenVoorwerp(
   END
 GO
 
---Functie om de prijs om te zetten naar een numeric waarde
+--Function that makes a value NUMERIC(9,2).
 IF OBJECT_ID('FN_Maaknumeric') IS NOT NULL
   DROP FUNCTION [dbo].[FN_Maaknumeric]
 GO
@@ -130,7 +130,7 @@ CREATE FUNCTION FN_Maaknumeric(@Prijs NUMERIC(9, 2))
 GO
 
 
---Functie om de valuta om te rekenen voor het converteren van de voorwerpen
+--Function to convert currencies too the euro standard.
 IF OBJECT_ID('FN_Verandervaluta') IS NOT NULL
   DROP FUNCTION [dbo].[FN_Verandervaluta]
 GO
@@ -146,7 +146,7 @@ CREATE FUNCTION FN_Verandervaluta
   END
 GO
 
---Functie om de HTML beschrijving te filteren
+--Function that removes HTML description.
 IF OBJECT_ID('FN_StripHTML') IS NOT NULL
   DROP FUNCTION [dbo].[FN_StripHTML]
 GO
@@ -173,7 +173,7 @@ GO
 IF OBJECT_ID('FN_RubriekIsAfstammelingVan') IS NOT NULL
   DROP FUNCTION [dbo].[FN_RubriekIsAfstammelingVan]
 GO
-
+--Function that checks if the child column is in the parent.
 create FUNCTION [dbo].[FN_RubriekIsAfstammelingVan](
   @KindRubriek INT,
   @SuperRubriek INT

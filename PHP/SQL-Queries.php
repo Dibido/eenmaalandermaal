@@ -1,18 +1,6 @@
 <?php
 
-/*
- *
- *  This file includes functions for often-used SQL queries, thus giving the HTML-pages better readability
- *
- *
- */
-
-
-/*
- *
- *  These are all the used querries
- *
- */
+/*  This file includes functions for often-used SQL queries, thus giving the HTML and PHP pages better readability */
 
 //Insert de bestand namen in de tabel bestand
 $QueryInsertImages = <<<EOT
@@ -61,7 +49,6 @@ EOT;
 //Deze zijn geordend op de sum van VW_bodcount
 $QueryTopCategories = <<<EOT
 
-
 SELECT
   TOP 10
   RB_Naam,
@@ -73,7 +60,7 @@ FROM Rubriek
   ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
   INNER JOIN Voorwerp
   ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-  GROUP BY RB_Naam, RB_Nummer, VW_bodcount
+  GROUP BY RB_Nummer, RB_Naam
 ORDER BY sum(Voorwerp.VW_bodcount) DESC
 
 
@@ -156,7 +143,7 @@ EOT;
 
 $QueryQualityNew = <<<EOT
 SELECT
-  TOP 40
+  TOP 20
   VW_voorwerpnummer,VW_titel,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
@@ -173,6 +160,52 @@ FROM Voorwerp
 WHERE VW_veilinggesloten != 1
 GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail, VW_looptijdStart
 ORDER BY VW_looptijdStart DESC, VW_titel
+
+EOT;
+
+$QueryMoreQualityNew = <<<EOT
+SELECT
+  VW_voorwerpnummer,
+  VW_titel,
+  (COALESCE((SELECT TOP 1 BOD_Bodbedrag
+             FROM Bod
+             WHERE BOD_Bodbedrag IN (SELECT TOP 1 BOD_Bodbedrag
+                                     FROM Bod
+                                     WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                     ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+             ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) AS prijs,
+  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)              AS tijd,
+  VW_bodcount                                                 AS Biedingen,
+  VW_looptijdEinde,
+  --Selecteerd het eerste filepath die hij vind voor het voorwerpnummer
+  (SELECT TOP 1 BES_filenaam
+   FROM Bestand
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer)           AS ImagePath
+FROM Voorwerp
+--Where statement om te kijken of het Voorwerp nummer in de belangrijkste categorie zit.
+WHERE VW_titel NOT LIKE '%Testpro%' AND VW_voorwerpnummer IN (
+  SELECT DISTINCT VW_voorwerpnummer
+  --Selecteerd de naam van de Hoofdcategorie per voorwerpnummer
+  FROM Voorwerp
+    FULL OUTER JOIN Voorwerp_Rubriek
+      ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = VW_voorwerpnummer
+    FULL OUTER JOIN Rubriek
+      ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+  WHERE RB_Nummer IN (
+    SELECT TOP 1 RB_Nummer
+FROM Rubriek
+INNER JOIN Voorwerp_Rubriek
+ON Rubriek.RB_Nummer = Voorwerp_Rubriek.VR_Rubriek_Nummer
+INNER JOIN Voorwerp
+ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
+GROUP BY RB_Nummer
+ORDER BY sum(VW_bodcount) DESC
+  )
+) and VW_veilinggesloten != 1
+GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs,VW_bodcount
+ORDER BY Biedingen DESC, VW_titel ASC
+OFFSET 3 ROWS
+FETCH NEXT 23 ROWS ONLY
 
 EOT;
 
@@ -311,7 +344,7 @@ SELECT
                                        FROM Bod
                                        WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                        ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-              ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
+              ORDER BY BOD_Bodbedrag DESC), VW_startprijs))  AS prijs,
   VW_looptijdEinde,
   VW_thumbnail AS ImagePath
 FROM Voorwerp
@@ -319,38 +352,15 @@ FROM Voorwerp
   INNER JOIN Voorwerp_Rubriek
     ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
   
-GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
-HAVING VW_verkoper = ?
+GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail,VW_startprijs
+HAVING VW_verkoper = 'athan88'
 ORDER BY VW_looptijdStart ASC, VW_titel
 
 EOT;
 
 // Biedingen van gebruikers voor profiel pagina
 $QueryUserBod = <<<EOT
-SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_gebruiker, (select distinct TOP 1  BOD_bodTijdEnDag from bod) as tijd1,
-  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
-  (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
-              FROM Bod
-              WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
-                                       FROM Bod
-                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
-                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-              ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
-  VW_looptijdEinde,
-  VW_thumbnail AS ImagePath,
-  BOD_bodTijdEnDag
-FROM bod b
-INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer
-WHERE BOD_gebruiker = ?
-GROUP BY BOD_voorwerpnummer,vw_voorwerpnummer, BOD_bodTijdEnDag, VW_titel, BOD_gebruiker, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
-order by BOD_bodTijdEnDag desc
-EOT;
-// Gewonnen ads van gebruiker voor profiel pagina
-
-$QueryUserWin = <<<EOT
-SELECT
-  TOP 40
-  VW_voorwerpnummer,VW_titel, VW_verkoper,
+SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_gebruiker, (select distinct TOP 1  BOD_bodTijdEnDag from bod where BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_bodTijdEnDag desc) as tijd1,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
               FROM Bod
@@ -361,13 +371,31 @@ SELECT
               ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
   VW_looptijdEinde,
   VW_thumbnail AS ImagePath
-FROM Voorwerp
+FROM bod b
+INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer
+WHERE BOD_gebruiker = 'athan88'
+GROUP BY BOD_voorwerpnummer,vw_voorwerpnummer,VW_titel, BOD_gebruiker, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
+order by tijd1 desc
+EOT;
+// Gewonnen ads van gebruiker voor profiel pagina
 
-  INNER JOIN Voorwerp_Rubriek
-    ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-  
-GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper,VW_Koper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
-HAVING VW_koper IS NOT NULL  AND VW_Koper = ?
+$QueryUserWin = <<<EOT
+SELECT
+  TOP 40
+  VW_voorwerpnummer,VW_titel, VW_koper,
+  DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
+  (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
+              FROM Bod
+              WHERE BOD_Bodbedrag  IN (SELECT TOP 1 BOD_Bodbedrag
+                                       FROM Bod
+                                       WHERE BOD_voorwerpnummer = VW_voorwerpnummer
+                                       ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
+              ORDER BY BOD_Bodbedrag DESC), VW_startprijs))  AS prijs,
+  VW_looptijdEinde,
+  VW_thumbnail AS ImagePath
+FROM Voorwerp
+where  VW_koper = ?
+GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper,VW_koper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail, VW_startprijs
 ORDER BY VW_looptijdEinde DESC, VW_titel
 EOT;
 

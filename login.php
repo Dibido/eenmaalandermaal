@@ -4,13 +4,12 @@ require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
-
 /* Backend for logging in an admin user */
 
 $errorMessage = [False];
 $successMessage = [False];
 
-//testing if the user tried to login, or only accessed the page
+//testing if the user tried to log in, or only accessed the page
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST["formSend"]) && $_POST["formSend"] == 'True') {
 
