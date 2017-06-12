@@ -1,5 +1,5 @@
---De stored procedures in dit script kunnen gebruikt worden om de data die al in de database staat te updaten.
---Drop alle procedures
+--the stored procedures can be used to update the data in the database.
+--Drop all procedures
 IF OBJECT_ID('SP_UpdateRating', 'P') IS NOT NULL
   DROP PROCEDURE SP_UpdateLooptijd;
 GO
@@ -17,19 +17,19 @@ AS
   SET GEB_rating = CEILING(RAND(CHECKSUM(NEWID())) * 100)
 GO
 
---Procedure om de starttijden en looptijden van de voorwerpen te updaten.
+--Procedure to update the start- en looptijd.
 --Parameters:
---Range van de random datums voor de looptijdstart, moet later of gelijk zijn aan getdate().
+--Range of the random dates vfor the looptijdstart, has to be equal or higher then getdate().
 CREATE PROCEDURE [dbo].[SP_UpdateLooptijd]
-    @FromDate DATE, --begindatum random datum.
-    @ToDate   DATE  --einddatum random datum.
+    @FromDate DATE, --begindatum random date.
+    @ToDate   DATE  --einddatum random date.
 AS
---Tijdelijke tabel om random looptijden te kunnen selecteren.
+--Temporary table to select random looptijden.
   CREATE TABLE TEMP_LooptijdWaardes (
     ID       TINYINT NOT NULL IDENTITY,
     Looptijd TINYINT NOT NULL --1, 3, 5, 7, 10
   )
-  --Looptijden inserten.
+  --Inserts looptijden.
   INSERT INTO TEMP_LooptijdWaardes VALUES (1), (3), (5), (7), (10);
 
   UPDATE Voorwerp
@@ -38,13 +38,13 @@ AS
       ABS(CHECKSUM(NEWID())) % DATEDIFF(MINUTE, @FromDate, @ToDate) + DATEDIFF(MINUTE, 0, @FromDate),
       0
   )),
-    --Doet een random waarde modulo het verschil tussen de min en max waarde van de range en voegt dan de begintijd toe.
+    --Makes a random value modulo the difference between min and max of the range and adds it to the begintijd.
     VW_looptijd        = (SELECT Looptijd
                           FROM TEMP_LooptijdWaardes
                           WHERE ID = (Items.ID % ((SELECT count(*)
                                                    FROM TEMP_LooptijdWaardes) + 1) + 1))
-  --Pakt het ID en doet modulo op het aantal van de tabel + 1 wat een range van 0 - 4 geeft. We tellen er een bij op om de 1 - 5 van de identity te krijgen.
-  --Tijdelijke tabel opruimen.
+  --Grabs the ID and modulo the value of the table +1 on the range of 0 - 4 . Cause we do +1 we get a range of 1 - 5.
+  --Drops temporary table.
   IF OBJECT_ID('dbo.TEMP_LooptijdWaardes') IS NOT NULL
     DROP TABLE dbo.TEMP_LooptijdWaardes
 GO
@@ -67,7 +67,7 @@ AS
         FROM
           (
             SELECT
-              --Random nummer om random op random voorwerpen boden te plaatsen.
+              --Random to number to bid on random products.
                 RandNr = ROW_NUMBER()
               OVER (
                 ORDER BY newID() ),
@@ -80,7 +80,7 @@ AS
                         ORDER BY b.BOD_bodbedrag DESC)
                 , v.VW_startprijs)
                 + 50.0 + (ABS(Checksum(NewID()) % 10) + 1) AS BOD_bodbedrag,
-              --De huidige waarde plus 50 (het hoogste minimale bod) en een random waarde van 1 tot 10
+              --Teh current value + 50 (The highest minimal bid) And a random value of 0 - 10.
                 (dbo.FN_GenereerRandomgebruiker(newID()))  AS BOD_gebruiker,
                 (SELECT DATEADD(
                     MINUTE,
@@ -104,13 +104,13 @@ AS
                 ))                                         AS BOD_bodTijdEnDag -- Tijd binnen een bepaalde range.
             FROM Voorwerp v
           ) Biedingen
-        --De gebruiker mag niet op zijn eigen voorwerpen bieden.
+        --the gebruiker can't bid on his own auctions.
         WHERE VW_verkoper <> BOD_gebruiker
               AND ISNULL((SELECT TOP 1 b.BOD_bodbedrag
                           FROM Bod b
                           WHERE b.BOD_voorwerpnummer = Biedingen.BOD_voorwerpnummer
                           ORDER BY b.BOD_bodbedrag DESC), Biedingen.VW_startprijs) < 9999960  -- Prevent overflow
-              --Alleen random voorwerpen.
+              --Only random products.
               AND Biedingen.RandNr % 3 = 0
               AND BOD_voorwerpnummer NOT IN (select VW_voorwerpnummer from Voorwerp where VW_veilinggesloten = 1)
       SET @LoopCount += 1
