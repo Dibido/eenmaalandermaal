@@ -20,16 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (isset($username) AND !empty($username)) {
             if (isset($password) AND !empty($password)) {
                 //finding a user with the given username
-                $foundUser = FindUser($username)[0];
+                $foundUser = FindUser($username);
 
-                if (isset($foundUser) AND !empty($foundUser)) {
-                    //if found, checking the password
-                    $foundPassword = CheckCredentials($username, $password);
-                    if ($foundPassword) {
-                        $_SESSION["Username"] = $foundUser;
-                        header('Location: index.php');
+                if (isset($foundUser[0]) AND !empty($foundUser[0])) {
+                    //checking if the user is active
+                    if($foundUser["GEB_actief"]){
+                        //if found, checking the password
+                        $foundPassword = CheckCredentials($username, $password);
+                        if ($foundPassword) {
+                            $_SESSION["Username"] = $foundUser[0];
+                            header('Location: index.php');
+                        } else {
+                            $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser[0]];
+                        }
                     } else {
-                        $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser];
+                        $errorMessage = [True, 'Deze gebruiker is niet actief: ' . $foundUser[0]];
                     }
                 } else {
                     $errorMessage = [True, 'Onbekende gebruiker: ' . $username];
