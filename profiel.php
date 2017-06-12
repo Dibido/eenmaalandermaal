@@ -101,7 +101,7 @@ require('navbar.php');
                 <p><span class="glyphicon glyphicon-user"></span> Voornaam + Achternaam:
                     <b><?php echo $userinfo["GEB_voornaam"] . ' ' . $userinfo["GEB_achternaam"] ?></b></p>
                 <p><span class="glyphicon glyphicon-gift"></span> Geboortedatum:
-                    <b><?php echo $userinfo["GEB_voornaam"] ?></b></p>
+                    <b><?php echo $userinfo["GEB_geboortedag"] ?></b></p>
                 <p><span class="glyphicon glyphicon-envelope"></span> Email-adres:
                     <b><?php echo $userinfo["GEB_mailbox"] ?></b></p>
                 <p><span class="glyphicon glyphicon-map-marker"></span> Postcode + Plaats :
