@@ -20,7 +20,7 @@ EOT;
 
 $QueryFindAuctionsByUser = <<<EOT
     
-    SELECT
+  SELECT
   TOP 2
   VW_voorwerpnummer,
   VW_titel,
@@ -36,12 +36,12 @@ $QueryFindAuctionsByUser = <<<EOT
   VW_looptijdEinde                                                                         AS tijd,
   VW_looptijdEinde,
   VW_thumbnail       AS ImagePath,
-  COUNT(*)                                                                                 AS Biedingen
+  VW_bodcount                                                                                 AS Biedingen
 
 FROM Voorwerp
 WHERE VW_verkoper = ? 
 AND VW_voorwerpnummer != ?
-GROUP BY VW_voorwerpnummer,vw_titel,VW_looptijdEinde,VW_thumbnail
+GROUP BY VW_voorwerpnummer,vw_titel,VW_looptijdEinde,VW_thumbnail,VW_bodcount
 
 EOT;
 
@@ -155,12 +155,12 @@ SELECT
               ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
   VW_looptijdEinde,
   VW_looptijdStart,
-  VW_thumbnail AS ImagePath
+  VW_thumbnail AS ImagePath,
+  VW_bodcount
 FROM Voorwerp
-WHERE VW_veilinggesloten != 1
-GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail, VW_looptijdStart
-ORDER BY VW_looptijdStart DESC, VW_titel
-
+WHERE VW_veilinggesloten != 1 and VW_looptijdStart !> GETDATE()
+GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail, VW_looptijdStart, VW_bodcount
+ORDER BY VW_looptijdStart DESC, VW_bodcount DESC, VW_titel ASC
 EOT;
 
 $QueryMoreQualityNew = <<<EOT
@@ -205,8 +205,7 @@ ORDER BY sum(VW_bodcount) DESC
 GROUP BY VW_voorwerpnummer, VW_titel, VW_looptijdEinde, VW_startprijs,VW_bodcount
 ORDER BY Biedingen DESC, VW_titel ASC
 OFFSET 3 ROWS
-FETCH NEXT 23 ROWS ONLY
-
+FETCH NEXT 20 ROWS ONLY
 EOT;
 
 
@@ -353,14 +352,14 @@ FROM Voorwerp
     ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
   
 GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail,VW_startprijs
-HAVING VW_verkoper = 'athan88'
+HAVING VW_verkoper = ?
 ORDER BY VW_looptijdStart ASC, VW_titel
 
 EOT;
 
 // Biedingen van gebruikers voor profiel pagina
 $QueryUserBod = <<<EOT
-SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_gebruiker, (select distinct TOP 1  BOD_bodTijdEnDag from bod where BOD_voorwerpnummer = VW_voorwerpnummer ORDER BY BOD_bodTijdEnDag desc) as tijd1,
+SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_gebruiker, (select TOP 1  BOD_bodTijdEnDag from bod where BOD_voorwerpnummer = VW_voorwerpnummer AND BOD_gebruiker = ?  ORDER BY BOD_bodTijdEnDag desc) as tijd1,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
               FROM Bod
@@ -373,9 +372,10 @@ SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_
   VW_thumbnail AS ImagePath
 FROM bod b
 INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer
-WHERE BOD_gebruiker = 'athan88'
+WHERE BOD_gebruiker = ? and (select TOP 1  BOD_bodTijdEnDag from bod where BOD_voorwerpnummer = VW_voorwerpnummer AND BOD_gebruiker = ?  ORDER BY BOD_bodTijdEnDag desc) <= GETDATE()
 GROUP BY BOD_voorwerpnummer,vw_voorwerpnummer,VW_titel, BOD_gebruiker, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
 order by tijd1 desc
+
 EOT;
 // Gewonnen ads van gebruiker voor profiel pagina
 

@@ -184,7 +184,7 @@ function findBodAds($username)
     GLOBAL $QueryUserBod;
 
     $stmt = $connection->prepare($QueryUserBod);
-    $stmt->execute(array($username));
+    $stmt->execute(array($username,$username,$username));
     return $stmt->fetchAll();
 }
 
@@ -576,13 +576,12 @@ EOT;
  */
 
 
-function DrawAuction($auction)
+function DrawAuction($auction, $auctionType)
 {
     //testing for missing images and replacing with backup image
     if (empty($auction["ImagePath"])) {
         $auction["ImagePath"] = "images/no-image-available.jpg";
     }
-    $pagina = 'Voorpagina';
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-xs-12 col-sm-6 col-md-4 col-lg-3\">
@@ -592,7 +591,7 @@ function DrawAuction($auction)
                     <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl/' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . "</div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . $auctionType."></p>" . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
@@ -604,7 +603,7 @@ function DrawAuction($auction)
             
     ";
     //Maakt een timer aan voor het voorwerp
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_voorwerpnummer"], $auctionType);
 }
 
 function DrawItemAuction($auction)
@@ -623,7 +622,7 @@ function DrawItemAuction($auction)
                     <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \"><div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . "</div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . 'itemauction'. "></p>" . "</div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
@@ -635,7 +634,7 @@ function DrawItemAuction($auction)
             
     ";
     //Maakt een timer aan voor het voorwerp
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
+    createTimer($auction["VW_looptijdEinde"],$auction["VW_voorwerpnummer"], 'itemauction');
 
 }
 
@@ -646,7 +645,6 @@ function DrawSearchResults($auction)
     if (empty($auction["ImagePath"])) {
         $auction["ImagePath"] = "images/no-image-available.jpg";
     }
-    $pagina = 'Zoekpagina';
     echo "
     <!-- Veiling template -->
             <div class=\"veiling-rand col-md-4 col-sm-6 col-xs-12\">
@@ -657,7 +655,7 @@ function DrawSearchResults($auction)
         . "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \">" . "<div class=\"veiling-image\" style=\"background-image:url(" . 'http://iproject3.icasites.nl' . $auction["ImagePath"] . ")\"></div></a>
                     <div class=\"veiling-prijs-tijd\">
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
-                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . "></p>" . " </div>
+                        <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . 'Zoekpagina'. "></p>" . " </div>
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
@@ -668,7 +666,7 @@ function DrawSearchResults($auction)
             <!-- End template -->
     ";
     //Maakt een timer aan voor het voorwerp
-    createTimer($auction["VW_looptijdEinde"], $auction["VW_titel"], $auction["VW_voorwerpnummer"]);
+    createTimer($auction["VW_looptijdEinde"], $auction["VW_voorwerpnummer"] , 'Zoekpagina');
 
 }
 
@@ -1133,7 +1131,7 @@ function drawPagenumbers($Dictionary, $result)
  * Output:
  *  Formatted timer.
  */
-function createTimer($tijd, $VW_Titel, $VW_Nummer)
+function createTimer($tijd, $VW_Nummer, $auctiontype)
 {
     $timer = "timer" . $VW_Nummer;
     echo '<script>
@@ -1147,19 +1145,19 @@ function createTimer($tijd, $VW_Titel, $VW_Nummer)
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
         
         if(days >= 1){
-        document.getElementById("' . $VW_Nummer . '").innerHTML = days + "d " + hours + "h "
+        document.getElementById("' . $VW_Nummer . $auctiontype. '").innerHTML = days + "d " + hours + "h "
             + minutes + "m " ;
         }else if(days < 1 && seconds < 10){
-        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . $auctiontype. '").innerHTML = hours + "h "
             + minutes + "m " + "0" + seconds + "s" ;
         }else{
-        document.getElementById("' . $VW_Nummer . '").innerHTML = hours + "h "
+        document.getElementById("' . $VW_Nummer . $auctiontype. '").innerHTML = hours + "h "
             + minutes + "m " + seconds +  "s" ;
         }
         //Veiling wordt gesloten wanneer de overgebleven tijd kleiner is dan 0
         if (distance < 0) {
             clearInterval(x);
-            document.getElementById("' . $VW_Nummer . '").innerHTML = "Veiling gesloten";
+            document.getElementById("' . $VW_Nummer . $auctiontype. '").innerHTML = "Veiling gesloten";
         }
     }, 1000)
 </script>

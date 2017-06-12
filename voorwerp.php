@@ -341,9 +341,9 @@ if($doesNotExist){
             <div class="panel-heading text-center">Overgebleven Tijd</div>
             <div class="panel-body">
                 <div class="TimeLeft">
-                    <p class="Time" id="<?php echo $ItemInfo["VW_voorwerpnummer"]; ?>"></p>
+                    <p class="Time" id="<?php echo $ItemInfo["VW_voorwerpnummer"].'vanzelfdegebruiker'; ?>"></p>
                     <?php
-                    createTimer($ItemInfo["tijd"], $ItemInfo["VW_titel"], $ItemInfo["VW_voorwerpnummer"]);
+                    createTimer($ItemInfo["tijd"], $ItemInfo["VW_voorwerpnummer"], 'vanzelfdegebruiker');
                     ?>
                     <div id="Clock" style="background-image:url(images/Clock.png)"></div>
                 </div>

@@ -1,4 +1,4 @@
---Dit stuk sql leest de triggers uit en verwijdert ze.
+--This piece of sql reads the triggers and deletes them.
 DECLARE @DropTriggers NVARCHAR(MAX) = ''
 SELECT @DropTriggers += 'DROP TRIGGER ' + [so].[name] + CHAR(13)
 FROM sysobjects AS [so]
@@ -8,13 +8,13 @@ PRINT @DropTriggers
 EXEC sp_executesql @DropTriggers
 GO
 
---Trigger om het hoogste bod op een voorwerp bij te houden
+--Trigger to keep track of the highest bid on a voorwerp.
 CREATE TRIGGER TR_HoogsteBod
   ON Bod
 FOR INSERT, UPDATE, DELETE
 AS
   BEGIN
-    --Bijwerken hoogste bodprijs voorwerp.
+    --Updates the highest bid price..
     UPDATE Voorwerp
     SET VW_hoogstebod =
     (COALESCE((SELECT TOP 1 BOD_Bodbedrag
@@ -28,7 +28,7 @@ AS
     ))
   END
 GO
---Trigger om het minimale nieuwe bod te berekenen
+--Trigger to calculate the minimal bid.
 CREATE TRIGGER TR_minimalenieuwebod
   ON Bod
 FOR INSERT, UPDATE, DELETE
@@ -53,14 +53,14 @@ AS
   END
 GO
 
---Trigger om het aantal voorwerpen per rubriek te berekenen.
+--Trigger to calculate the number of voorwerpen in a rubric.
 CREATE TRIGGER TR_ComputedCount
   ON Voorwerp_Rubriek
 FOR INSERT, UPDATE, DELETE
 AS
   BEGIN
-    --Bijwerken aantal voorwerpen per categorie
-    --Alleen als er wijzigingen zijn aan VoorwerpInRubriek
+    --Update number of voorwerpen ina  rubric.
+    --Only when there are references too VoorwerpInRubriek.
     UPDATE Rubriek
     SET RB_voorwerpcount =
     (
@@ -80,8 +80,8 @@ CREATE TRIGGER TR_BodCount
 FOR INSERT, UPDATE, DELETE
 AS
   BEGIN
-    --Bijwerken aantal biedingen per voorwerp
-    --Alleen als er wijzigingen zijn aan Bod
+    --Update number of bids for each voorwerp.
+    --Only when there references to Bod.
     UPDATE Voorwerp
     SET VW_BodCount =
     (
@@ -93,7 +93,7 @@ AS
   END
 GO
 
--- Trigger die registratiecodes die ouder dan 24 uur zijn verwijderd.
+-- Trigger that deletes registrationcodes older then 24 hours.
 CREATE TRIGGER TR_ActivatieVerlopen
   ON dbo.Registreer
 FOR INSERT, UPDATE
@@ -104,7 +104,7 @@ AS
   END
 GO
 
---Trigger die de upgradecode na een week verwijderd
+--Trigger that deletes the update code after a week.
 CREATE TRIGGER TR_UpgradeVerlopen
   ON dbo.Upgrade
 FOR INSERT, UPDATE

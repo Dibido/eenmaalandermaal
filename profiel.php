@@ -178,7 +178,7 @@ require('navbar.php');
                         //Show the owners auctions.
                         if (isset($auctions[0]) AND !empty($auctions)) {
                             foreach ($auctions as $auction) {
-                                DrawAuction($auction);
+                                DrawAuction($auction, 'mijnadvertenties');
                             }
                         } else {
                             echo "U heeft geen geplaatste advertenties.";
@@ -195,7 +195,7 @@ require('navbar.php');
                         //Show the users bids.
                         if (isset($auctions[0]) AND !empty($auctions)) {
                             foreach ($auctions as $auction) {
-                                DrawAuction($auction);
+                                DrawAuction($auction, 'mijnbiedingen');
                             }
                         } else {
                             echo "U heeft nog geen bod geplaatst.";
@@ -212,7 +212,7 @@ require('navbar.php');
                         //Show the users won auctions.
                         if (isset($auctions[0]) AND !empty($auctions)) {
                             foreach ($auctions as $auction) {
-                                DrawAuction($auction);
+                                DrawAuction($auction, 'gewonnenveilingen');
                             }
                         } else {
                             echo "U heeft nog niets gewonnen.";
