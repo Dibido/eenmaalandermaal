@@ -41,7 +41,7 @@ $QueryFindAuctionsByUser = <<<EOT
 FROM Voorwerp
 WHERE VW_verkoper = ? 
 AND VW_voorwerpnummer != ?
-GROUP BY VW_voorwerpnummer,vw_titel,VW_looptijdEinde,VW_thumbnail
+GROUP BY VW_voorwerpnummer,vw_titel,VW_looptijdEinde,VW_thumbnail,VW_bodcount
 
 EOT;
 
