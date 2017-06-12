@@ -11,8 +11,20 @@ $ItemID = $_GET['ItemID'];
 $ItemInfo = GetItemDetails($ItemID);
 $ItemInfo = $ItemInfo[0];
 
+
 $ItemImages = GetItemImages($ItemID);
 $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
+
+/* testing if the auction exists */
+if(empty($ItemInfo["VW_titel"])){
+    $error = [True, 'Deze veiling bestaat niet'];
+    $doesNotExist = True;
+    echo "<script type='text/javascript'>alert('$error[1]');</script>";
+}else{
+    $doesNotExist = False;
+}
+
+
 
 
 /* making sure an image is available */
@@ -103,13 +115,13 @@ if (isset($snelBod) AND !empty($snelBod)) {
     }
     if ($_SESSION["Username"] == $ItemInfo["VW_verkoper"]) {
         $error = [True, 'U kunt niet op uw eigen veilingen bieden.'];
+        echo "<script type='text/javascript'>alert('$error[1]');</script>";
 
     } else {
         //inserting the offer
         insertBod($ItemID, $_SESSION["Username"], $minimumBod);
 
         header('Location: voorwerp.php?ItemID=' . $ItemID);
-
     }
 }
 
@@ -161,12 +173,21 @@ if (isset($snelBod) AND !empty($snelBod)) {
 
 <?php
 require('navbar.php');
+
+if($doesNotExist){
+    echo "<h3 style=\"border-bottom: #e5e5e5 solid 2px; padding: 5px; margin: 75px 0 25px 0;\" class=\"text-center\">Deze advertentie bestaat niet: klik <a href='index.php'>hier</a> om naar de voorpagina te gaan.</h3>";
+    die();
+}
+
+
 ?>
+
 
 <ol class="breadcrumb" style="position: absolute; top: 50px; display: block; width: 100%;">
     <li><a href="#" onclick="history.go(-1)"><span id="lastPage">Vorige pagina</span></a></li>
     <li><a href="#"><?php echo $ItemInfo["VW_titel"] ?></a></li>
 </ol>
+
 
 
 <div class="container" style="margin-top: 40px;">
