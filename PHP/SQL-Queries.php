@@ -305,7 +305,7 @@ EOT;
 /* query voor het zoeken van een user*/
 $QueryFindUser = <<<EOT
 
-SELECT GEB_gebruikersnaam
+SELECT GEB_gebruikersnaam, GEB_actief
 FROM Gebruiker
 WHERE GEB_gebruikersnaam = ?
 EOT;
