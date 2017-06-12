@@ -211,7 +211,6 @@ include "navbar.php";
                           </div>";
                     }
 
-
                     ?>
                 </form>
             </div>

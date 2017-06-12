@@ -16,9 +16,10 @@ $minimumBod = $ItemInfo["VW_minimalenieuwebod"];
 
 
 /* making sure an image is available */
-if (count($ItemImages) == 1 && empty($ItemImages[0])){
-    $ItemImages[0]["BES_filenaam"] = "images/no-image-available.jpg";
+if (count($ItemImages) == 0 && empty($ItemImages[0])){
+    $ItemImages[0]["BES_filenaam"] = "/images/no-image-available.jpg";
 }
+
 
 /* making sure the properties are available*/
 
@@ -40,16 +41,6 @@ if(empty($ItemInfo["VW_verzendinstructies"])){
 if(empty($ItemInfo["VW_betalingsinstructie"])){
     $ItemInfo["VW_betalingsinstructie"] = 'Onbekende betalingsinstructie';
 }
-
-
-
-
-
-
-
-
-
-
 
 
 /* de functie voor het bieden */
