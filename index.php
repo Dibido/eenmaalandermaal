@@ -1,12 +1,9 @@
 <?php
 session_start();
-$_SESSION[""];
 
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
-
-$response = NULL;
 ?>
 
 <!doctype html>
@@ -72,7 +69,6 @@ require('navbar.php');
                     Top 10 rubrieken
                 </a>
                 <?php
-
                 $TopCategories = SendToDatabase($QueryTopCategories);
 
                 if ($TopCategories[0]) {
@@ -232,7 +228,7 @@ require('navbar.php');
             $pagina = 'BijnaGesloten';
 
 
-            //If the query was succesfull, build the adverts
+            //If the query was succesful, build the adverts
             if ($TopClosed[0]) {
                 foreach ($TopClosed as $veiling) {
 
@@ -291,10 +287,9 @@ require('navbar.php');
 <div class="container-fluid">
 
     <?php
-
-
     $ExtraAuctions = SendToDatabase($QueryQualityNew);
 
+    //Draw auctions for popular new auctions.
     if ($ExtraAuctions[0]) {
         foreach ($ExtraAuctions as $advert) {
             DrawAuction($advert);
@@ -313,8 +308,6 @@ require('navbar.php');
 <div class="container-fluid">
 
     <?php
-
-
     $ExtraAuctions = SendToDatabase($QueryMoreQualityNew);
 
     if ($ExtraAuctions[0]) {

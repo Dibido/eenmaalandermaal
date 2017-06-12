@@ -1,4 +1,5 @@
 <?php
+/* This php page shows the highest layer of the categories. */
 session_start();
 require('PHP/connection.php');
 require('PHP/Functions.php');
