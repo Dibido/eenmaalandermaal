@@ -659,8 +659,6 @@ function SearchFunction($SearchOptions)
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchFilter = $SearchOptions['SearchFilter'];
     $SearchCategory = $SearchOptions['SearchCategory'];
-    $SearchMaxRemainingTime = $SearchOptions['SearchMaxRemainingTime'];
-    $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
     $SearchUser = $SearchOptions['SearchUser'];
@@ -739,8 +737,6 @@ function amountOfResultsLeft($SearchOptions)
     $SearchKeyword = $SearchOptions['SearchKeyword'];
     $SearchPaymentMethod = $SearchOptions['SearchPaymentMethod'];
     $SearchCategory = $SearchOptions['SearchCategory'];
-    $SearchMaxRemainingTime = $SearchOptions['SearchMaxRemainingTime'];
-    $SearchMinRemainingTime = $SearchOptions['SearchMinRemainingTime'];
     $SearchMinPrice = $SearchOptions['SearchMinPrice'];
     $SearchMaxPrice = $SearchOptions['SearchMaxPrice'];
     $SearchUser = $SearchOptions['SearchUser'];

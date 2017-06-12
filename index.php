@@ -77,7 +77,7 @@ require('navbar.php');
 
                 if ($TopCategories[0]) {
                     foreach ($TopCategories as $Category) {
-                        echo "<a href=\"resultaten.php?categorie=". $Category["RB_Nummer"] ."\" class=\"list-group-item\">" . $Category['RB_Naam'] . "</a>";
+                        echo "<a href=\"resultaten.php?rubriek=". $Category["RB_Nummer"] ."\" class=\"list-group-item\">" . $Category['RB_Naam'] . "</a>";
                     }
                 } else {
                     echo "<b>Error on loading categories: </b>" . "<br><br>" . $TopCategories[1];

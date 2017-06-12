@@ -16,8 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
     if (isset($_GET['betalingsmethode'])) {
         $betalingsmethode = $_GET['betalingsmethode'];
-    } else {
-        $betalingsmethode = $_GET['betalingsmethode'];
+    }else{
+        $betalingsmethode = -1;
     }
     if (isset($_GET['prijs'])) {
         $tmp = explode(',', $_GET['prijs']);
@@ -68,8 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         'SearchFilter' => $waardes[$sorteerfilter],
         'SearchPaymentMethod' => $betaalMethodes[$betalingsmethode]['BW_betalingswijze'],
         'SearchCategory' => $rubriek,
-        'SearchMinRemainingTime' => '',
-        'SearchMaxRemainingTime' => '',
         'SearchMinPrice' => $prijs['min'],
         'SearchMaxPrice' => $prijs['max'],
         'ResultsPerPage' => $ResultsPerPage,
@@ -202,10 +200,10 @@ require('navbar.php');
                     <select class="form-control" name="betalingsmethode">
                         <?php
                         //Array to be able to create a for loop. When adding a new one nothing has to be changed this way.
-                        if (!isset($betalingsmethode)) {
+                        if ($betalingsmethode == -1) {
                             echo "<option disabled selected>Maak uw keuze</option>";
                             $betalingsmethode = -1;
-                        } elseif (isset($betalingsmethode)) {
+                        } else{
                             echo "<option value=" . $betalingsmethode . " selected>" . $betaalMethodes[$betalingsmethode]['BW_betalingswijze'] . "</option>";
                         }
                         print_r($betaalMethodes);
