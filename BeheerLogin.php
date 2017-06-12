@@ -6,7 +6,6 @@ require('PHP/SQL-Queries.php');
 
 
 /* Backend for logging in an admin user */
-
 $errorMessage = [False];
 $successMessage = [False];
 
@@ -25,14 +24,14 @@ if ($_POST["formSend"] == 'True' AND isset($_POST["formSend"])) {
             if (isset($foundUser) AND !empty($foundUser)) {
                 //if found, checking the password
                 $foundPassword = CheckCredentials($username, $password);
-                if($foundPassword){
+                if ($foundPassword) {
                     session_start();
                     $_SESSION["adminUsername"] = $foundUser;
                     header('Location: http://iproject3.icasites.nl/Beheer/');
                 } else {
                     $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser];
                 }
-            } else{
+            } else {
                 $errorMessage = [True, 'Onbekende gebruiker: ' . $username];
             }
         } else {
@@ -44,9 +43,9 @@ if ($_POST["formSend"] == 'True' AND isset($_POST["formSend"])) {
 }
 
 /* checking if the user just came back from beheer/index.php or logged out*/
-if ($_GET["noLogin"] == 'True' AND isset($_GET["noLogin"])){
+if ($_GET["noLogin"] == 'True' AND isset($_GET["noLogin"])) {
     $errorMessage = [True, 'Inloggen is vereist voor het bezoeken van de beheerpagina.'];
-} else if ($_GET["loggedOut"] == 'True' AND isset($_GET["loggedOut"])){
+} else if ($_GET["loggedOut"] == 'True' AND isset($_GET["loggedOut"])) {
 
     //delete the session
     if (ini_get("session.use_cookies")) {
@@ -62,7 +61,6 @@ if ($_GET["noLogin"] == 'True' AND isset($_GET["noLogin"])){
     session_commit();
     $successMessage = [True, 'Successvol uitgelogged.'];
 }
-
 
 
 ?>
@@ -155,14 +153,14 @@ include "navbar.php";
                 <?php
 
                 /* checking if any alerts of success messages need to be displayed */
-                if ($errorMessage[0]){
+                if ($errorMessage[0]) {
 
-                echo "<div class=\"alert alert-danger alert-dismissable\">
+                    echo "<div class=\"alert alert-danger alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
                              <strong>Error!</strong> " . $errorMessage[1] . "
                           </div>";
 
-                } else if($successMessage[0]){
+                } else if ($successMessage[0]) {
                     echo "<div class=\"alert alert-success alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
                              <strong>Success!</strong> " . $successMessage[1] . "
