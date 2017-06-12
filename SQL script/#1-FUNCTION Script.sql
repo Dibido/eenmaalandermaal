@@ -20,7 +20,7 @@ AS
   END
 
 --Function too find a random user.
---Variabels:
+--Variabelen:
 --@Identifier, a unique identity.
 --Return:
 --A random user name.
@@ -174,8 +174,8 @@ IF OBJECT_ID('FN_RubriekIsAfstammelingVan') IS NOT NULL
   DROP FUNCTION [dbo].[FN_RubriekIsAfstammelingVan]
 GO
 --Function that checks if the child column is in the parent.
-create FUNCTION [dbo].[FN_RubriekIsAfstammelingVan](
-  @KindRubriek INT,
+CREATE FUNCTION [dbo].[FN_RubriekIsAfstammelingVan](
+  @KindRubriek  INT,
   @SuperRubriek INT
 )
   RETURNS BIT
@@ -183,29 +183,12 @@ create FUNCTION [dbo].[FN_RubriekIsAfstammelingVan](
     IF @KindRubriek = @SuperRubriek OR @kindRubriek IS NULL OR @SuperRubriek IS NULL
       RETURN 0
 
-    DECLARE @ParentVanKind INT = (SELECT TOP 1 RB_Parent FROM Rubriek WHERE Rubriek.RB_Nummer = @KindRubriek)
+    DECLARE @ParentVanKind INT = (SELECT TOP 1 RB_Parent
+                                  FROM Rubriek
+                                  WHERE Rubriek.RB_Nummer = @KindRubriek)
     IF @ParentVanKind = @SuperRubriek
       RETURN 1
 
-    RETURN dbo.FN_RubriekIsAfstammelingVan(@ParentVanKind,@SuperRubriek)
+    RETURN dbo.FN_RubriekIsAfstammelingVan(@ParentVanKind, @SuperRubriek)
 
   END
-
-
---Niet meer nodig ivm VW_minimaalnieuwbod
-/*CREATE FUNCTION FN_bodHogerDanStartprijs(
-  @voorwerpnummer BIGINT,
-  @Bodbedrag      NUMERIC(9, 2)
-)
-  RETURNS BIT
-  BEGIN
-    RETURN (
-      CASE WHEN @Bodbedrag >= (SELECT VW_startprijs
-                               FROM Voorwerp
-                               WHERE VW_voorwerpnummer = @voorwerpnummer)
-        THEN 1
-      ELSE 0
-      END
-    )
-  END
-GO*/

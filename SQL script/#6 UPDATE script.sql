@@ -1,7 +1,7 @@
 --the stored procedures can be used to update the data in the database.
 --Drop all procedures
 IF OBJECT_ID('SP_UpdateRating', 'P') IS NOT NULL
-  DROP PROCEDURE SP_UpdateLooptijd;
+  DROP PROCEDURE SP_UpdateRating;
 GO
 IF OBJECT_ID('SP_UpdateLooptijd', 'P') IS NOT NULL
   DROP PROCEDURE SP_UpdateLooptijd;
