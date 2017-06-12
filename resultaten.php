@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $prijs['min'] = 0;
     }
     if (!isset($prijs['max'])) {
-        $prijs['max'] = 1500;
+        $prijs['max'] = 2000;
     }
     //This checks to see if there is a page number, that the number is not 0, and that the number is actually a number. If not, it will set it to page number to 1.
     if ((!isset($_GET['pagenum'])) || (!is_numeric($_GET['pagenum'])) || ($_GET['pagenum'] < 1)) {

@@ -184,7 +184,7 @@ function findBodAds($username)
     GLOBAL $QueryUserBod;
 
     $stmt = $connection->prepare($QueryUserBod);
-    $stmt->execute(array($username));
+    $stmt->execute(array($username,$username,$username));
     return $stmt->fetchAll();
 }
 
