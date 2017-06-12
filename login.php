@@ -188,9 +188,7 @@ include "navbar.php";
 
                         <!-- login button -->
                         <div class="form-group">
-                            <div class="col-md-6 col-md-push-3 text-center">
                                 <button type="submit" class="btn btn-primary" id="loginButton">Log in</button>
-                            </div>
                         </div>
 
                     </form>
