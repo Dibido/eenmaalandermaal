@@ -10,6 +10,15 @@ require('PHP/SQL-Queries.php');
 if(!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])){
     header("Location: login.php?unauthorised=True");
 }
+//redirect if user is already a verkoper.
+$userinfo = findUserInfo($_SESSION["Username"])[0];
+
+if ($userinfo["GEB_verkoper"]) {
+    header("Location: login.php?unauthorised=True");
+}
+
+
+
 
 
 // form validation
