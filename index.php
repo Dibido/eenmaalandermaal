@@ -249,22 +249,22 @@ require('navbar.php');
                         echo "style=\"background-image:url(" . $veiling["ImagePath"] . ")\"></div></a>
                             <div class=\"veiling-prijs-tijd\">
                                 <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . "></p>" . "</div>
+                                <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . 'Top2'. "></p>" . "</div>
                             </div>
                          </div>
                      </div>";
-                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$veiling["VW_voorwerpnummer"]);
+                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_voorwerpnummer"], 'Top2');
 
                     } else {
                         echo ">
                             </div>
                                 <div class=\"veiling-prijs-tijd\">
                                     <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $veiling["prijs"] . "</div>
-                                    <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . "></p>" . " </div>
+                                    <div class=\"tijd label label-default\">" . "<p id=" . $veiling["VW_voorwerpnummer"] . 'Top2'. "></p>" . " </div>
                                 </div>
                             </div>
                         </div>";
-                        createTimer($veiling["VW_looptijdEinde"], $veiling["VW_titel"],$veiling["VW_voorwerpnummer"]);
+                        createTimer($veiling["VW_looptijdEinde"],$veiling["VW_voorwerpnummer"], 'Top2');
                     }
                 }
 
@@ -292,7 +292,7 @@ require('navbar.php');
     //Draw auctions for popular new auctions.
     if ($ExtraAuctions[0]) {
         foreach ($ExtraAuctions as $advert) {
-            DrawAuction($advert);
+            DrawAuction($advert, 'extrapopulair');
         }
     } else {
         echo "<b>Error on loading auctions: </b>" . "<br><br>" . $ExtraAuctions[1];
@@ -312,7 +312,7 @@ require('navbar.php');
 
     if ($ExtraAuctions[0]) {
         foreach ($ExtraAuctions as $advert) {
-            DrawAuction($advert);
+            DrawAuction($advert, 'extranieuw');
         }
     } else {
         echo "<b>Error on loading auctions: </b>" . "<br><br>" . $ExtraAuctions[1];
