@@ -17,8 +17,6 @@ session_start();
 
 <!doctype html>
 
-<!-- onzin comment voor pushes nr2 -->
-
 <html lang="en">
 
 <head>
