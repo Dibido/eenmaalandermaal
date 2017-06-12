@@ -3,7 +3,8 @@
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
-Session_START();
+
+session_start();
 
 $errorResults = array(false);
 //Haalt alle verschillende betalingswijzen op uit de database om later mee te vergelijken

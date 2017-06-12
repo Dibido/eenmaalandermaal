@@ -19,9 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     }
 }
 
-
-
-
+//Read out all the user info from the database.
 $userinfo = findUserInfo($username)[0];
 $userads = findUserAds($username);
 $userbod = findBodAds($username);
@@ -177,6 +175,7 @@ require('navbar.php');
                         <?php
 
                         $auctions = $userads;
+                        //Show the owners auctions.
                         if (isset($auctions[0]) AND !empty($auctions)) {
                             foreach ($auctions as $auction) {
                                 DrawAuction($auction);
@@ -193,6 +192,7 @@ require('navbar.php');
                         <?php
 
                         $auctions = $userbod;
+                        //Show the users bids.
                         if (isset($auctions[0]) AND !empty($auctions)) {
                             foreach ($auctions as $auction) {
                                 DrawAuction($auction);
@@ -209,6 +209,7 @@ require('navbar.php');
                         <?php
 
                         $auctions = $userwin;
+                        //Show the users won auctions.
                         if (isset($auctions[0]) AND !empty($auctions)) {
                             foreach ($auctions as $auction) {
                                 DrawAuction($auction);

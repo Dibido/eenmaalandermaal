@@ -46,6 +46,7 @@
 
 <?php
 
+//If session has nog been started, start the session.
 if(session_status() !=2){
     session_start();
 }

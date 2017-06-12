@@ -3,6 +3,7 @@ session_start();
 require 'PHP/Connection.php';
 require 'PHP/Functions.php';
 require 'PHP/SQL-Queries.php';
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['zoekterm'])) {
         $zoekterm = ($_GET['zoekterm']);
@@ -46,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } else {
         $pagenum = round($_GET['pagenum']);
     }
-    //results per page
+    //Results per page
     $pagenum = cleanInput(urldecode($pagenum));
     $ResultsPerPage = 12;
     $zoekterm = cleanInput(urldecode($zoekterm));

@@ -1,4 +1,5 @@
 <?php
+/*This file is used as an iframe for the item descriptions.*/
 
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');

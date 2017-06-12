@@ -1,16 +1,12 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
 require('PHP/connection.php');
 require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 
 
-//redirect of no login
+//Redirect to login if the user is not logged in.
 if(!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])){
     header("Location: login.php?unauthorised=True");
 }
