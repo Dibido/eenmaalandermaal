@@ -378,11 +378,11 @@ $QuerieSluitVeilingen = <<<EOT
 UPDATE Voorwerp
 SET VW_veilinggesloten = 1,
   VW_verkoopprijs = VW_hoogstebod,
-  VW_koper = (ISNULL((BOD_gebruiker), NULL))
+  VW_koper = (ISNULL((select top 1 BOD_gebruiker from BOD where BOD_voorwerpnummer = VW_voorwerpnummer order by Bod.BOD_bodbedrag desc), NULL))
 FROM Voorwerp
   FULL OUTER JOIN Bod
     ON Voorwerp.VW_voorwerpnummer = Bod.BOD_voorwerpnummer
-WHERE VW_looptijdEinde < GETDATE()
+WHERE VW_looptijdEinde < GETDATE() and VW_veilinggesloten != 1
 EOT;
 
 SendToDatabase($QuerieSluitVeilingen);

@@ -382,7 +382,7 @@ EOT;
 $QueryUserWin = <<<EOT
 SELECT
   TOP 40
-  VW_voorwerpnummer,VW_titel, VW_verkoper,
+  VW_voorwerpnummer,VW_titel, VW_koper,
   DATEDIFF(HOUR, GETDATE(), VW_looptijdEinde)    AS tijd,
   (COALESCE ((SELECT TOP 1 BOD_Bodbedrag
               FROM Bod
@@ -390,16 +390,12 @@ SELECT
                                        FROM Bod
                                        WHERE BOD_voorwerpnummer = VW_voorwerpnummer
                                        ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
-              ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
+              ORDER BY BOD_Bodbedrag DESC), VW_startprijs))  AS prijs,
   VW_looptijdEinde,
   VW_thumbnail AS ImagePath
 FROM Voorwerp
-
-  INNER JOIN Voorwerp_Rubriek
-    ON Voorwerp_Rubriek.VR_Voorwerp_Nummer = Voorwerp.VW_voorwerpnummer
-  
-GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper,VW_Koper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail
-HAVING VW_koper IS NOT NULL  AND VW_Koper = ?
+where  VW_koper = ?
+GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper,VW_koper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail, VW_startprijs
 ORDER BY VW_looptijdEinde DESC, VW_titel
 EOT;
 
