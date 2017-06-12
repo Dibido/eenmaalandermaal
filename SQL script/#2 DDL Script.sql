@@ -43,7 +43,7 @@ CREATE TABLE Gebruiker (
   GEB_vraag          TINYINT                NOT NULL, --Nummer uit de Vraag tabel
   GEB_antwoordtekst  VARCHAR(255)           NOT NULL, --Antwoord op de vraag, gehashed en case insensative
   GEB_verkoper       BIT DEFAULT 0          NOT NULL, --Of de gebruiker een verkoper is of niet, standaard is de gebruiker geen verkoper
-  GEB_rating         NUMERIC(4, 1)          NULL, --Rating van de gebruiker 0.0 - 100.0
+  GEB_rating         NUMERIC(4, 1)          NULL, --Rating van de gebruiker 0.0 - 100.0, TODO: check op bouwen als het ingevuld kan worden.
   GEB_actief         BIT                    NOT NULL DEFAULT 1, --Of de gebruiker actief is
   CONSTRAINT PK_GebruikerGebruikersnaam PRIMARY KEY (GEB_gebruikersnaam),
   CONSTRAINT FK_VraagVraagnummer FOREIGN KEY (GEB_vraag) REFERENCES Vraag (VR_vraagnummer),
