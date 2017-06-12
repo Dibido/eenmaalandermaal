@@ -1,7 +1,5 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+/* This php file selects the auctions that have elapsed and sends an email to the buyer and the seller informing them. */
 
 $QuerieInfoGeslotenVeilingen = <<<EOT
 SELECT VW_voorwerpnummer AS voorwerpnummer, VW_titel AS titel, VW_hoogstebod AS verkoopprijs, BOD_gebruiker AS koper, GEB_mailbox AS email_koper, (SELECT  GEB_gebruikersnaam FROM Gebruiker WHERE GEB_gebruikersnaam = VW_verkoper) AS verkoper ,(SELECT  GEB_mailbox FROM Gebruiker WHERE GEB_gebruikersnaam = VW_verkoper) AS email_verkoper
@@ -380,11 +378,11 @@ $QuerieSluitVeilingen = <<<EOT
 UPDATE Voorwerp
 SET VW_veilinggesloten = 1,
   VW_verkoopprijs = VW_hoogstebod,
-  VW_koper = (ISNULL((BOD_gebruiker), NULL))
+  VW_koper = (ISNULL((select top 1 BOD_gebruiker from BOD where BOD_voorwerpnummer = VW_voorwerpnummer order by Bod.BOD_bodbedrag desc), NULL))
 FROM Voorwerp
   FULL OUTER JOIN Bod
     ON Voorwerp.VW_voorwerpnummer = Bod.BOD_voorwerpnummer
-WHERE VW_looptijdEinde < GETDATE()
+WHERE VW_looptijdEinde < GETDATE() and VW_veilinggesloten != 1
 EOT;
 
 SendToDatabase($QuerieSluitVeilingen);
