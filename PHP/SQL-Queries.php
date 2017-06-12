@@ -1,18 +1,6 @@
 <?php
 
-/*
- *
- *  This file includes functions for often-used SQL queries, thus giving the HTML-pages better readability
- *
- *
- */
-
-
-/*
- *
- *  These are all the used querries
- *
- */
+/*  This file includes functions for often-used SQL queries, thus giving the HTML and PHP pages better readability */
 
 //Insert de bestand namen in de tabel bestand
 $QueryInsertImages = <<<EOT
