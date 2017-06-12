@@ -14,7 +14,7 @@ if(!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])){
 $userinfo = findUserInfo($_SESSION["Username"])[0];
 
 if ($userinfo["GEB_verkoper"]) {
-    header("Location: login.php?unauthorised=True");
+    header("Location: profiel.php?seller=True");
 }
 
 

@@ -30,6 +30,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $username = cleanInput($_GET['username']);
     }
 }
+
+$errorMessage = [False];
+/* checking if the user tried to upgrade his account */
+if (isset($_GET["seller"]) && $_GET["seller"] == 'True'){
+    $errorMessage = [True, '   U bent al een verkoper.'];
+}
+
+
+
+
+
 ?>
 
 <!doctype html>
@@ -77,6 +88,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 <?php
 require('navbar.php');
+
+if($errorMessage[0]){
+    echo "<div class=\"alert alert-danger alert-dismissable\" style='z-index: 100; position: fixed; top: 25%; left: 30%; width: 40%; height: 20%;'>
+  <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>
+  <strong>Error!</strong> U bent al een verkoper!
+</div>";
+}
+
+
+
+
+
+
 ?>
 
 <ol class="breadcrumb " style="position: absolute; top: 50px; display: block; width: 100%;">
@@ -142,6 +166,7 @@ require('navbar.php');
                         for ($i = 0; $i < $legeSterren; $i++) {
                             echo " <i class=\"glyphicon glyphicon-star-empty\"></i>";
                         }
+
 
                         ?> </b></div>
 

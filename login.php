@@ -69,6 +69,11 @@ if (isset($_GET["bieden"]) && $_GET["bieden"] == 'True') {
 if (isset($_GET["unauthorised"]) && $_GET["unauthorised"] == 'True'){
     $errorMessage = [True, 'U moet inloggen om deze pagina te bezoeken.'];
 }
+/* checking if the user tried to upgrade his account */
+if (isset($_GET["seller"]) && $_GET["seller"] == 'True'){
+    $errorMessage = [True, 'U bent al een verkoper.'];
+}
+
 
 
 ?>
