@@ -5,13 +5,18 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 require('PHP/connection.php');
 
+
+/* check of the user is loggedin, redirect to login.php when username is not set.*/
+if (!isset($_SESSION["Username"])){
+    header('Location: login.php'); exit();
+}
+
 /* getting the userinfo, and determining if the user is looking at his own, or another page*/
 $username = $_SESSION['Username'];
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['username'])) {
         $username = cleanInput($_GET['username']);
-    }else { header('Location: login.php'); exit();
-            }
+    }
 }
 
 
