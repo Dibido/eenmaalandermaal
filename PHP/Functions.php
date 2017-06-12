@@ -95,7 +95,7 @@ Output:
 function ConvertTime($time)
 {
     $datetime = new DateTime($time);
-    return $datetime->format('Y-m-d H:i');
+    return $datetime->format('Y-m-d');
 }
 
 
