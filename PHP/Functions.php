@@ -2009,7 +2009,6 @@ function insertVerkoper($username, $array)
 function deleteFromUpgrade($username)
 {
 
-
     GLOBAL $connection;
 
     $stmt = $connection->prepare(
