@@ -18,7 +18,6 @@
 }
 
 
-
 /*right column */
 
 .TimeLeft{
@@ -170,7 +169,6 @@
 
 .Detail{
     width: 33%;
-    height: 58%;
     overflow: hidden;
     white-space: nowrap;
     display: inline-flex;
