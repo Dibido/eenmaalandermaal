@@ -5,13 +5,18 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 require('PHP/connection.php');
 
+
+/* check of the user is loggedin, redirect to login.php when username is not set.*/
+if (!isset($_SESSION["Username"])){
+    header('Location: login.php'); exit();
+}
+
 /* getting the userinfo, and determining if the user is looking at his own, or another page*/
 $username = $_SESSION['Username'];
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['username'])) {
         $username = cleanInput($_GET['username']);
-    }else { header('Location: login.php'); exit();
-            }
+    }
 }
 
 
@@ -96,7 +101,7 @@ require('navbar.php');
                 <p><span class="glyphicon glyphicon-user"></span> Voornaam + Achternaam:
                     <b><?php echo $userinfo["GEB_voornaam"] . ' ' . $userinfo["GEB_achternaam"] ?></b></p>
                 <p><span class="glyphicon glyphicon-gift"></span> Geboortedatum:
-                    <b><?php echo $userinfo["GEB_voornaam"] ?></b></p>
+                    <b><?php echo $userinfo["GEB_geboortedag"] ?></b></p>
                 <p><span class="glyphicon glyphicon-envelope"></span> Email-adres:
                     <b><?php echo $userinfo["GEB_mailbox"] ?></b></p>
                 <p><span class="glyphicon glyphicon-map-marker"></span> Postcode + Plaats :

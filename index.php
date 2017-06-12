@@ -77,7 +77,7 @@ require('navbar.php');
 
                 if ($TopCategories[0]) {
                     foreach ($TopCategories as $Category) {
-                        echo "<a href=\"resultaten.php?categorie=". $Category["RB_Nummer"] ."\" class=\"list-group-item\">" . $Category['RB_Naam'] . "</a>";
+                        echo "<a href=\"resultaten.php?rubriek=". $Category["RB_Nummer"] ."\" class=\"list-group-item\">" . $Category['RB_Naam'] . "</a>";
                     }
                 } else {
                     echo "<b>Error on loading categories: </b>" . "<br><br>" . $TopCategories[1];
@@ -294,6 +294,28 @@ require('navbar.php');
 
 
     $ExtraAuctions = SendToDatabase($QueryQualityNew);
+
+    if ($ExtraAuctions[0]) {
+        foreach ($ExtraAuctions as $advert) {
+            DrawAuction($advert);
+        }
+    } else {
+        echo "<b>Error on loading auctions: </b>" . "<br><br>" . $ExtraAuctions[1];
+    }
+
+    ?>
+
+
+</div>
+
+
+<div class="col-sm-12 HeaderTitle text-center">Veilingen uit populaire rubrieken</div>
+<div class="container-fluid">
+
+    <?php
+
+
+    $ExtraAuctions = SendToDatabase($QueryMoreQualityNew);
 
     if ($ExtraAuctions[0]) {
         foreach ($ExtraAuctions as $advert) {
