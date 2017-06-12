@@ -314,7 +314,6 @@ require('navbar.php');
 
     <?php
 
-
     $ExtraAuctions = SendToDatabase($QueryMoreQualityNew);
 
     if ($ExtraAuctions[0]) {

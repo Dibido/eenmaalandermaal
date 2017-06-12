@@ -101,11 +101,16 @@ if (isset($snelBod) AND !empty($snelBod)) {
     if (!isset($_SESSION["Username"])) {
         header('Location: login.php?bieden=True');
     }
+    if ($_SESSION["Username"] == $ItemInfo["VW_verkoper"]) {
+        $error = [True, 'U kunt niet op uw eigen veilingen bieden.'];
 
-    //inserting the offer
-    insertBod($ItemID, $_SESSION["Username"], $minimumBod);
+    } else {
+        //inserting the offer
+        insertBod($ItemID, $_SESSION["Username"], $minimumBod);
 
-    header('Location: voorwerp.php?ItemID=' . $ItemID);
+        header('Location: voorwerp.php?ItemID=' . $ItemID);
+
+    }
 }
 
 ?>
@@ -291,7 +296,7 @@ require('navbar.php');
                             class="text-right"> <?php echo $ItemInfo["VW_conditie"]; ?></span></div>
                 <div class="Detail"><b class="text-left">verzendkosten:</b><span
                             class="text-left"> <?php echo $ItemInfo["VW_verzendkosten"]; ?></span></div>
-                <div class="Detail"><b class="text-center">conditie:</b><span
+                <div class="Detail"><b class="text-center">verzendinstructie:</b><span
                             class="text-center"> <?php echo $ItemInfo["VW_verzendinstructies"]; ?></span></div>
                 <div class="Detail"><b class="text-right">betalingsinstructie:</b><span
                             class="text-right"> <?php echo $ItemInfo["VW_betalingsinstructie"]; ?></span></div>

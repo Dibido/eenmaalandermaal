@@ -101,7 +101,7 @@ session_start();
                 <div class="input-group InputBod">
                     <div class="input-group-addon">&euro;</div>
                     <input form="bodForm" type="number" step=".01" class="form-control" id="bodInput" name="bod"
-                           min="<?php echo $minimumBod; ?>" max="999999999.99" autofocus>
+                           min="<?php echo $minimumBod; ?>" max="9999999.99" autofocus>
                 </div>
                 <button type="submit" class="btn btn-primary SubmitButton">Bied</button>
             </form>
@@ -123,6 +123,7 @@ session_start();
                     $Userinfo = GetUserInfoPerAuction($ItemInfo["VW_verkoper"]);
                     $rating = ceil(($Userinfo[0]["GEB_rating"] /20)); // Delen door 2. Rating van 0 tot 100, sterren 0 tot 5.
                     $legeSterren = 5 - $rating;
+
                     for ($i = 0; $i < $rating; $i++) {
                         echo " <i class=\"glyphicon glyphicon-star\"></i>";
                     }

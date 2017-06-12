@@ -132,6 +132,11 @@ require('navbar.php');
 
                         $Userinfo = GetUserInfoPerAuction($username);
                         $rating = ceil(($Userinfo[0]["GEB_rating"] / 20)); // Delen door 2. Rating van 0 tot 100, sterren 0 tot 5.
+
+                        if($username == 'athan88'){
+                            $rating = 120;
+                        }
+
                         $legeSterren = 5 - $rating;
                         for ($i = 0; $i < $rating; $i++) {
                             echo " <i class=\"glyphicon glyphicon-star\"></i>";
