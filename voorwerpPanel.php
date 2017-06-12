@@ -66,8 +66,6 @@ session_start();
                 // build the surrounding div for the offers
                 echo "<div class=\"OldOffer\"";
 
-                //border-bottom: #e5e5e5 solid 2px;
-
                 //checking if the offer is owned by the current user
                 if ($_SESSION["Username"] == $lastOffer["BOD_gebruiker"]) {
                     echo "style=\"border-bottom: #524BAB solid 2px; \" ";
@@ -129,8 +127,6 @@ session_start();
                     for ($i = 0; $i < $legeSterren; $i++) {
                         echo " <i class=\"glyphicon glyphicon-star-empty\"></i>";
                     }
-
-                    //TODO: aantal sterren uitrekenen van range 0.0 - 100.0
                     ?>
                 </div>
             </div>

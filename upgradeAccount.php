@@ -8,7 +8,7 @@ require('PHP/SQL-Queries.php');
 
 
 
-//redirect of no login
+//redirect if not logged in.
 if (!isset($_SESSION["Username"]) OR empty($_SESSION["Username"])) {
     header("Location: login.php?unauthorised=True");
 }
@@ -27,7 +27,6 @@ $results["creditcardnummer"] = '';
 
 
 /* resetting the upgrade process */
-
 if(isset($_GET["reset"])){
     $resetResults = deleteFromUpgrade($_SESSION["Username"]);
 
