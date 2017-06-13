@@ -144,7 +144,7 @@ include "navbar.php";
              id="loginWrapper">
             <div class="panel panel-default" id="loginPanel">
                 <div class="panel-heading">
-                    EeemaalAndermaal login
+                    EemaalAndermaal login
                 </div>
 
                 <div class="panel-body">
