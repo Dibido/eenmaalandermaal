@@ -117,6 +117,11 @@ if (isset($snelBod) AND !empty($snelBod)) {
         $error = [True, 'U kunt niet op uw eigen veilingen bieden.'];
         echo "<script type='text/javascript'>alert('$error[1]');</script>";
 
+    if (checkVeilingAfgelopen($ItemInfo["VW_voorwerpnummer"])[0]){
+        $error = [True, 'Deze veiling is helaas gesloten.'];
+        echo "<script type='text/javascript'>alert('$error[1]');</script>";
+    }
+
     } else {
         //inserting the offer
         insertBod($ItemID, $_SESSION["Username"], $minimumBod);
