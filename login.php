@@ -31,13 +31,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $_SESSION["Username"] = $foundUser[0];
                             header('Location: index.php');
                         } else {
-                            $errorMessage = [True, 'Incorrect wachtwoord voor gebruiker: ' . $foundUser[0]];
+                            $errorMessage = [True, 'Incorrecte gegevens.'];
                         }
                     } else {
                         $errorMessage = [True, 'Deze gebruiker is niet actief: ' . $foundUser[0]];
                     }
                 } else {
-                    $errorMessage = [True, 'Onbekende gebruiker: ' . $username];
+                    $errorMessage = [True, 'Incorrecte gegevens.'];
                 }
             } else {
                 $errorMessage = [True, 'Geef alstublieft een wachtwoord op.'];

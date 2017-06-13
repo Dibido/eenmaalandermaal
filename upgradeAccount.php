@@ -49,7 +49,7 @@ if(isset($_GET["reset"])){
 /* if the form was submitted, prepare a code */
 foreach ($_POST as $itemId => $item) {
     $item = trim($item);
-    if (empty($item)) {
+    if (empty($item) OR !isset($_POST["controleOptie"])) {
         $errorMessage = [True, ' U heeft niet alle velden ingevuld.'];
         $emptyItem = True;
     } else if(!$emptyItem) {
@@ -142,7 +142,7 @@ if($successMessage[0]){
 include "navbar.php";
 ?>
 <!-- Breadcrumb -->
-<ol class="breadcrumb " style="position: fixed; top: 50px; display: block; width: 100%;">
+<ol class="breadcrumb " style="position: absolute; top: 50px; display: block; width: 100%;">
     <li class="breadcrumb-item"><a href="profiel.php">profielpagina</a></li>
     <li class="breadcrumb-item active">upgrade account</li>
 </ol>

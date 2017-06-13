@@ -1914,7 +1914,7 @@ EOT;
         echo 'er ging iets fout bij het ophalen van het email adres: ' . $e;
     }
 
-    echo $email = $email[0];
+ $email = $email[0];
 
 
     //Verificatie mail
