@@ -6,7 +6,7 @@ require('PHP/Functions.php');
 require('PHP/SQL-Queries.php');
 require('PHP/connection.php');
 
-$ItemID = $_GET['ItemID'];
+$ItemID = cleanInput($_GET['ItemID']);
 
 $ItemInfo = GetItemDetails($ItemID);
 $ItemInfo = $ItemInfo[0];
