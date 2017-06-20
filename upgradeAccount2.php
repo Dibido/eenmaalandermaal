@@ -58,14 +58,14 @@ if($noEmptyItems && isset($results)){
         }
 
     }else{
-        $errorMessage = [True, 'De code is helaas incorrect. klik' .  "<a href=\"upgradeAccount.php?reset=True\">" . ' hier' . '</a> om terug te gaan. '];
+        $errorMessage = [True, 'De code is helaas incorrect. klik ' .  "<a href=\"upgradeAccount.php?reset=True\">" . 'hier' . '</a> om terug te gaan. '];
 
         //TODO: mogelijkheid om terug te gaan en aanpassingen te maken
     }
 
     //when empty fields are found
 } else {
-    $errorMessage = [True, ' U heeft niet alle velden ingevuld. klik' .  "<a href=\"upgradeAccount.php?reset=True\">" . ' hier' . '</a> om terug te gaan.'];
+    $errorMessage = [True, ' U heeft niet alle velden ingevuld. klik ' .  "<a href=\"upgradeAccount.php?reset=True\">" . 'hier' . '</a> om terug te gaan.'];
 }
 
 
