@@ -580,7 +580,7 @@ function DrawAuction($auction, $auctionType)
 {
     //testing for missing images and replacing with backup image
     if (empty($auction["ImagePath"])) {
-        $auction["ImagePath"] = "images/no-image-available.jpg";
+        $auction["ImagePath"] = "/images/no-image-available.jpg";
     }
     echo "
     <!-- Veiling template -->
