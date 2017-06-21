@@ -773,7 +773,9 @@ SELECT DISTINCT
                    BOD_voorwerpnummer = VW_voorwerpnummer
              ORDER BY BOD_Bodbedrag DESC), VW_startprijs)) AS prijs,
   DATEDIFF(HOUR, GETDATE(), Voorwerp.VW_looptijdEinde) AS tijd,
-  VW_thumbnail       AS ImagePath,
+  (SELECT TOP 1 BES_filenaam
+   FROM Bestand
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer)       AS ImagePath,
   VW_looptijdStart,
   VW_looptijdEinde,
   VW_betalingswijze,
