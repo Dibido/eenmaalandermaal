@@ -593,15 +593,29 @@ function DrawAuction($auction, $auctionType)
                         <div class=\"prijs label label-default\"><i class=\"glyphicon glyphicon-euro\"></i> " . $auction["prijs"] . "</div>
                         <div class=\"tijd label label-default\">" . "<p id=" . $auction["VW_voorwerpnummer"] . $auctionType."></p>" . "</div>
                     </div>
-                    <div class=\"veiling-rating-bied label label-default\">
+                    <div class=\"veiling-rating-bied label label-default\">";
+
+    if($auction["VW_veilinggesloten"]){
+
+        echo "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\" style=\"width:100%;\">Meer info</a>
+                    </div>
+                </div>
+            </div>
+";
+
+    } else {
+        echo "
                         <a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\">Meer info</a>
                         <a href= \"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . '&snelbod=True' . "\"  class=\"btn text-center btn-info bied\">Bied Nu!</a>
                     </div>
                 </div>
             </div>
             <!-- End template -->
-            
+           
     ";
+
+    }
+
     //Maakt een timer aan voor het voorwerp
     createTimer($auction["VW_looptijdEinde"], $auction["VW_voorwerpnummer"], $auctionType);
 }
