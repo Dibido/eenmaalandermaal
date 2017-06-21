@@ -595,7 +595,7 @@ function DrawAuction($auction, $auctionType)
                     </div>
                     <div class=\"veiling-rating-bied label label-default\">";
 
-    if($auction["VW_veilinggesloten"]){
+    if($auction["VW_veilinggesloten"] == 1){
 
         echo "<a href=\"voorwerp.php?ItemID=" . $auction["VW_voorwerpnummer"] . " \" class=\"btn text-center btn-default bied\" style=\"width:100%;\">Meer info</a>
                     </div>
@@ -613,7 +613,6 @@ function DrawAuction($auction, $auctionType)
             <!-- End template -->
            
     ";
-
     }
 
     //Maakt een timer aan voor het voorwerp
