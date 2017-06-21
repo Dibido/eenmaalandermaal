@@ -45,46 +45,50 @@ if(isset($_GET["reset"])){
 
 }
 
-
+$emptyItem = False;
 /* if the form was submitted, prepare a code */
 foreach ($_POST as $itemId => $item) {
     $item = trim($item);
+    $results[$itemId] = cleanInput($item);
     if (empty($item) OR !isset($_POST["controleOptie"])) {
         $errorMessage = [True, ' U heeft niet alle velden ingevuld.'];
         $emptyItem = True;
-    } else if(!$emptyItem) {
-        $results[$itemId] = cleanInput($item);
+    }
+}
 
-        /* Form handeling */
 
-        //checking the input for invalid values
-        if (strlen($results["banknaam"]) <= 24) {
-            if (strlen($results["rekeningnummer"]) <= 31) {
-                if (strlen($results["creditcardnummer"]) <= 19) {
-                    if(luhn_check($results["creditcardnummer"])){
+/* Form handeling */
+if (!$emptyItem and !empty($_POST)) {
 
-                        //updating the page to: waiting for code
-                        $disabled = 'readonly';
-                        $formSend = True;
-                        $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
+    //checking the input for invalid values
+    if (strlen($results["banknaam"]) <= 24) {
+        if (strlen($results["rekeningnummer"]) <= 31) {
+            if (strlen($results["creditcardnummer"]) <= 19) {
+                if (luhn_check($results["creditcardnummer"])) {
 
-                    } else{
-                        $errorMessage = [True, ' Uw creditcardnummer is niet correct.'];
-                    }
+                    //updating the page to: waiting for code
+                    $disabled = 'readonly';
+                    $formSend = True;
+                    $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
+
                 } else {
-                    $errorMessage = [True, ' Uw creditcardnummer kan niet langer dan 19 characters zijn.'];
+                    $errorMessage = [True, ' Uw creditcardnummer is incorrect. '];
                 }
 
             } else {
-                $errorMessage = [True, 'Uw rekeningnummer kan niet langer dan 31 characters zijn.'];
+                $errorMessage = [True, ' Uw creditcardnummer kan niet langer dan 19 characters zijn.'];
             }
 
         } else {
-            $errorMessage = [True, 'Uw banknaam kan niet langer dan 24 characters zijn.'];
+            $errorMessage = [True, 'Uw rekeningnummer kan niet langer dan 31 characters zijn.'];
         }
 
+    } else {
+        $errorMessage = [True, 'Uw banknaam kan niet langer dan 24 characters zijn.'];
     }
+
 }
+
 
 if($successMessage[0]){
     //inserting user in the database
