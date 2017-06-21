@@ -23,7 +23,7 @@ ORDER BY H.RB_Naam ASC, S.RB_volgnummer ASC";
 try {
     $groups = $connection->query($query)->fetchAll(PDO::FETCH_ASSOC);
 } catch (Exception $e) {
-    echo('<h1>De categorieen konden niet opgehaald worden</h1>');
+    echo('<h1>De rubrieken konden niet opgehaald worden</h1>');
     echo('<p>Error: ' . $e->getMessage() . '</p>');
 }
 
@@ -82,7 +82,7 @@ require('navbar.php');
     <div class="row">
         <ul class="nav nav-pills nav-stacked bg-info lead">
             <li><a class="row-md-12" href="#">Plaats veiling</a></li>
-            <li><a class="row-md-12" href="categorie.php">Alle Categoriën</a></li>
+            <li><a class="row-md-12" href="categorie.php">Alle Rubrieken</a></li>
             <li><a class="row-md-12" href="#">Login</a></li>
         </ul>
     </div>
@@ -91,7 +91,7 @@ require('navbar.php');
 <!-- Breadcrumb -->
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-    <li class="breadcrumb-item active">Categorieën</li>
+    <li class="breadcrumb-item active">Rubrieken</li>
 </ol>
 
 <!-- Letter search -->
