@@ -189,30 +189,13 @@ if($errorMessage[0]){
             <div class="panel-body">
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#home">Mijn advertenties</a></li>
-                    <li><a data-toggle="tab" href="#menu1">Mijn biedingen</a></li>
+                    <li class="active"><a data-toggle="tab" href="#home">Mijn biedingen</a></li>
+                    <li><a data-toggle="tab" href="#menu1">Mijn advertenties</a></li>
                     <li><a data-toggle="tab" href="#menu2">Gewonnen veilingen</a></li>
                 </ul>
 
                 <div class="tab-content">
                     <div id="home" class="tab-pane fade in active">
-                        <h3>Mijn advertenties</h3>
-                        <?php
-
-                        $auctions = $userads;
-                        //Show the owners auctions.
-                        if (isset($auctions[0]) AND !empty($auctions)) {
-                            foreach ($auctions as $auction) {
-                                DrawAuction($auction, 'mijnadvertenties');
-                            }
-                        } else {
-                            echo "U heeft geen geplaatste advertenties.";
-                        }
-
-
-                        ?>
-                    </div>
-                    <div id="menu1" class="tab-pane fade">
                         <h3>Mijn biedingen</h3>
                         <?php
 
@@ -224,6 +207,23 @@ if($errorMessage[0]){
                             }
                         } else {
                             echo "U heeft nog geen bod geplaatst.";
+                        }
+
+
+                        ?>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                        <h3>Mijn advertenties</h3>
+                        <?php
+
+                        $auctions = $userads;
+                        //Show the owners auctions.
+                        if (isset($auctions[0]) AND !empty($auctions)) {
+                            foreach ($auctions as $auction) {
+                                DrawAuction($auction, 'mijnadvertenties');
+                            }
+                        } else {
+                            echo "U heeft geen geplaatste advertenties.";
                         }
 
 

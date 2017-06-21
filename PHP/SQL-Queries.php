@@ -84,7 +84,9 @@ SELECT
              ORDER BY BOD_Bodbedrag DESC), (VW_startprijs))) AS prijs,
   --Tijdsverschil tussen nu en het einde van de veiling
   VW_looptijdEinde,
-  VW_thumbnail       AS ImagePath
+  (SELECT TOP 1 BES_filenaam
+   FROM Bestand
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer)       AS ImagePath
 
 FROM Voorwerp
 WHERE VW_veilinggesloten != 1 AND DATEDIFF(minute,GETDATE(),VW_looptijdEinde) > 3
@@ -155,7 +157,9 @@ SELECT
               ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
   VW_looptijdEinde,
   VW_looptijdStart,
-  VW_thumbnail AS ImagePath,
+  (SELECT TOP 1 BES_filenaam
+   FROM Bestand
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
   VW_bodcount
 FROM Voorwerp
 WHERE VW_veilinggesloten != 1 and VW_looptijdStart !> GETDATE()
@@ -345,7 +349,9 @@ SELECT
                                        ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
               ORDER BY BOD_Bodbedrag DESC), VW_startprijs))  AS prijs,
   VW_looptijdEinde,
-  VW_thumbnail AS ImagePath
+  (SELECT TOP 1 BES_filenaam
+   FROM Bestand
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
 FROM Voorwerp
 
   INNER JOIN Voorwerp_Rubriek
@@ -369,7 +375,9 @@ SELECT DISTINCT TOP 40 BOD_voorwerpnummer AS VW_voorwerpnummer, VW_titel, b.BOD_
                                        ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
               ORDER BY BOD_Bodbedrag DESC), (SELECT TOP 1 VW_startprijs FROM Voorwerp WHERE VW_voorwerpnummer = VW_voorwerpnummer)))  AS prijs,
   VW_looptijdEinde,
-  VW_thumbnail AS ImagePath
+  (SELECT TOP 1 BES_filenaam
+   FROM Bestand
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath
 FROM bod b
 INNER JOIN Voorwerp v ON v.VW_voorwerpnummer = b.BOD_voorwerpnummer
 WHERE BOD_gebruiker = ? and (select TOP 1  BOD_bodTijdEnDag from bod where BOD_voorwerpnummer = VW_voorwerpnummer AND BOD_gebruiker = ?  ORDER BY BOD_bodTijdEnDag desc) <= GETDATE()
@@ -392,10 +400,13 @@ SELECT
                                        ORDER BY BOD_Bodbedrag DESC) AND BOD_voorwerpnummer = VW_voorwerpnummer
               ORDER BY BOD_Bodbedrag DESC), VW_startprijs))  AS prijs,
   VW_looptijdEinde,
-  VW_thumbnail AS ImagePath
+  (SELECT TOP 1 BES_filenaam
+   FROM Bestand
+   WHERE BES_voorwerpnummer = VW_voorwerpnummer) AS ImagePath,
+   VW_veilinggesloten
 FROM Voorwerp
 where  VW_koper = ?
-GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper,VW_koper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail, VW_startprijs
+GROUP BY VW_voorwerpnummer, VW_titel, VW_verkoper,VW_koper, VW_looptijdStart, VW_looptijdEinde, VW_thumbnail, VW_startprijs, VW_veilinggesloten
 ORDER BY VW_looptijdEinde DESC, VW_titel
 EOT;
 
