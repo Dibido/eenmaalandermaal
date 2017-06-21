@@ -61,12 +61,16 @@ foreach ($_POST as $itemId => $item) {
         if (strlen($results["banknaam"]) <= 24) {
             if (strlen($results["rekeningnummer"]) <= 31) {
                 if (strlen($results["creditcardnummer"]) <= 19) {
+                    if(luhn_check($results["creditcardnummer"])){
 
-                    //updating the page to: waiting for code
-                    $disabled = 'readonly';
-                    $formSend = True;
-                    $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
+                        //updating the page to: waiting for code
+                        $disabled = 'readonly';
+                        $formSend = True;
+                        $successMessage = [True, ' Er is een code naar uw email verstuurd. Vul hem hier onder in om verder te gaan.'];
 
+                    } else{
+                        $errorMessage = [True, ' Uw creditcardnummer is niet correct.'];
+                    }
                 } else {
                     $errorMessage = [True, ' Uw creditcardnummer kan niet langer dan 19 characters zijn.'];
                 }
