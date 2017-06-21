@@ -143,7 +143,11 @@ include "navbar.php";
                         echo "<div class=\"alert alert-success alert-dismissable\">
                              <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">×</a>
                              <strong>Success! </strong> " . $successMessage[1] . "
-                          </div>";
+                          </div>
+                          
+                          <a id=\"conroleButton\" class=\"btn btn-primary\" href=\"plaatsAdvertentie.php\" style=\"width:100%;\">Plaats een veiling!</a>
+                          
+                          ";
                     }
                     ?>
             </div>
